@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
-import { Month } from "./progress.types";
-import { decodeJwt, jwtDecrypt, jwtVerify } from "jose";
-import { DecryptionFunction } from "../auth/type.auth";
+import { UserProgress } from "./progress.types";
+import { decodeJwt, jwtVerify } from "jose";
+// import { DecryptionFunction } from "../auth/type.auth";
 
 // campus_id=16
 // &cursus_id=9
@@ -65,7 +65,8 @@ export const POST = async (request: NextRequest) => {
     );
   }
   const response = await data.json();
-  const NewRespons = response.map((item: any) => ({
+  // Define a Interface to this new response
+  const NewRespons = response.map((item: UserProgress) => ({
     email: item.user.email,
     login: item.user.login,
     kind: item.user.kind,

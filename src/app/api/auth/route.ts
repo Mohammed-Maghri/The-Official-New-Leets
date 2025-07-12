@@ -3,7 +3,7 @@ import { cookies } from "next/headers";
 import { AuthResponse } from "./type.auth";
 import * as jose from "jose";
 
-import { EncryptionFunction } from "./type.auth";
+// import { EncryptionFunction } from "./type.auth";
 
 const GET = async (request: NextRequest) => {
   try {

@@ -1,4 +1,4 @@
-import React, { Dispatch, useEffect } from "react";
+import React from "react";
 import { CiSearch } from "react-icons/ci";
 import { FaCaretDown } from "react-icons/fa";
 import { motion } from "motion/react";
@@ -14,7 +14,6 @@ import {
   SearchDeliverData,
   monthsIndex,
 } from "./progress.types";
-import { data } from "motion/react-client";
 
 const ProgressBar: React.FC<{
   setUserData: React.Dispatch<React.SetStateAction<UserData[] | null[]>>;

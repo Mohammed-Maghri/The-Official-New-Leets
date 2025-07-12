@@ -1,7 +1,7 @@
 "use client";
 import React from "react";
 import { Buttons } from "./navbar.buttons";
-import { PathsObject, UserData } from "./navbar.types";
+import { PathsObject } from "./navbar.types";
 import { motion } from "motion/react";
 import { CiMenuFries } from "./navbar.imports";
 import Image from "next/image";

@@ -8,15 +8,15 @@ import { GiQueenCrown } from "react-icons/gi";
 
 const ImageSideComp: React.FC<{ image: string }> = ({ image }) => {
   return (
-    <div className="relative duration-200 transition-all w-[110px] h-full lg:w-[130px] flex-shrink-0">
-      <div className="absolute inset-0 bg-gradient-to-br rounded-r-full ">
-        <div className="w-full h-full bg-gray-900 rounded-r-full overflow-hidden">
+    <div className="relative duration-200 transition-all rounded-l-sm w-[110px] h-full lg:w-[130px] flex-shrink-0">
+      <div className="absolute inset-0 bg-gradient-to-br rounded-l-md rounded-r-full ">
+        <div className="w-full h-full bg-gray-900 rounded-l-md rounded-r-full overflow-hidden">
           <Image
             src={image}
             alt="User Avatar"
             width={200}
             height={200}
-            className="w-full h-full object-cover"
+            className="w-full h-full object-cover rounded-l-sm"
           />
         </div>
       </div>
@@ -308,7 +308,7 @@ const RankComponent: React.FC<{ userData: UserData | null; rank: number }> = ({
 }) => {
   return (
     <div
-      className="flex relative w-full  h-full gap-1 min-h-[120px] bg-gradient-to-r from-gray-900/20
+      className="flex relative rounded-l-sm w-full  h-full gap-1 min-h-[120px] bg-gradient-to-r from-gray-900/20
      via-[#0070ef]/5 to-rose-500/10  border border-gray-800/50 backdrop-blur-xl rounded-2xl shadow-2xl"
     >
       <div className="absolute top-0 left-0 w-32 h-32 bg-gradient-to-br from-[#0070ef]/20 to-transparent rounded-full blur-3xl"></div>

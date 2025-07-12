@@ -1,5 +1,5 @@
 import { NextResponse, NextRequest } from "next/server";
-import { DecryptionFunction } from "../auth/type.auth";
+// import { DecryptionFunction } from "../auth/type.auth";
 
 import * as jose from "jose";
 
@@ -42,7 +42,7 @@ export async function GET(request: NextRequest) {
       },
       { status: 200 }
     );
-  } catch (error) {
+  } catch  {
     return NextResponse.json({ error: "Invalid user data" }, { status: 400 });
   }
 }

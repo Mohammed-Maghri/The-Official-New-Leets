@@ -17,7 +17,9 @@ export default function RootLayout({
     <html lang="en" className="h-screen">
       <body className="relative flex w-full h-full bg-gradient-to-bl from-gray-900 to-black">
         <ContextProvider>
-          <Layout children={children} />
+          <Layout >
+            {children}
+          </Layout>
         </ContextProvider>
       </body>
     </html>

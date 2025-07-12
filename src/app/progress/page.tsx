@@ -18,7 +18,7 @@ const Progress = () => {
 
   return (
     <div className=" flex flex-1 z-10 items-center overflow-auto justify-start flex-col ">
-      <ProgressBar setUserData={setUserData} pageNumber={pageNumber} />
+        <ProgressBar setUserData={setUserData} pageNumber={pageNumber} />
       <div className="items-center justify-start flex-col p-5 w-full gap-2 flex overflow-auto  flex-1">
         {userData.map((fakedata: UserData | null, index: number) => (
           <div
@@ -36,13 +36,13 @@ const Progress = () => {
             text-white font-Tektur font-medium text-sm rounded-lg border border-[#0070ef]/3
              shadow-lg transition-all duration-200
                        hover:scale-105 hover:shadow-xl cursor-pointer
-                       ${isLoadingMore ? 'opacity-70 cursor-not-allowed' : ''}`}
+                       ${isLoadingMore ? "opacity-70 cursor-not-allowed" : ""}`}
                 onClick={() => {
                   if (!isLoadingMore) {
                     console.log("Loading more data...");
                     setIsLoadingMore(true);
                     setPageNumber((prev) => prev + 1);
-                    
+
                     // Reset loading state after 2 seconds
                     const timeOut = setTimeout(() => {
                       setIsLoadingMore(false);
