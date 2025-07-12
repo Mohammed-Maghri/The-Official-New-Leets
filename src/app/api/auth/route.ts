@@ -40,7 +40,7 @@ const GET = async (request: NextRequest) => {
     const Tok: AuthResponse = await await fetchToken.json();
     const token = new TextEncoder().encode(process.env.SECRET_KEY as string);
     const Signature = new jose.SignJWT({
-      token: EncryptionFunction(Tok.access_token),
+      token: Tok.access_token,
     })
       .setProtectedHeader({ alg: "HS256" })
       .sign(token);

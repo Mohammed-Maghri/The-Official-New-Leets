@@ -3,11 +3,12 @@ import Image from "next/image";
 import { RiUserStarLine } from "react-icons/ri";
 import { UserData } from "../navbar/navbar.types";
 import { Skeleton } from "@mui/material";
-import { AiOutlineLoading3Quarters } from "react-icons/ai";
+import { BsEmojiKiss } from "react-icons/bs";
+import { GiQueenCrown } from "react-icons/gi";
 
 const ImageSideComp: React.FC<{ image: string }> = ({ image }) => {
   return (
-    <div className="relative duration-200 transition-all w-[150px] h-[200px] lg:w-[200px] lg:h-[200px] flex-shrink-0">
+    <div className="relative duration-200 transition-all w-[110px] h-full lg:w-[130px] flex-shrink-0">
       <div className="absolute inset-0 bg-gradient-to-br rounded-r-full ">
         <div className="w-full h-full bg-gray-900 rounded-r-full overflow-hidden">
           <Image
@@ -28,13 +29,13 @@ const LocationUserDetails: React.FC<{
   username: string;
 }> = ({ location, username }) => {
   return (
-    <div className="w-[150px] h-full flex items-center justify-center flex-col">
+    <div className=" p-2 h-full flex items-center justify-center flex-row gap-1">
       <div
-        className={`gap-2 p-3 w-[120px] ${
+        className={`gap-2 p-3 w-[90] sm:w-[120px] ${
           location
             ? "bg-green-500/5 border-green-400/15"
             : "bg-red-500/5 border-red-400/15"
-        } border-solid border-[1px] rounded-md h-[30px] flex items-center justify-center`}
+        } border-solid border-[1px] rounded-md h-[40%] flex items-center justify-center`}
       >
         <div className="w-[20px] h-[20px] flex items-center justify-center">
           <div
@@ -54,13 +55,13 @@ const LocationUserDetails: React.FC<{
         </div>
       </div>
 
-      <div className=" h-[30px] gap-2 border-solid border-[#0070ef]/10 border-[1px] bg-[#0070ef]/5 w-[120px] p-3 rounded-md mt-1 flex items-center justify-center relative">
+      <div className=" h-[40%] gap-2 border-solid  border-yellow-400/15 border-[1px] bg-gradient-to-r from-yellow-400/5 to-amber-500/5 w-[90] sm:w-[120px] p-3 rounded-md  flex items-center justify-center relative">
         <div className="w-[20px] h-[20px] flex items-center justify-center">
-          <RiUserStarLine color="#0070ef" size={15} />
+          <RiUserStarLine color="#d6c800" size={15} />
         </div>
         <div className="flex-1">
-          <p className="font-extralight font-Tektur text-[12px]  text-[#54a4ff]">
-            mmaghri
+          <p className="font-extralight font-Tektur text-[12px]  text-white">
+            {username}
           </p>
         </div>
       </div>
@@ -103,23 +104,44 @@ const WalletCoins: React.FC<{ wallet: number; correctionPoints: number }> = ({
   );
 };
 
-const LevelProgress: React.FC<{ level: number }> = ({ level }) => {
+const LevelProgress: React.FC<{ level: number; rank: number }> = ({
+  level,
+  rank,
+}) => {
   return (
-    <div className="flex items-center justify-start  flex-col w-full h-[50%] bg-amber-50/0 pr-4 pl-4">
-      <div className="w-full p-0.5 mb-1 h-[20px] flex items-center justify-between">
-        <div className="flex items-center space-x-2">
+    <div className="flex relative items-center  justify-start  flex-col w-full h-[50%] bg-amber-50/0 pr-4 pl-4">
+      <div className="w-full p-0.5 mb-3 h-[20px] flex items-center justify-between">
+        <div className="flex items-center w-[100px] space-x-2 flex-row">
           <span className="text-sm font-medium text-white/90 font-Tektur">
-            Level
+            Rank{" "}
           </span>
+          {rank !== -1 && (
+            <p
+              className="font-Tektur border-solid border-[2px] border-white/10
+            text-red-100  w-[30px] text-[11px] rounded-full flex items-center justify-center backdrop-blur-2xl"
+            >
+              {rank}
+            </p>
+          )}
         </div>
         <div className="flex items-center">
           <span className="text-lg font-bold bg-white bg-clip-text text-transparent font-Tektur">
-            11
+            {level.toFixed(2)}{" "}
           </span>
         </div>
       </div>
       <div className="ml-0.5 w-full h-[15%] backdrop-blur-md rounded-r-lg bg-gradient-to-r from-[#0070ef]/10 to-yellow-400/10 relative overflow-hidden">
-        <div className="w-[63%] h-full bg-gradient-to-r from-[#0070ef] via-blue-400 to-yellow-400 rounded-r-lg relative overflow-hidden">
+        {/* // "level": 9.15 this is the level of the user the erro  Cannot read properties of undefined (reading 'length') */}
+        <div
+          style={{
+            width:
+              level.toString() !== undefined &&
+              level?.toString().split(".")[1]?.length === 1
+                ? level?.toString().split(".")[1] + "0%"
+                : level?.toString().split(".")[1] + "%",
+          }}
+          className=" h-full bg-gradient-to-r from-[#0070ef] via-blue-400 to-yellow-400 rounded-r-lg relative overflow-hidden"
+        >
           <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent animate-pulse"></div>
           <div className="absolute inset-0 bg-gradient-to-r from-rose-500/30 via-transparent to-yellow-400/30 animate-pulse delay-700"></div>
         </div>
@@ -280,17 +302,39 @@ const ContactInformation: React.FC<{ email: string }> = ({ email }) => {
   );
 };
 
-const RankComponent: React.FC<{ userData: UserData }> = ({ userData }) => {
+const RankComponent: React.FC<{ userData: UserData | null; rank: number }> = ({
+  userData,
+  rank,
+}) => {
   return (
-    <div className="flex w-full min-h-[200px] gap-0 h-[200px] bg-gradient-to-r from-gray-900/20 via-[#0070ef]/5 to-rose-500/10 border border-gray-800/50 backdrop-blur-xl rounded-2xl relative overflow-hidden shadow-2xl">
+    <div
+      className="flex relative w-full  h-full gap-1 min-h-[120px] bg-gradient-to-r from-gray-900/20
+     via-[#0070ef]/5 to-rose-500/10  border border-gray-800/50 backdrop-blur-xl rounded-2xl shadow-2xl"
+    >
       <div className="absolute top-0 left-0 w-32 h-32 bg-gradient-to-br from-[#0070ef]/20 to-transparent rounded-full blur-3xl"></div>
       <div className="absolute bottom-0 right-0 w-40 h-40 bg-gradient-to-tl from-rose-500/15 to-transparent rounded-full blur-3xl"></div>
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-20 h-20 bg-yellow-400/10 rounded-full blur-2xl"></div>
       {userData != null ? (
         <>
+          {rank !== -1 && rank >= 1 && rank < 4 && (
+            <div className="w-[100px] h-[60px] z-20 absolute top-[-25px] left-[-45px] rotate-[-40deg] flex items-center justify-center">
+              <GiQueenCrown
+                size={50}
+                className={`${
+                  rank == 1
+                    ? "text-yellow-300"
+                    : rank == 2
+                    ? "text-gray-500"
+                    : rank == 3
+                    ? "text-amber-600"
+                    : ""
+                }`}
+              />
+            </div>
+          )}
           <ImageSideComp image={userData.image as string} />
           <div className="flex-1  h-full flex items-center justify-center flex-col">
-            <div className="w-full h-[50%] relative  flex items-center justify-start">
+            <div className="w-full h-[50%] relative  flex items-center justify-start ">
               <LocationUserDetails
                 location={userData.location}
                 username={userData.login}
@@ -300,7 +344,7 @@ const RankComponent: React.FC<{ userData: UserData }> = ({ userData }) => {
                 correctionPoints={userData.correction_point}
               />
             </div>
-            <LevelProgress level={11} />
+            <LevelProgress level={userData.level} rank={rank} />
           </div>
         </>
       ) : (
@@ -309,8 +353,8 @@ const RankComponent: React.FC<{ userData: UserData }> = ({ userData }) => {
             {" "}
             Loading Data ...{" "}
           </p>
-          <div className="flex items-center justify-center animate-spin">
-            <AiOutlineLoading3Quarters color="white" />
+          <div className="flex items-center justify-center animate-bounce">
+            <BsEmojiKiss color="white" />
           </div>
           <Skeleton
             variant="rectangular"

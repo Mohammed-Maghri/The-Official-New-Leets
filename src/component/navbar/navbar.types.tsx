@@ -6,6 +6,7 @@ import {
 } from "./navbar.imports";
 
 interface UserData {
+  level: number;
   email: string;
   login: string;
   kind: string;

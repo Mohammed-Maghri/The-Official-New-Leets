@@ -15,7 +15,7 @@ const Dashboard = () => {
   const { userData } = React.useContext(ContextCreator) as ContextProps;
   return (
     <div className="flex flex-1 overflow-auto p-10 gap-2 z-10 flex-col">
-      <RankComponent userData={userData as UserData} />
+      <RankComponent userData={userData as UserData} rank={-1} />
       <div className=" flex-1 bg-gradient-to-r from-gray-900/20 via-[#0070ef]/5 backdrop-blur-sm rounded-md p-5 flex flex-col ">
         {userData != null ? (
           <>

@@ -1,12 +1,18 @@
 import { NextResponse, NextRequest } from "next/server";
+import { DecryptionFunction } from "../auth/type.auth";
+
+import * as jose from "jose";
 
 export async function GET(request: NextRequest) {
   const user = request.cookies.get("auth_code");
-  console.log(" 000< ", user);
+  const secret = new TextEncoder().encode(process.env.SECRET_KEY as string);
+  await jose.jwtVerify(user?.value as string, secret);
   const data = await fetch((process.env.INTRA_TOKEN as string) + "/v2/me", {
     method: "GET",
     headers: {
-      Authorization: `Bearer 2452132b7c84c4d7f934c011ae316c1f769d66c45bf11202bd9cc949e91d0f24`,
+      Authorization: `Bearer ${
+        jose.decodeJwt(user?.value as string).token as string
+      }`,
     },
   });
   if (!data.ok) {
@@ -32,6 +38,7 @@ export async function GET(request: NextRequest) {
         wallet: userResponse.wallet,
         campus_id: userResponse.campus[0].id,
         campus_name: userResponse.campus[0].name,
+        level: userResponse.cursus_users[1].level,
       },
       { status: 200 }
     );

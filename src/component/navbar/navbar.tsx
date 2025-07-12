@@ -75,6 +75,7 @@ const Navbar = () => {
       },
     });
     if (!response.ok) {
+      router.push("/");
       throw new Error("Failed to fetch user data");
     }
     const data = await response.json();
