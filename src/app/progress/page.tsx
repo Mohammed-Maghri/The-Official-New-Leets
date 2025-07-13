@@ -48,7 +48,9 @@ const Progress = () => {
     const cleanedData = userData.map((value) => {
       return { login: value?.login, full_name: value?.full_name }
     })
-    classifyUsers(cleanedData as FiltredData[])
+
+    // remove the comments to use the gender filter functionality
+    // classifyUsers(cleanedData as FiltredData[])
 
   }, [userData]);
 
@@ -79,14 +81,16 @@ const Progress = () => {
           </div>
         ) : (
           <>
-            {userData.map((fakedata: UserData | null, index: number) => (
-              <div
+            {userData.map((fakedata: UserData | null, index: number) => {
+              // const isMale = genderizedData?.male.some((value) => value.login === fakedata?.login)
+              // if (isMale) return null
+              return < div
                 key={index}
                 className="w-[100%] tillme:w-[850px] h-[120px] rounded-md"
               >
                 <RankComponent userData={fakedata} rank={index + 1} />
               </div>
-            ))}
+            })}
             {userData[0] != null && (
               <div className="w-[100%] h-[60px] flex items-center justify-center mt-4">
                 <button
@@ -124,7 +128,7 @@ const Progress = () => {
           </>
         )}
       </div>
-    </div>
+    </div >
   );
 };
 
