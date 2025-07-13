@@ -11,6 +11,8 @@
   "dependencies": {
     "@emotion/react": "^11.14.0",
     "@emotion/styled": "^11.14.1",
+    "@google/genai": "^1.9.0",
+    "@google/generative-ai": "^0.24.1",
     "@mui/material": "^7.2.0",
     "crypto-js": "^4.2.0",
     "jose": "^6.0.11",

@@ -4,6 +4,8 @@ import { ProgressBar } from "./progress.component";
 import { RankComponent } from "@/component/dashboard/dashboard";
 import { UserData } from "@/component/navbar/navbar.types";
 import { cloneData } from "./progress.types";
+import { FilterOptionsState } from "@mui/material";
+import { FiltredData } from "@/lib/classifier";
 
 const Progress = () => {
   const [pageNumber, setPageNumber] = React.useState(1);
@@ -14,6 +16,41 @@ const Progress = () => {
 
   React.useEffect(() => {
     console.log("User Data:  -------- ", userData);
+  }, [userData]);
+
+  const classifyUsers = async (userData: FiltredData[]) => {
+    // setLoading(true);
+    try {
+      const response = await fetch('/api/classifier', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ userData }),
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to classify users');
+      }
+
+      const data = await response.json();
+      // setResult(data);
+      console.log("used data after filtering", data);
+    } catch (error) {
+      console.error('Error:', error);
+    } finally {
+      // setLoading(false);
+    }
+  };
+
+  React.useEffect(() => {
+    const cleanedData = userData.map((value) => {
+      return { login: value?.login, full_name: value?.full_name }
+    })
+    
+    classifyUsers(cleanedData as FiltredData[])
+    // console.log("cleaned data", cleanedData);
+
   }, [userData]);
 
   return (
@@ -58,9 +95,8 @@ const Progress = () => {
               text-white font-Tektur font-medium text-sm rounded-lg border border-[#0070ef]/3
                shadow-lg transition-all duration-200
                          hover:scale-105 hover:shadow-xl cursor-pointer
-                         ${
-                           isLoadingMore ? "opacity-70 cursor-not-allowed" : ""
-                         }`}
+                         ${isLoadingMore ? "opacity-70 cursor-not-allowed" : ""
+                    }`}
                   onClick={() => {
                     if (!isLoadingMore) {
                       console.log("Loading more data...");

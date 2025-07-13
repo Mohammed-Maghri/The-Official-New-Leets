@@ -12,6 +12,7 @@ interface UserData {
   kind: string;
   image: string;
   staff: boolean;
+  full_name: string;
   correction_point: number;
   pool_month: string;
   pool_year: string;

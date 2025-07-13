@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { UserProgress } from "./progress.types";
 import { decodeJwt, jwtVerify } from "jose";
 import { DecryptionFunction } from "../auth/type.auth";
+// import { GoogleGenAI } from '@google/generative-ai';
 
 export const POST = async (request: NextRequest) => {
   try {
@@ -66,6 +67,7 @@ export const POST = async (request: NextRequest) => {
       login: item.user.login,
       kind: item.user.kind,
       image: item.user.image.versions.large,
+      full_name: item.user.usual_full_name,
       staff: item.user.staff === undefined ? false : true,
       correction_point: item.user.correction_point,
       pool_month: item.user.pool_month,
@@ -84,3 +86,6 @@ export const POST = async (request: NextRequest) => {
     );
   }
 };
+
+
+
