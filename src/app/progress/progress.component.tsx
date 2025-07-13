@@ -14,6 +14,7 @@ import {
   SearchDeliverData,
   monthsIndex,
 } from "./progress.types";
+import { useRouter } from "next/navigation";
 
 const ProgressBar: React.FC<{
   setUserData: React.Dispatch<React.SetStateAction<UserData[] | null[]>>;
@@ -24,6 +25,7 @@ const ProgressBar: React.FC<{
   const [monthOn, setMonthOn] = React.useState<boolean>(false);
   const [yearOn, setYearOn] = React.useState<boolean>(false);
   const { userData } = React.useContext(ContextCreator) as ContextProps;
+  const router = useRouter();
 
   const [DataSearch, setDataSearch] = React.useState<SearchDeliverData>({
     month: "Month",
@@ -68,6 +70,22 @@ const ProgressBar: React.FC<{
     });
   };
 
+  const fetchLogout = async () => {
+    const response = await fetch("/api/logout", {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    if (!response.ok) {
+      console.error("Failed to logout");
+      return;
+    }
+    console.log("Lgout successful");
+    setUserData(cloneData as null[]);
+    router.push("/");
+  };
+
   const FetchData = async (object: SearchDeliverData, more: boolean) => {
     const response = await fetch("/api/progress", {
       method: "POST",
@@ -78,6 +96,7 @@ const ProgressBar: React.FC<{
     });
     if (!response.ok) {
       console.error("Failed to fetch progress data");
+      fetchLogout();
       return;
     }
     const data = await response.json();

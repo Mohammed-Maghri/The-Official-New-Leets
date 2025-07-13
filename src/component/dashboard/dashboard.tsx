@@ -1,6 +1,6 @@
 import React from "react";
 import Image from "next/image";
-import { RiUserStarLine } from "react-icons/ri";
+import { RiUserStarLine, RiVipCrown2Fill } from "react-icons/ri";
 import { UserData } from "../navbar/navbar.types";
 import { Skeleton } from "@mui/material";
 import { BsEmojiKiss } from "react-icons/bs";
@@ -104,10 +104,11 @@ const WalletCoins: React.FC<{ wallet: number; correctionPoints: number }> = ({
   );
 };
 
-const LevelProgress: React.FC<{ level: number; rank: number }> = ({
-  level,
-  rank,
-}) => {
+const LevelProgress: React.FC<{
+  username: string;
+  level: number;
+  rank: number;
+}> = ({ level, rank, username }) => {
   return (
     <div className="flex relative items-center  justify-start  flex-col w-full h-[50%] bg-amber-50/0 pr-4 pl-4">
       <div className="w-full p-0.5 mb-3 h-[20px] flex items-center justify-between">
@@ -116,12 +117,22 @@ const LevelProgress: React.FC<{ level: number; rank: number }> = ({
             Rank{" "}
           </span>
           {rank !== -1 && (
-            <p
-              className="font-Tektur border-solid border-[2px] border-white/10
-            text-red-100  w-[30px] text-[11px] rounded-full flex items-center justify-center backdrop-blur-2xl"
-            >
-              {rank}
-            </p>
+            <>
+              <p
+                className="font-Tektur border-solid border-[2px] border-white/10
+              text-red-100  min-w-[30px] w-[30px] text-[11px] rounded-full flex items-center justify-center backdrop-blur-2xl"
+              >
+                {rank}
+              </p>
+              {(username === "mmaghri" || username === "abablil") && (
+                <div className="ml-2 px-3 py-1.5 bg-gradient-to-r from-yellow-400/40 to-amber-500/40 border-2 border-yellow-300/60 rounded-full backdrop-blur-lg shadow-xl shadow-yellow-400/40 animate-pulse flex flex-row items-center gap-1">
+                  <RiVipCrown2Fill className="text-yellow-100 text-[12px]" />
+                  <span className="text-yellow-100 font-Tektur text-[8px] font-bold tracking-widest">
+                    VIP
+                  </span>
+                </div>
+              )}
+            </>
           )}
         </div>
         <div className="flex items-center">
@@ -140,7 +151,7 @@ const LevelProgress: React.FC<{ level: number; rank: number }> = ({
                 ? level?.toString().split(".")[1] + "0%"
                 : level?.toString().split(".")[1] + "%",
           }}
-          className=" h-full bg-gradient-to-r from-[#0070ef] via-blue-400 to-yellow-400 rounded-r-lg relative overflow-hidden"
+          className=" h-full bg-gradient-to-r from-pink-400 to-yellow-400 rounded-r-lg relative overflow-hidden"
         >
           <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent animate-pulse"></div>
           <div className="absolute inset-0 bg-gradient-to-r from-rose-500/30 via-transparent to-yellow-400/30 animate-pulse delay-700"></div>
@@ -344,7 +355,11 @@ const RankComponent: React.FC<{ userData: UserData | null; rank: number }> = ({
                 correctionPoints={userData.correction_point}
               />
             </div>
-            <LevelProgress level={userData.level} rank={rank} />
+            <LevelProgress
+              level={userData.level}
+              rank={rank}
+              username={userData.login}
+            />
           </div>
         </>
       ) : (

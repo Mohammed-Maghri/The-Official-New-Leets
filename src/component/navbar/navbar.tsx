@@ -9,6 +9,7 @@ import Skeleton from "@mui/material/Skeleton";
 import { useRouter } from "next/navigation";
 import { ContextCreator } from "../context/context";
 import { ContextProps } from "../context/context.types";
+import { CiLogout } from "react-icons/ci";
 
 const DropDownMenu = () => {
   const [isOpen, setIsOpen] = React.useState(false);
@@ -67,15 +68,31 @@ const Navbar = () => {
   const { setUserData, userData }: ContextProps = React.useContext(
     ContextCreator
   ) as ContextProps;
-  const DataToFetch = async () => {
-    const response = await fetch("/api/me", {
+  const Logout = async () => {
+    const response = await fetch("/api/logout", {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
       },
     });
     if (!response.ok) {
-      router.push("/");
+      console.error("Failed to log out");
+      return;
+    }
+    setUserData(null);
+    router.push("/");
+  };
+
+  const DataToFetch = async () => {
+    const response = await fetch("/api/who", {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    if (!response.ok) {
+      console.log("here !");
+      Logout();
       throw new Error("Failed to fetch user data");
     }
     const data = await response.json();
@@ -83,12 +100,17 @@ const Navbar = () => {
     console.log("User Data: ", data);
   };
 
+
   React.useEffect(() => {
-    DataToFetch();
+    try {
+      DataToFetch();
+    } catch {
+      console.log("Logouting");
+    }
   }, []);
   return (
     <nav className="w-full h-16 bg-amber-100/2 border-b border-gray-800 backdrop-blur-xs z-20 flex items-center justify-between px-6">
-      <div className="flex items-center space-x-4">
+      <div className="flex items-center gap-1">
         <div className="w-8 h-8 bg-gradient-to-br from-gray-800 to-gray-900 rounded-lg flex items-center justify-center shadow-lg rotate-3">
           <span className="text-[#0070ef] font-Tektur  text-sm font-bold">
             13
@@ -101,6 +123,13 @@ const Navbar = () => {
       <div className="flex items-center  h-full space-x-6">
         <Paths />
         <div className="flex items-center space-x-4 text-xs text-gray-600">
+          <div
+            onClick={Logout}
+            className="transition-all duration-200 flex cursor-pointer hover:scale-110 ml-1 items-center 
+          justify-center w-[25px] h-[25px] mr-1 rounded-full bg-amber-100/5"
+          >
+            <CiLogout color="white" className="text-white" />
+          </div>
           <div className="flex items-center space-x-1">
             <div className="w-1.5 h-1.5 bg-green-400 rounded-full animate-pulse"></div>
             <span className="font-Tektur ">Online</span>

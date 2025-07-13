@@ -41,7 +41,7 @@ const PathsObject: ButtonsProps[] = [
   {
     icon: <FaUsersViewfinder size={15} className="text-green-400" />,
     title: "Peer-finder",
-    route: "/peer-finder",
+    route: "/peerfinder",
   },
   {
     icon: <GiRank3 size={15} className="text-yellow-300" />,

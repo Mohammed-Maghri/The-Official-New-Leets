@@ -15,11 +15,12 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className="h-screen">
-      <body className="relative flex w-full h-full bg-gradient-to-bl from-gray-900 to-black">
+      <body
+        style={{ scrollbarColor: "rgba(255, 255, 255, 0.1) transparent" }}
+        className=" relative flex w-full h-full bg-gradient-to-bl from-gray-900 to-black"
+      >
         <ContextProvider>
-          <Layout >
-            {children}
-          </Layout>
+          <Layout>{children}</Layout>
         </ContextProvider>
       </body>
     </html>

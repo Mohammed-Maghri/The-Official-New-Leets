@@ -5,7 +5,7 @@ import * as jose from "jose";
 
 // import { EncryptionFunction } from "./type.auth";
 
-const GET = async (request: NextRequest) => {
+export const GET = async (request: NextRequest) => {
   try {
     const code: string = request.nextUrl.searchParams.get("code") as string;
     if (!code) {
@@ -52,8 +52,7 @@ const GET = async (request: NextRequest) => {
       maxAge: 60 * 60 * 24, // 1 day
     });
     return NextResponse.redirect("http://localhost:3000/dashboard");
-  } catch (error) {
-    console.log("Error ----> " + error);
+  } catch {
     return NextResponse.json(
       {
         error: "An error occurred while processing your request.",
@@ -62,4 +61,3 @@ const GET = async (request: NextRequest) => {
     );
   }
 };
-export { GET };
