@@ -120,12 +120,12 @@ const LevelProgress: React.FC<{
             <>
               <p
                 className="font-Tektur border-solid border-[2px] border-white/10
-              text-red-100  min-w-[30px] w-[30px] text-[11px] rounded-full flex items-center justify-center backdrop-blur-2xl"
+              text-red-100  min-w-[30px] w-[30px] text-[11px] rounded-full flex items-center justify-center"
               >
                 {rank}
               </p>
               {(username === "mmaghri" || username === "abablil") && (
-                <div className="ml-2 px-3 py-1.5 bg-gradient-to-r from-yellow-400/40 to-amber-500/40 border-2 border-yellow-300/60 rounded-full backdrop-blur-lg shadow-xl shadow-yellow-400/40 animate-pulse flex flex-row items-center gap-1">
+                <div className="ml-2 px-3 py-1.5 bg-yellow-400/40 border-2 border-yellow-300/60 rounded-full shadow-xl shadow-yellow-400/40 animate-pulse flex flex-row items-center gap-1">
                   <RiVipCrown2Fill className="text-yellow-100 text-[12px]" />
                   <span className="text-yellow-100 font-Tektur text-[8px] font-bold tracking-widest">
                     VIP
@@ -141,7 +141,7 @@ const LevelProgress: React.FC<{
           </span>
         </div>
       </div>
-      <div className="ml-0.5 w-full h-[15%] backdrop-blur-md rounded-r-lg bg-gradient-to-r from-[#0070ef]/10 to-yellow-400/10 relative overflow-hidden">
+      <div className="ml-0.5 w-full h-[15%] rounded-r-lg bg-blue-500/20 relative overflow-hidden">
         {/* // "level": 9.15 this is the level of the user the erro  Cannot read properties of undefined (reading 'length') */}
         <div
           style={{
@@ -170,7 +170,7 @@ const StatusGrid: React.FC<{
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-6">
       {/* Account Type */}
-      <div className="bg-gradient-to-br from-[#0070ef]/10 to-blue-500/5 border border-[#0070ef]/20 rounded-lg p-4 backdrop-blur-sm">
+      <div className="bg-blue-500/10 border border-[#0070ef]/20 rounded-lg p-4">
         <div className="flex items-center space-x-2 mb-2">
           <div className="w-3 h-3 bg-gradient-to-r from-[#0070ef] to-blue-400 rounded-full"></div>
           <p className="text-sm font-medium text-[#0070ef] font-Tektur">
@@ -186,7 +186,7 @@ const StatusGrid: React.FC<{
       </div>
 
       {/* Correction Points Detail */}
-      <div className="bg-gradient-to-br from-rose-500/10 to-pink-500/5 border border-rose-400/20 rounded-lg p-4 backdrop-blur-sm">
+      <div className="bg-rose-500/10 border border-rose-400/20 rounded-lg p-4">
         <div className="flex items-center space-x-2 mb-2">
           <div className="w-3 h-3 bg-gradient-to-r from-rose-400 to-pink-500 rounded-full"></div>
           <p className="text-sm font-medium text-rose-400 font-Tektur">
@@ -202,7 +202,7 @@ const StatusGrid: React.FC<{
       </div>
 
       {/* Wallet Detail */}
-      <div className="bg-gradient-to-br from-yellow-500/10 to-amber-500/5 border border-yellow-400/20 rounded-lg p-4 backdrop-blur-sm">
+      <div className="bg-yellow-500/10 border border-yellow-400/20 rounded-lg p-4">
         <div className="flex items-center space-x-2 mb-2">
           <div className="w-3 h-3 bg-gradient-to-r from-yellow-400 to-amber-500 rounded-full"></div>
           <p className="text-sm font-medium text-yellow-400 font-Tektur">
@@ -230,7 +230,7 @@ const PoolInformation: React.FC<{
       <h3 className="text-lg font-semibold text-white font-Tektur mb-3">
         Pool Information
       </h3>
-      <div className="bg-gradient-to-r from-gray-800/30 to-gray-700/20 border border-gray-600/30 rounded-lg p-4 backdrop-blur-sm">
+      <div className="bg-gray-800/30 border border-gray-600/30 rounded-lg p-4">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div>
             <p className="text-sm text-gray-400 font-Tektur mb-1">
@@ -263,7 +263,7 @@ const CampusInformation: React.FC<{
       <h3 className="text-lg font-semibold text-white font-Tektur mb-3">
         Campus Details
       </h3>
-      <div className="bg-gradient-to-r from-gray-800/30 to-gray-700/20 border border-gray-600/30 rounded-lg p-4 backdrop-blur-sm">
+      <div className="bg-gray-800/30 border border-gray-600/30 rounded-lg p-4">
         <div className="flex items-center justify-between">
           <div>
             <p className="text-base font-medium text-white font-Tektur">
@@ -294,9 +294,9 @@ const ContactInformation: React.FC<{ email: string }> = ({ email }) => {
       <h3 className="text-lg font-semibold text-white font-Tektur mb-3">
         Contact Information
       </h3>
-      <div className="bg-gradient-to-r from-gray-800/30 to-gray-700/20 border border-gray-600/30 rounded-lg p-4 backdrop-blur-sm">
+      <div className="bg-gray-800/30 border border-gray-600/30 rounded-lg p-4">
         <div className="flex items-center space-x-3">
-          <div className="w-8 h-8 bg-gradient-to-r from-[#0070ef] to-blue-400 rounded-full flex items-center justify-center">
+          <div className="w-8 h-8 bg-blue-500 rounded-full flex items-center justify-center">
             <span className="text-white text-sm font-bold">@</span>
           </div>
           <div>
@@ -322,12 +322,11 @@ const RankComponent: React.FC<{ userData: UserData | null; rank: number }> = ({
       onClick={() =>
         window.open(`https://profile.intra.42.fr/users/${userData?.login}`)
       }
-      className="flex cursor-pointer  relative rounded-l-sm w-full  h-full gap-1 min-h-[120px] bg-gradient-to-r from-gray-900/20
-     via-[#0070ef]/5 to-rose-500/10  border border-gray-800/50 backdrop-blur-xl rounded-2xl shadow-2xl"
+      className="flex cursor-pointer  relative rounded-l-sm w-full  h-full gap-1 min-h-[120px] bg-gray-800/50 border border-gray-800/50 rounded-2xl shadow-2xl"
     >
-      <div className="absolute top-0 left-0 w-32 h-32 bg-gradient-to-br from-[#0070ef]/20 to-transparent rounded-full blur-3xl"></div>
-      <div className="absolute bottom-0 right-0 w-40 h-40 bg-gradient-to-tl from-rose-500/15 to-transparent rounded-full blur-3xl"></div>
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-20 h-20 bg-yellow-400/10 rounded-full blur-2xl"></div>
+      {/* <div className="absolute top-0 left-0 w-32 h-32 bg-blue-500/20 rounded-full"></div>
+      <div className="absolute bottom-0 right-0 w-40 h-40 bg-rose-500/15 rounded-full"></div>
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-20 h-20 bg-yellow-400/10 rounded-full"></div> */}
       {userData != null ? (
         <>
           {rank !== -1 && rank >= 1 && rank < 4 && (

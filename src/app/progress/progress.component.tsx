@@ -152,7 +152,7 @@ const ProgressBar: React.FC<{
   }, [userData]);
 
   return (
-    <div className="w-full z-20 gap-2 h-[60px] bg-amber-100/2 backdrop-blur-lg flex items-center justify-center">
+    <div className="w-full z-20 gap-2 h-[60px] bg-gray-800/90 flex items-center justify-center">
       <div
         ref={monthTriggerRef}
         onClick={() => {
