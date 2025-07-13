@@ -1,11 +1,11 @@
 "use client";
-import React from "react";
+import React, { useState } from "react";
 import { ProgressBar } from "./progress.component";
 import { RankComponent } from "@/component/dashboard/dashboard";
 import { UserData } from "@/component/navbar/navbar.types";
 import { cloneData } from "./progress.types";
 import { FilterOptionsState } from "@mui/material";
-import { FiltredData } from "@/lib/classifier";
+import { FiltredData, returnData } from "@/lib/classifier";
 
 const Progress = () => {
   const [pageNumber, setPageNumber] = React.useState(1);
@@ -13,6 +13,7 @@ const Progress = () => {
   const [userData, setUserData] = React.useState<UserData[] | null[]>(
     cloneData
   );
+  const [genderizedData, setGenderizeData] = useState<returnData | null>(null)
 
   React.useEffect(() => {
     console.log("User Data:  -------- ", userData);
@@ -34,22 +35,20 @@ const Progress = () => {
       }
 
       const data = await response.json();
-      // setResult(data);
-      console.log("used data after filtering", data);
+      setGenderizeData(data);
     } catch (error) {
       console.error('Error:', error);
     } finally {
-      // setLoading(false);
+      // setLoading(false); // to when the requiest is finished, need to implement it's logic
     }
   };
 
   React.useEffect(() => {
+    // send only the data you need for that specific route (fullname, login)
     const cleanedData = userData.map((value) => {
       return { login: value?.login, full_name: value?.full_name }
     })
-    
     classifyUsers(cleanedData as FiltredData[])
-    // console.log("cleaned data", cleanedData);
 
   }, [userData]);
 
