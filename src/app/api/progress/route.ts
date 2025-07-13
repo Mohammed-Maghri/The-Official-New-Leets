@@ -58,6 +58,7 @@ export const POST = async (request: NextRequest) => {
         { status: 500 }
       );
     }
+    
     const response = await data.json();
     // Define a Interface to this new response
     const NewRespons = response.map((item: UserProgress) => ({
