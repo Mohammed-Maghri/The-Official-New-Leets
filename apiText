@@ -1,0 +1,59 @@
+const schema = {
+  type: "object",
+  properties: {
+    male: {
+      type: "array",
+      items: {
+        type: "object",
+        properties: {
+          full_name: {
+            type: ["string", "null"]
+          },
+          login: {
+            type: "string"
+          }
+        },
+        required: ["login"]
+      }
+    },
+    female: {
+      type: "array",
+      items: {
+        type: "object",
+        properties: {
+          full_name: {
+            type: ["string", "null"]
+          },
+          login: {
+            type: "string"
+          }
+        },
+        required: ["login"]
+      }
+    }
+  },
+  required: ["male", "female"]
+};
+
+
+const CalculatorPage = () => {
+  const main = async () => {
+    const ai = new GoogleGenAI({
+      apiKey: process.env.NEXT_PUBLIC_GEMINI_API_KEY,
+    });
+    const response = await ai.models.generateContent({
+      model: "gemini-2.5-flash",
+      contents:
+        'You are given an array of user data in the following format: { full_name: string | null, login: string }. Your task is to analyze the full_name field and classify each user by gender (male or female) based on common name-gender associations. Use your best judgment to determine the gender from the name. Return the result as a JSON object with the structure: { male: Data[], female: Data[] }. Only include users whose gender you can confidently identify; skip those with null or ambiguous names. Example input: [{"login": "rboutaik", "full_name": "Rachid Boutaikhar"}, {"login": "mel-jira", "full_name": "Mhammed Reda El Jirari"}, {"login": "wbelfatm", "full_name": "Walid Belfatmi"}, {"login": "aitaouss", "full_name": "Aimen Taoussi"}]. Please return only the raw JSON response in this exact format, with no explanation or additional text: { "male": [...], "female": [...] }.',
+      config: {
+        temperature: 0.2,
+        "responseMimeType": "application/json",
+        responseSchema: schema}});
+    // console.log(" -----> ", response.text);
+    const json = JSON.parse(response.text!)
+    console.log("used data after filterring",json)
+  };
+
+  useEffect(() => {
+    main();
+  }, []);
