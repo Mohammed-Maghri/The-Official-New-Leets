@@ -34,6 +34,7 @@ export const GET = async (request: NextRequest) => {
         body: ClientQuery.toString(),
       }
     );
+    
     if (!fetchToken.ok) {
       throw new Error("Failed to fetch token");
     }
