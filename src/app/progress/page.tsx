@@ -24,10 +24,10 @@ const Progress = () => {
           // Nothing Found Component
           <div className="flex flex-col items-center justify-center flex-1 w-full h-full min-h-[400px]">
             <div className="relative mb-6">
-              <div className="w-20 h-20 md:w-24 md:h-24 bg-gradient-to-br from-gray-600/20 to-gray-500/10 border border-gray-500/30 rounded-full flex items-center justify-center backdrop-blur-sm">
+              <div className="w-20 h-20 md:w-24 md:h-24 bg-gray-800/90 border border-gray-500/30 rounded-full flex items-center justify-center">
                 <div className="text-4xl md:text-5xl">🔍</div>
               </div>
-              <div className="absolute -top-1 -right-1 w-6 h-6 bg-gradient-to-r from-rose-500/80 to-red-500/80 rounded-full flex items-center justify-center">
+              <div className="absolute -top-1 -right-1 w-6 h-6 bg-rose-500 rounded-full flex items-center justify-center">
                 <span className="text-white text-xs font-bold">!</span>
               </div>
             </div>
@@ -54,7 +54,7 @@ const Progress = () => {
             {userData[0] != null && (
               <div className="w-[100%] h-[60px] flex items-center justify-center mt-4">
                 <button
-                  className={`px-8 py-3 backdrop-blur-2xl bg-amber-100/2 
+                  className={`px-8 py-3 bg-gray-800/90 
               text-white font-Tektur font-medium text-sm rounded-lg border border-[#0070ef]/3
                shadow-lg transition-all duration-200
                          hover:scale-105 hover:shadow-xl cursor-pointer
