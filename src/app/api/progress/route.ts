@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { UserProgress } from "./progress.types";
 import { decodeJwt, jwtVerify } from "jose";
-// import { DecryptionFunction } from "../auth/type.auth";
+import { DecryptionFunction } from "../auth/type.auth";
 
 export const POST = async (request: NextRequest) => {
   try {
@@ -47,7 +47,7 @@ export const POST = async (request: NextRequest) => {
       {
         method: "GET",
         headers: {
-          Authorization: `Bearer ${Decode}`,
+          Authorization: `Bearer ${DecryptionFunction(Decode)}`,
         },
       }
     );
@@ -58,7 +58,7 @@ export const POST = async (request: NextRequest) => {
         { status: 500 }
       );
     }
-    
+
     const response = await data.json();
     // Define a Interface to this new response
     const NewRespons = response.map((item: UserProgress) => ({

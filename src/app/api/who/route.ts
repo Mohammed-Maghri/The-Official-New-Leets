@@ -1,5 +1,5 @@
 import { NextResponse, NextRequest } from "next/server";
-// import { DecryptionFunction } from "../auth/type.auth";
+import { DecryptionFunction } from "../auth/type.auth";
 
 import * as jose from "jose";
 
@@ -11,9 +11,9 @@ export async function GET(request: NextRequest) {
     const data = await fetch((process.env.INTRA_TOKEN as string) + "/v2/me", {
       method: "GET",
       headers: {
-        Authorization: `Bearer ${
+        Authorization: `Bearer ${DecryptionFunction(
           jose.decodeJwt(user?.value as string).token as string
-        }`,
+        )}`,
       },
     });
     if (!data.ok) {
