@@ -51,7 +51,12 @@ export const GET = async (request: NextRequest) => {
       path: "/",
       maxAge: 60 * 60 * 24, // 1 day
     });
-    return NextResponse.redirect("http://localhost:3000/dashboard");
+
+    return NextResponse.redirect(
+      process.env.NODE_ENV === "production"
+        ? `${process.env.productionUrl}/dashboard`
+        : "http://localhost:3000/dashboard"
+    );
   } catch (error) {
     console.log(" --------> ", error);
     return NextResponse.json(
