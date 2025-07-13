@@ -319,7 +319,10 @@ const RankComponent: React.FC<{ userData: UserData | null; rank: number }> = ({
 }) => {
   return (
     <div
-      className="flex relative rounded-l-sm w-full  h-full gap-1 min-h-[120px] bg-gradient-to-r from-gray-900/20
+      onClick={() =>
+        window.open(`https://profile.intra.42.fr/users/${userData?.login}`)
+      }
+      className="flex cursor-pointer  relative rounded-l-sm w-full  h-full gap-1 min-h-[120px] bg-gradient-to-r from-gray-900/20
      via-[#0070ef]/5 to-rose-500/10  border border-gray-800/50 backdrop-blur-xl rounded-2xl shadow-2xl"
     >
       <div className="absolute top-0 left-0 w-32 h-32 bg-gradient-to-br from-[#0070ef]/20 to-transparent rounded-full blur-3xl"></div>

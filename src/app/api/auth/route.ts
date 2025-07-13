@@ -3,7 +3,7 @@ import { cookies } from "next/headers";
 import { AuthResponse } from "./type.auth";
 import * as jose from "jose";
 
-// import { EncryptionFunction } from "./type.auth";
+import { EncryptionFunction } from "./type.auth";
 
 export const GET = async (request: NextRequest) => {
   try {
@@ -40,7 +40,7 @@ export const GET = async (request: NextRequest) => {
     const Tok: AuthResponse = await await fetchToken.json();
     const token = new TextEncoder().encode(process.env.SECRET_KEY as string);
     const Signature = new jose.SignJWT({
-      token: Tok.access_token,
+      token: EncryptionFunction(Tok.access_token),
     })
       .setProtectedHeader({ alg: "HS256" })
       .sign(token);
