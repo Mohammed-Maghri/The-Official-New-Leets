@@ -52,7 +52,8 @@ export const GET = async (request: NextRequest) => {
       maxAge: 60 * 60 * 24, // 1 day
     });
     return NextResponse.redirect("http://localhost:3000/dashboard");
-  } catch {
+  } catch (error) {
+    console.log(" --------> ", error);
     return NextResponse.json(
       {
         error: "An error occurred while processing your request.",
