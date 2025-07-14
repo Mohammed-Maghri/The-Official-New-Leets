@@ -148,11 +148,22 @@ const LevelProgress: React.FC<{
         {/* // "level": 9.15 this is the level of the user the erro  Cannot read properties of undefined (reading 'length') */}
         <div
           style={{
-            width:
-              level.toString() !== undefined &&
-              level?.toString().split(".")[1]?.length === 1
-                ? level?.toString().split(".")[1] + "0%"
-                : level?.toString().split(".")[1] + "%",
+            width: (() => {
+              const levelStr = level.toString();
+              const parts = levelStr.split(".");
+              
+              if (parts.length === 1) {
+                return "0%";
+              }
+              const decimal = parts[1];
+              
+              if (decimal === "00") {
+                return "0%";
+              }
+              
+              const percentage = decimal.length === 1 ? decimal + "0" : decimal;
+              return percentage + "%";
+            })()
           }}
           className=" h-full bg-gradient-to-r from-pink-400 to-yellow-400 rounded-r-lg relative overflow-hidden"
         >
