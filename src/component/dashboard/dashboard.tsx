@@ -17,6 +17,7 @@ const ImageSideComp: React.FC<{ image: string }> = ({ image }) => {
             width={200}
             height={200}
             className="w-full h-full object-cover rounded-l-sm"
+            unoptimized
           />
         </div>
       </div>
@@ -151,19 +152,19 @@ const LevelProgress: React.FC<{
             width: (() => {
               const levelStr = level.toString();
               const parts = levelStr.split(".");
-              
+
               if (parts.length === 1) {
                 return "0%";
               }
               const decimal = parts[1];
-              
+
               if (decimal === "00") {
                 return "0%";
               }
-              
+
               const percentage = decimal.length === 1 ? decimal + "0" : decimal;
               return percentage + "%";
-            })()
+            })(),
           }}
           className=" h-full bg-gradient-to-r from-pink-400 to-yellow-400 rounded-r-lg relative overflow-hidden"
         >
