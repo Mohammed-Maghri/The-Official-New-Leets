@@ -51,6 +51,8 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
               className="w-full h-full object-cover rounded-full"
               width={32}
               height={32}
+              priority
+              unoptimized
             />
           </div>
           <div className="flex items-center space-x-1">
