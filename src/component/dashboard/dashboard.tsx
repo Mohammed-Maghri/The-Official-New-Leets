@@ -115,7 +115,7 @@ const LevelProgress: React.FC<{
     <div className="flex relative items-center  justify-start  flex-col w-full h-[50%] bg-amber-50/0 pr-4 pl-4">
       <div className="w-full p-0.5 mb-3 h-[20px] flex items-center justify-between">
         <div className="flex items-center w-[100px]  flex-row">
-          <span className="text-sm font-medium text-white/90 font-Tektur">
+          <span className="text-[11px] font-medium text-white/90 font-Tektur">
             Rank{" "}
           </span>
           {rank !== -1 && (
