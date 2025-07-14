@@ -21,7 +21,7 @@ const Month = [
       kind: string;
       image: {
         versions: {
-          large: string;
+          medium: string;
         };
       };
       staff: boolean;

@@ -65,7 +65,7 @@ export const POST = async (request: NextRequest) => {
       email: item.user.email,
       login: item.user.login,
       kind: item.user.kind,
-      image: item.user.image.versions.large,
+      image: item.user.image.versions.medium,
       staff: item.user.staff === undefined ? false : true,
       correction_point: item.user.correction_point,
       pool_month: item.user.pool_month,
