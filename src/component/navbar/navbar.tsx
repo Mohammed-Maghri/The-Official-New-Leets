@@ -149,7 +149,7 @@ const Navbar = () => {
               height={30}
             />
           ) : (
-            <Image
+            <img
               src={userData.image}
               alt="User Avatar"
               width={40}
