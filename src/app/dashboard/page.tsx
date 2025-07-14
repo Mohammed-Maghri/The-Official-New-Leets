@@ -14,7 +14,7 @@ import { TbSkiJumping } from "react-icons/tb";
 const Dashboard = () => {
   const { userData } = React.useContext(ContextCreator) as ContextProps;
   return (
-    <div className="flex flex-1 overflow-auto p-10 gap-2 z-10 flex-col">
+    <div className="flex flex-1 overflow-auto p-5 sm:p-10 gap-2 z-10 flex-col">
       <div className="w-full h-[200px]">
         <RankComponent userData={userData as UserData} rank={-1} />
       </div>
