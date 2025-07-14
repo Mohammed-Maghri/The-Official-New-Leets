@@ -322,11 +322,8 @@ const RankComponent: React.FC<{ userData: UserData | null; rank: number }> = ({
       onClick={() =>
         window.open(`https://profile.intra.42.fr/users/${userData?.login}`)
       }
-      className="flex cursor-pointer  relative rounded-l-sm w-full  h-full gap-1 min-h-[120px] bg-gray-800/50 border border-gray-800/50 rounded-2xl shadow-2xl"
+      className="flex cursor-pointer  relative rounded-l-sm w-full  h-full gap-1 min-h-[120px] bg-gray-800 border border-gray-800/50 rounded-2xl shadow-2xl"
     >
-      {/* <div className="absolute top-0 left-0 w-32 h-32 bg-blue-500/20 rounded-full"></div>
-      <div className="absolute bottom-0 right-0 w-40 h-40 bg-rose-500/15 rounded-full"></div>
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-20 h-20 bg-yellow-400/10 rounded-full"></div> */}
       {userData != null ? (
         <>
           {rank !== -1 && rank >= 1 && rank < 4 && (
