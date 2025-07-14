@@ -93,14 +93,6 @@ const LandingComponent: FC = () => {
           </button>
         </div>
       </div>
-      <div className="w-[200px] z-20 text-center space-y-3 pt-4 border-t border-blue-600/30">
-        <p className="text-blue-300/70 text-xs font-Tektur">
-          Show some love to the project
-        </p>
-        <p className="text-yellow-300/80 text-xs font-Tektur">
-          Star ⭐ on GitHub
-        </p>
-      </div>
 
       <div className="w-[200px] z-20 text-center space-y-3 pt-2 border-t border-blue-600/30 mt-2">
         <p className="text-blue-300/70 text-xs font-Tektur">
