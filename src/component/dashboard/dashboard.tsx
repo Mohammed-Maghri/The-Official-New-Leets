@@ -31,7 +31,7 @@ const LocationUserDetails: React.FC<{
   return (
     <div className=" p-2 h-full flex items-center justify-center flex-row gap-1">
       <div
-        className={`gap-2 p-3 w-[90] sm:w-[120px] ${
+        className={`gap-2 p-3 w-[90px] ${
           location
             ? "bg-green-500/5 border-green-400/15"
             : "bg-red-500/5 border-red-400/15"
@@ -55,7 +55,8 @@ const LocationUserDetails: React.FC<{
         </div>
       </div>
 
-      <div className=" h-[40%] gap-2 border-solid  border-yellow-400/15 border-[1px] bg-gradient-to-r from-yellow-400/5 to-amber-500/5 w-[90] sm:w-[120px] p-3 rounded-md  flex items-center justify-center relative">
+      <div className=" h-[40%] gap-1 border-solid  border-yellow-400/15 border-[1px] bg-gradient-to-r
+       from-yellow-400/5 to-amber-500/5 sm:w-[120px] p-3 rounded-md  flex items-center justify-center relative">
         <div className="w-[20px] h-[20px] flex items-center justify-center">
           <RiUserStarLine color="#d6c800" size={15} />
         </div>
@@ -112,20 +113,20 @@ const LevelProgress: React.FC<{
   return (
     <div className="flex relative items-center  justify-start  flex-col w-full h-[50%] bg-amber-50/0 pr-4 pl-4">
       <div className="w-full p-0.5 mb-3 h-[20px] flex items-center justify-between">
-        <div className="flex items-center w-[100px] space-x-2 flex-row">
+        <div className="flex items-center w-[100px]  flex-row">
           <span className="text-sm font-medium text-white/90 font-Tektur">
             Rank{" "}
           </span>
           {rank !== -1 && (
             <>
               <p
-                className="font-Tektur border-solid border-[2px] border-white/10
-              text-red-100  min-w-[30px] w-[30px] text-[11px] rounded-full flex items-center justify-center"
+                className="ml-1 font-Tektur border-solid border-[2px] border-white/30
+              text-red-100  min-w-[30px] min-h-[30px] w-[30px] text-[11px] rounded-full flex items-center justify-center"
               >
                 {rank}
               </p>
               {(username === "mmaghri" || username === "abablil") && (
-                <div className="ml-2 px-3 py-1.5 bg-yellow-400/40 border-2 border-yellow-300/60 rounded-full shadow-xl shadow-yellow-400/40 animate-pulse flex flex-row items-center gap-1">
+                <div className="ml-1 px-3 py-1.5 bg-yellow-400/40 border-2 border-yellow-300/60 rounded-full shadow-xl shadow-yellow-400/40 animate-pulse flex flex-row items-center gap-1">
                   <RiVipCrown2Fill className="text-yellow-100 text-[12px]" />
                   <span className="text-yellow-100 font-Tektur text-[8px] font-bold tracking-widest">
                     VIP
