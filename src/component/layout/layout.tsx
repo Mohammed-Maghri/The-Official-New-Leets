@@ -59,7 +59,12 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
             </span>
             <span className="text-red-400 animate-pulse">❤️</span>
             <span className="text-xs text-gray-300 font-Tektur">by</span>
-            <span className="text-xs text-blue-300 font-Tektur underline font-medium">
+            <span
+              onClick={() =>
+                window.open("https://profile.intra.42.fr/users/mmaghri")
+              }
+              className="cursor-pointer text-xs text-blue-300 font-Tektur underline font-medium"
+            >
               mmaghri
             </span>
           </div>
