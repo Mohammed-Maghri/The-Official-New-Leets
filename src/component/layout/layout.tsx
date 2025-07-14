@@ -12,12 +12,9 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
       {pathname !== "/" && <Navbar />}
       {children}
 
-      {/* Enhanced Background Layers */}
       <div className="fixed inset-0 overflow-hidden pointer-events-none">
-        {/* Subtle gradient overlay */}
         <div className="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-blue-900/10" />
 
-        {/* Animated gradient orbs */}
         <div className="absolute top-1/4 -left-32 w-64 h-64 bg-blue-500/5 rounded-full blur-3xl animate-pulse" />
         <div
           className="absolute bottom-1/4 -right-32 w-64 h-64 bg-purple-500/5 rounded-full blur-3xl animate-pulse"
@@ -41,7 +38,6 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
         />
       </div>
 
-      {/* Created with Love Component - Only on landing page */}
       {pathname === "/" && (
         <div className="fixed bottom-4 left-4 z-50 group">
           <div className="flex items-center space-x-2 bg-gray-900/80 backdrop-blur-sm border border-gray-700/50 rounded-full px-4 py-2 shadow-lg transition-all duration-300 hover:bg-gray-800/90 hover:scale-105">
@@ -73,7 +69,6 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
             </div>
           </div>
 
-          {/* Tooltip on hover */}
           <div className="absolute bottom-full left-0 mb-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none">
             <div className="bg-gray-800/95 backdrop-blur-sm text-xs text-gray-200 px-3 py-2 rounded-lg shadow-xl border border-gray-600/30">
               <div className="font-Tektur font-medium text-blue-300">

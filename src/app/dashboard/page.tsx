@@ -32,12 +32,10 @@ const Dashboard = () => {
               pool_year={userData.pool_year}
               location={userData.location}
             />
-            {/* Campus Information */}
             <CampusInformation
               campus_name={userData.campus_name}
               campus_id={userData.campus_id}
             />
-            {/* Contact Information */}
             <ContactInformation email={userData.email} />
           </>
         ) : (

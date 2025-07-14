@@ -67,7 +67,6 @@ const Progress = () => {
                       setIsLoadingMore(true);
                       setPageNumber((prev) => prev + 1);
 
-                      // Reset loading state after 2 seconds
                       const timeOut = setTimeout(() => {
                         setIsLoadingMore(false);
                         clearTimeout(timeOut);

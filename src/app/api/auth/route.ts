@@ -50,7 +50,7 @@ export const GET = async (request: NextRequest) => {
     (await cookies()).set("auth_code", signedToken as string, {
       httpOnly: true,
       path: "/",
-      maxAge: 60 * 60 * 24, // 1 day
+      maxAge: 60 * 60 * 24,
     });
 
     return NextResponse.redirect(

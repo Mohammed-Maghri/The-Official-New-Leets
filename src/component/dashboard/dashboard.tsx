@@ -77,7 +77,6 @@ const WalletCoins: React.FC<{ wallet: number; correctionPoints: number }> = ({
 }) => {
   return (
     <div className="absolute right-4  hidden sm:flex gap-2">
-      {/* Wallet */}
       <div className="w-full bg-yellow-500/5 border border-yellow-400/15 rounded-md p-1 flex flex-col items-center justify-center">
         <div className="w-[50px] bg-gradient-to-r from-yellow-400 to-amber-500 rounded-full mb-0.5"></div>
         <div className="text-center">
@@ -90,7 +89,6 @@ const WalletCoins: React.FC<{ wallet: number; correctionPoints: number }> = ({
         </div>
       </div>
 
-      {/* Correction Points */}
       <div className="w-full bg-[#0070ef]/5 border border-[#0070ef]/15 rounded-md p-1 flex flex-col items-center justify-center">
         <div className="w-[50px] bg-gradient-to-r from-[#0070ef] to-blue-400 rounded-full mb-0.5"></div>
         <div className="text-center">
@@ -144,7 +142,6 @@ const LevelProgress: React.FC<{
         </div>
       </div>
       <div className="ml-0.5 w-full h-[15%] rounded-r-lg bg-blue-500/20 relative overflow-hidden">
-        {/* // "level": 9.15 this is the level of the user the erro  Cannot read properties of undefined (reading 'length') */}
         <div
           style={{
             width: (() => {
@@ -182,7 +179,6 @@ const StatusGrid: React.FC<{
 }> = ({ wallet, kind, staff, correction_point }) => {
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-6">
-      {/* Account Type */}
       <div className="bg-blue-500/10 border border-[#0070ef]/20 rounded-lg p-4">
         <div className="flex items-center space-x-2 mb-2">
           <div className="w-3 h-3 bg-gradient-to-r from-[#0070ef] to-blue-400 rounded-full"></div>
@@ -198,7 +194,6 @@ const StatusGrid: React.FC<{
         </p>
       </div>
 
-      {/* Correction Points Detail */}
       <div className="bg-rose-500/10 border border-rose-400/20 rounded-lg p-4">
         <div className="flex items-center space-x-2 mb-2">
           <div className="w-3 h-3 bg-gradient-to-r from-rose-400 to-pink-500 rounded-full"></div>
@@ -214,7 +209,6 @@ const StatusGrid: React.FC<{
         </p>
       </div>
 
-      {/* Wallet Detail */}
       <div className="bg-yellow-500/10 border border-yellow-400/20 rounded-lg p-4">
         <div className="flex items-center space-x-2 mb-2">
           <div className="w-3 h-3 bg-gradient-to-r from-yellow-400 to-amber-500 rounded-full"></div>
