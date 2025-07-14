@@ -1,5 +1,4 @@
 import React from "react";
-import Image from "next/image";
 import { RiUserStarLine, RiVipCrown2Fill } from "react-icons/ri";
 import { UserData } from "../navbar/navbar.types";
 import { Skeleton } from "@mui/material";
@@ -11,13 +10,12 @@ const ImageSideComp: React.FC<{ image: string }> = ({ image }) => {
     <div className="relative duration-200 transition-all rounded-l-sm w-[110px] h-full lg:w-[130px] flex-shrink-0">
       <div className="absolute inset-0 bg-gradient-to-br rounded-l-md rounded-r-full ">
         <div className="w-full h-full bg-gray-900 rounded-l-md rounded-r-full overflow-hidden">
-          <Image
+          <img
             src={image}
             alt="User Avatar"
             width={200}
             height={200}
             className="w-full h-full object-cover rounded-l-sm"
-            unoptimized
           />
         </div>
       </div>

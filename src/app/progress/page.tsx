@@ -12,9 +12,9 @@ const Progress = () => {
     cloneData
   );
 
-  React.useEffect(() => {
-    console.log("User Data:  -------- ", userData);
-  }, [userData]);
+  // React.useEffect(() => {
+  //   console.log("User Data:  -------- ", userData);
+  // }, [userData]);
 
   return (
     <div className=" flex flex-1 z-10 items-center overflow-auto justify-start flex-col ">
