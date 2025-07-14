@@ -4,7 +4,6 @@ import { Buttons } from "./navbar.buttons";
 import { PathsObject } from "./navbar.types";
 import { motion } from "motion/react";
 import { CiMenuFries } from "./navbar.imports";
-import Image from "next/image";
 import Skeleton from "@mui/material/Skeleton";
 import { useRouter } from "next/navigation";
 import { ContextCreator } from "../context/context";
