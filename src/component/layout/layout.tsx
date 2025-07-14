@@ -1,9 +1,9 @@
 "use client";
 import React from "react";
+import Image from "next/image";
 import Particles from "@/component/landing/particels";
 import { Navbar } from "@/component/navbar/navbar";
 import { usePathname } from "next/navigation";
-import Image from "next/image";
 
 const Layout = ({ children }: { children: React.ReactNode }) => {
   const pathname = usePathname();
