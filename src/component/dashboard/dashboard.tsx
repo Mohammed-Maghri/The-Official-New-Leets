@@ -11,7 +11,7 @@ const ImageSideComp: React.FC<{ image: string }> = ({ image }) => {
       <div className="absolute inset-0 bg-gradient-to-br rounded-l-md rounded-r-full ">
         <div className="w-full h-full bg-gray-900 rounded-l-md rounded-r-full overflow-hidden">
           <img
-            src={image}
+            src={image != null ? image : 'nopic.jpg'}
             alt="User Avatar"
             width={200}
             height={200}
