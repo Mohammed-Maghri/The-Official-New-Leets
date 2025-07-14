@@ -55,8 +55,10 @@ const LocationUserDetails: React.FC<{
         </div>
       </div>
 
-      <div className=" h-[40%] gap-1 border-solid  border-yellow-400/15 border-[1px] bg-gradient-to-r
-       from-yellow-400/5 to-amber-500/5 sm:w-[120px] p-3 rounded-md  flex items-center justify-center relative">
+      <div
+        className=" h-[40%] gap-1 border-solid  border-yellow-400/15 border-[1px] bg-gradient-to-r
+       from-yellow-400/5 to-amber-500/5 sm:w-[120px] p-3 rounded-md  flex items-center justify-center relative"
+      >
         <div className="w-[20px] h-[20px] flex items-center justify-center">
           <RiUserStarLine color="#d6c800" size={15} />
         </div>
@@ -323,7 +325,7 @@ const RankComponent: React.FC<{ userData: UserData | null; rank: number }> = ({
       onClick={() =>
         window.open(`https://profile.intra.42.fr/users/${userData?.login}`)
       }
-      className="flex cursor-pointer  relative rounded-l-sm w-full  h-full gap-1 min-h-[120px] bg-gray-800 border border-gray-800/50 rounded-2xl shadow-2xl"
+      className="flex cursor-pointer  relative rounded-l-sm w-full  h-full gap-1 min-h-[130px] bg-gray-800 border border-gray-800/50 rounded-2xl shadow-2xl"
     >
       {userData != null ? (
         <>
@@ -345,7 +347,7 @@ const RankComponent: React.FC<{ userData: UserData | null; rank: number }> = ({
           )}
           <ImageSideComp image={userData.image as string} />
           <div className="flex-1  h-full flex items-center justify-center flex-col">
-            <div className="w-full h-[50%] relative  flex items-center justify-start ">
+            <div className="w-full h-[40px] mt-1 relative  flex items-center justify-start ">
               <LocationUserDetails
                 location={userData.location}
                 username={userData.login}
@@ -354,6 +356,11 @@ const RankComponent: React.FC<{ userData: UserData | null; rank: number }> = ({
                 wallet={userData.wallet}
                 correctionPoints={userData.correction_point}
               />
+            </div>
+            <div className="w-full h-[20px] mb-3 pl-4 flex items-center justify-start">
+              <p className="font-Tektur text-[12px] text-white">
+                {userData.fullname}
+              </p>
             </div>
             <LevelProgress
               level={userData.level}

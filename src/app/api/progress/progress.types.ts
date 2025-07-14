@@ -24,6 +24,7 @@ const Month = [
           medium: string;
         };
       };
+      usual_full_name: string;
       staff: boolean;
       correction_point: number;
       pool_month: string;

@@ -46,7 +46,7 @@ const Progress = () => {
             {userData.map((fakedata: UserData | null, index: number) => (
               <div
                 key={index}
-                className="w-[100%] tillme:w-[850px] h-[120px] rounded-md"
+                className="w-[100%]  tillme:w-[850px]  rounded-md"
               >
                 <RankComponent userData={fakedata} rank={index + 1} />
               </div>
