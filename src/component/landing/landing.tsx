@@ -5,20 +5,22 @@ import React, { FC } from "react";
 const LandingComponent: FC = () => {
   return (
     <>
-      <div className="w-[300px] h-[440px] bg-amber-100/2 border-solid border-[1px] rounded-md border-gray-800 backdrop-blur-xs z-20 flex flex-col items-center justify-center p-8 space-y-6">
+      <div className="w-[300px] h-[440px] bg-gray-900/30 border-solid border-[1px] rounded-md border-gray-600/40 backdrop-blur-lg z-20 flex flex-col items-center justify-center p-8 space-y-6 shadow-xl">
         <div className="text-center space-y-2">
-          <h1 className=" text-4xl text-white font-Tektur tracking-tight">
+          <h1 className="text-4xl bg-gradient-to-r from-blue-400 via-white to-blue-300 bg-clip-text text-transparent font-Tektur tracking-tight">
             1337leets
           </h1>
-          <div className="w-16 h-0.5 bg-gradient-to-r from-transparent via-gray-800 to-transparent mx-auto"></div>
-          <p className="text-gray-400 font-Tektur text-sm font-light">
+          <div className="w-16 h-0.5 bg-gradient-to-r from-transparent via-blue-500 to-transparent mx-auto"></div>
+          <p className="text-blue-200/80 font-Tektur text-sm font-light">
             Elite School Ranking
           </p>
         </div>
 
+        
+
         <div className="text-center space-y-1">
-          <h3 className="text-white text-lg font-medium">Welcome Back</h3>
-          <p className="text-gray-500 text-xs">
+          <h3 className="text-blue-100 text-lg font-medium">Welcome Back</h3>
+          <p className="text-blue-300/70 text-xs">
             Access your academic dashboard
           </p>
         </div>
@@ -26,21 +28,21 @@ const LandingComponent: FC = () => {
           onClick={() =>
             redirect(process.env.NEXT_PUBLIC_REDIRECT_URL as string)
           }
-          className="cursor-pointer w-full bg-gradient-to-r border-solid border-[1px] border-[#888C94]/30
-           from-[#888C94]/5 to-[#888C94]/5 text-white py-3 px-6 rounded-md 
-          font-semibold text-sm shadow-lg transition-all duration-300 hover:scale-105 active:scale-95"
+          className="cursor-pointer w-full bg-gradient-to-r border-solid border-[1px] border-blue-500/40
+           from-blue-900/30 to-blue-800/30 text-white py-3 px-6 rounded-md 
+          font-semibold text-sm shadow-lg transition-all duration-300 hover:scale-105 active:scale-95 hover:shadow-blue-500/30"
         >
           <div className="flex items-center justify-center space-x-2">
-            <span className="font-Tektur font-light text-[#0070ef]">
+            <span className="font-Tektur font-light text-blue-300">
               Login to Platform
             </span>
           </div>
         </button>
         <button
           onClick={() => window.open("https://oldleets.vercel.app", "_blank")}
-          className="cursor-pointer w-full bg-gradient-to-r border-solid border-[1px] border-amber-600/30 from-amber-900/10
-             to-amber-800/10 text-amber-300 py-2 px-4 rounded-md font-light text-xs shadow-md transition-all 
-             duration-300 hover:scale-105 hover:from-amber-800/20 hover:to-amber-700/20"
+          className="cursor-pointer w-full bg-gradient-to-r border-solid border-[1px] border-amber-500/40 from-amber-900/20
+             to-amber-800/20 text-amber-200 py-2 px-4 rounded-md font-light text-xs shadow-md transition-all 
+             duration-300 hover:scale-105 hover:from-amber-800/30 hover:to-amber-700/30 hover:shadow-amber-500/20"
         >
           <div className="flex items-center justify-center space-x-2">
             <svg className="w-3 h-8" fill="currentColor" viewBox="0 0 20 20">
@@ -54,11 +56,11 @@ const LandingComponent: FC = () => {
           </div>
         </button>
       </div>
-      <div className="w-[200px] z-20 text-center space-y-3 pt-4 border-t border-gray-700/50">
-        <p className="text-gray-500 text-xs font-Tektur">
+      <div className="w-[200px] z-20 text-center space-y-3 pt-4 border-t border-blue-600/30">
+        <p className="text-blue-300/70 text-xs font-Tektur">
           Not feeling good with the update?
         </p>
-        <p className="text-amber-400/60 text-xs font-Tektur">
+        <p className="text-amber-300/80 text-xs font-Tektur">
           Classic interface available
         </p>
       </div>
