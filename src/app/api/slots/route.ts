@@ -1,28 +1,25 @@
 import { NextResponse } from "next/server";
+import { today, tomorow } from "./slots.types";
+import { Pool } from "pg";
+
+const client = new Pool({ connectionString: process.env.DATABASE_KEY });
 
 export const GET = async () => {
   try {
-    const TimeFrameToday = new Date();
-    const TimeFrameTomorrow = new Date();
-
-    console.log(
-      " !!!! ------> ",
-      TimeFrameToday.getDate(),
-      TimeFrameToday.getMonth() + 1,
-      TimeFrameToday.getFullYear()
-    );
-
-    console.log(
-      " !!!! ------> ",
-      TimeFrameTomorrow.setDate(TimeFrameToday.getDate() + 1),
-      TimeFrameToday.getDate(),
-      TimeFrameTomorrow.getMonth() + 1,
-      TimeFrameTomorrow.getFullYear()
-    );
-
+    const connection = await client.connect();
+    const query = `SELECT * FROM leets.vip;`;
+    client.query(query);
+    const datafetched = await fetch(process.env.INTRA_TOKEN as string, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${process.env.INTRA_UID}`,
+      },
+    });
     return NextResponse.json(
       {
-        time_frame_today: "test",
+        today: today,
+        tomorow: tomorow,
       },
       {
         status: 200,

@@ -42,8 +42,8 @@ interface SearchDeliverData {
 }
 
 const CursusList: CampusNameId[] = [
-  { name: "pooler", id: 9 },
-  { name: "student", id: 21 },
+  { name: "Piscine", id: 9 },
+  { name: "Cursus", id: 21 },
 ];
 const YearList: number[] = [2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025];
 const MonthList: number[] = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
