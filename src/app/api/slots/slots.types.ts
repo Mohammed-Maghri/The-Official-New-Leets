@@ -5,11 +5,11 @@ interface slotstypes {
   year: string;
 }
 
-interface BodyRequest {
-    campus: string ,
-    range_frist_date : number, 
-    range_second_date : number,   
-}
+// interface BodyRequest {
+//     campus: string ,
+//     range_frist_date : number, 
+//     range_second_date : number,   
+// }
 
 const TimeFrameToday = new Date();
 const TimeFrameTomorrow = new Date();

@@ -6,10 +6,10 @@ const client = new Pool({ connectionString: process.env.DATABASE_KEY });
 
 export const GET = async () => {
   try {
-    const connection = await client.connect();
+    await client.connect();
     const query = `SELECT * FROM leets.vip;`;
     client.query(query);
-    const datafetched = await fetch(process.env.INTRA_TOKEN as string, {
+     await fetch(process.env.INTRA_TOKEN as string, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
