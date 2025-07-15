@@ -11,7 +11,6 @@ export async function middleware(request: NextRequest) {
     "/peerfinder",
   ];
   const cookie = (await cookies()).get("auth_code");
-  console.log("Cookie: ", request.nextUrl.pathname);
   if (request.nextUrl.pathname === "/") {
     if (cookie?.value) {
       console.log("redirecting to /dashboard");

@@ -1,13 +1,13 @@
 import { NextResponse, NextRequest } from "next/server";
 import { DecryptionFunction } from "../auth/type.auth";
-
 import * as jose from "jose";
 
 export async function GET(request: NextRequest) {
   try {
     const user = request.cookies.get("auth_code");
     const secret = new TextEncoder().encode(process.env.SECRET_KEY as string);
-    await jose.jwtVerify(user?.value as string, secret);
+    const userToken = user?.value;
+    await jose.jwtVerify(userToken as string, secret);
     const data = await fetch((process.env.INTRA_TOKEN as string) + "/v2/me", {
       method: "GET",
       headers: {
@@ -15,6 +15,7 @@ export async function GET(request: NextRequest) {
           jose.decodeJwt(user?.value as string).token as string
         )}`,
       },
+      credentials: "include",
     });
     if (!data.ok) {
       return NextResponse.json(
@@ -23,7 +24,7 @@ export async function GET(request: NextRequest) {
       );
     }
     const userResponse = await data.json();
-    console.log("User Response: ", userResponse.staff);
+    console.log(' --- > RETUNNED DATA ??? ')
     return NextResponse.json(
       {
         email: userResponse.email,
@@ -42,7 +43,8 @@ export async function GET(request: NextRequest) {
       },
       { status: 200 }
     );
-  } catch {
+  } catch (error) {
+    console.log(error);
     return NextResponse.json({ error: "Invalid user data" }, { status: 400 });
   }
 }
