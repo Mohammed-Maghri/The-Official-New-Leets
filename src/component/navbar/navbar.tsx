@@ -115,7 +115,7 @@ const Navbar = () => {
             13
           </span>
         </div>
-        <h1 className="text-2xl text-white font-Tektur tracking-tight">
+        <h1 className="text:[15px] sm:text-2xl m-2 sm:m-0 text-white font-Tektur tracking-tight">
           1337leets
         </h1>
       </div>
