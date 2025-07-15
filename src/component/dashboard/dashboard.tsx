@@ -30,7 +30,7 @@ const LocationUserDetails: React.FC<{
   return (
     <div className=" p-2 h-full flex items-center justify-center flex-row gap-1">
       <div
-        className={`gap-2 p-3 w-[90px] ${
+        className={`gap-2 p-3 w-[75px] ${
           location
             ? "bg-green-500/5 border-green-400/15"
             : "bg-red-500/5 border-red-400/15"
@@ -43,7 +43,7 @@ const LocationUserDetails: React.FC<{
             }  rounded-full shadow-lg`}
           ></div>
         </div>
-        <div className="flex-1">
+        <div className="flex-1 ">
           <p
             className={`font-light text-[12px] font-Tektur ${
               location ? "text-green-500" : "text-red-400"

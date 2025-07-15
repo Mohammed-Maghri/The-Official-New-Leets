@@ -17,9 +17,9 @@ const Progress = () => {
   // }, [userData]);
 
   return (
-    <div className=" flex flex-1 z-10 items-center overflow-auto justify-start flex-col ">
+    <div className="flex flex-1 z-10 items-center overflow-auto justify-start flex-col ">
       <ProgressBar setUserData={setUserData} pageNumber={pageNumber} />
-      <div className="items-center justify-start flex-col p-5 w-full gap-2 flex overflow-auto flex-1">
+      <div className="items-center justify-start flex-col p-2 sm:p-5 w-full gap-2 flex overflow-auto flex-1">
         {userData.length === 0 ? (
           // Nothing Found Component
           <div className="flex flex-col items-center justify-center flex-1 w-full h-full min-h-[400px]">
