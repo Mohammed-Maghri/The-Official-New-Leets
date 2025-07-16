@@ -11,7 +11,7 @@ const ImageSideComp: React.FC<{ image: string }> = ({ image }) => {
       <div className="absolute inset-0 bg-gradient-to-br rounded-l-md rounded-r-full ">
         <div className="w-full h-full bg-gray-900 rounded-l-md rounded-r-full overflow-hidden">
           <img
-            src={image != null ? image : 'nopic.jpg'}
+            src={image != null ? image : "nopic.jpg"}
             alt="User Avatar"
             width={200}
             height={200}
@@ -124,7 +124,11 @@ const LevelProgress: React.FC<{
               >
                 {rank}
               </p>
-              {(username === "mmaghri" || username === "abablil" || username == "aghounam" || username == "mlouazir") && (
+              {(username === "mmaghri" ||
+                username === "abablil" ||
+                username == "aghounam" ||
+                username == "mlouazir" ||
+                username == "ozahdi") && (
                 <div className="ml-1 px-3 py-1.5 bg-yellow-400/40 border-2 border-yellow-300/60 rounded-full shadow-xl shadow-yellow-400/40 animate-pulse flex flex-row items-center gap-1">
                   <RiVipCrown2Fill className="text-yellow-100 text-[12px]" />
                   <span className="text-yellow-100 font-Tektur text-[8px] font-bold tracking-widest">
