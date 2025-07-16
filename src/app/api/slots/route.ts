@@ -17,7 +17,7 @@ export const GET = async (request: NextRequest) => {
     const client = new Pool({ connectionString: process.env.DATABASE_KEY });
     const connection = await client.connect();
     const fetchme = await fetch(
-      process.env.NODE_ENV
+      process.env.NODE_ENV == "production"
         ? `${process.env.DATABASE_KEY}/api/who`
         : "http://localhost:3000/api/who",
       {
