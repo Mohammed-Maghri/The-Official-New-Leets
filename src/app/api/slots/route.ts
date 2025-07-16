@@ -1,5 +1,10 @@
 import { NextResponse, NextRequest } from "next/server";
-import { today, tomorow, RawTeamData, TransformedTeamData } from "./slots.types";
+import {
+  today,
+  tomorow,
+  RawTeamData,
+  TransformedTeamData,
+} from "./slots.types";
 import { Pool } from "pg";
 import { DecryptionFunction } from "../auth/type.auth";
 import * as jose from "jose";
@@ -11,14 +16,19 @@ export const GET = async (request: NextRequest) => {
     console.log(" ----> ", campus.get("campus"));
     const client = new Pool({ connectionString: process.env.DATABASE_KEY });
     const connection = await client.connect();
-    const fetchme = await fetch("http://localhost:3000/api/who", {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-        Cookie: `auth_code=${request.cookies.get("auth_code")?.value};`,
-      },
-      credentials: "include",
-    });
+    const fetchme = await fetch(
+      process.env.NODE_ENV
+        ? `${process.env.DATABASE_KEY}/api/who`
+        : "http://localhost:3000/api/who",
+      {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Cookie: `auth_code=${request.cookies.get("auth_code")?.value};`,
+        },
+        credentials: "include",
+      }
+    );
 
     if (!fetchme.ok) {
       throw new Error("Failed to fetch user data");
