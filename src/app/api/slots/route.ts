@@ -18,7 +18,7 @@ export const GET = async (request: NextRequest) => {
     const connection = await client.connect();
     const fetchme = await fetch(
       process.env.NODE_ENV == "production"
-        ? `${process.env.DATABASE_KEY}/api/who`
+        ? `${process.env.productionUrl}/api/who`
         : "http://localhost:3000/api/who",
       {
         method: "GET",
