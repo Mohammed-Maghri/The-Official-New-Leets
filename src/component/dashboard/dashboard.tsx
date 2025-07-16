@@ -129,7 +129,8 @@ const LevelProgress: React.FC<{
                 username === "aghounam" ||
                 username === "mlouazir" ||
                 username === "ozahdi" ||
-                username === "abkacimi") && (
+                username === "abkacimi" ||
+                username === "zouddach ") && (
                 <div className="ml-1 px-3 py-1.5 bg-yellow-400/40 border-2 border-yellow-300/60 rounded-full shadow-xl shadow-yellow-400/40 animate-pulse flex flex-row items-center gap-1">
                   <RiVipCrown2Fill className="text-yellow-100 text-[12px]" />
                   <span className="text-yellow-100 font-Tektur text-[8px] font-bold tracking-widest">
