@@ -62,12 +62,6 @@ export const AccessDenied: React.FC<AccessDeniedProps> = ({
           >
             <div className="flex items-center justify-center gap-2">
               <span>Try Again</span>
-              <motion.div
-                animate={{ rotate: [0, 360] }}
-                transition={{ repeat: Infinity, duration: 2, ease: "linear" }}
-              >
-                🔄
-              </motion.div>
             </div>
           </motion.button>
         )}
