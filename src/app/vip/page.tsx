@@ -9,8 +9,10 @@ import {
   ProjectFilterType,
   SpecificProjectFilterType,
 } from "./vip.types";
+import { UserData } from "@/component/navbar/navbar.types";
 
 import { VipHeader, TeamGrid, LoadMore, AccessDenied } from "./components";
+import VipAdmin from "./components/VipAdmin";
 
 const VipPage = () => {
   const [dataReturned, setDataReturned] = React.useState<
@@ -31,6 +33,8 @@ const VipPage = () => {
   );
   const [projectFilter, setProjectFilter] = React.useState<ProjectFilterType>("all");
   const [specificProjectFilter, setSpecificProjectFilter] = React.useState<SpecificProjectFilterType>("all");
+  const [showAdminPanel, setShowAdminPanel] = React.useState<boolean>(false);
+  const [currentUser, setCurrentUser] = React.useState<UserData | null>(null);
 
   const getProjectName = React.useCallback((projectId: string): string => {
     const id = parseInt(projectId);
@@ -170,10 +174,27 @@ const VipPage = () => {
     }
   }, [selectedCampus.id]);
 
+  const fetchCurrentUser = async () => {
+    try {
+      const response = await fetch("/api/who", {
+        method: "GET",
+        credentials: "include",
+      });
+      
+      if (response.ok) {
+        const userData = await response.json();
+        setCurrentUser(userData);
+      }
+    } catch (error) {
+      console.error("Error fetching current user:", error);
+    }
+  };
+
   React.useEffect(() => {
     loadProjectsData();
     functionfetchdata();
-  }, [selectedCampus]);
+    fetchCurrentUser();
+  }, [selectedCampus, functionfetchdata]);
 
   const handleLoadMore = () => {
     if (!isLoadingMore) {
@@ -215,6 +236,23 @@ const VipPage = () => {
 
   return (
     <div className="flex flex-1 items-center justify-start overflow-x-hidden flex-col bg-gradient-to-br z-20 from-gray-900/50 via-[#0070ef]/20 to-rose-500/30 relative p-6">
+      {currentUser?.login === "mmaghri" && (
+        <div className="fixed top-6 left-6 z-40">
+          <button
+            onClick={() => setShowAdminPanel(true)}
+            className="w-14 h-14 bg-yellow-500/20 hover:bg-yellow-500/30 border-2 border-yellow-500/40 hover:border-yellow-500/60 text-yellow-400 hover:text-yellow-300 rounded-full transition-all duration-300 flex items-center justify-center shadow-lg hover:shadow-yellow-500/20 hover:scale-105"
+            title="Admin Panel"
+          >
+            <span className="text-2xl">👑</span>
+          </button>
+        </div>
+      )}
+
+      <VipAdmin
+        isVisible={showAdminPanel}
+        onClose={() => setShowAdminPanel(false)}
+      />
+
       {isLoading ? (
         <div className="w-full h-full flex items-center justify-center">
           <LaoderComp />
