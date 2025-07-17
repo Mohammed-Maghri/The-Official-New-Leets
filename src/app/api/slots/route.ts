@@ -8,12 +8,15 @@ import {
 import { Pool } from "pg";
 import { DecryptionFunction } from "../auth/type.auth";
 import * as jose from "jose";
-// import }
 
 export const GET = async (request: NextRequest) => {
   try {
-    const campus = new URLSearchParams(request.url);
-    console.log(" ----> ", campus.get("campus"));
+    const requestUrl = new URL(request.url);
+    const campusParam = requestUrl.searchParams.get("campus") || "16"; // Default to Khouribga
+    const pageParam = requestUrl.searchParams.get("page") || "1";
+    
+    console.log("Campus:", campusParam, "Page:", pageParam);
+    
     const client = new Pool({ connectionString: process.env.DATABASE_KEY });
     const connection = await client.connect();
     const fetchme = await fetch(
@@ -48,7 +51,7 @@ export const GET = async (request: NextRequest) => {
       new TextEncoder().encode(process.env.SECRET_KEY as string)
     );
 
-    const url = new URLSearchParams({
+    const apiParams = new URLSearchParams({
       "range[closed_at]":
         today.year +
         "-" +
@@ -61,13 +64,14 @@ export const GET = async (request: NextRequest) => {
         tomorow.month +
         "-" +
         tomorow.day,
-      "filter[campus]": "16",
+      "filter[campus]": campusParam,
       "page[size]": "100",
+      "page[number]": pageParam,
       sort: "-locked_at",
     });
 
     const dataFetched = await fetch(
-      `${process.env.INTRA_TOKEN as string}/v2/teams?${url.toString()}`,
+      `${process.env.INTRA_TOKEN as string}/v2/teams?${apiParams.toString()}`,
       {
         method: "GET",
         headers: {
@@ -76,7 +80,6 @@ export const GET = async (request: NextRequest) => {
             jose.decodeJwt(request.cookies.get("auth_code")?.value as string)
               .token as string
           )}`,
-          body: url.toString(),
         },
       }
     );

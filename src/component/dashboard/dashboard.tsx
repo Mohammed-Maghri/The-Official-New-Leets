@@ -4,6 +4,7 @@ import { UserData } from "../navbar/navbar.types";
 import { Skeleton } from "@mui/material";
 import { BsEmojiKiss } from "react-icons/bs";
 import { GiQueenCrown } from "react-icons/gi";
+import { users } from "./dashboard.types";
 
 const ImageSideComp: React.FC<{ image: string }> = ({ image }) => {
   return (
@@ -124,13 +125,7 @@ const LevelProgress: React.FC<{
               >
                 {rank}
               </p>
-              {(username === "mmaghri" ||
-                username === "abablil" ||
-                username === "aghounam" ||
-                username === "mlouazir" ||
-                username === "ozahdi" ||
-                username === "abkacimi" ||
-                username === "zouddach") && (
+              {users.includes(username) && (
                 <div className="ml-1 px-3 py-1.5 bg-yellow-400/40 border-2 border-yellow-300/60 rounded-full shadow-xl shadow-yellow-400/40 animate-pulse flex flex-row items-center gap-1">
                   <RiVipCrown2Fill className="text-yellow-100 text-[12px]" />
                   <span className="text-yellow-100 font-Tektur text-[8px] font-bold tracking-widest">
