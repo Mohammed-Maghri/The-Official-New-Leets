@@ -43,6 +43,14 @@ interface CampusType {
   id: number;
 }
 
+interface ProjectInfo {
+  project_id: number;
+  name: string;
+  difficulty: number;
+  duration: string;
+  slug: string;
+}
+
 const VipPage = () => {
   const [DataReturned, setDataReturned] = React.useState<
     ResponseData[] | null | undefined
@@ -55,10 +63,65 @@ const VipPage = () => {
     id: 16,
   });
   const [campusDropdownOpen, setCampusDropdownOpen] = React.useState<boolean>(false);
+  const [projectsMap, setProjectsMap] = React.useState<Map<number, ProjectInfo>>(
+    new Map()
+  );
   
   // Refs for dropdown management
   const campusRef = React.useRef<HTMLDivElement>(null);
   const campusTriggerRef = React.useRef<HTMLDivElement>(null);
+
+  // Load projects data from public folder
+  const loadProjectsData = async () => {
+    try {
+      const response = await fetch("/projects.json");
+      if (!response.ok) {
+        throw new Error("Failed to fetch projects data");
+      }
+      const projects: ProjectInfo[] = await response.json();
+      
+      // Create a map for quick lookup
+      const map = new Map<number, ProjectInfo>();
+      projects.forEach(project => {
+        map.set(project.project_id, project);
+      });
+      setProjectsMap(map);
+    } catch (error) {
+      console.error("Error loading projects data:", error);
+    }
+  };
+
+  // Get project name by ID
+  const getProjectName = (projectId: string): string => {
+    const id = parseInt(projectId);
+    const project = projectsMap.get(id);
+    return project ? project.name : "Unknown Project";
+  };
+
+  // Get project difficulty
+  const getProjectDifficulty = (projectId: string): number => {
+    const id = parseInt(projectId);
+    const project = projectsMap.get(id);
+    return project ? project.difficulty : 0;
+  };
+
+  // Get project duration
+  const getProjectDuration = (projectId: string): string => {
+    const id = parseInt(projectId);
+    const project = projectsMap.get(id);
+    return project ? project.duration : "";
+  };
+
+  // Handle team card click to redirect to Intra
+  const handleTeamClick = (team: ResponseData) => {
+    // Get the first user (usually the team leader or first member)
+    const firstUser = team.users[0];
+    if (firstUser) {
+      // Construct the Intra profile URL
+      const intraUrl = `https://profile.intra.42.fr/users/${firstUser.login}`;
+      window.open(intraUrl, '_blank');
+    }
+  };
 
   // Close dropdown when clicking outside
   React.useEffect(() => {
@@ -79,17 +142,17 @@ const VipPage = () => {
     };
   }, []);
 
-  const FetchTest = async () => {
-    const data = await fetch("/api/projects", {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
-    if (!data.ok) {
-      throw new Error("Network response was not ok");
-    }
-  };
+  // async () => {
+  //   const data = await fetch("/api/projects", {
+  //     method: "GET",
+  //     headers: {
+  //       "Content-Type": "application/json",
+  //     },
+  //   });
+  //   if (!data.ok) {
+  //     throw new Error("Network response was not ok");
+  //   }
+  // };
 
   const functionfetchdata = async (campusId?: number, page?: number, loadMore?: boolean) => {
     try {
@@ -138,6 +201,7 @@ const VipPage = () => {
   };
 
   React.useEffect(() => {
+    loadProjectsData();
     functionfetchdata();
   }, [selectedCampus]);
 
@@ -223,27 +287,47 @@ const VipPage = () => {
             {DataReturned.map((team, index) => (
               <div
                 key={index}
-                className="bg-white/10 backdrop-blur-md border border-white/20 rounded-xl p-6 hover:bg-white/15 hover:border-white/30 transition-all duration-300 shadow-lg hover:shadow-xl"
+                onClick={() => handleTeamClick(team)}
+                className="bg-white/10 backdrop-blur-md border border-white/20 rounded-xl p-6 hover:bg-white/15 hover:border-white/30 transition-all duration-300 shadow-lg hover:shadow-xl cursor-pointer hover:scale-[1.02] relative group"
               >
+                {/* Click indicator */}
+                <div className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity duration-200">
+                  <div className="bg-blue-500/20 text-blue-300 px-2 py-1 rounded-full text-xs font-Tektur border border-blue-400/30">
+                    � View Profile
+                  </div>
+                </div>
                 <div className="flex items-start justify-between mb-4">
                   <div className="flex-1">
                     <h3 className="text-xl font-semibold text-white font-Tektur mb-2">
                       {team.name}
                     </h3>
-                    <div className="flex items-center space-x-3 text-sm">
-                      <span className="text-gray-200 font-Tektur">
-                        Project ID: {team.project_id}
-                      </span>
-                      <div
-                        className={`px-3 py-1 rounded-full text-xs font-medium font-Tektur ${
-                          team.status === "finished"
-                            ? "bg-green-500/30 text-green-300 border border-green-400/50"
-                            : team.status === "in_progress"
-                            ? "bg-blue-500/30 text-blue-300 border border-blue-400/50"
-                            : "bg-gray-500/30 text-gray-300 border border-gray-400/50"
-                        }`}
-                      >
-                        {team.status.replace("_", " ").toUpperCase()}
+                    <div className="flex flex-col space-y-2 text-sm">
+                      {/* Project Name */}
+                      <div className="text-gray-100 font-Tektur font-medium">
+                        📋 {getProjectName(team.project_id)}
+                      </div>
+                      
+                      {/* Project Details */}
+                      <div className="flex items-center space-x-3">
+                        <span className="text-gray-300 font-Tektur text-xs">
+                          ID: {team.project_id}
+                        </span>
+                        {getProjectDifficulty(team.project_id) > 0 && (
+                          <span className="text-amber-300 font-Tektur text-xs bg-amber-500/20 px-2 py-1 rounded-full border border-amber-400/30">
+                            ⭐ {getProjectDifficulty(team.project_id)} pts
+                          </span>
+                        )}
+                        <div
+                          className={`px-3 py-1 rounded-full text-xs font-medium font-Tektur ${
+                            team.status === "finished"
+                              ? "bg-green-500/30 text-green-300 border border-green-400/50"
+                              : team.status === "in_progress"
+                              ? "bg-blue-500/30 text-blue-300 border border-blue-400/50"
+                              : "bg-gray-500/30 text-gray-300 border border-gray-400/50"
+                          }`}
+                        >
+                          {team.status.replace("_", " ").toUpperCase()}
+                        </div>
                       </div>
                     </div>
                   </div>
@@ -277,6 +361,21 @@ const VipPage = () => {
                 </div>
 
                 <div className="grid grid-cols-1 gap-3 text-sm">
+                  {/* Project Info */}
+                  <div className="bg-white/10 backdrop-blur-sm rounded-lg p-3 border border-white/20">
+                    <div className="text-gray-200 font-Tektur text-xs mb-1">
+                      Project Info
+                    </div>
+                    <div className="text-gray-100 font-Tektur font-medium">
+                      {getProjectDuration(team.project_id) && (
+                        <div className="text-xs text-blue-300 mb-1">
+                          ⏱️ {getProjectDuration(team.project_id)}
+                        </div>
+                      )}
+                    </div>
+                  </div>
+
+                  {/* Final Mark */}
                   <div className="bg-white/10 backdrop-blur-sm rounded-lg p-3 border border-white/20">
                     <div className="text-gray-200 font-Tektur text-xs mb-1">
                       Final Mark
