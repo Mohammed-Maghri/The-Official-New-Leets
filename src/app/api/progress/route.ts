@@ -60,7 +60,6 @@ export const POST = async (request: NextRequest) => {
     }
 
     const response = await data.json();
-    // Define a Interface to this new response
     const NewRespons = response.map((item: UserProgress) => ({
       fullname: item.user.usual_full_name,
       email: item.user.email,

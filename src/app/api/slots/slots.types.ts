@@ -20,41 +20,34 @@ interface UserResponse {
   level: number;
 }
 
-// Interface for individual user in a team
-interface TeamUser {
+interface TeamMember {
   login: string;
   leader: boolean;
 }
 
-// Interface for raw team data from 42 Intra API
 interface RawTeamData {
+  locked_at: string;
   name: string;
   project_id: number;
   status: string;
-  users: TeamUser[];
+  users: TeamMember[];
   locked: boolean;
   validated: boolean;
   closed_at: string | null;
   final_mark: number | null;
 }
 
-// Interface for transformed team data sent to frontend
 interface TransformedTeamData {
   name: string;
   project_id: number;
   status: string;
-  users: TeamUser[];
+  users: TeamMember[];
   locked: boolean;
   validated: "yes" | "no";
   closed_at: string | null;
   final_mark: number | null;
 }
 
-// interface BodyRequest {
-//   campus: string;
-//   range_frist_date: number;
-//   range_second_date: number;
-// }
 
 const TimeFrameToday = new Date();
 const TimeFrameTomorrow = new Date();
@@ -85,5 +78,5 @@ const tomorow: slotstypes = {
   year: TimeFrameTomorrow.getFullYear().toString(),
 };
 
-export type { UserResponse, TeamUser, RawTeamData, TransformedTeamData };
+export type { UserResponse, TeamMember, RawTeamData, TransformedTeamData };
 export { today, tomorow };

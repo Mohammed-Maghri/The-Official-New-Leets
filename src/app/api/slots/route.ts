@@ -12,7 +12,7 @@ import * as jose from "jose";
 export const GET = async (request: NextRequest) => {
   try {
     const requestUrl = new URL(request.url);
-    const campusParam = requestUrl.searchParams.get("campus") || "16"; // Default to Khouribga
+    const campusParam = requestUrl.searchParams.get("campus") || "16";
     const pageParam = requestUrl.searchParams.get("page") || "1";
     
     console.log("Campus:", campusParam, "Page:", pageParam);
@@ -90,6 +90,7 @@ export const GET = async (request: NextRequest) => {
     const data: RawTeamData[] = await dataFetched.json();
     const otherThings: TransformedTeamData[] = data.map((item: RawTeamData) => {
       return {
+        locked_at: item.locked_at,
         name: item.name,
         project_id: item.project_id,
         status: item.status,

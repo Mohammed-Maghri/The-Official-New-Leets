@@ -8,14 +8,11 @@ const CalculatorPage = () => {
     <div className="flex flex-1 pt-20 items-center overflow-x-hidden
      flex-col justify-center bg-gradient-to-br from-gray-900/95
       via-orange-400/5 to-amber-500/10 relative p-4">
-      {/* Background Effects */}
       <div className="absolute top-0 left-0 w-24 h-24 md:w-48 md:h-48 bg-gradient-to-br from-orange-400/20 to-transparent rounded-full blur-3xl"></div>
       <div className="absolute bottom-0 right-0 w-30 h-30 md:w-60 md:h-60 bg-gradient-to-tl from-amber-500/15 to-transparent rounded-full blur-3xl"></div>
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-12 h-12 md:w-24 md:h-24 bg-yellow-400/10 rounded-full blur-2xl"></div>
 
-      {/* Main Content */}
       <div className="relative z-10 max-w-sm md:max-w-md lg:max-w-lg mx-auto px-3 text-center w-full">
-        {/* Calculator Icon */}
         <div className="mb-4 flex justify-center">
           <div className="relative">
             <div className="w-12 h-12 md:w-15 md:h-15 lg:w-18 lg:h-18 bg-gradient-to-br from-orange-400 to-amber-500 rounded-xl flex items-center justify-center shadow-2xl shadow-orange-400/50 animate-pulse">
@@ -31,16 +28,14 @@ const CalculatorPage = () => {
         </div>
 
         {/* Title */}
-        <h1 className="text-2xl md:text-3xl lg:text-4xl xl:text-4xl font-bold bg-gradient-to-r from-orange-400 via-amber-300 to-orange-500 bg-clip-text text-transparent font-Tektur mb-2">
-          CALCULATOR
+        <h1 className="text-2xl md:text-3xl lg:text-4xl font-bold mb-2 bg-gradient-to-r from-orange-300 via-amber-300 to-yellow-300 bg-clip-text text-transparent font-[\'Tektur\']">
+          GPA Calculator
         </h1>
 
-        {/* Subtitle */}
         <p className="text-sm md:text-base lg:text-lg text-white/90 font-Tektur font-light mb-4">
           Advanced Computing Tools
         </p>
 
-        {/* Coming Soon Card */}
         <div className="bg-gradient-to-r from-gray-800/40 to-gray-700/30 border border-orange-400/30 rounded-lg md:rounded-xl p-3 md:p-4 lg:p-6 backdrop-blur-xl shadow-2xl">
           <div className="flex justify-center mb-3">
             <div className="w-9 h-9 md:w-10 md:h-10 lg:w-12 lg:h-12 bg-gradient-to-br from-orange-400/20 to-amber-500/10 border border-orange-400/30 rounded-full flex items-center justify-center">

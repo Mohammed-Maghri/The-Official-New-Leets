@@ -12,16 +12,13 @@ const Progress = () => {
     cloneData
   );
 
-  // React.useEffect(() => {
-  //   console.log("User Data:  -------- ", userData);
-  // }, [userData]);
+
 
   return (
     <div className="flex flex-1 z-10 items-center overflow-auto justify-start flex-col ">
       <ProgressBar setUserData={setUserData} pageNumber={pageNumber} />
       <div className="items-center justify-start flex-col p-2 sm:p-5 w-full gap-2 flex overflow-auto flex-1">
         {userData.length === 0 ? (
-          // Nothing Found Component
           <div className="flex flex-col items-center justify-center flex-1 w-full h-full min-h-[400px]">
             <div className="relative mb-6">
               <div className="w-20 h-20 md:w-24 md:h-24 bg-gray-800/90 border border-gray-500/30 rounded-full flex items-center justify-center">
