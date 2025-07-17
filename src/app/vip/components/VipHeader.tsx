@@ -98,7 +98,7 @@ export const VipHeader: React.FC<VipHeaderProps> = ({
             Teams & Projects
           </h1>
           <p className="text-base md:text-lg text-gray-300 font-Tektur opacity-80">
-            The Ui is Shit Because It's Coocked By Ai Not me hhh No time For it
+            The Ui is Shit Because Its Coocked By Ai Not me hhh No time For it
           </p>
         </div>
         
