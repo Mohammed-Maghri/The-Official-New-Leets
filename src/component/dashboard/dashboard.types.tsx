@@ -6,5 +6,6 @@ const users: string[] = [
   "ozahdi",
   "abkacimi",
   "zouddach",
+  "adzahrao"
 ];
 export  { users };
