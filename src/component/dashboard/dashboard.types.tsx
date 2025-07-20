@@ -7,6 +7,7 @@ const users: string[] = [
   "abkacimi",
   "zouddach",
   "adzahrao",
-  "fbenalla"
+  "fbenalla",
+  "iezzam"
 ];
 export  { users };
