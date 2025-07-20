@@ -12,8 +12,6 @@ const Progress = () => {
     cloneData
   );
 
-
-
   return (
     <div className="flex flex-1 z-10 items-center overflow-auto justify-start flex-col ">
       <ProgressBar setUserData={setUserData} pageNumber={pageNumber} />
