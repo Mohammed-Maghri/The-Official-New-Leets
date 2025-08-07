@@ -65,7 +65,7 @@ const Progress = () => {
                       const timeOut = setTimeout(() => {
                         setIsLoadingMore(false);
                         clearTimeout(timeOut);
-                      }, 4000);
+                      }, 6000);
                     }
                   }}
                 >
