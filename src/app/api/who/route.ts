@@ -24,12 +24,11 @@ export async function GET(request: NextRequest) {
       );
     }
     const userResponse = await data.json();
-    console.log(' --- > RETUNNED DATA ??? ')
     return NextResponse.json(
       {
         email: userResponse.email,
         login: userResponse.login,
-        kind: userResponse.kind,
+        kind: userResponse.cursus_users.length > 1 ? "student" : "pooler",
         image: userResponse.image.versions.large,
         staff: userResponse.staff === undefined ? false : true,
         correction_point: userResponse.correction_point,
@@ -39,7 +38,7 @@ export async function GET(request: NextRequest) {
         wallet: userResponse.wallet,
         campus_id: userResponse.campus[0].id,
         campus_name: userResponse.campus[0].name,
-        level: userResponse.cursus_users[1].level,
+        level: userResponse?.cursus_users[1]?.level || 0,
       },
       { status: 200 }
     );

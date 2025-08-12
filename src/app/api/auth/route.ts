@@ -24,8 +24,10 @@ export const GET = async (request: NextRequest) => {
     });
 
     console.log("Client Query: ", ClientQuery.toString());
+    const tokenUrl = (process.env.INTRA_TOKEN as string) + "/oauth/token";
+    console.log("Token URL: ", tokenUrl);
     const fetchToken = await fetch(
-      (process.env.INTRA_TOKEN as string) + "/oauth/token",
+      tokenUrl,
       {
         method: "POST",
         headers: {
@@ -36,6 +38,8 @@ export const GET = async (request: NextRequest) => {
     );
     
     if (!fetchToken.ok) {
+      console.error("Token fetch failed with status:", fetchToken.status);
+      console.error("Response:", await fetchToken.text());
       throw new Error("Failed to fetch token");
     }
     const Tok: AuthResponse = await await fetchToken.json();
