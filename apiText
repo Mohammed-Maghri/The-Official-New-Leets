@@ -54,6 +54,7 @@ const CalculatorPage = () => {
     console.log("used data after filterring",json)
   };
 
+
   useEffect(() => {
     main();
   }, []);
