@@ -10,6 +10,9 @@ import { DecryptionFunction } from "../auth/type.auth";
 import * as jose from "jose";
 
 export const GET = async (request: NextRequest) => {
+  let client: Pool | null = null;
+  let connection = null;
+  
   try {
     const requestUrl = new URL(request.url);
     const campusParam = requestUrl.searchParams.get("campus") || "16";
@@ -17,8 +20,13 @@ export const GET = async (request: NextRequest) => {
     
     console.log("Campus:", campusParam, "Page:", pageParam);
     
-    const client = new Pool({ connectionString: process.env.DATABASE_KEY });
-    const connection = await client.connect();
+    // Verify JWT token first
+    await jose.jwtVerify(
+      request.cookies.get("auth_code")?.value as string,
+      new TextEncoder().encode(process.env.SECRET_KEY as string)
+    );
+    
+    // Fetch user data
     const fetchme = await fetch(
       process.env.NODE_ENV == "production"
         ? `${process.env.productionUrl}/api/who`
@@ -36,9 +44,17 @@ export const GET = async (request: NextRequest) => {
     if (!fetchme.ok) {
       throw new Error("Failed to fetch user data");
     }
+    
+    const userData = await fetchme.json();
+    
+    // Create pool and connection
+    client = new Pool({ connectionString: process.env.DATABASE_KEY });
+    connection = await client.connect();
+    
+    // Check VIP status
     const query = `SELECT * FROM leets.vip where login=$1`;
-    const respond = (await client.query(query, [(await fetchme.json()).login]))
-      .rows[0]?.login;
+    const result = await connection.query(query, [userData.login]);
+    const respond = result.rows[0]?.login;
 
     if (!respond) {
       return NextResponse.json(
@@ -46,10 +62,6 @@ export const GET = async (request: NextRequest) => {
         { status: 404 }
       );
     }
-    await jose.jwtVerify(
-      request.cookies.get("auth_code")?.value as string,
-      new TextEncoder().encode(process.env.SECRET_KEY as string)
-    );
 
     const apiParams = new URLSearchParams({
       "range[closed_at]":
@@ -83,10 +95,11 @@ export const GET = async (request: NextRequest) => {
         },
       }
     );
+    
     if (!dataFetched.ok) {
       throw new Error("Failed to fetch teams data");
     }
-    connection.release();
+    
     const data: RawTeamData[] = await dataFetched.json();
     const otherThings: TransformedTeamData[] = data.map((item: RawTeamData) => {
       return {
@@ -101,14 +114,31 @@ export const GET = async (request: NextRequest) => {
         final_mark: item.final_mark,
       };
     });
+    
     return NextResponse.json(otherThings, {
       status: 200,
     });
   } catch (error) {
-    console.log("Error in GET request:", error);
+    console.error("Error in GET request:", error);
     return NextResponse.json(
-      { error: "Internal Server Error" + error },
+      { error: "Internal Server Error: " + (error instanceof Error ? error.message : String(error)) },
       { status: 500 }
     );
+  } finally {
+    // Always cleanup resources
+    if (connection) {
+      try {
+        connection.release();
+      } catch (releaseError) {
+        console.error("Error releasing connection:", releaseError);
+      }
+    }
+    if (client) {
+      try {
+        await client.end();
+      } catch (endError) {
+        console.error("Error closing pool:", endError);
+      }
+    }
   }
 };

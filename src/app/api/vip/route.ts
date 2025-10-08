@@ -3,6 +3,8 @@ import { Pool } from "pg";
 import * as jose from "jose";
 
 export const POST = async (request: NextRequest) => {
+  let client: Pool | null = null;
+  
   try {
     const body = await request.json();
     const { login, category = "student" } = body;
@@ -14,7 +16,11 @@ export const POST = async (request: NextRequest) => {
       );
     }
 
-    const client = new Pool({ connectionString: process.env.DATABASE_KEY });
+    // Verify JWT first
+    await jose.jwtVerify(
+      request.cookies.get("auth_code")?.value as string,
+      new TextEncoder().encode(process.env.SECRET_KEY as string)
+    );
     
     const fetchme = await fetch(
       process.env.NODE_ENV === "production"
@@ -46,16 +52,12 @@ export const POST = async (request: NextRequest) => {
       );
     }
 
-    await jose.jwtVerify(
-      request.cookies.get("auth_code")?.value as string,
-      new TextEncoder().encode(process.env.SECRET_KEY as string)
-    );
+    client = new Pool({ connectionString: process.env.DATABASE_KEY });
 
     const checkExistingQuery = `SELECT * FROM leets.vip WHERE login = $1`;
     const existingUser = await client.query(checkExistingQuery, [login]);
 
     if (existingUser.rows.length > 0) {
-      await client.end();
       return NextResponse.json(
         { error: "User already has VIP access" },
         { status: 409 }
@@ -75,8 +77,6 @@ export const POST = async (request: NextRequest) => {
       "member"
     ]);
 
-    await client.end();
-
     return NextResponse.json(
       { 
         message: "User added to VIP successfully",
@@ -86,17 +86,31 @@ export const POST = async (request: NextRequest) => {
     );
 
   } catch (error) {
-    console.log("Error in VIP POST request:", error);
+    console.error("Error in VIP POST request:", error);
     return NextResponse.json(
-      { error: "Internal Server Error: " + error },
+      { error: "Internal Server Error: " + (error instanceof Error ? error.message : String(error)) },
       { status: 500 }
     );
+  } finally {
+    if (client) {
+      try {
+        await client.end();
+      } catch (endError) {
+        console.error("Error closing pool:", endError);
+      }
+    }
   }
 };
 
 export const GET = async (request: NextRequest) => {
+  let client: Pool | null = null;
+  
   try {
-    const client = new Pool({ connectionString: process.env.DATABASE_KEY });
+    // Verify JWT first
+    await jose.jwtVerify(
+      request.cookies.get("auth_code")?.value as string,
+      new TextEncoder().encode(process.env.SECRET_KEY as string)
+    );
     
     const fetchme = await fetch(
       process.env.NODE_ENV === "production"
@@ -128,15 +142,10 @@ export const GET = async (request: NextRequest) => {
       );
     }
 
-    await jose.jwtVerify(
-      request.cookies.get("auth_code")?.value as string,
-      new TextEncoder().encode(process.env.SECRET_KEY as string)
-    );
+    client = new Pool({ connectionString: process.env.DATABASE_KEY });
 
     const query = `SELECT id, category, login, created_at, updated_at FROM leets.vip ORDER BY created_at DESC`;
     const result = await client.query(query);
-
-    await client.end();
 
     return NextResponse.json(
       { users: result.rows },
@@ -144,15 +153,25 @@ export const GET = async (request: NextRequest) => {
     );
 
   } catch (error) {
-    console.log("Error in VIP GET request:", error);
+    console.error("Error in VIP GET request:", error);
     return NextResponse.json(
-      { error: "Internal Server Error: " + error },
+      { error: "Internal Server Error: " + (error instanceof Error ? error.message : String(error)) },
       { status: 500 }
     );
+  } finally {
+    if (client) {
+      try {
+        await client.end();
+      } catch (endError) {
+        console.error("Error closing pool:", endError);
+      }
+    }
   }
 };
 
 export const DELETE = async (request: NextRequest) => {
+  let client: Pool | null = null;
+  
   try {
     const url = new URL(request.url);
     const login = url.searchParams.get("login");
@@ -164,7 +183,11 @@ export const DELETE = async (request: NextRequest) => {
       );
     }
 
-    const client = new Pool({ connectionString: process.env.DATABASE_KEY });
+    // Verify JWT first
+    await jose.jwtVerify(
+      request.cookies.get("auth_code")?.value as string,
+      new TextEncoder().encode(process.env.SECRET_KEY as string)
+    );
     
     const fetchme = await fetch(
       process.env.NODE_ENV === "production"
@@ -203,23 +226,17 @@ export const DELETE = async (request: NextRequest) => {
       );
     }
 
-    await jose.jwtVerify(
-      request.cookies.get("auth_code")?.value as string,
-      new TextEncoder().encode(process.env.SECRET_KEY as string)
-    );
+    client = new Pool({ connectionString: process.env.DATABASE_KEY });
 
     const deleteQuery = `DELETE FROM leets.vip WHERE login = $1 RETURNING *`;
     const result = await client.query(deleteQuery, [login]);
 
     if (result.rows.length === 0) {
-      await client.end();
       return NextResponse.json(
         { error: "User not found" },
         { status: 404 }
       );
     }
-
-    await client.end();
 
     return NextResponse.json(
       { 
@@ -230,10 +247,18 @@ export const DELETE = async (request: NextRequest) => {
     );
 
   } catch (error) {
-    console.log("Error in VIP DELETE request:", error);
+    console.error("Error in VIP DELETE request:", error);
     return NextResponse.json(
-      { error: "Internal Server Error: " + error },
+      { error: "Internal Server Error: " + (error instanceof Error ? error.message : String(error)) },
       { status: 500 }
     );
+  } finally {
+    if (client) {
+      try {
+        await client.end();
+      } catch (endError) {
+        console.error("Error closing pool:", endError);
+      }
+    }
   }
 };
