@@ -45,14 +45,18 @@ export const POST = async (request: NextRequest) => {
 
     const currentUser = await fetchme.json();
     
-    if (currentUser.login !== "mmaghri") {
+    client = new Pool({ connectionString: process.env.DATABASE_KEY });
+
+    // Check if user is an admin (owner) in the database
+    const adminCheckQuery = `SELECT * FROM leets.vip WHERE login = $1 AND token = 'owner'`;
+    const adminCheckResult = await client.query(adminCheckQuery, [currentUser.login]);
+    
+    if (adminCheckResult.rows.length === 0) {
       return NextResponse.json(
         { error: "Ur not a Auth Admin" },
         { status: 403 }
       );
     }
-
-    client = new Pool({ connectionString: process.env.DATABASE_KEY });
 
     const checkExistingQuery = `SELECT * FROM leets.vip WHERE login = $1`;
     const existingUser = await client.query(checkExistingQuery, [login]);
@@ -135,14 +139,18 @@ export const GET = async (request: NextRequest) => {
 
     const currentUser = await fetchme.json();
     
-    if (currentUser.login !== "mmaghri") {
+    client = new Pool({ connectionString: process.env.DATABASE_KEY });
+
+    // Check if user is an admin (owner) in the database
+    const adminCheckQuery = `SELECT * FROM leets.vip WHERE login = $1 AND token = 'owner'`;
+    const adminCheckResult = await client.query(adminCheckQuery, [currentUser.login]);
+    
+    if (adminCheckResult.rows.length === 0) {
       return NextResponse.json(
         { error: "Ur not a Auth Admin" },
         { status: 403 }
       );
     }
-
-    client = new Pool({ connectionString: process.env.DATABASE_KEY });
 
     const query = `SELECT id, category, login, created_at, updated_at FROM leets.vip ORDER BY created_at DESC`;
     const result = await client.query(query);
@@ -212,21 +220,30 @@ export const DELETE = async (request: NextRequest) => {
 
     const currentUser = await fetchme.json();
     
-    if (currentUser.login !== "mmaghri") {
+    client = new Pool({ connectionString: process.env.DATABASE_KEY });
+
+    // Check if user is an admin (owner) in the database
+    const adminCheckQuery = `SELECT * FROM leets.vip WHERE login = $1 AND token = 'owner'`;
+    const adminCheckResult = await client.query(adminCheckQuery, [currentUser.login]);
+    
+    if (adminCheckResult.rows.length === 0) {
       return NextResponse.json(
         { error: "Ur not a Auth Admin" },
         { status: 403 }
       );
     }
 
-    if (login === "mmaghri") {
-      return NextResponse.json(
-        { error: "Cannot remove admin user" },
-        { status: 403 }
-      );
+    // Check if user being deleted is an admin (owner)
+    if (login) {
+      const userToDeleteQuery = `SELECT * FROM leets.vip WHERE login = $1 AND token = 'owner'`;
+      const userToDeleteResult = await client.query(userToDeleteQuery, [login]);
+      if (userToDeleteResult.rows.length > 0) {
+        return NextResponse.json(
+          { error: "Cannot remove admin user" },
+          { status: 403 }
+        );
+      }
     }
-
-    client = new Pool({ connectionString: process.env.DATABASE_KEY });
 
     const deleteQuery = `DELETE FROM leets.vip WHERE login = $1 RETURNING *`;
     const result = await client.query(deleteQuery, [login]);

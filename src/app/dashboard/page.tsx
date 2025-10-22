@@ -10,9 +10,16 @@ import {
 import { ContextCreator } from "@/component/context/context";
 import { ContextProps, UserData } from "@/component/context/context.types";
 import { TbSkiJumping } from "react-icons/tb";
+import { fetchVIPUsers } from "@/component/dashboard/dashboard.types";
 
 const Dashboard = () => {
   const { userData } = React.useContext(ContextCreator) as ContextProps;
+
+  // Fetch VIP users on component mount
+  React.useEffect(() => {
+    fetchVIPUsers();
+  }, []);
+
   return (
     <div className="flex flex-1 overflow-auto p-5 sm:p-10 gap-2 z-10 flex-col">
       <div className="w-full h-[200px]">

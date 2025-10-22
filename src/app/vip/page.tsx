@@ -35,6 +35,7 @@ const VipPage = () => {
   const [specificProjectFilter, setSpecificProjectFilter] = React.useState<SpecificProjectFilterType>("all");
   const [showAdminPanel, setShowAdminPanel] = React.useState<boolean>(false);
   const [currentUser, setCurrentUser] = React.useState<UserData | null>(null);
+  const [isAdminUser, setIsAdminUser] = React.useState<boolean>(false);
 
   const getProjectName = React.useCallback((projectId: string): string => {
     const id = parseInt(projectId);
@@ -184,6 +185,24 @@ const VipPage = () => {
       if (response.ok) {
         const userData = await response.json();
         setCurrentUser(userData);
+        
+        // Check if user is an admin using the dedicated endpoint
+        try {
+          const adminCheckResponse = await fetch("/api/check-admin", {
+            method: "GET",
+            credentials: "include",
+          });
+          
+          if (adminCheckResponse.ok) {
+            const adminData = await adminCheckResponse.json();
+            setIsAdminUser(adminData.isAdmin || false);
+          } else {
+            setIsAdminUser(false);
+          }
+        } catch (error) {
+          console.error("Error checking admin status:", error);
+          setIsAdminUser(false);
+        }
       }
     } catch (error) {
       console.error("Error fetching current user:", error);
@@ -236,7 +255,7 @@ const VipPage = () => {
 
   return (
     <div className="flex flex-1 items-center justify-start overflow-x-hidden flex-col bg-gradient-to-br z-20 from-gray-900/50 via-[#0070ef]/20 to-rose-500/30 relative p-6">
-      {currentUser?.login === "mmaghri" && (
+      {currentUser && isAdminUser && (
         <div className="fixed top-6 left-6 z-40">
           <button
             onClick={() => setShowAdminPanel(true)}
