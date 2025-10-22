@@ -156,7 +156,7 @@ const VipPage = () => {
       }
       
       const response = await data.json();
-      console.log("API request successful, data:", response);
+      //console.log("API request successful, data:", response);
       
       if (loadMore) {
         setDataReturned(prev => prev ? [...prev, ...response] : response);
@@ -198,7 +198,7 @@ const VipPage = () => {
 
   const handleLoadMore = () => {
     if (!isLoadingMore) {
-      console.log("Loading more data...");
+      //console.log("Loading more data...");
       const nextPage = pageNumber + 1;
       setPageNumber(nextPage);
       functionfetchdata(selectedCampus.id, nextPage, true);
@@ -227,12 +227,12 @@ const VipPage = () => {
     functionfetchdata();
   }, [selectedCampus]);
 
-  console.log(
-    "Render state - isLoading:",
-    isLoading,
-    "dataReturned:",
-    dataReturned
-  );
+  //console.log(
+  //   "Render state - isLoading:",
+  //   isLoading,
+  //   "dataReturned:",
+  //   dataReturned
+  // );
 
   return (
     <div className="flex flex-1 items-center justify-start overflow-x-hidden flex-col bg-gradient-to-br z-20 from-gray-900/50 via-[#0070ef]/20 to-rose-500/30 relative p-6">

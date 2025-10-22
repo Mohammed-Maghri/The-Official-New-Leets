@@ -6,7 +6,7 @@ import { DecryptionFunction } from "../auth/type.auth";
 export const POST = async (request: NextRequest) => {
   try {
     const Body = await request.json();
-    console.log("Body: ---> ", Body);
+    //console.log("Body: ---> ", Body);
     await jwtVerify(
       request.cookies.get("auth_code")?.value as string,
       new TextEncoder().encode(process.env.SECRET_KEY as string)
@@ -16,7 +16,7 @@ export const POST = async (request: NextRequest) => {
       request.cookies.get("auth_code")?.value as string
     ).token) as string;
 
-    console.log(" -----> ", Decode);
+    //console.log(" -----> ", Decode);
 
     const MonthRange: string = `${Body.year}-${
       Body.month.toString().length == 1 ? `0${Body.month}` : Body.month
@@ -30,7 +30,7 @@ export const POST = async (request: NextRequest) => {
       parseInt(Body.year) + 1
     }-01-01`;
 
-    console.log("!!!!! ---- > ", MonthRange, YearRange);
+    //console.log("!!!!! ---- > ", MonthRange, YearRange);
 
     const url: URLSearchParams = new URLSearchParams({
       cursus_id: Body.cursus.id,
@@ -41,7 +41,7 @@ export const POST = async (request: NextRequest) => {
       "filter[campus_id]": Body.campus.id,
     });
 
-    console.log("URL: ", url.toString());
+    //console.log("URL: ", url.toString());
     const data = await fetch(
       process.env.INTRA_TOKEN + "/v2/cursus_users?" + url.toString(),
       {

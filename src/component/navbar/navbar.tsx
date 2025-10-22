@@ -90,13 +90,13 @@ const Navbar = () => {
       },
     });
     if (!response.ok) {
-      console.log("here !");
+      //console.log("here !");
       Logout();
       throw new Error("Failed to fetch user data");
     }
     const data = await response.json();
     setUserData(data);
-    console.log("User Data: ", data);
+    //console.log("User Data: ", data);
   };
 
 
@@ -104,7 +104,7 @@ const Navbar = () => {
     try {
       DataToFetch();
     } catch {
-      console.log("Logouting");
+      //console.log("Logouting");
     }
   }, []);
   return (

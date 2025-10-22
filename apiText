@@ -49,9 +49,9 @@ const CalculatorPage = () => {
         temperature: 0.2,
         "responseMimeType": "application/json",
         responseSchema: schema}});
-    // console.log(" -----> ", response.text);
+    // //console.log(" -----> ", response.text);
     const json = JSON.parse(response.text!)
-    console.log("used data after filterring",json)
+    //console.log("used data after filterring",json)
   };
 
 

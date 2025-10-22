@@ -18,7 +18,7 @@ export const GET = async (request: NextRequest) => {
     const campusParam = requestUrl.searchParams.get("campus") || "16";
     const pageParam = requestUrl.searchParams.get("page") || "1";
     
-    console.log("Campus:", campusParam, "Page:", pageParam);
+    //console.log("Campus:", campusParam, "Page:", pageParam);
     
     // Verify JWT token first
     await jose.jwtVerify(
@@ -82,22 +82,65 @@ export const GET = async (request: NextRequest) => {
       sort: "-locked_at",
     });
 
+    const authCookie = request.cookies.get("auth_code")?.value;
+    if (!authCookie) {
+      throw new Error("No auth_code cookie found");
+    }
+    
+    const decodedJwt = jose.decodeJwt(authCookie);
+    const decryptedToken = DecryptionFunction(decodedJwt.token as string);
+    
+    // Validate token
+    if (!decryptedToken || decryptedToken.trim() === "") {
+      throw new Error("Decrypted token is empty or invalid");
+    }
+    
+    // Validate environment variables
+    if (!process.env.INTRA_TOKEN) {
+      throw new Error("INTRA_TOKEN environment variable is not set");
+    }
+    
+    // Log the API request details for debugging
+    //console.log("Fetching teams from:", `${process.env.INTRA_TOKEN}/v2/teams?${apiParams.toString()}`);
+    //console.log("API params:", apiParams.toString());
+    //console.log("Token is valid, length:", decryptedToken.length);
+    
     const dataFetched = await fetch(
       `${process.env.INTRA_TOKEN as string}/v2/teams?${apiParams.toString()}`,
       {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${DecryptionFunction(
-            jose.decodeJwt(request.cookies.get("auth_code")?.value as string)
-              .token as string
-          )}`,
+          Authorization: `Bearer ${decryptedToken}`,
         },
       }
     );
     
     if (!dataFetched.ok) {
-      throw new Error("Failed to fetch teams data");
+      let errorBody = "";
+      let errorJson: any = null;
+      try {
+        errorBody = await dataFetched.text();
+        try {
+          errorJson = JSON.parse(errorBody);
+        } catch (parseError) {
+          // Response is not JSON, errorBody is the raw text
+        }
+        console.error(`Intra API Error: Status ${dataFetched.status}`);
+        console.error(`Response body:`, errorBody);
+        if (errorJson) {
+          console.error(`Parsed error:`, errorJson);
+        }
+      } catch (e) {
+        console.error(`Failed to read error response: ${e}`);
+      }
+      
+      // Log more debugging info
+      console.error(`Authorization header length: ${decryptedToken.length}`);
+      console.error(`Token preview: ${decryptedToken.substring(0, 50)}...`);
+      console.error(`INTRA_TOKEN URL: ${process.env.INTRA_TOKEN}`);
+      
+      throw new Error(`Failed to fetch teams data: HTTP ${dataFetched.status} - ${errorJson?.error || errorBody.substring(0, 500) || "No response body"}`);
     }
     
     const data: RawTeamData[] = await dataFetched.json();

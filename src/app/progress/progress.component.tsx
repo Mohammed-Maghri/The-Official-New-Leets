@@ -81,7 +81,7 @@ const ProgressBar: React.FC<{
       console.error("Failed to logout");
       return;
     }
-    console.log("Lgout successful");
+    //console.log("Lgout successful");
     setUserData(cloneData as null[]);
     router.push("/");
   };

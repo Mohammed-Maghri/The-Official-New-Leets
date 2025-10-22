@@ -23,9 +23,9 @@ export const GET = async (request: NextRequest) => {
       redirect_uri: process.env.INTRA_REDIRECT_URI as string,
     });
 
-    console.log("Client Query: ", ClientQuery.toString());
+    //console.log("Client Query: ", ClientQuery.toString());
     const tokenUrl = (process.env.INTRA_TOKEN as string) + "/oauth/token";
-    console.log("Token URL: ", tokenUrl);
+    //console.log("Token URL: ", tokenUrl);
     const fetchToken = await fetch(
       tokenUrl,
       {
@@ -63,7 +63,7 @@ export const GET = async (request: NextRequest) => {
         : "http://localhost:3000/dashboard"
     );
   } catch (error) {
-    console.log(" --------> ", error);
+    //console.log(" --------> ", error);
     return NextResponse.json(
       {
         error: "An error occurred while processing your request.",

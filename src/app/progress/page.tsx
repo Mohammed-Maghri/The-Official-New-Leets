@@ -58,7 +58,7 @@ const Progress = () => {
                          }`}
                   onClick={() => {
                     if (!isLoadingMore) {
-                      console.log("Loading more data...");
+                      //console.log("Loading more data...");
                       setIsLoadingMore(true);
                       setPageNumber((prev) => prev + 1);
 
