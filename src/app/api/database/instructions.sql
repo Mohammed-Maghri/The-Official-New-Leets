@@ -23,3 +23,17 @@ VALUES (
         '',
         'owner'
     );
+
+INSERT INTO
+    leets.vip (
+        category,
+        login,
+        profile,
+        token
+    )
+VALUES (
+        'student',
+        'asnaji',
+        '',
+        'owner'
+    );

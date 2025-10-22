@@ -18,7 +18,7 @@ export const GET = async (request: NextRequest) => {
     const campusParam = requestUrl.searchParams.get("campus") || "16";
     const pageParam = requestUrl.searchParams.get("page") || "1";
     
-    //console.log("Campus:", campusParam, "Page:", pageParam);
+    console.log("Campus:", campusParam, "Page:", pageParam);
     
     // Verify JWT token first
     await jose.jwtVerify(
@@ -101,9 +101,9 @@ export const GET = async (request: NextRequest) => {
     }
     
     // Log the API request details for debugging
-    //console.log("Fetching teams from:", `${process.env.INTRA_TOKEN}/v2/teams?${apiParams.toString()}`);
-    //console.log("API params:", apiParams.toString());
-    //console.log("Token is valid, length:", decryptedToken.length);
+    console.log("Fetching teams from:", `${process.env.INTRA_TOKEN}/v2/teams?${apiParams.toString()}`);
+    console.log("API params:", apiParams.toString());
+    console.log("Token is valid, length:", decryptedToken.length);
     
     const dataFetched = await fetch(
       `${process.env.INTRA_TOKEN as string}/v2/teams?${apiParams.toString()}`,
@@ -116,32 +116,27 @@ export const GET = async (request: NextRequest) => {
       }
     );
     
-    if (!dataFetched.ok) {
-      let errorBody = "";
-      let errorJson: any = null;
-      try {
-        errorBody = await dataFetched.text();
-        try {
-          errorJson = JSON.parse(errorBody);
-        } catch (parseError) {
-          // Response is not JSON, errorBody is the raw text
-        }
-        console.error(`Intra API Error: Status ${dataFetched.status}`);
-        console.error(`Response body:`, errorBody);
-        if (errorJson) {
-          console.error(`Parsed error:`, errorJson);
-        }
-      } catch (e) {
-        console.error(`Failed to read error response: ${e}`);
-      }
+    // if (!dataFetched.ok) {
+    //   // let errorBody = "";
+    //   // let errorJson: any = null;
+    //   // try {
+    //   //   errorBody = await dataFetched.text();
+    //   //   // console.error(`Intra API Error: Status ${dataFetched.status}`);
+    //   //   // console.error(`Response body:`, errorBody);
+    //   //   // if (errorJson) {
+    //   //     // console.error(`Parsed error:`, errorJson);
+    //   //   // }
+    //   // } catch (e) {
+    //   //   console.error(`Failed to read error response: ${e}`);
+    //   // }
       
-      // Log more debugging info
-      console.error(`Authorization header length: ${decryptedToken.length}`);
-      console.error(`Token preview: ${decryptedToken.substring(0, 50)}...`);
-      console.error(`INTRA_TOKEN URL: ${process.env.INTRA_TOKEN}`);
+    //   // Log more debugging info
+    //   // console.error(`Authorization header length: ${decryptedToken.length}`);
+    //   // console.error(`Token preview: ${decryptedToken.substring(0, 50)}...`);
+    //   // console.error(`INTRA_TOKEN URL: ${process.env.INTRA_TOKEN}`);
       
-      throw new Error(`Failed to fetch teams data: HTTP ${dataFetched.status} - ${errorJson?.error || errorBody.substring(0, 500) || "No response body"}`);
-    }
+    //   // throw new Error(`Failed to fetch teams data: HTTP ${dataFetched.status} - ${errorJson?.error || errorBody.substring(0, 500) || "No response body"}`);
+    // }
     
     const data: RawTeamData[] = await dataFetched.json();
     const otherThings: TransformedTeamData[] = data.map((item: RawTeamData) => {

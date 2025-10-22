@@ -62,7 +62,7 @@ export const GET = async (request: NextRequest) => {
         ? `${process.env.productionUrl}/dashboard`
         : "http://localhost:3000/dashboard"
     );
-  } catch (error) {
+  } catch {
     //console.log(" --------> ", error);
     return NextResponse.json(
       {
