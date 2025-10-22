@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Auth Test</title>
+  <style>
+    body {
+      font-family: monospace;
+      padding: 20px;
+      background: #1a1a1a;
+      color: #0f0;
+    }
+    button {
+      background: #0f0;
+      color: #000;
+      border: none;
+      padding: 10px 20px;
+      cursor: pointer;
+      font-family: monospace;
+      font-size: 16px;
+      margin: 10px 0;
+    }
+    pre {
+      background: #000;
+      padding: 15px;
+      border: 1px solid #0f0;
+      overflow: auto;
+    }
+    .success { color: #0f0; }
+    .error { color: #f00; }
+  </style>
+</head>
+<body>
+  <h1>🔐 Authentication Test</h1>
+  
+  <button onclick="testAuth()">Test Auth Verification</button>
+  <button onclick="showCookies()">Show All Cookies</button>
+  
+  <h2>Results:</h2>
+  <pre id="output">Click a button to test...</pre>
+
+  <script>
+    async function testAuth() {
+      const output = document.getElementById('output');
+      output.innerHTML = '⏳ Testing authentication...\n';
+      
+      try {
+        const response = await fetch('/api/auth/verify');
+        const data = await response.json();
+        
+        if (response.ok) {
+          output.innerHTML = `<span class="success">✅ Authentication Success!</span>
+
+Status: ${response.status}
+User: ${data.userData?.login || 'Unknown'}
+Token (first 50 chars): ${data.token?.substring(0, 50)}...
+
+Full Response:
+${JSON.stringify(data, null, 2)}`;
+        } else {
+          output.innerHTML = `<span class="error">❌ Authentication Failed</span>
+
+Status: ${response.status}
+Error: ${data.error}
+
+Full Response:
+${JSON.stringify(data, null, 2)}`;
+        }
+      } catch (error) {
+        output.innerHTML = `<span class="error">❌ Request Error</span>
+
+${error.message}
+
+Stack:
+${error.stack}`;
+      }
+    }
+
+    function showCookies() {
+      const output = document.getElementById('output');
+      const cookies = document.cookie;
+      
+      if (!cookies) {
+        output.innerHTML = '<span class="error">❌ No cookies found</span>';
+        return;
+      }
+      
+      const cookieList = cookies.split('; ').map(c => {
+        const [name, value] = c.split('=');
+        return `${name}: ${value.substring(0, 50)}${value.length > 50 ? '...' : ''}`;
+      });
+      
+      output.innerHTML = `<span class="success">🍪 Cookies Found:</span>
+
+${cookieList.join('\n')}
+
+Note: httpOnly cookies (like auth_code) won't appear here!
+They can only be read server-side.`;
+    }
+  </script>
+</body>
+</html>

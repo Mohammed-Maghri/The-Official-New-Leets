@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Socket.IO Connection Test</title>
+    <style>
+        body {
+            font-family: monospace;
+            background: #1a1a1a;
+            color: #00ff00;
+            padding: 20px;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        .log {
+            background: #000;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #00ff00;
+            border-radius: 5px;
+            max-height: 400px;
+            overflow-y: auto;
+        }
+        .success { color: #00ff00; }
+        .error { color: #ff0000; }
+        .warning { color: #ffaa00; }
+        button {
+            background: #00ff00;
+            color: #000;
+            border: none;
+            padding: 10px 20px;
+            font-family: monospace;
+            font-weight: bold;
+            cursor: pointer;
+            margin: 5px;
+        }
+        button:hover {
+            background: #00cc00;
+        }
+        #status {
+            font-size: 20px;
+            font-weight: bold;
+            margin: 20px 0;
+        }
+    </style>
+</head>
+<body>
+    <h1>🔌 Socket.IO Connection Test</h1>
+    
+    <div id="status">Status: <span class="warning">Not Started</span></div>
+    
+    <button onclick="testConnection()">Test Connection</button>
+    <button onclick="clearLog()">Clear Log</button>
+    
+    <div class="log" id="log"></div>
+
+    <script src="https://cdn.socket.io/4.7.2/socket.io.min.js"></script>
+    <script>
+        let socket = null;
+        
+        function log(message, type = 'success') {
+            const logDiv = document.getElementById('log');
+            const timestamp = new Date().toLocaleTimeString();
+            const entry = document.createElement('div');
+            entry.className = type;
+            entry.textContent = `[${timestamp}] ${message}`;
+            logDiv.appendChild(entry);
+            logDiv.scrollTop = logDiv.scrollHeight;
+        }
+        
+        function updateStatus(text, type = 'warning') {
+            const statusSpan = document.querySelector('#status span');
+            statusSpan.textContent = text;
+            statusSpan.className = type;
+        }
+        
+        function clearLog() {
+            document.getElementById('log').innerHTML = '';
+        }
+        
+        async function testConnection() {
+            log('🔍 Starting Socket.IO connection test...', 'warning');
+            
+            // Check for auth token
+            const token = document.cookie
+                .split('; ')
+                .find(row => row.startsWith('auth_code='))
+                ?.split('=')[1];
+            
+            if (!token) {
+                log('❌ ERROR: No auth_code cookie found!', 'error');
+                log('💡 Please login first at: http://localhost:3000/', 'warning');
+                updateStatus('Not Logged In', 'error');
+                return;
+            }
+            
+            log('✅ Auth token found', 'success');
+            log('📡 Connecting to Socket.IO server...', 'warning');
+            updateStatus('Connecting...', 'warning');
+            
+            // Close existing connection
+            if (socket) {
+                socket.close();
+            }
+            
+            // Create new socket connection
+            socket = io({
+                path: '/api/socket',
+                auth: { token },
+                transports: ['polling', 'websocket']
+            });
+            
+            // Connection events
+            socket.on('connect', () => {
+                log('✅✅✅ CONNECTED! Socket ID: ' + socket.id, 'success');
+                updateStatus('Connected ✅', 'success');
+            });
+            
+            socket.on('disconnect', (reason) => {
+                log('❌ Disconnected: ' + reason, 'error');
+                updateStatus('Disconnected ❌', 'error');
+            });
+            
+            socket.on('connect_error', (error) => {
+                log('❌❌❌ Connection Error: ' + error.message, 'error');
+                updateStatus('Connection Failed ❌', 'error');
+            });
+            
+            socket.on('previousMessages', (messages) => {
+                log('📨 Received ' + messages.length + ' previous messages', 'success');
+            });
+            
+            socket.on('receiveMessage', (message) => {
+                log('💬 New message from ' + message.username + ': ' + message.message, 'success');
+            });
+            
+            socket.on('error', (error) => {
+                log('❌ Socket error: ' + error.message, 'error');
+            });
+            
+            // Test sending a message after 2 seconds if connected
+            setTimeout(() => {
+                if (socket.connected) {
+                    log('📤 Attempting to send test message...', 'warning');
+                    socket.emit('sendMessage', { message: 'Test message from diagnostic tool!' });
+                }
+            }, 2000);
+        }
+        
+        // Auto-test on load
+        log('🚀 Socket.IO Diagnostic Tool Ready', 'success');
+        log('Click "Test Connection" to start', 'warning');
+    </script>
+</body>
+</html>
