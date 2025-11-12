@@ -43,7 +43,7 @@ const LocationUserDetails: React.FC<{
           <div
             className={`w-[8px] h-[8px] ${
               location ? "bg-green-400" : "bg-red-400"
-            }  rounded-full shadow-lg`}
+            }  rounded-full`}
           ></div>
         </div>
         <div className="flex-1 ">
@@ -114,6 +114,18 @@ const LevelProgress: React.FC<{
   badge?: { type: 'creator' | 'vip' | 'feedback'; name: string } | null;
 }> = ({ level, rank, badge }) => {
   const getBadgeConfig = (badge: { type: 'creator' | 'vip' | 'feedback'; name: string }) => {
+    // Check for VIP by name first (handles both type='vip' and type='feedback' with name='VIP')
+    if (badge.name === 'VIP' || badge.name === 'vip' || badge.type === 'vip') {
+      return {
+        icon: BsDiamond,
+        bg: 'bg-gradient-to-r from-purple-500/50 to-violet-500/50',
+        border: 'border-purple-300/60',
+        shadow: 'shadow-purple-400/40',
+        text: 'text-purple-100',
+        label: 'VIP'
+      };
+    }
+    
     if (badge.type === 'creator') {
       return {
         icon: FaCrown,
@@ -122,17 +134,6 @@ const LevelProgress: React.FC<{
         shadow: 'shadow-yellow-400/40',
         text: 'text-yellow-100',
         label: 'CREATOR'
-      };
-    }
-    
-    if (badge.type === 'vip') {
-      return {
-        icon: BsDiamond,
-        bg: 'bg-yellow-400/40',
-        border: 'border-yellow-300/60',
-        shadow: 'shadow-yellow-400/40',
-        text: 'text-yellow-100',
-        label: 'VIP'
       };
     }
     
@@ -214,7 +215,7 @@ const LevelProgress: React.FC<{
                 {rank}
               </p>
               {badgeConfig && BadgeIcon && (
-                <div className={`ml-1 px-3 py-1.5 border-2 rounded-full shadow-xl flex flex-row items-center gap-1 ${badgeConfig.bg} ${badgeConfig.border} ${badgeConfig.shadow} animate-pulse`}>
+                <div className={`ml-1 px-3 py-1.5 border-2 rounded-full flex flex-row items-center gap-1 ${badgeConfig.bg} ${badgeConfig.border}`}>
                   <BadgeIcon className={`${badgeConfig.text} text-[12px]`} />
                   <span className={`${badgeConfig.text} font-Tektur text-[8px] font-bold tracking-widest`}>
                     {badgeConfig.label}
@@ -252,8 +253,8 @@ const LevelProgress: React.FC<{
           }}
           className=" h-full bg-gradient-to-r from-pink-400 to-yellow-400 rounded-r-lg relative overflow-hidden"
         >
-          <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent animate-pulse"></div>
-          <div className="absolute inset-0 bg-gradient-to-r from-rose-500/30 via-transparent to-yellow-400/30 animate-pulse delay-700"></div>
+          <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent"></div>
+          <div className="absolute inset-0 bg-gradient-to-r from-rose-500/30 via-transparent to-yellow-400/30"></div>
         </div>
       </div>
     </div>
@@ -268,48 +269,42 @@ const StatusGrid: React.FC<{
 }> = ({ wallet, kind, staff, correction_point }) => {
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-6">
-      <div className="bg-blue-500/10 border border-[#0070ef]/20 rounded-lg p-4">
-        <div className="flex items-center space-x-2 mb-2">
-          <div className="w-3 h-3 bg-gradient-to-r from-[#0070ef] to-blue-400 rounded-full"></div>
-          <p className="text-sm font-medium text-[#0070ef] font-Tektur">
-            Account Type
-          </p>
-        </div>
-        <p className="text-lg font-bold text-white font-Tektur capitalize">
+      {/* Account Type */}
+      <div className="bg-blue-950/20 border border-blue-800/40 rounded-xl p-4">
+        <p className="text-sm font-medium text-gray-300 font-Tektur mb-2">
+          Account Type
+        </p>
+        <p className="text-xl font-bold text-white font-Tektur capitalize">
           {kind}
         </p>
-        <p className="text-xs text-blue-300/70 font-light font-Tektur">
+        <p className="text-xs text-gray-400 font-light font-Tektur mt-1">
           {staff ? "Staff Member" : "Student Account"}
         </p>
       </div>
 
-      <div className="bg-rose-500/10 border border-rose-400/20 rounded-lg p-4">
-        <div className="flex items-center space-x-2 mb-2">
-          <div className="w-3 h-3 bg-gradient-to-r from-rose-400 to-pink-500 rounded-full"></div>
-          <p className="text-sm font-medium text-rose-400 font-Tektur">
-            Evaluation
-          </p>
-        </div>
-        <p className="text-lg font-bold text-white font-Tektur">
-          {correction_point} Points
+      {/* Evaluation Points */}
+      <div className="bg-blue-950/20 border border-blue-800/40 rounded-xl p-4">
+        <p className="text-sm font-medium text-gray-300 font-Tektur mb-2">
+          Evaluation Points
         </p>
-        <p className="text-xs text-rose-300/70 font-light font-Tektur">
+        <p className="text-xl font-bold text-white font-Tektur">
+          {correction_point}
+        </p>
+        <p className="text-xs text-gray-400 font-light font-Tektur mt-1">
           Available for Corrections
         </p>
       </div>
 
-      <div className="bg-yellow-500/10 border border-yellow-400/20 rounded-lg p-4">
-        <div className="flex items-center space-x-2 mb-2">
-          <div className="w-3 h-3 bg-gradient-to-r from-yellow-400 to-amber-500 rounded-full"></div>
-          <p className="text-sm font-medium text-yellow-400 font-Tektur">
-            Balance
-          </p>
-        </div>
-        <p className="text-lg font-bold text-white font-Tektur">
-          {wallet} Credits
+      {/* Wallet Balance */}
+      <div className="bg-blue-950/20 border border-blue-800/40 rounded-xl p-4">
+        <p className="text-sm font-medium text-gray-300 font-Tektur mb-2">
+          Wallet Balance
         </p>
-        <p className="text-xs text-yellow-300/70 font-light font-Tektur">
-          Digital Wallet
+        <p className="text-xl font-bold text-white font-Tektur">
+          {wallet}
+        </p>
+        <p className="text-xs text-gray-400 font-light font-Tektur mt-1">
+          Digital Credits
         </p>
       </div>
     </div>
@@ -409,28 +404,78 @@ const ContactInformation: React.FC<{ email: string }> = ({ email }) => {
   );
 };
 
-const RankComponent: React.FC<{ userData: UserData | null; rank: number }> = ({
+const RankComponent: React.FC<{ userData: UserData | null; rank: number; isGridView?: boolean; podiumPosition?: "gold" | "silver" | "bronze" }> = ({
   userData,
   rank,
+  isGridView = false,
+  podiumPosition,
 }) => {
+  // Determine background based on badge type or podium position (for both grid and list views)
+  const getBackgroundClass = () => {
+    // Check for special badges (both grid and list view)
+    if (userData?.badge) {
+      // Check for VIP by name (handles both type='vip' and type='feedback' with name='VIP')
+      if (userData?.badge?.name === "VIP" || userData?.badge?.name === "vip" || userData?.badge?.type === "vip") {
+        return "bg-gradient-to-br from-purple-500/25 to-violet-500/25 border-2 border-purple-400/70";
+      } else if (userData?.badge?.type === "creator") {
+        return "bg-gradient-to-br from-yellow-400/25 to-amber-600/25 border-2 border-yellow-400/70";
+      } else if (userData?.badge?.name === "Top Feedback") {
+        return "bg-gradient-to-br from-purple-500/25 to-pink-500/25 border-2 border-purple-400/70";
+      } else if (userData?.badge?.name === "Helpful") {
+        return "bg-gradient-to-br from-blue-500/25 to-cyan-500/25 border-2 border-blue-400/70";
+      } else if (userData?.badge?.name === "Innovative") {
+        return "bg-gradient-to-br from-green-500/25 to-emerald-500/25 border-2 border-green-400/70";
+      } else if (userData?.badge?.name === "Critical Thinker") {
+        return "bg-gradient-to-br from-indigo-500/25 to-violet-500/25 border-2 border-indigo-400/70";
+      } else if (userData?.badge?.name === "Contributor") {
+        return "bg-gradient-to-br from-rose-500/25 to-red-500/25 border-2 border-rose-400/70";
+      }
+    }
+    
+    // Podium positions (top 3 ranks)
+    if (podiumPosition === "gold") {
+      return "bg-gradient-to-br from-yellow-400/10 to-amber-600/10 border-2 border-yellow-400/80";
+    } else if (podiumPosition === "silver") {
+      return "bg-gradient-to-br from-gray-400/10 to-gray-600/10 border-2 border-gray-400/70";
+    } else if (podiumPosition === "bronze") {
+      return "bg-gradient-to-br from-amber-600/10 to-orange-700/10 border-2 border-amber-600/70";
+    }
+    
+    // Check for top 3 ranks even without podiumPosition (for list view)
+    if (!isGridView && rank >= 1 && rank <= 3) {
+      if (rank === 1) {
+        return "bg-gradient-to-br from-yellow-400/10 to-amber-600/10 border-2 border-yellow-400/80";
+      } else if (rank === 2) {
+        return "bg-gradient-to-br from-gray-400/10 to-gray-600/10 border-2 border-gray-400/70";
+      } else if (rank === 3) {
+        return "bg-gradient-to-br from-amber-600/10 to-orange-700/10 border-2 border-amber-600/70";
+      }
+    }
+    
+    // Regular cards - solid dark blue with low opacity and sharp border
+    return "bg-blue-950/30 border border-blue-700/70";
+  };
+
   return (
     <div
       onClick={() =>
         window.open(`https://profile.intra.42.fr/users/${userData?.login}`)
       }
-      className="flex cursor-pointer  relative rounded-l-sm w-full  h-full gap-1 min-h-[130px] bg-gray-800 border border-gray-800/50 rounded-2xl shadow-2xl"
+      className={`flex cursor-pointer relative ${
+        isGridView ? "flex-col w-full h-auto" : "flex-row w-full h-full min-h-[130px]"
+      } gap-1 ${getBackgroundClass()} rounded-2xl transition-all duration-300 justify-between ${isGridView ? "py-6 px-3" : "p-4"}`}
     >
       {userData != null ? (
         <>
           {rank !== -1 && rank >= 1 && rank < 4 && (
-            <div className="w-[100px] h-[60px] z-20 absolute top-[-25px] left-[-45px] rotate-[-40deg] flex items-center justify-center">
+            <div className={`z-20 absolute ${isGridView ? "top-[-15px] left-1/2 -translate-x-1/2" : "top-[-25px] left-[-45px]"} rotate-[-40deg] flex items-center justify-center`}>
               <GiQueenCrown
-                size={50}
+                size={isGridView ? 45 : 50}
                 className={`${
                   rank == 1
-                    ? "text-yellow-300"
+                    ? "text-yellow-400"
                     : rank == 2
-                    ? "text-gray-500"
+                    ? "text-gray-400"
                     : rank == 3
                     ? "text-amber-600"
                     : ""
@@ -438,30 +483,128 @@ const RankComponent: React.FC<{ userData: UserData | null; rank: number }> = ({
               />
             </div>
           )}
-          <ImageSideComp image={userData.image as string} />
-          <div className="flex-1  h-full flex items-center justify-center flex-col">
-            <div className="w-full h-[40px] mt-1 relative  flex items-center justify-start ">
-              <LocationUserDetails
-                location={userData.location}
-                username={userData.login}
-              />
-              <WalletCoins
-                wallet={userData.wallet}
-                correctionPoints={userData.correction_point}
-              />
+          {isGridView ? (
+            // Grid Layout - Enhanced Box - Professional Layout
+            <div className="flex flex-col w-full h-full items-center justify-start gap-6">
+              {/* Top Section - Avatar with Circular Level Progress Ring */}
+              <div className="w-full flex justify-center pt-4 pb-2 relative">
+                <div className="relative flex items-center justify-center">
+                  {/* Circular Progress Ring Background */}
+                  <svg className="absolute w-[160px] h-[160px] -rotate-90" viewBox="0 0 130 130">
+                    <defs>
+                      <linearGradient id={`progressGradient-${rank}`} x1="0%" y1="0%" x2="100%" y2="100%">
+                        <stop offset="0%" stopColor="#ec4899" />
+                        <stop offset="100%" stopColor="#facc15" />
+                      </linearGradient>
+                    </defs>
+                    <circle cx="65" cy="65" r="60" fill="none" stroke="rgb(59, 130, 246, 0.2)" strokeWidth="6" />
+                    <circle 
+                      cx="65" 
+                      cy="65" 
+                      r="60" 
+                      fill="none" 
+                      stroke={`url(#progressGradient-${rank})`}
+                      strokeWidth="6"
+                      strokeDasharray={`${(() => {
+                        const circumference = 2 * Math.PI * 60;
+                        const levelStr = userData.level.toString();
+                        const parts = levelStr.split(".");
+                        if (parts.length === 1) return 0;
+                        const decimal = parts[1];
+                        if (decimal === "00") return 0;
+                        const percentage = parseInt(decimal.length === 1 ? decimal + "0" : decimal);
+                        const progress = (percentage / 100) * circumference;
+                        return progress;
+                      })()} ${2 * Math.PI * 60}`}
+                      strokeLinecap="round"
+                      className="transition-all duration-300"
+                    />
+                  </svg>
+
+                  {/* Avatar - Centered in Ring */}
+                  <div className="relative w-[120px] h-[120px] rounded-full overflow-visible border-4 border-[#0070ef]/40 flex-shrink-0 z-10">
+                    <div className="absolute inset-0 bg-gradient-to-br from-[#0070ef]/20 to-transparent pointer-events-none rounded-full"></div>
+                    <img
+                      src={userData.image != null ? userData.image : "nopic.jpg"}
+                      alt="User Avatar"
+                      className="w-full h-full object-cover rounded-full"
+                    />
+                    
+                    {/* Rank Badge - On Top Right of Avatar, Fully Visible */}
+                    <div className="absolute -top-3 -right-3 z-20">
+                      <p className="font-Tektur border-solid border-[2px] border-[#0070ef]/60 text-white font-black w-[48px] h-[48px] text-[18px] rounded-full flex items-center justify-center bg-gradient-to-br from-gray-700 to-gray-800 backdrop-blur-sm">
+                        {rank}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Middle Section - User Info */}
+              <div className="w-full flex flex-col items-center gap-3">
+                {/* Username Box */}
+                <div className="px-4 py-2 bg-gradient-to-r from-yellow-400/20 to-amber-500/20 border border-yellow-400/50 rounded-lg">
+                  <p className="font-Tektur text-[12px] text-yellow-200 font-bold text-center line-clamp-1">
+                    @{userData.login}
+                  </p>
+                </div>
+
+                {/* Level Display */}
+                <span className="text-[18px] font-black text-white font-Tektur">
+                  {userData.level.toFixed(2)}
+                </span>
+
+                {/* Name */}
+                <p className="font-Tektur text-[15px] text-white/95 text-center line-clamp-2 font-semibold leading-tight px-2 min-h-[36px] flex items-center justify-center">
+                  {userData.fullname}
+                </p>
+
+                {/* Online/Offline Status */}
+                <div className={`px-3 py-1.5 rounded-lg border flex items-center gap-2 min-w-[100px] justify-center ${
+                  userData.location 
+                    ? "bg-green-500/10 border-green-400/30" 
+                    : "bg-red-500/10 border-red-400/30"
+                }`}>
+                  <div className={`w-[8px] h-[8px] ${
+                    userData.location ? "bg-green-400" : "bg-red-400"
+                  } rounded-full flex-shrink-0`}></div>
+                  <p className={`font-Tektur text-[10px] font-semibold truncate ${
+                    userData.location ? "text-green-400" : "text-red-400"
+                  }`}>
+                    {userData.location ? userData.location : "Offline"}
+                  </p>
+                </div>
+              </div>
             </div>
-            <div className="w-full h-[20px] mb-3 pl-4 flex items-center justify-start">
-              <p className="font-Tektur text-[12px] text-white">
-                {userData.fullname}
-              </p>
-            </div>
-            <LevelProgress
-              level={userData.level}
-              rank={rank}
-              username={userData.login}
-              badge={userData.badge}
-            />
-          </div>
+          ) : (
+            // Original Horizontal Layout
+            <>
+              <ImageSideComp image={userData.image as string} />
+              <div className="flex-1 h-full flex items-center justify-center flex-col">
+                <div className="w-full h-[40px] mt-1 relative flex items-center justify-start">
+                  <LocationUserDetails
+                    location={userData.location}
+                    username={userData.login}
+                  />
+                  <WalletCoins
+                    wallet={userData.wallet}
+                    correctionPoints={userData.correction_point}
+                  />
+                </div>
+                <div className="w-full h-[20px] mb-3 pl-4 flex items-center justify-start">
+                  <p className="font-Tektur text-[12px] text-white/90">
+                    {userData.fullname}
+                  </p>
+                </div>
+                <LevelProgress
+                  level={userData.level}
+                  rank={rank}
+                  username={userData.login}
+                  badge={userData.badge}
+                />
+              </div>
+            </>
+          )}
         </>
       ) : (
         <div className="relative flex flex-1 items-center gap-2 justify-center">
@@ -474,6 +617,7 @@ const RankComponent: React.FC<{ userData: UserData | null; rank: number }> = ({
           </div>
           <Skeleton
             variant="rectangular"
+            animation={false}
             sx={{ bg: "white", position: "absolute" }}
             width="100%"
             height="100%"

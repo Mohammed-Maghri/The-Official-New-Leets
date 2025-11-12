@@ -35,6 +35,7 @@ const VipPage = () => {
   const [showAdminPanel, setShowAdminPanel] = React.useState<boolean>(false);
   const [currentUser, setCurrentUser] = React.useState<UserData | null>(null);
   const [isAdminUser, setIsAdminUser] = React.useState<boolean>(false);
+  const [searchQuery, setSearchQuery] = React.useState<string>("");
 
   const getProjectName = React.useCallback((projectId: string): string => {
     const id = parseInt(projectId);
@@ -156,7 +157,6 @@ const VipPage = () => {
       }
       
       const response = await data.json();
-      //console.log("API request successful, data:", response);
       
       if (loadMore) {
         setDataReturned(prev => prev ? [...prev, ...response] : response);
@@ -216,7 +216,6 @@ const VipPage = () => {
 
   const handleLoadMore = () => {
     if (!isLoadingMore) {
-      //console.log("Loading more data...");
       const nextPage = pageNumber + 1;
       setPageNumber(nextPage);
       functionfetchdata(selectedCampus.id, nextPage, true);
@@ -245,7 +244,6 @@ const VipPage = () => {
     functionfetchdata();
   }, [selectedCampus]);
 
-  //console.log(
   //   "Render state - isLoading:",
   //   isLoading,
   //   "dataReturned:",
@@ -253,15 +251,15 @@ const VipPage = () => {
   // );
 
   return (
-    <div className="flex flex-1 items-center justify-start overflow-x-hidden flex-col bg-gradient-to-br z-20 from-gray-900/50 via-[#0070ef]/20 to-rose-500/30 relative p-6">
+    <div className="flex flex-1 items-center justify-start overflow-x-hidden flex-col z-10 relative p-6">
       {currentUser && isAdminUser && (
         <div className="fixed top-6 left-6 z-40">
           <button
             onClick={() => setShowAdminPanel(true)}
-            className="w-14 h-14 bg-yellow-500/20 hover:bg-yellow-500/30 border-2 border-yellow-500/40 hover:border-yellow-500/60 text-yellow-400 hover:text-yellow-300 rounded-full transition-all duration-300 flex items-center justify-center shadow-lg hover:shadow-yellow-500/20 hover:scale-105"
+            className="w-14 h-14 bg-[#0070ef]/20 hover:bg-[#0070ef]/30 border-2 border-[#0070ef]/40 hover:border-[#0070ef]/60 text-white rounded-lg transition-all duration-300 flex items-center justify-center shadow-lg hover:scale-105"
             title="Admin Panel"
           >
-            <span className="text-2xl">👑</span>
+            <span className="text-xl font-bold font-Tektur">★</span>
           </button>
         </div>
       )}
@@ -286,6 +284,8 @@ const VipPage = () => {
             uniqueProjects={getUniqueProjects()}
             allProjects={getAllProjectsFromJson()}
             onFiltersChange={handleFiltersChange}
+            searchQuery={searchQuery}
+            onSearchChange={setSearchQuery}
           />
 
           <TeamGrid
@@ -306,7 +306,7 @@ const VipPage = () => {
         </div>
       ) : dataReturned === undefined ? (
         <AccessDenied
-          title="🔒 VIP Access Required"
+          title="VIP Access Required"
           message="This exclusive area is reserved for VIP members only. You need special authorization to access teams and projects data."
           showRetry={true}
           onRetry={handleRetryAccess}

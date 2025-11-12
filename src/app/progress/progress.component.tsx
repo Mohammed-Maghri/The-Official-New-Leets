@@ -19,7 +19,8 @@ import { useRouter } from "next/navigation";
 const ProgressBar: React.FC<{
   setUserData: React.Dispatch<React.SetStateAction<UserData[] | null[]>>;
   pageNumber: number;
-}> = ({ setUserData, pageNumber }) => {
+  setIsFetchingData: React.Dispatch<React.SetStateAction<boolean>>;
+}> = ({ setUserData, pageNumber, setIsFetchingData }) => {
   const [cursuson, setCursuson] = React.useState<boolean>(false);
   const [campusOn, setCampusOn] = React.useState<boolean>(false);
   const [monthOn, setMonthOn] = React.useState<boolean>(false);
@@ -81,12 +82,14 @@ const ProgressBar: React.FC<{
       console.error("Failed to logout");
       return;
     }
-    //console.log("Lgout successful");
     setUserData(cloneData as null[]);
     router.push("/");
   };
 
   const FetchData = async (object: SearchDeliverData, more: boolean) => {
+    if (!more) {
+      setIsFetchingData(true);
+    }
     const response = await fetch("/api/progress", {
       method: "POST",
       headers: {
@@ -96,6 +99,7 @@ const ProgressBar: React.FC<{
     });
     if (!response.ok) {
       console.error("Failed to fetch progress data");
+      setIsFetchingData(false);
       fetchLogout();
       return;
     }
@@ -105,6 +109,7 @@ const ProgressBar: React.FC<{
     } else {
       setUserData(data);
     }
+    setIsFetchingData(false);
   };
 
   React.useEffect(() => {

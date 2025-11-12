@@ -97,10 +97,8 @@ const FeedbackPopup: React.FC<FeedbackPopupProps> = ({ onClose, username }) => {
         return;
       }
 
-      console.log("Feedback submitted successfully:", result);
       
       if (result.remainingSubmissions !== undefined) {
-        console.log(`You have ${result.remainingSubmissions} feedback submission(s) remaining.`);
       }
       
       setShowConfirmation(false);

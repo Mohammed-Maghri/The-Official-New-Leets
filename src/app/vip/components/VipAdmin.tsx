@@ -125,7 +125,7 @@ export default function VipAdmin({ isVisible, onClose }: VipAdminProps) {
         initial={{ scale: 0.9, opacity: 0 }}
         animate={{ scale: 1, opacity: 1 }}
         exit={{ scale: 0.9, opacity: 0 }}
-        className="bg-gradient-to-br from-gray-900 to-gray-800 border border-orange-500/20 rounded-2xl p-6 w-full max-w-4xl max-h-[90vh] overflow-hidden flex flex-col"
+        className="bg-[#001226] border border-[#0070ef]/30 rounded-2xl p-6 w-full max-w-4xl max-h-[90vh] overflow-hidden flex flex-col"
       >
         <div className="flex items-center justify-between mb-6">
           <h2 className="text-2xl font-bold text-white flex items-center gap-3">
@@ -161,12 +161,12 @@ export default function VipAdmin({ isVisible, onClose }: VipAdminProps) {
               placeholder="User login (e.g., jdoe)"
               value={newUserLogin}
               onChange={(e) => setNewUserLogin(e.target.value)}
-              className="flex-1 bg-gray-700 border border-gray-600 rounded-lg px-4 py-2 text-white placeholder-gray-400 focus:outline-none focus:border-orange-500"
+              className="flex-1 bg-gray-700 border border-gray-600 rounded-lg px-4 py-2 text-white placeholder-gray-400 focus:outline-none focus:border-[#0070ef]"
             />
             <select
               value={newUserCategory}
               onChange={(e) => setNewUserCategory(e.target.value)}
-              className="bg-gray-700 border border-gray-600 rounded-lg px-4 py-2 text-white focus:outline-none focus:border-orange-500"
+              className="bg-gray-700 border border-gray-600 rounded-lg px-4 py-2 text-white focus:outline-none focus:border-[#0070ef]"
             >
               <option value="student">Student</option>
               <option value="staff">Staff</option>
@@ -175,7 +175,7 @@ export default function VipAdmin({ isVisible, onClose }: VipAdminProps) {
             <button
               onClick={addUser}
               disabled={loading}
-              className="bg-gradient-to-r from-orange-500 to-amber-500 hover:from-orange-600 hover:to-amber-600 disabled:opacity-50 px-6 py-2 rounded-lg text-white font-medium transition-all duration-200"
+              className="bg-[#0070ef] hover:bg-[#0070ef]/80 disabled:opacity-50 px-6 py-2 rounded-lg text-white font-medium transition-all duration-200"
             >
               {loading ? "Adding..." : "Add User"}
             </button>

@@ -11,10 +11,9 @@ const pool = new Pool({
 setInterval(async () => {
   const client = await pool.connect();
   try {
-    const result = await client.query(
+    await client.query(
       `DELETE FROM leets.chat_messages WHERE created_at < NOW() - INTERVAL '24 hours'`
     );
-    console.log(`🧹 Cleaned up ${result.rowCount} old messages`);
   } catch (error) {
     console.error("Error cleaning up old messages:", error);
   } finally {
@@ -154,7 +153,6 @@ export async function POST(request: NextRequest) {
     
     const newMessage = result.rows[0];
     
-    console.log(`💬 New message from ${userData.login}`);
     
     return NextResponse.json({ message: newMessage }, { status: 201 });
   } catch (error) {

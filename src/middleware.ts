@@ -13,7 +13,6 @@ export async function middleware(request: NextRequest) {
   const cookie = (await cookies()).get("auth_code");
   if (request.nextUrl.pathname === "/") {
     if (cookie?.value) {
-      //console.log("redirecting to /dashboard");
       return NextResponse.redirect(new URL("/dashboard", request.url));
     }
     return NextResponse.next();

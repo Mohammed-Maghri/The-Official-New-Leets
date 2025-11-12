@@ -17,6 +17,8 @@ interface VipHeaderProps {
     projectFilter: ProjectFilterType,
     specificProjectFilter: SpecificProjectFilterType
   ) => void;
+  searchQuery: string;
+  onSearchChange: (query: string) => void;
 }
 
 export const VipHeader: React.FC<VipHeaderProps> = ({
@@ -28,6 +30,8 @@ export const VipHeader: React.FC<VipHeaderProps> = ({
   uniqueProjects,
   allProjects,
   onFiltersChange,
+  searchQuery,
+  onSearchChange,
 }) => {
   const [campusDropdownOpen, setCampusDropdownOpen] = React.useState<boolean>(false);
   const [projectFilterDropdownOpen, setProjectFilterDropdownOpen] = React.useState<boolean>(false);
@@ -94,12 +98,23 @@ export const VipHeader: React.FC<VipHeaderProps> = ({
     <div className="flex flex-col space-y-4 md:space-y-6 mb-8 md:mb-10">
       <div className="flex flex-col xl:flex-row xl:items-center justify-between space-y-4 xl:space-y-0">
         <div className="flex flex-col space-y-2">
-          <h1 className="text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-bold font-Tektur bg-gradient-to-r from-blue-400 via-purple-500 to-pink-500 bg-clip-text text-transparent">
+          <h1 className="text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-bold font-Tektur text-white">
             Teams & Projects
           </h1>
-          <p className="text-base md:text-lg text-gray-300 font-Tektur opacity-80">
+          <p className="text-base md:text-lg text-gray-400 font-Tektur">
             The Ui is Shit Because Its Coocked By Ai Not me hhh No time For it
           </p>
+        </div>
+        
+        {/* Search Input */}
+        <div className="w-full xl:w-auto xl:flex-1 xl:max-w-md xl:mx-6">
+          <input
+            type="text"
+            placeholder="Search by name or username..."
+            value={searchQuery}
+            onChange={(e) => onSearchChange(e.target.value)}
+            className="w-full px-4 py-2.5 rounded-lg bg-[#0070ef]/10 backdrop-blur-sm border border-[#0070ef]/30 text-white placeholder-gray-400 font-Tektur focus:outline-none focus:border-[#0070ef] transition-all duration-300"
+          />
         </div>
         
         <div className="flex flex-col sm:flex-row lg:flex-wrap xl:flex-nowrap items-start sm:items-center gap-2 md:gap-3">
@@ -107,10 +122,9 @@ export const VipHeader: React.FC<VipHeaderProps> = ({
             <div
               ref={campusTriggerRef}
               onClick={() => setCampusDropdownOpen(!campusDropdownOpen)}
-              className="flex items-center justify-between sm:justify-start space-x-2 bg-gradient-to-r from-blue-500/20 to-purple-500/20 backdrop-blur-sm px-3 py-2 md:px-4 md:py-2.5 rounded-lg border border-white/30 cursor-pointer hover:from-blue-500/30 hover:to-purple-500/30 transition-all duration-300 shadow-lg hover:shadow-xl hover:scale-105 w-full sm:w-auto"
+              className="flex items-center justify-between sm:justify-start space-x-2 bg-[#0070ef]/10 backdrop-blur-sm px-3 py-2 md:px-4 md:py-2.5 rounded-lg border border-[#0070ef]/30 cursor-pointer hover:bg-[#0070ef]/20 transition-all duration-300 w-full sm:w-auto"
             >
               <div className="flex items-center space-x-2">
-                <span className="text-base md:text-lg">📍</span>
                 <span className="text-sm md:text-base font-semibold text-white font-Tektur">
                   {selectedCampus.name}
                 </span>
@@ -128,7 +142,7 @@ export const VipHeader: React.FC<VipHeaderProps> = ({
                 initial={AnimationConfig.dropdownInitial}
                 animate={AnimationConfig.dropdownAnimate}
                 exit={AnimationConfig.dropdownExit}
-                className="absolute top-full left-0 mt-2 w-full sm:w-64 md:w-72 bg-gray-900/95 backdrop-blur-xl border border-white/30 rounded-lg shadow-2xl z-50 max-h-80 overflow-auto"
+                className="absolute top-full left-0 mt-2 w-full sm:w-64 md:w-72 bg-[#001226] border border-[#0070ef]/50 rounded-lg shadow-2xl z-[9999] max-h-80 overflow-auto"
               >
                 {CampusList.map((campus) => (
                   <div
@@ -137,16 +151,13 @@ export const VipHeader: React.FC<VipHeaderProps> = ({
                       onCampusChange(campus);
                       setCampusDropdownOpen(false);
                     }}
-                    className={`px-4 py-3 text-sm font-Tektur cursor-pointer transition-all duration-300 border-l-4 ${
+                    className={`px-4 py-3 text-sm font-Tektur cursor-pointer transition-all duration-200 ${
                       selectedCampus.id === campus.id
-                        ? "bg-gradient-to-r from-blue-500/30 to-purple-500/30 text-white border-l-blue-400"
-                        : "text-gray-300 hover:bg-white/10 border-l-transparent hover:border-l-white/50"
+                        ? "bg-[#0070ef]/20 text-white"
+                        : "text-gray-300 hover:bg-[#0070ef]/10"
                     }`}
                   >
-                    <div className="flex items-center space-x-2">
-                      <span className="text-base">📍</span>
-                      <span className="font-semibold">{campus.name}</span>
-                    </div>
+                    <span className="font-semibold">{campus.name}</span>
                   </div>
                 ))}
               </motion.div>
@@ -157,10 +168,9 @@ export const VipHeader: React.FC<VipHeaderProps> = ({
             <div
               ref={projectFilterTriggerRef}
               onClick={() => setProjectFilterDropdownOpen(!projectFilterDropdownOpen)}
-              className="flex items-center justify-between sm:justify-start space-x-2 bg-gradient-to-r from-indigo-500/20 to-cyan-500/20 backdrop-blur-sm px-3 py-2 md:px-4 md:py-2.5 rounded-lg border border-white/30 cursor-pointer hover:from-indigo-500/30 hover:to-cyan-500/30 transition-all duration-300 shadow-lg hover:shadow-xl hover:scale-105 w-full sm:w-auto"
+              className="flex items-center justify-between sm:justify-start space-x-2 bg-[#0070ef]/10 backdrop-blur-sm px-3 py-2 md:px-4 md:py-2.5 rounded-lg border border-[#0070ef]/30 cursor-pointer hover:bg-[#0070ef]/20 transition-all duration-300 w-full sm:w-auto"
             >
               <div className="flex items-center space-x-2">
-                <span className="text-base">🔍</span>
                 <span className="text-sm md:text-sm font-semibold text-white font-Tektur">
                   {projectFilter === "all" ? "All Projects" : projectFilter === "known" ? "Known Projects" : "Unknown Projects"}
                 </span>
@@ -178,22 +188,19 @@ export const VipHeader: React.FC<VipHeaderProps> = ({
                 initial={AnimationConfig.dropdownInitial}
                 animate={AnimationConfig.dropdownAnimate}
                 exit={AnimationConfig.dropdownExit}
-                className="absolute top-full left-0 mt-2 w-full sm:w-48 md:w-56 bg-gray-900/95 backdrop-blur-xl border border-white/30 rounded-lg shadow-2xl z-50"
+                className="absolute top-full left-0 mt-2 w-full sm:w-48 md:w-56 bg-[#001226] border border-[#0070ef]/50 rounded-lg shadow-2xl z-[9999]"
               >
                 {ProjectFilterOptions.map((option) => (
                   <div
                     key={option.value}
                     onClick={() => handleProjectFilterChange(option.value as ProjectFilterType)}
-                    className={`px-3 md:px-4 py-2 md:py-3 text-xs md:text-sm font-Tektur cursor-pointer transition-all duration-300 first:rounded-t-xl last:rounded-b-xl border-l-4 ${
+                    className={`px-3 md:px-4 py-2 md:py-3 text-xs md:text-sm font-Tektur cursor-pointer transition-all duration-200 first:rounded-t-lg last:rounded-b-lg ${
                       projectFilter === option.value
-                        ? option.activeClasses
-                        : `text-gray-300 hover:bg-white/10 border-l-transparent ${option.hoverClasses}`
+                        ? "bg-[#0070ef]/20 text-white"
+                        : "text-gray-300 hover:bg-[#0070ef]/10"
                     }`}
                   >
-                    <div className="flex items-center space-x-2">
-                      <span className="text-sm">{option.icon}</span>
-                      <span className="font-semibold">{option.label}</span>
-                    </div>
+                    <span className="font-semibold">{option.label}</span>
                   </div>
                 ))}
               </motion.div>
@@ -204,10 +211,9 @@ export const VipHeader: React.FC<VipHeaderProps> = ({
             <div
               ref={specificProjectTriggerRef}
               onClick={() => setSpecificProjectDropdownOpen(!specificProjectDropdownOpen)}
-              className="flex items-center justify-between sm:justify-start space-x-2 bg-gradient-to-r from-purple-500/20 to-pink-500/20 backdrop-blur-sm px-3 py-2 md:px-4 md:py-2.5 rounded-lg border border-white/30 cursor-pointer hover:from-purple-500/30 hover:to-pink-500/30 transition-all duration-300 shadow-lg hover:shadow-xl hover:scale-105 w-full sm:w-auto"
+              className="flex items-center justify-between sm:justify-start space-x-2 bg-[#0070ef]/10 backdrop-blur-sm px-3 py-2 md:px-4 md:py-2.5 rounded-lg border border-[#0070ef]/30 cursor-pointer hover:bg-[#0070ef]/20 transition-all duration-300 w-full sm:w-auto"
             >
               <div className="flex items-center space-x-2 min-w-0">
-                <span className="text-base">📋</span>
                 <span className="text-sm md:text-sm font-semibold text-white font-Tektur truncate">
                   {specificProjectFilter === "all" ? "All Project Names" : specificProjectFilter}
                 </span>
@@ -225,73 +231,58 @@ export const VipHeader: React.FC<VipHeaderProps> = ({
                 initial={AnimationConfig.dropdownInitial}
                 animate={AnimationConfig.dropdownAnimate}
                 exit={AnimationConfig.dropdownExit}
-                className="absolute top-full left-0 mt-2 w-full sm:w-72 md:w-80 bg-gray-900/95 backdrop-blur-xl border border-white/30 rounded-lg shadow-2xl z-50 max-h-80 overflow-auto"
+                className="absolute top-full left-0 mt-2 w-full sm:w-72 md:w-80 bg-[#001226] border border-[#0070ef]/50 rounded-lg shadow-2xl z-[9999] max-h-80 overflow-auto"
               >
                 <div
                   onClick={() => handleSpecificProjectFilterChange("all")}
-                  className={`px-4 py-3 text-sm font-Tektur cursor-pointer transition-all duration-300 border-l-4 rounded-t-xl ${
+                  className={`px-4 py-3 text-sm font-Tektur cursor-pointer transition-all duration-200 rounded-t-lg ${
                     specificProjectFilter === "all"
-                      ? "bg-gradient-to-r from-purple-500/30 to-pink-500/30 text-white border-l-purple-400"
-                      : "text-gray-300 hover:bg-white/10 border-l-transparent hover:border-l-white/50"
+                      ? "bg-[#0070ef]/20 text-white"
+                      : "text-gray-300 hover:bg-[#0070ef]/10"
                   }`}
                 >
-                  <div className="flex items-center space-x-2">
-                    <span className="text-base">�</span>
-                    <span className="font-semibold">All Projects</span>
-                  </div>
+                  <span className="font-semibold">All Projects</span>
                 </div>
                 
-                <div className="border-t border-white/20 mx-3"></div>
+                <div className="border-t border-[#0070ef]/30 mx-3"></div>
                 
-                <div className="px-4 py-2 bg-blue-500/10">
-                  <div className="flex items-center space-x-2">
-                    <span className="text-blue-400 text-sm">🔄</span>
-                    <span className="text-xs font-bold text-blue-300 font-Tektur uppercase tracking-wider">
-                      Current Teams ({uniqueProjects.length})
-                    </span>
-                  </div>
+                <div className="px-4 py-2 bg-[#0070ef]/10">
+                  <span className="text-xs font-bold text-gray-400 font-Tektur uppercase tracking-wider">
+                    Current Teams ({uniqueProjects.length})
+                  </span>
                 </div>
                 {uniqueProjects.map((projectName) => (
                   <div
                     key={`current-${projectName}`}
                     onClick={() => handleSpecificProjectFilterChange(projectName)}
-                    className={`px-4 py-2 text-sm font-Tektur cursor-pointer transition-all duration-300 border-l-4 ${
+                    className={`px-4 py-2 text-sm font-Tektur cursor-pointer transition-all duration-200 ${
                       specificProjectFilter === projectName
-                        ? "bg-gradient-to-r from-blue-500/30 to-cyan-500/30 text-white border-l-blue-400"
-                        : "text-gray-300 hover:bg-white/5 border-l-transparent hover:border-l-blue-400/50"
+                        ? "bg-[#0070ef]/20 text-white"
+                        : "text-gray-300 hover:bg-[#0070ef]/10"
                     }`}
                   >
-                    <div className="flex items-center space-x-2">
-                      <span className="text-sm">📋</span>
-                      <span className="font-medium truncate">{projectName}</span>
-                    </div>
+                    <span className="font-medium truncate">{projectName}</span>
                   </div>
                 ))}
                 
-                <div className="border-t border-white/20 mx-3 my-1"></div>
+                <div className="border-t border-[#0070ef]/30 mx-3 my-1"></div>
                 
-                <div className="px-4 py-2 bg-emerald-500/10">
-                  <div className="flex items-center space-x-2">
-                    <span className="text-emerald-400 text-sm">🗃️</span>
-                    <span className="text-xs font-bold text-emerald-300 font-Tektur uppercase tracking-wider">
-                      All Available ({allProjects.length})
-                    </span>
-                  </div>
+                <div className="px-4 py-2 bg-[#0070ef]/10">
+                  <span className="text-xs font-bold text-gray-400 font-Tektur uppercase tracking-wider">
+                    All Available ({allProjects.length})
+                  </span>
                 </div>
                 {allProjects.slice(0, 20).map((projectName) => (
                   <div
                     key={`all-${projectName}`}
                     onClick={() => handleSpecificProjectFilterChange(projectName)}
-                    className={`px-4 py-2 text-sm font-Tektur cursor-pointer transition-all duration-300 border-l-4 last:rounded-b-xl ${
+                    className={`px-4 py-2 text-sm font-Tektur cursor-pointer transition-all duration-200 last:rounded-b-lg ${
                       specificProjectFilter === projectName
-                        ? "bg-gradient-to-r from-emerald-500/30 to-teal-500/30 text-white border-l-emerald-400"
-                        : "text-gray-300 hover:bg-white/5 border-l-transparent hover:border-l-emerald-400/50"
+                        ? "bg-[#0070ef]/20 text-white"
+                        : "text-gray-300 hover:bg-[#0070ef]/10"
                     }`}
                   >
-                    <div className="flex items-center space-x-2">
-                      <span className="text-sm">📋</span>
-                      <span className="font-medium truncate">{projectName}</span>
-                    </div>
+                    <span className="font-medium truncate">{projectName}</span>
                   </div>
                 ))}
                 {allProjects.length > 20 && (
@@ -309,16 +300,14 @@ export const VipHeader: React.FC<VipHeaderProps> = ({
               animate={AnimationConfig.buttonAnimate}
               exit={AnimationConfig.buttonExit}
               onClick={clearFilters}
-              className="flex items-center justify-center space-x-2 bg-gradient-to-r from-red-500/20 to-orange-500/20 backdrop-blur-sm px-3 py-2 md:px-4 md:py-2.5 rounded-lg border border-red-400/30 hover:from-red-500/30 hover:to-orange-500/30 transition-all duration-300 shadow-lg hover:shadow-xl hover:scale-105 w-full sm:w-auto"
+              className="flex items-center justify-center space-x-2 bg-red-500/20 backdrop-blur-sm px-3 py-2 md:px-4 md:py-2.5 rounded-lg border border-red-500/30 hover:bg-red-500/30 transition-all duration-300 w-full sm:w-auto"
             >
-              <span className="text-sm md:text-base">🗑️</span>
-              <span className="text-sm font-semibold text-red-300 font-Tektur">Clear</span>
+              <span className="text-sm font-semibold text-red-300 font-Tektur">Clear Filters</span>
             </motion.button>
           )}
 
-          <div className="bg-gradient-to-r from-emerald-500/20 to-blue-500/20 backdrop-blur-sm px-3 py-2 md:px-4 md:py-2.5 rounded-lg border border-white/30 shadow-lg w-full sm:w-auto">
+          <div className="bg-[#0070ef]/20 backdrop-blur-sm px-3 py-2 md:px-4 md:py-2.5 rounded-lg border border-[#0070ef]/30 w-full sm:w-auto">
             <div className="flex items-center justify-center sm:justify-start space-x-2">
-              <span className="text-base md:text-lg">📊</span>
               <span className="text-sm md:text-base font-bold text-white font-Tektur">
                 {teamCount}
               </span>

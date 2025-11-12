@@ -34,23 +34,23 @@ export const ProjectFilterOptions = [
   { 
     value: "all", 
     label: "All Projects", 
-    icon: "🔍", 
-    activeClasses: "bg-gradient-to-r from-blue-500/30 to-blue-400/30 text-white border-l-blue-400",
-    hoverClasses: "hover:border-l-blue-400/50"
+    icon: "", 
+    activeClasses: "bg-[#0070ef]/20 text-white border-l-[#0070ef]",
+    hoverClasses: "hover:border-l-[#0070ef]/50"
   },
   { 
     value: "known", 
     label: "Known Projects", 
-    icon: "✅", 
-    activeClasses: "bg-gradient-to-r from-green-500/30 to-green-400/30 text-white border-l-green-400",
-    hoverClasses: "hover:border-l-green-400/50"
+    icon: "", 
+    activeClasses: "bg-[#0070ef]/20 text-white border-l-[#0070ef]",
+    hoverClasses: "hover:border-l-[#0070ef]/50"
   },
   { 
     value: "unknown", 
     label: "Unknown Projects", 
-    icon: "❓", 
-    activeClasses: "bg-gradient-to-r from-orange-500/30 to-orange-400/30 text-white border-l-orange-400",
-    hoverClasses: "hover:border-l-orange-400/50"
+    icon: "", 
+    activeClasses: "bg-[#0070ef]/20 text-white border-l-[#0070ef]",
+    hoverClasses: "hover:border-l-[#0070ef]/50"
   }
 ] as const;
 

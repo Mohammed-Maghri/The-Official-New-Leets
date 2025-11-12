@@ -9,7 +9,6 @@ export const POST = async (request: NextRequest) => {
   
   try {
     const Body = await request.json();
-    //console.log("Body: ---> ", Body);
     await jwtVerify(
       request.cookies.get("auth_code")?.value as string,
       new TextEncoder().encode(process.env.SECRET_KEY as string)
@@ -19,7 +18,6 @@ export const POST = async (request: NextRequest) => {
       request.cookies.get("auth_code")?.value as string
     ).token) as string;
 
-    //console.log(" -----> ", Decode);
 
     const MonthRange: string = `${Body.year}-${
       Body.month.toString().length == 1 ? `0${Body.month}` : Body.month
@@ -33,7 +31,6 @@ export const POST = async (request: NextRequest) => {
       parseInt(Body.year) + 1
     }-01-01`;
 
-    //console.log("!!!!! ---- > ", MonthRange, YearRange);
 
     const url: URLSearchParams = new URLSearchParams({
       cursus_id: Body.cursus.id,
@@ -44,7 +41,6 @@ export const POST = async (request: NextRequest) => {
       "filter[campus_id]": Body.campus.id,
     });
 
-    //console.log("URL: ", url.toString());
     const data = await fetch(
       process.env.INTRA_TOKEN + "/v2/cursus_users?" + url.toString(),
       {
@@ -75,7 +71,7 @@ export const POST = async (request: NextRequest) => {
         
         const badgeQuery = `
           SELECT 
-            v.login,
+            users.login,
             v.token as vip_status,
             COALESCE(
               array_agg(f.badge_type ORDER BY 
@@ -90,10 +86,14 @@ export const POST = async (request: NextRequest) => {
               ) FILTER (WHERE f.badge_awarded = TRUE),
               ARRAY[]::text[]
             ) as badges
-          FROM leets.vip v
-          LEFT JOIN leets.feedback f ON v.login = f.user_login AND f.badge_awarded = TRUE
-          WHERE v.login = ANY($1)
-          GROUP BY v.login, v.token
+          FROM (
+            SELECT DISTINCT login FROM leets.vip WHERE login = ANY($1)
+            UNION
+            SELECT DISTINCT user_login FROM leets.feedback WHERE user_login = ANY($1) AND badge_awarded = TRUE
+          ) users(login)
+          LEFT JOIN leets.vip v ON v.login = users.login
+          LEFT JOIN leets.feedback f ON f.user_login = users.login AND f.badge_awarded = TRUE
+          GROUP BY users.login, v.token
         `;
         const badgeResult = await client.query(badgeQuery, [allUserLogins]);
         
@@ -122,8 +122,8 @@ export const POST = async (request: NextRequest) => {
         return { type: 'creator', name: 'Creator' };
       }
       
-      if (badgeData.vipStatus === 'vip') {
-        return { type: 'vip', name: 'VIP' };
+      if (badgeData.vipStatus === 'vip' || badgeData.vipStatus === 'owner') {
+        return { type: 'vip', name: badgeData.vipStatus === 'owner' ? 'Owner' : 'VIP' };
       }
       
       // Get the best feedback badge (already sorted by priority in SQL)

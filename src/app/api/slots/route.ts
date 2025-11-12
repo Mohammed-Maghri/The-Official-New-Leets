@@ -18,7 +18,6 @@ export const GET = async (request: NextRequest) => {
     const campusParam = requestUrl.searchParams.get("campus") || "16";
     const pageParam = requestUrl.searchParams.get("page") || "1";
     
-    console.log("Campus:", campusParam, "Page:", pageParam);
     
     // Verify JWT token first
     await jose.jwtVerify(
@@ -97,9 +96,6 @@ export const GET = async (request: NextRequest) => {
     }
     
     // Log the API request details for debugging
-    console.log("Fetching teams from:", `${process.env.INTRA_TOKEN}/v2/teams?${apiParams.toString()}`);
-    console.log("API params:", apiParams.toString());
-    console.log("Token is valid, length:", decryptedToken.length);
     
     const dataFetched = await fetch(
       `${process.env.INTRA_TOKEN as string}/v2/teams?${apiParams.toString()}`,

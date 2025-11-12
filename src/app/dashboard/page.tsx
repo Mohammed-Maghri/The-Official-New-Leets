@@ -48,7 +48,7 @@ const Dashboard = () => {
   }, [userData]);
 
   return (
-    <div className="flex flex-1 overflow-auto p-5 sm:p-10 gap-2 z-10 flex-col">
+    <div className="flex flex-1 overflow-auto p-5 sm:p-10 gap-4 z-10 flex-col">
       {/* Creator Button */}
       {isCreator && (
         <div className="fixed bottom-6 right-6 z-50">
@@ -66,7 +66,8 @@ const Dashboard = () => {
       <div className="w-full h-[200px]">
         <RankComponent userData={userData as UserData} rank={-1} />
       </div>
-      <div className=" flex-1 bg-gradient-to-r from-gray-900/20 via-[#0070ef]/5 backdrop-blur-sm rounded-md p-5 flex flex-col ">
+      
+      <div className="flex-1 bg-blue-950/30 border border-blue-800/50 backdrop-blur-sm rounded-2xl p-5 flex flex-col gap-5">
         {userData != null ? (
           <>
             <StatusGrid

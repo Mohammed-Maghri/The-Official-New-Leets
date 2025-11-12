@@ -22,21 +22,12 @@ export const AccessDenied: React.FC<AccessDeniedProps> = ({
       transition={{ duration: 0.6 }}
       className="min-h-screen flex items-center justify-center p-4 md:p-8"
     >
-      <div className="bg-gradient-to-br from-red-900/20 via-red-800/10 to-red-900/20 backdrop-blur-xl border border-red-500/30 rounded-3xl p-8 md:p-12 max-w-md md:max-w-lg text-center shadow-2xl">
-        <motion.div
-          initial={{ rotate: -10, scale: 0.8 }}
-          animate={{ rotate: 0, scale: 1 }}
-          transition={{ delay: 0.2, duration: 0.5 }}
-          className="text-6xl md:text-8xl mb-6 opacity-80"
-        >
-          🚫
-        </motion.div>
-        
+      <div className="bg-blue-950/30 backdrop-blur-xl border border-blue-800/50 rounded-2xl p-8 md:p-12 max-w-md md:max-w-lg text-center">
         <motion.h1
           initial={{ y: 20, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
-          transition={{ delay: 0.3, duration: 0.5 }}
-          className="text-2xl md:text-3xl font-bold text-red-300 font-Tektur mb-4"
+          transition={{ delay: 0.2, duration: 0.5 }}
+          className="text-xl md:text-2xl text-blue-300 font-Tektur mb-4"
         >
           {title}
         </motion.h1>
@@ -44,7 +35,7 @@ export const AccessDenied: React.FC<AccessDeniedProps> = ({
         <motion.p
           initial={{ y: 20, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
-          transition={{ delay: 0.4, duration: 0.5 }}
+          transition={{ delay: 0.3, duration: 0.5 }}
           className="text-gray-300 font-Tektur text-sm md:text-base leading-relaxed mb-8"
         >
           {message}
@@ -54,27 +45,25 @@ export const AccessDenied: React.FC<AccessDeniedProps> = ({
           <motion.button
             initial={{ y: 20, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
-            transition={{ delay: 0.5, duration: 0.5 }}
+            transition={{ delay: 0.4, duration: 0.5 }}
             onClick={onRetry}
             whileHover={{ scale: 1.05, y: -2 }}
             whileTap={{ scale: 0.95 }}
-            className="px-6 md:px-8 py-3 md:py-4 bg-gradient-to-r from-red-600 to-red-700 hover:from-red-700 hover:to-red-800 text-white font-bold font-Tektur rounded-xl md:rounded-2xl shadow-lg hover:shadow-2xl border border-red-500/50 transition-all duration-300 group text-sm md:text-base"
+            className="px-6 md:px-8 py-3 md:py-4 bg-blue-950/20 hover:bg-blue-950/30 text-blue-300 font-Tektur rounded-xl border border-blue-800/40 hover:border-blue-700/60 transition-all duration-300 text-sm md:text-base"
           >
-            <div className="flex items-center justify-center gap-2">
-              <span>Try Again</span>
-            </div>
+            Try Again
           </motion.button>
         )}
         
         <motion.div
           initial={{ y: 20, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
-          transition={{ delay: 0.6, duration: 0.5 }}
+          transition={{ delay: 0.5, duration: 0.5 }}
           className="mt-6 md:mt-8"
         >
-          <div className="bg-gradient-to-r from-gray-700/30 to-gray-600/30 backdrop-blur-sm rounded-xl p-3 md:p-4 border border-gray-500/30">
+          <div className="bg-blue-950/20 backdrop-blur-sm rounded-xl p-3 md:p-4 border border-blue-800/40">
             <div className="text-gray-400 font-Tektur text-xs md:text-sm">
-              💡 Need help? Contact your administrator
+              Need help? Contact your administrator
             </div>
           </div>
         </motion.div>

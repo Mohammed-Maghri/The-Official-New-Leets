@@ -12,8 +12,8 @@ const Buttons: FC<ButtonsProps> = ({ icon, title, route }) => {
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ duration: 1 }}
-      className="flex bg-[#0070ef]/3 border-solid border-[1px] border-[#0070ef]/0
-     w-[120px] cursor-pointer rounded-md hover:border-[#0070ef]/40
+      className="flex bg-blue-950/20 border-solid border-[1px] border-blue-800/40
+     w-[120px] cursor-pointer rounded-lg hover:border-blue-700/60 hover:bg-blue-950/30
      duration-200 items-center justify-center gap-1 h-[30px]"
     >
       <div className="  flex items-center justify-center">{icon}</div>

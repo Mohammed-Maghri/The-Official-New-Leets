@@ -11,15 +11,10 @@ export async function GET(request: NextRequest) {
     // Get auth_code from httpOnly cookie (server can read this)
     const authToken = request.cookies.get("auth_code")?.value;
 
-    console.log("🔍 Auth verification request:");
-    console.log("  - Cookie present:", !!authToken);
     if (authToken) {
-      console.log("  - Token length:", authToken.length);
-      console.log("  - Token preview:", authToken.substring(0, 50) + "...");
     }
 
     if (!authToken) {
-      console.log("❌ No auth_code cookie found");
       return NextResponse.json(
         { error: "Not authenticated" },
         { status: 401 }
@@ -27,10 +22,7 @@ export async function GET(request: NextRequest) {
     }
 
     // Verify JWT token
-    console.log("🔐 Verifying JWT token...");
     const { payload } = await jwtVerify(authToken, JWT_SECRET);
-    console.log("✅ JWT verified successfully");
-    console.log("  - User:", payload.userData);
 
     // Return token and user data
     return NextResponse.json({

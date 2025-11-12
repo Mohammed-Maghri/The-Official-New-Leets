@@ -31,13 +31,11 @@ export const TeamCard: React.FC<TeamCardProps> = ({
         duration: AnimationConfig.cardDuration 
       }}
       onClick={() => handleTeamClick(team)}
-      className="bg-gradient-to-br from-white/10 to-white/5 backdrop-blur-xl border border-white/20 rounded-2xl p-4 md:p-6 hover:from-white/15 hover:to-white/10 hover:border-white/40 transition-all duration-500 shadow-xl hover:shadow-2xl cursor-pointer hover:scale-[1.02] relative group overflow-hidden"
+      className="bg-[#001226]/80 backdrop-blur-xl border border-[#0070ef]/30 rounded-lg p-4 md:p-6 hover:border-[#0070ef]/50 transition-all duration-300 shadow-xl hover:shadow-2xl cursor-pointer relative group"
     >
-      <div className="absolute inset-0 bg-gradient-to-br from-blue-500/5 via-purple-500/5 to-pink-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-2xl"></div>
-      
-      <div className="absolute top-2 md:top-3 right-2 md:right-3 opacity-0 group-hover:opacity-100 transition-all duration-300 transform translate-y-1 group-hover:translate-y-0">
-        <div className="bg-gradient-to-r from-blue-500/30 to-purple-500/30 text-blue-200 px-2 md:px-3 py-1 rounded-full text-xs font-bold font-Tektur border border-blue-400/40 shadow-lg">
-          👤 View Profile
+      <div className="absolute top-2 md:top-3 right-2 md:right-3 opacity-0 group-hover:opacity-100 transition-all duration-300">
+        <div className="bg-[#0070ef]/20 text-gray-300 px-2 md:px-3 py-1 rounded-md text-xs font-medium font-Tektur border border-[#0070ef]/40">
+          View Profile
         </div>
       </div>
 
@@ -48,25 +46,25 @@ export const TeamCard: React.FC<TeamCardProps> = ({
           </h3>
           <div className="flex flex-col space-y-2 text-sm">
             <div className="text-gray-100 font-Tektur font-medium truncate">
-              📋 {getProjectName(team.project_id)}
+              {getProjectName(team.project_id)}
             </div>
             
             <div className="flex flex-wrap items-center gap-2">
-              <span className="text-gray-300 font-Tektur text-xs">
+              <span className="text-gray-400 font-Tektur text-xs">
                 ID: {team.project_id}
               </span>
               {getProjectDifficulty(team.project_id) > 0 && (
-                <span className="text-amber-300 font-Tektur text-xs bg-amber-500/20 px-2 py-1 rounded-full border border-amber-400/30 whitespace-nowrap">
-                  ⭐ {getProjectDifficulty(team.project_id)} pts
+                <span className="text-gray-300 font-Tektur text-xs bg-[#0070ef]/20 px-2 py-1 rounded-md border border-[#0070ef]/30 whitespace-nowrap">
+                  {getProjectDifficulty(team.project_id)} pts
                 </span>
               )}
               <div
-                className={`px-2 md:px-3 py-1 rounded-full text-xs font-medium font-Tektur whitespace-nowrap ${
+                className={`px-2 md:px-3 py-1 rounded-md text-xs font-medium font-Tektur whitespace-nowrap ${
                   team.status === "finished"
-                    ? "bg-green-500/30 text-green-300 border border-green-400/50"
+                    ? "bg-green-500/20 text-green-300 border border-green-500/30"
                     : team.status === "in_progress"
-                    ? "bg-blue-500/30 text-blue-300 border border-blue-400/50"
-                    : "bg-gray-500/30 text-gray-300 border border-gray-400/50"
+                    ? "bg-blue-500/20 text-blue-300 border border-blue-500/30"
+                    : "bg-gray-500/20 text-gray-300 border border-gray-500/30"
                 }`}
               >
                 {team.status.replace("_", " ").toUpperCase()}
@@ -76,8 +74,8 @@ export const TeamCard: React.FC<TeamCardProps> = ({
         </div>
 
         {team.locked && (
-          <div className="bg-red-500/30 text-red-300 px-2 md:px-3 py-1 rounded-full text-xs font-medium font-Tektur border border-red-400/50 ml-2 whitespace-nowrap">
-            🔒 LOCKED
+          <div className="bg-red-500/20 text-red-300 px-2 md:px-3 py-1 rounded-md text-xs font-medium font-Tektur border border-red-500/30 ml-2 whitespace-nowrap">
+            LOCKED
           </div>
         )}
       </div>
@@ -90,14 +88,14 @@ export const TeamCard: React.FC<TeamCardProps> = ({
           {team.users.map((user, userIndex) => (
             <div
               key={userIndex}
-              className={`flex items-center gap-1.5 px-2 md:px-3 py-1 rounded-full text-xs font-medium font-Tektur border truncate max-w-full ${
+              className={`flex items-center gap-1.5 px-2 md:px-3 py-1 rounded-md text-xs font-medium font-Tektur border truncate max-w-full ${
                 user.leader
-                  ? "bg-yellow-500/30 text-yellow-300 border-yellow-400/50"
-                  : "bg-blue-500/30 text-blue-300 border-blue-400/50"
+                  ? "bg-[#0070ef]/30 text-white border-[#0070ef]/50"
+                  : "bg-gray-700/50 text-gray-300 border-gray-600/50"
               }`}
             >
               <span>
-                {user.leader && "👑 "}
+                {user.leader && "★ "}
                 {user.login}
               </span>
               <UserBadges 
@@ -112,21 +110,21 @@ export const TeamCard: React.FC<TeamCardProps> = ({
       </div>
 
       <div className="grid grid-cols-1 gap-2 md:gap-3 text-sm relative z-10">
-        <div className="bg-white/10 backdrop-blur-sm rounded-lg p-2 md:p-3 border border-white/20">
-          <div className="text-gray-200 font-Tektur text-xs mb-1">
+        <div className="bg-[#0070ef]/10 backdrop-blur-sm rounded-md p-2 md:p-3 border border-[#0070ef]/20">
+          <div className="text-gray-300 font-Tektur text-xs mb-1">
             Project Info
           </div>
           <div className="text-gray-100 font-Tektur font-medium">
             {getProjectDuration(team.project_id) && (
-              <div className="text-xs text-blue-300 mb-1">
-                ⏱️ {getProjectDuration(team.project_id)}
+              <div className="text-xs text-gray-400 mb-1">
+                Duration: {getProjectDuration(team.project_id)}
               </div>
             )}
           </div>
         </div>
 
-        <div className="bg-white/10 backdrop-blur-sm rounded-lg p-2 md:p-3 border border-white/20">
-          <div className="text-gray-200 font-Tektur text-xs mb-1">
+        <div className="bg-[#0070ef]/10 backdrop-blur-sm rounded-md p-2 md:p-3 border border-[#0070ef]/20">
+          <div className="text-gray-300 font-Tektur text-xs mb-1">
             Final Mark
           </div>
           <div

@@ -47,10 +47,14 @@ export const GET = async (request: NextRequest) => {
       .sign(token);
     const signedToken = await Signature;
 
+    const isProduction = process.env.NODE_ENV === "production";
+    
     (await cookies()).set("auth_code", signedToken as string, {
       httpOnly: true,
+      secure: isProduction,
+      sameSite: "lax",
       path: "/",
-      maxAge: 60 * 60 * 24,
+      maxAge: 60 * 60 * 24 * 7, // 7 days for better persistence
     });
 
     const redirectUrl = new URL("/dashboard", request.url);

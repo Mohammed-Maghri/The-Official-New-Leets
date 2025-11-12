@@ -25,7 +25,6 @@ export default function ChatPage() {
 
   // Log when chat page mounts (only once on mount)
   useEffect(() => {
-    console.log("💬 [CHAT PAGE] Mounted, socket:", !!socket, "connected:", isConnected, "messages:", messages.length, "loading:", isLoading);
   }, [socket, isConnected, messages.length, isLoading]);
 
   useLayoutEffect(() => {
@@ -33,7 +32,6 @@ export default function ChatPage() {
       const container = messagesContainerRef.current;
       
       if (isInitialLoadRef.current) {
-        console.log("🔽 Initial scroll to bottom");
         setTimeout(() => {
           messagesEndRef.current?.scrollIntoView({ behavior: "auto" });
         }, 0);
@@ -50,7 +48,6 @@ export default function ChatPage() {
         }
       }
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [messages.length, isLoadingMore]);
 
   const handleScroll = (e: React.UIEvent<HTMLDivElement>) => {
@@ -63,7 +60,6 @@ export default function ChatPage() {
     }
     
     if (container.scrollTop === 0 && hasMore && !isLoadingMore && socket && setIsLoadingMore) {
-      console.log("📜 Top reached, loading more messages. Current count:", messages.length, "hasMore:", hasMore);
       setIsLoadingMore(true);
       socket.emit("loadMoreMessages", { offset: messages.length });
     }
@@ -103,34 +99,26 @@ export default function ChatPage() {
   };
 
   const handleReaction = (messageId: string, emoji: string) => {
-    console.log("🎯 handleReaction called", { messageId, emoji });
     
     if (!socket) {
-      console.log("❌ No socket connection");
       return;
     }
     if (!isConnected) {
-      console.log("❌ Socket not connected");
       return;
     }
     if (!context?.userData?.login) {
-      console.log("❌ No user login");
       return;
     }
     
     const message = messages.find(msg => msg.id === messageId);
-    console.log("📦 Found message:", message);
     
     const userReacted = message?.reactions?.some(
       r => r.emoji === emoji && r.users.includes(context.userData!.login)
     );
-    console.log("👤 User already reacted?", userReacted);
 
     if (userReacted) {
-      console.log("🔄 Emitting removeReaction", { messageId, emoji });
       socket.emit("removeReaction", { messageId, emoji });
     } else {
-      console.log("➕ Emitting addReaction", { messageId, emoji });
       socket.emit("addReaction", { messageId, emoji });
     }
   };

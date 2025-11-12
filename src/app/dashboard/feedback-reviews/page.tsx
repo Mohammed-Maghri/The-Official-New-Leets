@@ -1,7 +1,7 @@
 "use client";
 import React, { useState, useEffect } from "react";
 import { IoStar, IoArrowBack, IoTrashOutline } from "react-icons/io5";
-import { BsStars, BsCodeSlash, BsLightbulb } from "react-icons/bs";
+import { BsStars, BsCodeSlash, BsLightbulb, BsDiamond } from "react-icons/bs";
 import { AiOutlineDatabase } from "react-icons/ai";
 import { MdDesignServices } from "react-icons/md";
 import { FiMail, FiMapPin } from "react-icons/fi";
@@ -17,6 +17,7 @@ const FeedbackReviewsPage = () => {
   const [selectedReview, setSelectedReview] = useState<FeedbackReview | null>(null);
   const [showBadgeModal, setShowBadgeModal] = useState<boolean>(false);
   const [selectedBadgeType, setSelectedBadgeType] = useState<string>("");
+  const [customMessage, setCustomMessage] = useState<string>("");
   const [badgeReviewId, setBadgeReviewId] = useState<number | null>(null);
   const [isAwarding, setIsAwarding] = useState<boolean>(false);
   const [showDeleteConfirm, setShowDeleteConfirm] = useState<boolean>(false);
@@ -81,6 +82,7 @@ const FeedbackReviewsPage = () => {
     setShowBadgeModal(false);
     setBadgeReviewId(null);
     setSelectedBadgeType("");
+    setCustomMessage("");
   };
 
   const handleAwardBadge = async () => {
@@ -101,6 +103,7 @@ const FeedbackReviewsPage = () => {
         body: JSON.stringify({
           feedbackId: badgeReviewId,
           badgeType: selectedBadgeType,
+          customMessage: customMessage || undefined,
         }),
       });
 
@@ -683,6 +686,15 @@ const FeedbackReviewsPage = () => {
                         text: "text-rose-100",
                         selectionBorder: "border-rose-500/50"
                       };
+                    case BADGE_TYPES.VIP:
+                      return {
+                        icon: BsDiamond,
+                        bg: "from-yellow-500/50 to-amber-500/50",
+                        border: "border-yellow-300/60",
+                        shadow: "shadow-yellow-400/40",
+                        text: "text-yellow-100",
+                        selectionBorder: "border-yellow-500/50"
+                      };
                     default:
                       return {
                         icon: BsStars,
@@ -729,6 +741,24 @@ const FeedbackReviewsPage = () => {
                   </label>
                 );
               })}
+            </div>
+
+            {/* Custom Message Section */}
+            <div className="mb-6">
+              <label className="block text-sm font-Tektur text-gray-300 mb-2">
+                Message for Recipient (Optional)
+              </label>
+              <textarea
+                value={customMessage}
+                onChange={(e) => setCustomMessage(e.target.value.slice(0, 500))}
+                placeholder="Write a custom message to accompany the badge..."
+                maxLength={500}
+                className="w-full px-4 py-3 bg-gray-800/50 border border-gray-600/50 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:border-yellow-500/50 font-Tektur text-sm resize-none"
+                rows={4}
+              />
+              <p className="text-xs text-gray-500 font-Tektur mt-1">
+                {customMessage.length}/500 characters
+              </p>
             </div>
 
             {/* Actions */}

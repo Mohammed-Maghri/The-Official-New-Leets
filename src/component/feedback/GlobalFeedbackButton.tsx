@@ -20,13 +20,7 @@ const GlobalFeedbackButton: React.FC = () => {
 
     // Show button after a short delay to avoid flash on page load
     const timer = setTimeout(() => {
-      const hasSeenFeedback = localStorage.getItem("hasSeenFeedbackPopup");
       setShowButton(true);
-      
-      // Auto-show popup on first visit
-      if (!hasSeenFeedback) {
-        setShowFeedbackPopup(true);
-      }
     }, 1000);
 
     return () => clearTimeout(timer);

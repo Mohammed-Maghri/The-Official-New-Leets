@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { Pool } from "pg";
-import { jwtVerify } from "jose";
+import * as jose from "jose";
 import { awardBadgeSchema } from "../feedback.types";
 import { DecryptionFunction } from "../../auth/type.auth";
 
@@ -29,19 +29,32 @@ export async function POST(req: Request) {
 
     const token = authCodeCookie.split("=")[1];
 
-    const secret = new TextEncoder().encode(process.env.JWT_ENCRYPT_SECRET);
-    const { payload } = await jwtVerify(token, secret);
-
-    if (!payload?.accessToken) {
+    const secret = new TextEncoder().encode(process.env.SECRET_KEY);
+    
+    // Verify JWT token
+    try {
+      await jose.jwtVerify(token, secret);
+    } catch (jwtError) {
+      console.error("JWT verification failed:", jwtError);
       return NextResponse.json(
-        { error: "Invalid token" },
+        { error: "Invalid or expired token" },
+        { status: 401 }
+      );
+    }
+    
+    // Decode and decrypt token
+    const payload = jose.decodeJwt(token);
+
+    if (!payload?.token) {
+      return NextResponse.json(
+        { error: "Invalid token structure" },
         { status: 401 }
       );
     }
 
-    const decryptedAccessToken = DecryptionFunction(payload.accessToken as string);
+    const decryptedAccessToken = DecryptionFunction(payload.token as string);
 
-    const fetchme = await fetch("https://api.intra.42.fr/v2/me", {
+    const fetchme = await fetch((process.env.INTRA_TOKEN as string) + "/v2/me", {
       headers: {
         Authorization: `Bearer ${decryptedAccessToken}`,
       },
@@ -78,7 +91,7 @@ export async function POST(req: Request) {
       );
     }
 
-    const { feedbackId, badgeType } = validation.data;
+    const { feedbackId, badgeType, customMessage } = validation.data;
 
     const updateQuery = `
       UPDATE leets.feedback 
@@ -98,14 +111,68 @@ export async function POST(req: Request) {
       );
     }
 
+    const feedback = updateResult.rows[0];
+    
+    // Create notification for the user who received the badge
+    try {
+      // First, fetch the user's 42 intra ID from their login
+      const userLookupResponse = await fetch(
+        `https://api.intra.42.fr/v2/users/${feedback.user_login}`,
+        {
+          headers: {
+            Authorization: `Bearer ${decryptedAccessToken}`,
+          },
+        }
+      );
+
+      if (userLookupResponse.ok) {
+        const userLookupData = await userLookupResponse.json();
+        const targetUserId = userLookupData.id;
+
+        const notificationQuery = `
+          INSERT INTO notifications (
+            title, 
+            message, 
+            type, 
+            target_type, 
+            target_user_id,
+            sender_username,
+            sender_image,
+            link
+          ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
+        `;
+        
+        const notificationMessage = customMessage 
+          ? `🏆 Badge Awarded!\n\n${customMessage}`
+          : `Congratulations! You've been awarded the "${badgeType}" badge for your exceptional feedback.`;
+        
+        await client.query(notificationQuery, [
+          '🏆 Badge Awarded!',
+          notificationMessage,
+          'success',
+          'specific',
+          targetUserId,
+          'mmaghri',
+          'https://cdn.intra.42.fr/users/83b4706433bb90d165a91eafb7c9bb86/large_mmaghri.jpg',
+          null
+        ]);
+      } else {
+        console.error("Failed to lookup user from 42 API:", feedback.user_login);
+      }
+    } catch (notifError) {
+      console.error("Error creating notification:", notifError);
+      // Don't fail the badge award if notification fails
+    }
+
     return NextResponse.json(
       {
         success: true,
         message: `Badge "${badgeType}" awarded successfully`,
-        feedback: updateResult.rows[0],
+        feedback: feedback,
       },
       { status: 200 }
     );
+
 
   } catch (error) {
     console.error("Error awarding badge:", error);
@@ -145,19 +212,32 @@ export async function DELETE(req: Request) {
 
     const token = authCodeCookie.split("=")[1];
 
-    const secret = new TextEncoder().encode(process.env.JWT_ENCRYPT_SECRET);
-    const { payload } = await jwtVerify(token, secret);
-
-    if (!payload?.accessToken) {
+    const secret = new TextEncoder().encode(process.env.SECRET_KEY);
+    
+    // Verify JWT token
+    try {
+      await jose.jwtVerify(token, secret);
+    } catch (jwtError) {
+      console.error("JWT verification failed:", jwtError);
       return NextResponse.json(
-        { error: "Invalid token" },
+        { error: "Invalid or expired token" },
+        { status: 401 }
+      );
+    }
+    
+    // Decode and decrypt token
+    const payload = jose.decodeJwt(token);
+
+    if (!payload?.token) {
+      return NextResponse.json(
+        { error: "Invalid token structure" },
         { status: 401 }
       );
     }
 
-    const decryptedAccessToken = DecryptionFunction(payload.accessToken as string);
+    const decryptedAccessToken = DecryptionFunction(payload.token as string);
 
-    const fetchme = await fetch("https://api.intra.42.fr/v2/me", {
+    const fetchme = await fetch((process.env.INTRA_TOKEN as string) + "/v2/me", {
       headers: {
         Authorization: `Bearer ${decryptedAccessToken}`,
       },

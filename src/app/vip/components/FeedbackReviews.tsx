@@ -83,7 +83,7 @@ const FeedbackReviews: React.FC<FeedbackReviewsProps> = ({ isVisible, onClose })
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-md p-4">
-      <div className="relative w-full max-w-7xl max-h-[90vh] rounded-2xl bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 border border-gray-700/50 shadow-2xl overflow-hidden">
+      <div className="relative w-full max-w-7xl max-h-[90vh] rounded-2xl bg-[#001226] border border-[#0070ef]/30 shadow-2xl overflow-hidden">
         {/* Header */}
         <div className="sticky top-0 z-10 bg-gray-900/95 backdrop-blur-md border-b border-gray-700/50 p-6">
           <div className="flex items-center justify-between">

@@ -23,6 +23,7 @@ export const BADGE_TYPES = {
   INNOVATIVE: "Innovative",
   CRITICAL_THINKER: "Critical Thinker",
   CONTRIBUTOR: "Contributor",
+  VIP: "VIP",
 } as const;
 
 export type BadgeType = typeof BADGE_TYPES[keyof typeof BADGE_TYPES];

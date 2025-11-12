@@ -16,10 +16,10 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className="h-screen">
+    <html lang="en" className="h-screen overflow-hidden">
       <body
         style={{ scrollbarColor: "rgba(255, 255, 255, 0.1) transparent" }}
-        className=" relative flex w-full h-full bg-gradient-to-bl from-gray-900 to-black"
+        className=" relative flex w-full h-full bg-gradient-to-bl from-gray-900 to-black overflow-hidden"
       >
         <ContextProvider>
           <Layout>{children}</Layout>

@@ -69,6 +69,7 @@ export const BADGE_TYPES = {
   HELPFUL: "Helpful",
   INNOVATIVE: "Innovative",
   CRITICAL_THINKER: "Critical Thinker",
+  VIP: "VIP",
 } as const;
 
 export type BadgeType = typeof BADGE_TYPES[keyof typeof BADGE_TYPES];
@@ -81,7 +82,9 @@ export const awardBadgeSchema = z.object({
     BADGE_TYPES.HELPFUL,
     BADGE_TYPES.INNOVATIVE,
     BADGE_TYPES.CRITICAL_THINKER,
+    BADGE_TYPES.VIP,
   ]),
+  customMessage: z.string().max(500).optional(),
 });
 
 export type AwardBadgeSchemaType = z.infer<typeof awardBadgeSchema>;

@@ -1,8 +1,11 @@
 "use client";
-import { redirect } from "next/navigation";
 import React, { FC } from "react";
 
 const LandingComponent: FC = () => {
+  const handleLogin = () => {
+    window.location.href = process.env.NEXT_PUBLIC_REDIRECT_URL as string;
+  };
+
   return (
     <>
       <div
@@ -26,9 +29,7 @@ const LandingComponent: FC = () => {
           </p>
         </div>
         <button
-          onClick={() =>
-            redirect(process.env.NEXT_PUBLIC_REDIRECT_URL as string)
-          }
+          onClick={handleLogin}
           className="cursor-pointer w-full bg-gradient-to-r border-solid border-[1px] border-blue-500/40
            from-blue-900/30 to-blue-800/30 text-white py-3 px-6 rounded-md 
           font-semibold text-sm shadow-lg transition-all duration-300 hover:scale-105 active:scale-95 hover:shadow-blue-500/30"
