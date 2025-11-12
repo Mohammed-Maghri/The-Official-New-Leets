@@ -11,8 +11,7 @@ import {
 } from "./vip.types";
 import { UserData } from "@/component/navbar/navbar.types";
 
-import { VipHeader, TeamGrid, LoadMore, AccessDenied } from "./components";
-import VipAdmin from "./components/VipAdmin";
+import { VipHeader, TeamGrid, LoadMore, AccessDenied, VipAdmin } from "./components";
 
 const VipPage = () => {
   const [dataReturned, setDataReturned] = React.useState<

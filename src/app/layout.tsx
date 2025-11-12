@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 import { Layout } from "@/component/layout/layout";
 import { ContextProvider } from "@/component/context/context";
+import GlobalFeedbackButton from "@/component/feedback/GlobalFeedbackButton";
 
 export const metadata: Metadata = {
   title: "1337Leets",
@@ -22,6 +23,7 @@ export default function RootLayout({
       >
         <ContextProvider>
           <Layout>{children}</Layout>
+          <GlobalFeedbackButton />
         </ContextProvider>
       </body>
     </html>

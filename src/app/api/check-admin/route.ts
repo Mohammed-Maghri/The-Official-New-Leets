@@ -20,19 +20,15 @@ export const GET = async (request: NextRequest) => {
       new TextEncoder().encode(process.env.SECRET_KEY as string)
     );
     
-    const fetchme = await fetch(
-      process.env.NODE_ENV === "production"
-        ? `${process.env.productionUrl}/api/who`
-        : "http://localhost:3000/api/who",
-      {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-          Cookie: `auth_code=${authCookie};`,
-        },
-        credentials: "include",
-      }
-    );
+    const whoUrl = new URL("/api/who", request.url);
+    const fetchme = await fetch(whoUrl, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Cookie: `auth_code=${authCookie};`,
+      },
+      credentials: "include",
+    });
 
     if (!fetchme.ok) {
       return NextResponse.json(
@@ -45,11 +41,13 @@ export const GET = async (request: NextRequest) => {
     
     client = new Pool({ connectionString: process.env.DATABASE_KEY });
 
-    // Check if user is an admin (owner) in the database
-    const adminCheckQuery = `SELECT * FROM leets.vip WHERE login = $1 AND token = 'owner'`;
-    const adminCheckResult = await client.query(adminCheckQuery, [currentUser.login]);
+    const query = `
+      SELECT * FROM leets.vip 
+      WHERE login = $1 AND token IN ('owner', 'creator', 'vip')
+    `;
+    const result = await client.query(query, [currentUser.login]);
     
-    const isAdmin = adminCheckResult.rows.length > 0;
+    const isAdmin = result.rows.length > 0;
 
     return NextResponse.json(
       { isAdmin, login: currentUser.login },

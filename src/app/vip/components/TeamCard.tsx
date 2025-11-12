@@ -3,6 +3,7 @@ import React from "react";
 import { motion } from "motion/react";
 import { ResponseData } from "../vip.types";
 import { AnimationConfig } from "../vip.constants";
+import { UserBadges } from "@/component/badges/UserBadges";
 
 interface TeamCardProps {
   team: ResponseData;
@@ -89,14 +90,22 @@ export const TeamCard: React.FC<TeamCardProps> = ({
           {team.users.map((user, userIndex) => (
             <div
               key={userIndex}
-              className={`px-2 md:px-3 py-1 rounded-full text-xs font-medium font-Tektur border truncate max-w-full ${
+              className={`flex items-center gap-1.5 px-2 md:px-3 py-1 rounded-full text-xs font-medium font-Tektur border truncate max-w-full ${
                 user.leader
                   ? "bg-yellow-500/30 text-yellow-300 border-yellow-400/50"
                   : "bg-blue-500/30 text-blue-300 border-blue-400/50"
               }`}
             >
-              {user.leader && "👑 "}
-              {user.login}
+              <span>
+                {user.leader && "👑 "}
+                {user.login}
+              </span>
+              <UserBadges 
+                vipStatus={user.vip_status} 
+                badges={user.badges} 
+                size="sm" 
+                showTooltip={true} 
+              />
             </div>
           ))}
         </div>

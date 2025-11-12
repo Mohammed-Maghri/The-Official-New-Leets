@@ -11,17 +11,58 @@ import { ContextCreator } from "@/component/context/context";
 import { ContextProps, UserData } from "@/component/context/context.types";
 import { TbSkiJumping } from "react-icons/tb";
 import { fetchVIPUsers } from "@/component/dashboard/dashboard.types";
+import { useRouter } from "next/navigation";
+import { BsStars } from "react-icons/bs";
 
 const Dashboard = () => {
   const { userData } = React.useContext(ContextCreator) as ContextProps;
+  const router = useRouter();
+  const [isCreator, setIsCreator] = React.useState<boolean>(false);
 
   // Fetch VIP users on component mount
   React.useEffect(() => {
     fetchVIPUsers();
   }, []);
 
+  // Check if user is a creator
+  React.useEffect(() => {
+    const checkCreatorStatus = async () => {
+      try {
+        const response = await fetch("/api/check-creator", {
+          method: "GET",
+          credentials: "include",
+        });
+        
+        if (response.ok) {
+          const data = await response.json();
+          setIsCreator(data.isCreator || false);
+        }
+      } catch (error) {
+        console.error("Error checking creator status:", error);
+      }
+    };
+    
+    if (userData) {
+      checkCreatorStatus();
+    }
+  }, [userData]);
+
   return (
     <div className="flex flex-1 overflow-auto p-5 sm:p-10 gap-2 z-10 flex-col">
+      {/* Creator Button */}
+      {isCreator && (
+        <div className="fixed bottom-6 right-6 z-50">
+          <button
+            onClick={() => router.push("/dashboard/feedback-reviews")}
+            className="flex items-center gap-2 px-4 py-3 bg-gradient-to-r from-yellow-500 to-amber-500 hover:from-yellow-600 hover:to-amber-600 text-gray-900 font-Tektur font-bold rounded-xl shadow-lg hover:shadow-yellow-500/50 transition-all duration-300 hover:scale-105"
+          >
+            <BsStars className="w-5 h-5" />
+            <span className="hidden sm:inline">Feedback Reviews</span>
+            <span className="sm:hidden">Reviews</span>
+          </button>
+        </div>
+      )}
+
       <div className="w-full h-[200px]">
         <RankComponent userData={userData as UserData} rank={-1} />
       </div>

@@ -29,19 +29,15 @@ export const GET = async (request: NextRequest) => {
     }
     
     // Get current user info
-    const fetchme = await fetch(
-      process.env.NODE_ENV === "production"
-        ? `${process.env.productionUrl}/api/who`
-        : "http://localhost:3000/api/who",
-      {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-          Cookie: `auth_code=${authCookie};`,
-        },
-        credentials: "include",
-      }
-    );
+    const whoUrl = new URL("/api/who", request.url);
+    const fetchme = await fetch(whoUrl, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Cookie: `auth_code=${authCookie};`,
+      },
+      credentials: "include",
+    });
 
     if (!fetchme.ok) {
       return NextResponse.json(

@@ -27,19 +27,15 @@ export const GET = async (request: NextRequest) => {
     );
     
     // Fetch user data
-    const fetchme = await fetch(
-      process.env.NODE_ENV == "production"
-        ? `${process.env.productionUrl}/api/who`
-        : "http://localhost:3000/api/who",
-      {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-          Cookie: `auth_code=${request.cookies.get("auth_code")?.value};`,
-        },
-        credentials: "include",
-      }
-    );
+    const whoUrl = new URL("/api/who", request.url);
+    const fetchme = await fetch(whoUrl, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Cookie: `auth_code=${request.cookies.get("auth_code")?.value};`,
+      },
+      credentials: "include",
+    });
 
     if (!fetchme.ok) {
       throw new Error("Failed to fetch user data");
@@ -139,13 +135,59 @@ export const GET = async (request: NextRequest) => {
     // }
     
     const data: RawTeamData[] = await dataFetched.json();
+    
+    // Get all unique user logins from teams
+    const allUserLogins = Array.from(
+      new Set(
+        data.flatMap(team => team.users.map(user => user.login))
+      )
+    );
+    
+    const userBadgeMap: Map<string, { vipStatus: string | null; badges: string[] }> = new Map();
+    
+    if (allUserLogins.length > 0 && client) {
+      try {
+        const badgeQuery = `
+          SELECT 
+            v.login,
+            v.token as vip_status,
+            COALESCE(
+              array_agg(f.badge_type) FILTER (WHERE f.badge_awarded = TRUE),
+              ARRAY[]::text[]
+            ) as badges
+          FROM leets.vip v
+          LEFT JOIN leets.feedback f ON v.login = f.user_login AND f.badge_awarded = TRUE
+          WHERE v.login = ANY($1)
+          GROUP BY v.login, v.token
+        `;
+        const badgeResult = await client.query(badgeQuery, [allUserLogins]);
+        
+        badgeResult.rows.forEach(row => {
+          userBadgeMap.set(row.login, {
+            vipStatus: row.vip_status,
+            badges: row.badges || []
+          });
+        });
+      } catch (badgeError) {
+        console.error("Error fetching badges:", badgeError);
+        // Continue without badges if query fails
+      }
+    }
+    
     const otherThings: TransformedTeamData[] = data.map((item: RawTeamData) => {
       return {
         locked_at: item.locked_at,
         name: item.name,
         project_id: item.project_id,
         status: item.status,
-        users: item.users,
+        users: item.users.map(user => {
+          const badgeData = userBadgeMap.get(user.login);
+          return {
+            ...user,
+            vip_status: badgeData?.vipStatus || null,
+            badges: badgeData?.badges || []
+          };
+        }),
         locked: item.locked,
         validated: item.validated == true ? "yes" : "no",
         closed_at: item.closed_at,

@@ -22,19 +22,15 @@ export const POST = async (request: NextRequest) => {
       new TextEncoder().encode(process.env.SECRET_KEY as string)
     );
     
-    const fetchme = await fetch(
-      process.env.NODE_ENV === "production"
-        ? `${process.env.productionUrl}/api/who`
-        : "http://localhost:3000/api/who",
-      {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-          Cookie: `auth_code=${request.cookies.get("auth_code")?.value};`,
-        },
-        credentials: "include",
-      }
-    );
+    const whoUrl = new URL("/api/who", request.url);
+    const fetchme = await fetch(whoUrl, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Cookie: `auth_code=${request.cookies.get("auth_code")?.value};`,
+      },
+      credentials: "include",
+    });
 
     if (!fetchme.ok) {
       return NextResponse.json(
@@ -47,13 +43,13 @@ export const POST = async (request: NextRequest) => {
     
     client = new Pool({ connectionString: process.env.DATABASE_KEY });
 
-    // Check if user is an admin (owner) in the database
-    const adminCheckQuery = `SELECT * FROM leets.vip WHERE login = $1 AND token = 'owner'`;
+    // Check if user is a creator in the database
+    const adminCheckQuery = `SELECT * FROM leets.vip WHERE login = $1 AND token = 'creator'`;
     const adminCheckResult = await client.query(adminCheckQuery, [currentUser.login]);
     
     if (adminCheckResult.rows.length === 0) {
       return NextResponse.json(
-        { error: "Ur not a Auth Admin" },
+        { error: "Unauthorized. Only creators can manage VIP access." },
         { status: 403 }
       );
     }
@@ -116,19 +112,15 @@ export const GET = async (request: NextRequest) => {
       new TextEncoder().encode(process.env.SECRET_KEY as string)
     );
     
-    const fetchme = await fetch(
-      process.env.NODE_ENV === "production"
-        ? `${process.env.productionUrl}/api/who`
-        : "http://localhost:3000/api/who",
-      {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-          Cookie: `auth_code=${request.cookies.get("auth_code")?.value};`,
-        },
-        credentials: "include",
-      }
-    );
+    const whoUrl = new URL("/api/who", request.url);
+    const fetchme = await fetch(whoUrl, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Cookie: `auth_code=${request.cookies.get("auth_code")?.value};`,
+      },
+      credentials: "include",
+    });
 
     if (!fetchme.ok) {
       return NextResponse.json(
@@ -141,18 +133,35 @@ export const GET = async (request: NextRequest) => {
     
     client = new Pool({ connectionString: process.env.DATABASE_KEY });
 
-    // Check if user is an admin (owner) in the database
-    const adminCheckQuery = `SELECT * FROM leets.vip WHERE login = $1 AND token = 'owner'`;
+    // Check if user is a creator in the database
+    const adminCheckQuery = `SELECT * FROM leets.vip WHERE login = $1 AND token = 'creator'`;
     const adminCheckResult = await client.query(adminCheckQuery, [currentUser.login]);
     
     if (adminCheckResult.rows.length === 0) {
       return NextResponse.json(
-        { error: "Ur not a Auth Admin" },
+        { error: "Unauthorized. Only creators can view VIP users." },
         { status: 403 }
       );
     }
 
-    const query = `SELECT id, category, login, created_at, updated_at FROM leets.vip ORDER BY created_at DESC`;
+    // Updated query to include token (vip status) and feedback badges
+    const query = `
+      SELECT 
+        v.id, 
+        v.category, 
+        v.login, 
+        v.token as vip_status,
+        v.created_at, 
+        v.updated_at,
+        COALESCE(
+          array_agg(f.badge_type) FILTER (WHERE f.badge_awarded = TRUE),
+          ARRAY[]::text[]
+        ) as badges
+      FROM leets.vip v
+      LEFT JOIN leets.feedback f ON v.login = f.user_login AND f.badge_awarded = TRUE
+      GROUP BY v.id, v.category, v.login, v.token, v.created_at, v.updated_at
+      ORDER BY v.created_at DESC
+    `;
     const result = await client.query(query);
 
     return NextResponse.json(
@@ -197,19 +206,15 @@ export const DELETE = async (request: NextRequest) => {
       new TextEncoder().encode(process.env.SECRET_KEY as string)
     );
     
-    const fetchme = await fetch(
-      process.env.NODE_ENV === "production"
-        ? `${process.env.productionUrl}/api/who`
-        : "http://localhost:3000/api/who",
-      {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-          Cookie: `auth_code=${request.cookies.get("auth_code")?.value};`,
-        },
-        credentials: "include",
-      }
-    );
+    const whoUrl = new URL("/api/who", request.url);
+    const fetchme = await fetch(whoUrl, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Cookie: `auth_code=${request.cookies.get("auth_code")?.value};`,
+      },
+      credentials: "include",
+    });
 
     if (!fetchme.ok) {
       return NextResponse.json(
@@ -222,24 +227,24 @@ export const DELETE = async (request: NextRequest) => {
     
     client = new Pool({ connectionString: process.env.DATABASE_KEY });
 
-    // Check if user is an admin (owner) in the database
-    const adminCheckQuery = `SELECT * FROM leets.vip WHERE login = $1 AND token = 'owner'`;
+    // Check if user is a creator in the database
+    const adminCheckQuery = `SELECT * FROM leets.vip WHERE login = $1 AND token = 'creator'`;
     const adminCheckResult = await client.query(adminCheckQuery, [currentUser.login]);
     
     if (adminCheckResult.rows.length === 0) {
       return NextResponse.json(
-        { error: "Ur not a Auth Admin" },
+        { error: "Unauthorized. Only creators can remove VIP users." },
         { status: 403 }
       );
     }
 
-    // Check if user being deleted is an admin (owner)
+    // Check if user being deleted is a creator (cannot delete creators)
     if (login) {
-      const userToDeleteQuery = `SELECT * FROM leets.vip WHERE login = $1 AND token = 'owner'`;
+      const userToDeleteQuery = `SELECT * FROM leets.vip WHERE login = $1 AND token = 'creator'`;
       const userToDeleteResult = await client.query(userToDeleteQuery, [login]);
       if (userToDeleteResult.rows.length > 0) {
         return NextResponse.json(
-          { error: "Cannot remove admin user" },
+          { error: "Cannot remove creator user" },
           { status: 403 }
         );
       }

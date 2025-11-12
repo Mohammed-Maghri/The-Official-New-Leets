@@ -1,10 +1,11 @@
 import React from "react";
-import { RiUserStarLine, RiVipCrown2Fill } from "react-icons/ri";
+import { RiUserStarLine } from "react-icons/ri";
 import { UserData } from "../navbar/navbar.types";
 import { Skeleton } from "@mui/material";
-import { BsEmojiKiss } from "react-icons/bs";
+import { BsEmojiKiss, BsStars, BsDiamond, BsLightbulb } from "react-icons/bs";
 import { GiQueenCrown } from "react-icons/gi";
-import { users } from "./dashboard.types";
+import { FaCrown, FaHandsHelping, FaBrain } from "react-icons/fa";
+import { MdOutlineEmojiEvents } from "react-icons/md";
 
 const ImageSideComp: React.FC<{ image: string }> = ({ image }) => {
   return (
@@ -28,6 +29,7 @@ const LocationUserDetails: React.FC<{
   location: string | null;
   username: string;
 }> = ({ location, username }) => {
+  
   return (
     <div className=" p-2 h-full flex items-center justify-center flex-row gap-1">
       <div
@@ -109,7 +111,93 @@ const LevelProgress: React.FC<{
   username: string;
   level: number;
   rank: number;
-}> = ({ level, rank, username }) => {
+  badge?: { type: 'creator' | 'vip' | 'feedback'; name: string } | null;
+}> = ({ level, rank, badge }) => {
+  const getBadgeConfig = (badge: { type: 'creator' | 'vip' | 'feedback'; name: string }) => {
+    if (badge.type === 'creator') {
+      return {
+        icon: FaCrown,
+        bg: 'bg-gradient-to-r from-yellow-400/50 to-orange-500/50',
+        border: 'border-yellow-300/60',
+        shadow: 'shadow-yellow-400/40',
+        text: 'text-yellow-100',
+        label: 'CREATOR'
+      };
+    }
+    
+    if (badge.type === 'vip') {
+      return {
+        icon: BsDiamond,
+        bg: 'bg-yellow-400/40',
+        border: 'border-yellow-300/60',
+        shadow: 'shadow-yellow-400/40',
+        text: 'text-yellow-100',
+        label: 'VIP'
+      };
+    }
+    
+    // Feedback badges
+    switch (badge.name) {
+      case 'Top Feedback':
+        return {
+          icon: MdOutlineEmojiEvents,
+          bg: 'bg-gradient-to-r from-purple-500/50 to-pink-500/50',
+          border: 'border-purple-300/60',
+          shadow: 'shadow-purple-400/40',
+          text: 'text-purple-100',
+          label: 'TOP FEEDBACK'
+        };
+      case 'Helpful':
+        return {
+          icon: FaHandsHelping,
+          bg: 'bg-gradient-to-r from-blue-500/50 to-cyan-500/50',
+          border: 'border-blue-300/60',
+          shadow: 'shadow-blue-400/40',
+          text: 'text-blue-100',
+          label: 'HELPFUL'
+        };
+      case 'Innovative':
+        return {
+          icon: BsLightbulb,
+          bg: 'bg-gradient-to-r from-green-500/50 to-emerald-500/50',
+          border: 'border-green-300/60',
+          shadow: 'shadow-green-400/40',
+          text: 'text-green-100',
+          label: 'INNOVATIVE'
+        };
+      case 'Critical Thinker':
+        return {
+          icon: FaBrain,
+          bg: 'bg-gradient-to-r from-indigo-500/50 to-violet-500/50',
+          border: 'border-indigo-300/60',
+          shadow: 'shadow-indigo-400/40',
+          text: 'text-indigo-100',
+          label: 'THINKER'
+        };
+      case 'Contributor':
+        return {
+          icon: BsStars,
+          bg: 'bg-gradient-to-r from-rose-500/50 to-red-500/50',
+          border: 'border-rose-300/60',
+          shadow: 'shadow-rose-400/40',
+          text: 'text-rose-100',
+          label: 'CONTRIBUTOR'
+        };
+      default:
+        return {
+          icon: BsStars,
+          bg: 'bg-gray-500/40',
+          border: 'border-gray-300/60',
+          shadow: 'shadow-gray-400/40',
+          text: 'text-gray-100',
+          label: badge.name.toUpperCase()
+        };
+    }
+  };
+
+  const badgeConfig = badge ? getBadgeConfig(badge) : null;
+  const BadgeIcon = badgeConfig?.icon;
+
   return (
     <div className="flex relative items-center  justify-start  flex-col w-full h-[50%] bg-amber-50/0 pr-4 pl-4">
       <div className="w-full p-0.5 mb-3 h-[20px] flex items-center justify-between">
@@ -125,11 +213,11 @@ const LevelProgress: React.FC<{
               >
                 {rank}
               </p>
-              {users.includes(username) && (
-                <div className="ml-1 px-3 py-1.5 bg-yellow-400/40 border-2 border-yellow-300/60 rounded-full shadow-xl shadow-yellow-400/40 animate-pulse flex flex-row items-center gap-1">
-                  <RiVipCrown2Fill className="text-yellow-100 text-[12px]" />
-                  <span className="text-yellow-100 font-Tektur text-[8px] font-bold tracking-widest">
-                    VIP
+              {badgeConfig && BadgeIcon && (
+                <div className={`ml-1 px-3 py-1.5 border-2 rounded-full shadow-xl flex flex-row items-center gap-1 ${badgeConfig.bg} ${badgeConfig.border} ${badgeConfig.shadow} animate-pulse`}>
+                  <BadgeIcon className={`${badgeConfig.text} text-[12px]`} />
+                  <span className={`${badgeConfig.text} font-Tektur text-[8px] font-bold tracking-widest`}>
+                    {badgeConfig.label}
                   </span>
                 </div>
               )}
@@ -371,6 +459,7 @@ const RankComponent: React.FC<{ userData: UserData | null; rank: number }> = ({
               level={userData.level}
               rank={rank}
               username={userData.login}
+              badge={userData.badge}
             />
           </div>
         </>

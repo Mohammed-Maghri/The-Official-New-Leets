@@ -1,7 +1,10 @@
 let users: string[] = [];
 
-// Fetch VIP users from the backend
 const fetchVIPUsers = async () => {
+  if (typeof window === 'undefined') {
+    return;
+  }
+  
   try {
     const response = await fetch("/api/vip-users");
     if (response.ok) {
@@ -15,7 +18,8 @@ const fetchVIPUsers = async () => {
   }
 };
 
-// Initialize on module load
-fetchVIPUsers();
+if (typeof window !== 'undefined') {
+  fetchVIPUsers();
+}
 
 export { users, fetchVIPUsers };

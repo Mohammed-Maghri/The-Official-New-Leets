@@ -20,6 +20,10 @@ interface UserData {
   wallet: number;
   campus_id: number;
   campus_name: string;
+  badge?: {
+    type: 'creator' | 'vip' | 'feedback';
+    name: string;
+  } | null;
 }
 
 interface ButtonsProps {

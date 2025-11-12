@@ -1,6 +1,8 @@
 export interface User {
   login: string;
   leader: boolean;
+  vip_status?: string | null;
+  badges?: string[];
 }
 
 export interface ResponseData {
