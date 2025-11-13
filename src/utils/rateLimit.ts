@@ -146,11 +146,11 @@ export async function rateLimit(
     let blockMessage: string;
     
     if (entry.blockCount === 1) {
-      blockMessage = "First warning! Please wait 2 minutes.";
+      blockMessage = "First warning! Please wait 5 minutes.";
     } else if (entry.blockCount === 2) {
-      blockMessage = "Second warning! Please wait 5 minutes.";
+      blockMessage = "Second warning! Please wait 10 minutes.";
     } else {
-      blockMessage = "Final warning! Please wait 10 minutes.";
+      blockMessage = "Final warning! Please wait 15 minutes.";
     }
     
     return NextResponse.json(
@@ -197,19 +197,19 @@ export async function rateLimit(
     // Rate limit exceeded - apply escalating block times
     const newBlockCount = entry.blockCount + 1;
     
-    // Progressive block durations: 2min -> 5min -> 10min
+    // Progressive block durations: 5min -> 10min -> 15min
     let blockDuration: number;
     let blockMessage: string;
     
     if (newBlockCount === 1) {
-      blockDuration = 2 * 60; // 2 minutes
-      blockMessage = "First warning! Please wait 2 minutes.";
-    } else if (newBlockCount === 2) {
       blockDuration = 5 * 60; // 5 minutes
-      blockMessage = "Second warning! Please wait 5 minutes.";
-    } else {
+      blockMessage = "First warning! Please wait 5 minutes.";
+    } else if (newBlockCount === 2) {
       blockDuration = 10 * 60; // 10 minutes
-      blockMessage = "Final warning! Please wait 10 minutes.";
+      blockMessage = "Second warning! Please wait 10 minutes.";
+    } else {
+      blockDuration = 15 * 60; // 15 minutes
+      blockMessage = "Final warning! Please wait 15 minutes.";
     }
     
     // Update entry with new block count in database
@@ -264,17 +264,17 @@ export async function rateLimit(
  */
 export const RateLimitPresets = {
   // Strict: For expensive operations (42 API calls)
-  STRICT: { maxRequests: 10, windowMs: 60000 }, // 10 per minute
+  STRICT: { maxRequests: 30, windowMs: 60000 }, // 30 per minute
   
   // Standard: For normal API endpoints
-  STANDARD: { maxRequests: 10, windowMs: 60000 }, // 10 per minute
+  STANDARD: { maxRequests: 40, windowMs: 60000 }, // 40 per minute
   
   // Relaxed: For lightweight operations
-  RELAXED: { maxRequests: 10, windowMs: 60000 }, // 10 per minute
+  RELAXED: { maxRequests: 60, windowMs: 60000 }, // 60 per minute
   
   // Auth: For authentication endpoints
-  AUTH: { maxRequests: 10, windowMs: 60000 }, // 10 per minute
+  AUTH: { maxRequests: 5, windowMs: 60000 }, // 5 per minute
   
   // Write: For write operations (POST, PUT, DELETE)
-  WRITE: { maxRequests: 10, windowMs: 60000 }, // 10 per minute
+  WRITE: { maxRequests: 15, windowMs: 60000 }, // 15 per minute
 };
