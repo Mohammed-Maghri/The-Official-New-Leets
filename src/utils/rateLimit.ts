@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
+import { Pool } from "pg";
 
 interface RateLimitEntry {
   count: number;
@@ -7,16 +8,44 @@ interface RateLimitEntry {
   lastBlockTime: number; // When they were last blocked
 }
 
-// Store rate limit data in memory (per user/IP)
-const rateLimitMap = new Map<string, RateLimitEntry>();
+// PostgreSQL connection pool
+const pool = new Pool({
+  connectionString: process.env.DATABASE_KEY || process.env.DATABASE_URL,
+});
+
+// Initialize rate limit table
+const initTable = async () => {
+  try {
+    await pool.query(`
+      CREATE TABLE IF NOT EXISTS rate_limits (
+        identifier VARCHAR(255) PRIMARY KEY,
+        count INTEGER NOT NULL,
+        reset_time BIGINT NOT NULL,
+        block_count INTEGER NOT NULL DEFAULT 0,
+        last_block_time BIGINT NOT NULL DEFAULT 0,
+        updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+      )
+    `);
+    
+    // Create index for faster cleanup
+    await pool.query(`
+      CREATE INDEX IF NOT EXISTS idx_rate_limits_reset_time 
+      ON rate_limits(reset_time)
+    `);
+  } catch (error) {
+    console.error("Failed to initialize rate_limits table:", error);
+  }
+};
+
+initTable();
 
 // Clean up old entries every 5 minutes
-setInterval(() => {
+setInterval(async () => {
   const now = Date.now();
-  for (const [key, entry] of rateLimitMap.entries()) {
-    if (now > entry.resetTime) {
-      rateLimitMap.delete(key);
-    }
+  try {
+    await pool.query('DELETE FROM rate_limits WHERE reset_time < $1', [now]);
+  } catch (error) {
+    console.error("Rate limit cleanup error:", error);
   }
 }, 5 * 60 * 1000);
 
@@ -31,17 +60,38 @@ export interface RateLimitConfig {
  * @param config - Rate limit configuration
  * @returns null if allowed, NextResponse with error if rate limited
  */
-export function rateLimit(
+export async function rateLimit(
   request: NextRequest,
   config: RateLimitConfig = { maxRequests: 30, windowMs: 60000 } // Default: 30 requests per minute
-): NextResponse | null {
+): Promise<NextResponse | null> {
   // Get user identifier (cookie or IP)
   const authCookie = request.cookies.get("auth_code")?.value;
   const ip = request.headers.get("x-forwarded-for") || request.headers.get("x-real-ip") || "unknown";
   const identifier = authCookie || ip;
 
   const now = Date.now();
-  const entry = rateLimitMap.get(identifier);
+  
+  // Get entry from database
+  let entry: RateLimitEntry | null = null;
+  try {
+    const result = await pool.query(
+      'SELECT count, reset_time, block_count, last_block_time FROM rate_limits WHERE identifier = $1',
+      [identifier]
+    );
+    
+    if (result.rows.length > 0) {
+      entry = {
+        count: result.rows[0].count,
+        resetTime: parseInt(result.rows[0].reset_time),
+        blockCount: result.rows[0].block_count,
+        lastBlockTime: parseInt(result.rows[0].last_block_time),
+      };
+    }
+  } catch (error) {
+    console.error("Rate limit DB read error:", error);
+    // Allow request if DB fails (fail open for availability)
+    return null;
+  }
 
   // Check if user is currently blocked (has been rate limited before)
   if (entry && entry.blockCount > 0 && now < entry.resetTime) {
@@ -82,12 +132,18 @@ export function rateLimit(
     // Reset block count if enough time has passed (1 hour)
     const existingBlockCount = entry && (now - entry.lastBlockTime) < 3600000 ? entry.blockCount : 0;
     
-    rateLimitMap.set(identifier, {
-      count: 1,
-      resetTime: now + config.windowMs,
-      blockCount: existingBlockCount,
-      lastBlockTime: entry?.lastBlockTime || 0,
-    });
+    try {
+      await pool.query(
+        `INSERT INTO rate_limits (identifier, count, reset_time, block_count, last_block_time)
+         VALUES ($1, $2, $3, $4, $5)
+         ON CONFLICT (identifier) 
+         DO UPDATE SET count = $2, reset_time = $3, block_count = $4, last_block_time = $5, updated_at = CURRENT_TIMESTAMP`,
+        [identifier, 1, now + config.windowMs, existingBlockCount, entry?.lastBlockTime || 0]
+      );
+    } catch (error) {
+      console.error("Rate limit DB write error:", error);
+    }
+    
     return null; // Allow request
   }
 
@@ -110,10 +166,19 @@ export function rateLimit(
       blockMessage = "Final warning! Please wait 10 minutes.";
     }
     
-    // Update entry with new block count
-    entry.blockCount = newBlockCount;
-    entry.lastBlockTime = now;
-    entry.resetTime = now + (blockDuration * 1000);
+    // Update entry with new block count in database
+    const newResetTime = now + (blockDuration * 1000);
+    try {
+      await pool.query(
+        `INSERT INTO rate_limits (identifier, count, reset_time, block_count, last_block_time)
+         VALUES ($1, $2, $3, $4, $5)
+         ON CONFLICT (identifier) 
+         DO UPDATE SET count = $2, reset_time = $3, block_count = $4, last_block_time = $5, updated_at = CURRENT_TIMESTAMP`,
+        [identifier, entry.count, newResetTime, newBlockCount, now]
+      );
+    } catch (error) {
+      console.error("Rate limit DB update error:", error);
+    }
     
     return NextResponse.json(
       {
@@ -129,14 +194,22 @@ export function rateLimit(
           "Retry-After": blockDuration.toString(),
           "X-RateLimit-Limit": config.maxRequests.toString(),
           "X-RateLimit-Remaining": "0",
-          "X-RateLimit-Reset": new Date(entry.resetTime).toISOString(),
+          "X-RateLimit-Reset": new Date(newResetTime).toISOString(),
         },
       }
     );
   }
 
-  // Increment counter
-  entry.count++;
+  // Increment counter in database
+  try {
+    await pool.query(
+      'UPDATE rate_limits SET count = count + 1, updated_at = CURRENT_TIMESTAMP WHERE identifier = $1',
+      [identifier]
+    );
+  } catch (error) {
+    console.error("Rate limit DB increment error:", error);
+  }
+  
   return null; // Allow request
 }
 

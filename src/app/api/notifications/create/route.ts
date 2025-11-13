@@ -12,7 +12,7 @@ const pool = new Pool({
 
 export async function POST(request: NextRequest) {
   // Rate limiting: 10 requests per minute (strict - prevents notification spam)
-  const rateLimitResult = rateLimit(request, { maxRequests: 10, windowMs: 60000 });
+  const rateLimitResult = await rateLimit(request, { maxRequests: 10, windowMs: 60000 });
   if (rateLimitResult) return rateLimitResult;
 
   try {

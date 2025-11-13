@@ -25,7 +25,7 @@ setInterval(async () => {
 // GET: Fetch all messages
 export async function GET(request: NextRequest) {
   // Rate limiting: 60 requests per minute (read operations)
-  const rateLimitResult = rateLimit(request, RateLimitPresets.RELAXED);
+  const rateLimitResult = await rateLimit(request, RateLimitPresets.RELAXED);
   if (rateLimitResult) return rateLimitResult;
 
   const client = await pool.connect();
@@ -82,7 +82,7 @@ export async function GET(request: NextRequest) {
 // POST: Send a new message
 export async function POST(request: NextRequest) {
   // Rate limiting: 15 requests per minute (write operations)
-  const rateLimitResult = rateLimit(request, RateLimitPresets.WRITE);
+  const rateLimitResult = await rateLimit(request, RateLimitPresets.WRITE);
   if (rateLimitResult) return rateLimitResult;
 
   const client = await pool.connect();

@@ -8,7 +8,7 @@ import { EncryptionFunction } from "./type.auth";
 
 export const GET = async (request: NextRequest) => {
   // Rate limiting: 5 requests per minute (auth endpoint)
-  const rateLimitResult = rateLimit(request, RateLimitPresets.AUTH);
+  const rateLimitResult = await rateLimit(request, RateLimitPresets.AUTH);
   if (rateLimitResult) return rateLimitResult;
 
   try {

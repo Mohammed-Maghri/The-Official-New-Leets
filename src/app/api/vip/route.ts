@@ -5,7 +5,7 @@ import { rateLimit, RateLimitPresets } from "@/utils/rateLimit";
 
 export const POST = async (request: NextRequest) => {
   // Rate limiting: 15 requests per minute (write operations)
-  const rateLimitResult = rateLimit(request, RateLimitPresets.WRITE);
+  const rateLimitResult = await rateLimit(request, RateLimitPresets.WRITE);
   if (rateLimitResult) {
     // Log spam attempt for VIP endpoint
     const ip = request.headers.get("x-forwarded-for") || request.headers.get("x-real-ip") || "unknown";

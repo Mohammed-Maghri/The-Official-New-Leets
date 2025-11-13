@@ -6,7 +6,7 @@ import { rateLimit, RateLimitPresets } from "@/utils/rateLimit";
 
 export async function GET(request: NextRequest) {
   // Rate limiting: 20 requests per minute
-  const rateLimitResult = rateLimit(request, RateLimitPresets.STRICT);
+  const rateLimitResult = await rateLimit(request, RateLimitPresets.STRICT);
   if (rateLimitResult) return rateLimitResult;
 
   try {
