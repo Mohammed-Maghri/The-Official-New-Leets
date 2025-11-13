@@ -410,6 +410,36 @@ const RankComponent: React.FC<{ userData: UserData | null; rank: number; isGridV
   isGridView = false,
   podiumPosition,
 }) => {
+  const cardRef = React.useRef<HTMLDivElement>(null);
+  const [cardTransform, setCardTransform] = React.useState('');
+
+  // Enhanced 3D tilt effect with stronger rotation and elevation
+  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (!isGridView || !cardRef.current) return;
+    
+    const card = cardRef.current;
+    const rect = card.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+    
+    const centerX = rect.width / 2;
+    const centerY = rect.height / 2;
+    
+    // Increased rotation intensity from 10 to 20 degrees
+    const rotateX = ((y - centerY) / centerY) * -20;
+    const rotateY = ((x - centerX) / centerX) * 20;
+    
+    // Add Z-axis translation for depth effect
+    const translateZ = 20;
+    
+    setCardTransform(`perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateZ(${translateZ}px) scale3d(1.05, 1.05, 1.05)`);
+  };
+
+  const handleMouseLeave = () => {
+    if (!isGridView) return;
+    setCardTransform('perspective(1000px) rotateX(0deg) rotateY(0deg) translateZ(0px) scale3d(1, 1, 1)');
+  };
+
   // Determine background based on badge type or podium position (for both grid and list views)
   const getBackgroundClass = () => {
     // Check for special badges (both grid and list view)
@@ -458,26 +488,64 @@ const RankComponent: React.FC<{ userData: UserData | null; rank: number; isGridV
 
   return (
     <div
+      ref={cardRef}
       onClick={() =>
         window.open(`https://profile.intra.42.fr/users/${userData?.login}`)
       }
+      onMouseMove={handleMouseMove}
+      onMouseLeave={handleMouseLeave}
       className={`flex cursor-pointer relative ${
         isGridView ? "flex-col w-full h-auto" : "flex-row w-full h-full min-h-[130px]"
-      } gap-1 ${getBackgroundClass()} rounded-2xl transition-all duration-300 justify-between ${isGridView ? "py-6 px-3" : "p-4"}`}
+      } gap-1 ${getBackgroundClass()} rounded-2xl justify-between ${isGridView ? "py-6 px-3" : "p-4"} ${
+        isGridView ? "hover:shadow-2xl hover:shadow-blue-500/30" : "hover:scale-[1.01] transition-all duration-300"
+      }`}
+      style={{
+        transform: isGridView && cardTransform ? cardTransform : isGridView ? 'perspective(1000px) rotateX(0deg) rotateY(0deg) translateZ(0px)' : undefined,
+        transition: isGridView ? 'transform 0.15s ease-out, box-shadow 0.3s ease, filter 0.3s ease' : 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
+        transformStyle: 'preserve-3d',
+        willChange: 'transform',
+        filter: isGridView && cardTransform ? 'brightness(1.1) drop-shadow(0 20px 40px rgba(59, 130, 246, 0.3))' : undefined,
+      }}
     >
+      {/* 3D Background Layer - Creates depth */}
+      {isGridView && (
+        <div 
+          className="absolute inset-0 rounded-2xl opacity-30 pointer-events-none"
+          style={{
+            background: 'linear-gradient(135deg, rgba(59, 130, 246, 0.1) 0%, rgba(147, 51, 234, 0.1) 100%)',
+            transform: 'translateZ(-20px)',
+            filter: 'blur(20px)',
+          }}
+        />
+      )}
+      
+      {/* Shine overlay for enhanced 3D */}
+      {isGridView && (
+        <div 
+          className="absolute inset-0 rounded-2xl opacity-0 hover:opacity-100 transition-opacity duration-300 pointer-events-none overflow-hidden"
+          style={{
+            background: 'linear-gradient(120deg, transparent 30%, rgba(255, 255, 255, 0.1) 50%, transparent 70%)',
+            transform: 'translateZ(30px)',
+          }}
+        />
+      )}
+
       {userData != null ? (
         <>
           {rank !== -1 && rank >= 1 && rank < 4 && (
-            <div className={`z-20 absolute ${isGridView ? "top-[-15px] left-1/2 -translate-x-1/2" : "top-[-25px] left-[-45px]"} rotate-[-40deg] flex items-center justify-center`}>
+            <div 
+              className={`z-20 absolute ${isGridView ? "top-[-15px] left-1/2 -translate-x-1/2" : "top-[-25px] left-[-45px]"} rotate-[-40deg] flex items-center justify-center`}
+              style={isGridView ? { transform: 'translateZ(40px) rotate(-40deg)' } : undefined}
+            >
               <GiQueenCrown
                 size={isGridView ? 45 : 50}
                 className={`${
                   rank == 1
-                    ? "text-yellow-400"
+                    ? "text-yellow-400 drop-shadow-[0_0_10px_rgba(250,204,21,0.5)]"
                     : rank == 2
-                    ? "text-gray-400"
+                    ? "text-gray-400 drop-shadow-[0_0_10px_rgba(156,163,175,0.5)]"
                     : rank == 3
-                    ? "text-amber-600"
+                    ? "text-amber-600 drop-shadow-[0_0_10px_rgba(217,119,6,0.5)]"
                     : ""
                 }`}
               />
@@ -489,13 +557,34 @@ const RankComponent: React.FC<{ userData: UserData | null; rank: number; isGridV
               {/* Top Section - Avatar with Circular Level Progress Ring */}
               <div className="w-full flex justify-center pt-4 pb-2 relative">
                 <div className="relative flex items-center justify-center">
-                  {/* Circular Progress Ring Background */}
-                  <svg className="absolute w-[160px] h-[160px] -rotate-90" viewBox="0 0 130 130">
+                  {/* Circular Progress Ring Background with 3D effect */}
+                  <svg 
+                    className="absolute w-[160px] h-[160px] -rotate-90 transition-all duration-300"
+                    viewBox="0 0 130 130"
+                    style={{ transform: 'translateZ(20px)' }}
+                    onMouseEnter={(e) => {
+                      if (isGridView) {
+                        e.currentTarget.style.transform = 'translateZ(50px) scale(1.05)';
+                      }
+                    }}
+                    onMouseLeave={(e) => {
+                      if (isGridView) {
+                        e.currentTarget.style.transform = 'translateZ(20px) scale(1)';
+                      }
+                    }}
+                  >
                     <defs>
                       <linearGradient id={`progressGradient-${rank}`} x1="0%" y1="0%" x2="100%" y2="100%">
                         <stop offset="0%" stopColor="#ec4899" />
                         <stop offset="100%" stopColor="#facc15" />
                       </linearGradient>
+                      <filter id={`glow-${rank}`}>
+                        <feGaussianBlur stdDeviation="3" result="coloredBlur"/>
+                        <feMerge>
+                          <feMergeNode in="coloredBlur"/>
+                          <feMergeNode in="SourceGraphic"/>
+                        </feMerge>
+                      </filter>
                     </defs>
                     <circle cx="65" cy="65" r="60" fill="none" stroke="rgb(59, 130, 246, 0.2)" strokeWidth="6" />
                     <circle 
@@ -518,21 +607,44 @@ const RankComponent: React.FC<{ userData: UserData | null; rank: number; isGridV
                       })()} ${2 * Math.PI * 60}`}
                       strokeLinecap="round"
                       className="transition-all duration-300"
+                      filter={`url(#glow-${rank})`}
+                      style={{
+                        filter: 'drop-shadow(0 0 8px rgba(236, 72, 153, 0.6))',
+                      }}
                     />
                   </svg>
 
-                  {/* Avatar - Centered in Ring */}
-                  <div className="relative w-[120px] h-[120px] rounded-full overflow-visible border-4 border-[#0070ef]/40 flex-shrink-0 z-10">
+                  {/* Avatar - Centered in Ring with 3D depth */}
+                  <div 
+                    className="relative w-[120px] h-[120px] rounded-full overflow-visible border-4 border-[#0070ef]/40 flex-shrink-0 z-10 transition-all duration-300 group"
+                    style={{ transform: 'translateZ(30px)' }}
+                  >
                     <div className="absolute inset-0 bg-gradient-to-br from-[#0070ef]/20 to-transparent pointer-events-none rounded-full"></div>
                     <img
                       src={userData.image != null ? userData.image : "nopic.jpg"}
                       alt="User Avatar"
-                      className="w-full h-full object-cover rounded-full"
+                      className="w-full h-full object-cover rounded-full transition-all duration-300 group-hover:scale-110"
+                      style={{ 
+                        transition: 'transform 0.3s ease-out',
+                      }}
+                      onMouseEnter={(e) => {
+                        if (isGridView) {
+                          e.currentTarget.style.transform = 'translateZ(60px) scale(1.1)';
+                        }
+                      }}
+                      onMouseLeave={(e) => {
+                        if (isGridView) {
+                          e.currentTarget.style.transform = 'translateZ(0px) scale(1)';
+                        }
+                      }}
                     />
                     
-                    {/* Rank Badge - On Top Right of Avatar, Fully Visible */}
-                    <div className="absolute -top-3 -right-3 z-20">
-                      <p className="font-Tektur border-solid border-[2px] border-[#0070ef]/60 text-white font-black w-[48px] h-[48px] text-[18px] rounded-full flex items-center justify-center bg-gradient-to-br from-gray-700 to-gray-800 backdrop-blur-sm">
+                    {/* Rank Badge - On Top Right of Avatar with enhanced 3D */}
+                    <div 
+                      className="absolute -top-3 -right-3 z-20 transition-all duration-300"
+                      style={{ transform: 'translateZ(50px)' }}
+                    >
+                      <p className="font-Tektur border-solid border-[2px] border-[#0070ef]/60 text-white font-black w-[48px] h-[48px] text-[18px] rounded-full flex items-center justify-center bg-gradient-to-br from-gray-700 to-gray-800 backdrop-blur-sm shadow-lg shadow-blue-500/50">
                         {rank}
                       </p>
                     </div>
@@ -542,20 +654,51 @@ const RankComponent: React.FC<{ userData: UserData | null; rank: number; isGridV
 
               {/* Middle Section - User Info */}
               <div className="w-full flex flex-col items-center gap-3">
-                {/* Username Box */}
-                <div className="px-4 py-2 bg-gradient-to-r from-yellow-400/20 to-amber-500/20 border border-yellow-400/50 rounded-lg">
+                {/* Username Box with 3D pop-out on hover */}
+                <div 
+                  className="px-4 py-2 bg-gradient-to-r from-yellow-400/20 to-amber-500/20 border border-yellow-400/50 rounded-lg transition-all duration-300 hover:shadow-lg hover:shadow-yellow-500/30"
+                  style={{ transform: 'translateZ(10px)' }}
+                  onMouseEnter={(e) => {
+                    if (isGridView) {
+                      e.currentTarget.style.transform = 'translateZ(70px) scale(1.05)';
+                    }
+                  }}
+                  onMouseLeave={(e) => {
+                    if (isGridView) {
+                      e.currentTarget.style.transform = 'translateZ(10px) scale(1)';
+                    }
+                  }}
+                >
                   <p className="font-Tektur text-[12px] text-yellow-200 font-bold text-center line-clamp-1">
                     @{userData.login}
                   </p>
                 </div>
 
                 {/* Level Display */}
-                <span className="text-[18px] font-black text-white font-Tektur">
+                <span 
+                  className="text-[18px] font-black text-white font-Tektur transition-all duration-300"
+                  style={{ transform: 'translateZ(15px)' }}
+                >
                   {userData.level.toFixed(2)}
                 </span>
 
-                {/* Name */}
-                <p className="font-Tektur text-[15px] text-white/95 text-center line-clamp-2 font-semibold leading-tight px-2 min-h-[36px] flex items-center justify-center">
+                {/* Name with 3D pop-out on hover */}
+                <p 
+                  className="font-Tektur text-[15px] text-white/95 text-center line-clamp-2 font-semibold leading-tight px-2 min-h-[36px] flex items-center justify-center transition-all duration-300 hover:text-white"
+                  style={{ transform: 'translateZ(20px)' }}
+                  onMouseEnter={(e) => {
+                    if (isGridView) {
+                      e.currentTarget.style.transform = 'translateZ(80px) scale(1.08)';
+                      e.currentTarget.style.textShadow = '0 0 20px rgba(59, 130, 246, 0.6)';
+                    }
+                  }}
+                  onMouseLeave={(e) => {
+                    if (isGridView) {
+                      e.currentTarget.style.transform = 'translateZ(20px) scale(1)';
+                      e.currentTarget.style.textShadow = 'none';
+                    }
+                  }}
+                >
                   {userData.fullname}
                 </p>
 
