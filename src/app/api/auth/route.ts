@@ -2,10 +2,15 @@ import { NextRequest, NextResponse } from "next/server";
 import { cookies } from "next/headers";
 import { AuthResponse } from "./type.auth";
 import * as jose from "jose";
+import { rateLimit, RateLimitPresets } from "@/utils/rateLimit";
 
 import { EncryptionFunction } from "./type.auth";
 
 export const GET = async (request: NextRequest) => {
+  // Rate limiting: 5 requests per minute (auth endpoint)
+  const rateLimitResult = rateLimit(request, RateLimitPresets.AUTH);
+  if (rateLimitResult) return rateLimitResult;
+
   try {
     const code: string = request.nextUrl.searchParams.get("code") as string;
     if (!code) {

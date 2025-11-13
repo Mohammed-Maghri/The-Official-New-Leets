@@ -1,6 +1,7 @@
 import { NextResponse, NextRequest } from "next/server";
 import * as jose from "jose";
 import { Pool } from "pg";
+import { rateLimit, RateLimitPresets } from "@/utils/rateLimit";
 
 // Database connection
 const pool = new Pool({
@@ -23,6 +24,10 @@ setInterval(async () => {
 
 // GET: Fetch all messages
 export async function GET(request: NextRequest) {
+  // Rate limiting: 60 requests per minute (read operations)
+  const rateLimitResult = rateLimit(request, RateLimitPresets.RELAXED);
+  if (rateLimitResult) return rateLimitResult;
+
   const client = await pool.connect();
   try {
     const user = request.cookies.get("auth_code");
@@ -76,6 +81,10 @@ export async function GET(request: NextRequest) {
 
 // POST: Send a new message
 export async function POST(request: NextRequest) {
+  // Rate limiting: 15 requests per minute (write operations)
+  const rateLimitResult = rateLimit(request, RateLimitPresets.WRITE);
+  if (rateLimitResult) return rateLimitResult;
+
   const client = await pool.connect();
   try {
     const user = request.cookies.get("auth_code");

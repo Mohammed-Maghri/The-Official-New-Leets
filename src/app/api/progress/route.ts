@@ -3,8 +3,13 @@ import { UserProgress } from "./progress.types";
 import { decodeJwt, jwtVerify } from "jose";
 import { DecryptionFunction } from "../auth/type.auth";
 import { Pool } from "pg";
+import { rateLimit, RateLimitPresets } from "@/utils/rateLimit";
 
 export const POST = async (request: NextRequest) => {
+  // Rate limiting: 20 requests per minute
+  const rateLimitResult = rateLimit(request, RateLimitPresets.STRICT);
+  if (rateLimitResult) return rateLimitResult;
+
   let client;
   
   try {

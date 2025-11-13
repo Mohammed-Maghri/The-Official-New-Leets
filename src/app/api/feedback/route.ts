@@ -5,8 +5,13 @@ import { Pool } from "pg";
 import { feedbackSchema } from "./feedback.types";
 import { z } from "zod";
 import { feedbackRateLimiter } from "./rateLimit";
+import { rateLimit, RateLimitPresets } from "@/utils/rateLimit";
 
 export async function GET(request: NextRequest) {
+  // Rate limiting: 60 requests per minute
+  const rateLimitResult = rateLimit(request, RateLimitPresets.RELAXED);
+  if (rateLimitResult) return rateLimitResult;
+
   let client: Pool | null = null;
   
   try {

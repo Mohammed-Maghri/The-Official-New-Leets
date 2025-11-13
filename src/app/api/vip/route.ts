@@ -1,8 +1,13 @@
 import { NextResponse, NextRequest } from "next/server";
 import { Pool } from "pg";
 import * as jose from "jose";
+import { rateLimit, RateLimitPresets } from "@/utils/rateLimit";
 
 export const POST = async (request: NextRequest) => {
+  // Rate limiting: 15 requests per minute (write operations)
+  const rateLimitResult = rateLimit(request, RateLimitPresets.WRITE);
+  if (rateLimitResult) return rateLimitResult;
+
   let client: Pool | null = null;
   
   try {

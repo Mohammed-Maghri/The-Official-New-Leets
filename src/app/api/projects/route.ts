@@ -1,8 +1,13 @@
 import { NextRequest, NextResponse } from "next/server";
 import * as jose from "jose";
 import { DecryptionFunction } from "../auth/type.auth";
+import { rateLimit, RateLimitPresets } from "@/utils/rateLimit";
 
 export const GET = async (request: NextRequest) => {
+  // Rate limiting: 20 requests per minute (makes 42 API calls)
+  const rateLimitResult = rateLimit(request, RateLimitPresets.STRICT);
+  if (rateLimitResult) return rateLimitResult;
+
   try {
     const Cookie = request.cookies.get("auth_code")?.value;
     const data = DecryptionFunction(
