@@ -111,17 +111,17 @@ export function rateLimit(
  */
 export const RateLimitPresets = {
   // Strict: For expensive operations (42 API calls)
-  STRICT: { maxRequests: 20, windowMs: 60000 }, // 20 per minute
+  STRICT: { maxRequests: 10, windowMs: 60000 }, // 10 per minute
   
   // Standard: For normal API endpoints
-  STANDARD: { maxRequests: 30, windowMs: 60000 }, // 30 per minute
+  STANDARD: { maxRequests: 10, windowMs: 60000 }, // 10 per minute
   
   // Relaxed: For lightweight operations
-  RELAXED: { maxRequests: 60, windowMs: 60000 }, // 60 per minute
+  RELAXED: { maxRequests: 10, windowMs: 60000 }, // 10 per minute
   
   // Auth: For authentication endpoints
-  AUTH: { maxRequests: 5, windowMs: 60000 }, // 5 per minute
+  AUTH: { maxRequests: 10, windowMs: 60000 }, // 10 per minute
   
   // Write: For write operations (POST, PUT, DELETE)
-  WRITE: { maxRequests: 15, windowMs: 60000 }, // 15 per minute
+  WRITE: { maxRequests: 10, windowMs: 60000 }, // 10 per minute
 };
