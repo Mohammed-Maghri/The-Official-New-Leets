@@ -39,6 +39,14 @@ export async function GET(request: NextRequest) {
       );
     }
     
+    // Force re-login for old JWT tokens without userId
+    if (!decodedToken.userId || !decodedToken.campusId) {
+      return NextResponse.json(
+        { error: "Token outdated. Please log in again." },
+        { status: 401 }
+      );
+    }
+    
     const accessToken = DecryptionFunction(decodedToken.token as string);
     
     // Retry logic for 42 API fetch

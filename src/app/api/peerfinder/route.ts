@@ -61,21 +61,15 @@ export async function GET(request: NextRequest) {
     if (autoMode) {
       
       try {
-        // Get user info
-        const userResponse = await fetch("https://api.intra.42.fr/v2/me", {
-          method: "GET",
-          headers: {
-            Authorization: `Bearer ${accessToken}`,
-            "Content-Type": "application/json",
-          },
-        });
-
-        if (!userResponse.ok) {
-          return NextResponse.json({ error: "Failed to fetch user data" }, { status: userResponse.status });
+        // Get user campus from JWT token (no 42 API call!)
+        const userCampusId = decodedToken.campusId;
+        
+        if (!userCampusId) {
+          return NextResponse.json(
+            { error: "Token outdated. Please log in again." },
+            { status: 401 }
+          );
         }
-
-        const userData = await userResponse.json();
-        const userCampusId = userData.campus_users?.[0]?.campus_id || 16;
         
         
         // Get user's in-progress projects
@@ -156,7 +150,11 @@ export async function GET(request: NextRequest) {
     // If fetchPromo is true, get peers from projects at user's level range
     if (fetchPromo) {
       try {
-        // Step 1: Get user info to determine level
+        // Get user campus from JWT token (no 42 API call!)
+        const userCampusId = decodedToken.campusId || campusId || 16;
+        
+        // For this flow, we still need to fetch user data to get level
+        // (level changes frequently, shouldn't be cached in JWT)
         const userResponse = await fetch("https://api.intra.42.fr/v2/me", {
           method: "GET",
           headers: {
@@ -190,8 +188,6 @@ export async function GET(request: NextRequest) {
         }
 
         const cursus42Typed = cursus42 as { level?: number };
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        const userCampusId = (userData.campus_users as any)?.[0]?.campus_id || campusId || 16;
         const userLevel = cursus42Typed.level || 0;
 
         // Step 3: Load projects from JSON and filter by level
@@ -313,30 +309,16 @@ export async function GET(request: NextRequest) {
 
     const data = await response.json();
 
-    // Get current user info for alumni filtering
-    const userInfoResponse = await fetch("https://api.intra.42.fr/v2/me", {
-      method: "GET",
-      headers: {
-        Authorization: `Bearer ${accessToken}`,
-        "Content-Type": "application/json",
-      },
-    });
-
-    if (userInfoResponse.ok) {
-      // Filter: not alumni and not finished
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      const filteredData = data.filter((pu: any) => {
-        const isNotAlumni = !pu.user?.["alumni?"];
-        const isNotFinished = pu.status !== "finished";
-        
-        return isNotAlumni && isNotFinished;
-      });
+    // Filter: not alumni and not finished (no need for 42 API call)
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const filteredData = data.filter((pu: any) => {
+      const isNotAlumni = !pu.user?.["alumni?"];
+      const isNotFinished = pu.status !== "finished";
       
-      return NextResponse.json(filteredData);
-    }
-
-    // Fallback: return raw data if user info fetch fails
-    return NextResponse.json(data);
+      return isNotAlumni && isNotFinished;
+    });
+    
+    return NextResponse.json(filteredData);
   } catch (error) {
     console.error("Error in peerfinder API:", error);
     return NextResponse.json(

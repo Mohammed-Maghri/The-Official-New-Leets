@@ -48,63 +48,16 @@ export async function GET(request: NextRequest) {
       );
     }
     
-    const accessToken = DecryptionFunction(decodedToken.token as string);
-
-    // Fetch user data from 42 API to get user ID with retry logic
-    let userResponse;
-    let lastError;
-    const maxRetries = 2;
+    // Get user ID from JWT token (no 42 API call needed!)
+    const userId = decodedToken.userId;
     
-    for (let attempt = 0; attempt < maxRetries; attempt++) {
-      try {
-        userResponse = await fetch((process.env.INTRA_TOKEN as string) + "/v2/me", {
-          method: "GET",
-          headers: {
-            Authorization: `Bearer ${accessToken}`,
-          },
-          credentials: "include",
-          signal: AbortSignal.timeout(8000), // 8 second timeout
-        });
-
-        if (userResponse.ok) {
-          break; // Success
-        }
-        
-        lastError = `API returned status ${userResponse.status}`;
-        
-        if (userResponse.status === 401) {
-          // Return empty notifications on auth failure instead of error
-          return NextResponse.json({
-            notifications: [],
-            unread_count: 0,
-          });
-        }
-        
-        // Wait before retry
-        if (attempt < maxRetries - 1) {
-          await new Promise(resolve => setTimeout(resolve, 500));
-        }
-      } catch (fetchError) {
-        lastError = fetchError instanceof Error ? fetchError.message : String(fetchError);
-        console.error(`Notifications API attempt ${attempt + 1} failed:`, lastError);
-        
-        if (attempt < maxRetries - 1) {
-          await new Promise(resolve => setTimeout(resolve, 500));
-        }
-      }
+    if (!userId) {
+      // Old JWT without userId - force re-login
+      return NextResponse.json(
+        { error: "Token outdated. Please log in again." },
+        { status: 401 }
+      );
     }
-
-    if (!userResponse || !userResponse.ok) {
-      console.error("Failed to fetch user data for notifications after retries");
-      // Return empty notifications instead of error
-      return NextResponse.json({
-        notifications: [],
-        unread_count: 0,
-      });
-    }
-
-    const userData = await userResponse.json();
-    const userId = userData.id;
 
     // Check if notifications table exists, if not return empty
     const tableCheckQuery = `

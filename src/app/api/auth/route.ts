@@ -53,15 +53,22 @@ export const GET = async (request: NextRequest) => {
     });
     
     let username = "unknown";
+    let userId = null;
+    let campusId = null;
+    
     if (userInfoResponse.ok) {
       const userData = await userInfoResponse.json();
       username = userData.login || "unknown";
+      userId = userData.id || null;
+      campusId = userData.campus_users?.[0]?.campus_id || null;
     }
     
     const token = new TextEncoder().encode(process.env.SECRET_KEY as string);
     const Signature = new jose.SignJWT({
       token: EncryptionFunction(Tok.access_token),
-      login: username, // Add username to JWT
+      login: username,
+      userId: userId,
+      campusId: campusId,
     })
       .setProtectedHeader({ alg: "HS256" })
       .sign(token);

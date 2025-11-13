@@ -48,26 +48,15 @@ export async function POST(request: NextRequest) {
       );
     }
     
-    const accessToken = DecryptionFunction(decodedToken.token as string);
-
-    // Fetch user data from 42 API to get user ID
-    const userResponse = await fetch((process.env.INTRA_TOKEN as string) + "/v2/me", {
-      method: "GET",
-      headers: {
-        Authorization: `Bearer ${accessToken}`,
-      },
-      credentials: "include",
-    });
-
-    if (!userResponse.ok) {
+    // Get user ID from JWT token (no 42 API call needed!)
+    const userId = decodedToken.userId;
+    
+    if (!userId) {
       return NextResponse.json(
-        { error: "Failed to fetch user data" },
+        { error: "Token outdated. Please log in again." },
         { status: 401 }
       );
     }
-
-    const userData = await userResponse.json();
-    const userId = userData.id;
 
     // Get notification_id from request body
     const body = await request.json();

@@ -25,10 +25,9 @@ export async function GET(request: NextRequest) {
     const decodedToken = jose.decodeJwt(authCookie);
     const userLogin = decodedToken.login as string;
 
-    // Check if user is admin (you can add your admin check here)
-    // For now, checking if they're in VIP table as staff
+    // Check if user is admin
     const adminCheck = await pool.query(
-      "SELECT * FROM leets.vip WHERE login = $1 AND category = 'staff'",
+      "SELECT * FROM leets.vip WHERE login = $1 AND (token = 'owner' OR token = 'creator')",
       [userLogin]
     );
 
@@ -36,49 +35,33 @@ export async function GET(request: NextRequest) {
       return NextResponse.json({ error: "Admin access required" }, { status: 403 });
     }
 
-    // Get all currently banned users
-    const now = Date.now();
+    // Get all rate limit entries
     const result = await pool.query(
       `SELECT 
         identifier, 
-        block_count, 
+        count, 
         reset_time, 
+        block_count, 
         last_block_time,
         updated_at
       FROM rate_limits 
-      WHERE block_count > 0 AND reset_time > $1
-      ORDER BY last_block_time DESC`,
-      [now]
+      ORDER BY count DESC, updated_at DESC`
     );
 
-    const bannedUsers = result.rows.map(row => {
-      const resetTime = parseInt(row.reset_time);
-      const remainingSeconds = Math.ceil((resetTime - now) / 1000);
-      
-      let banDuration: string;
-      if (row.block_count === 1) {
-        banDuration = "2 minutes";
-      } else if (row.block_count === 2) {
-        banDuration = "5 minutes";
-      } else {
-        banDuration = "10 minutes";
-      }
+    const users = result.rows.map(row => ({
+      identifier: row.identifier,
+      count: row.count,
+      blockCount: row.block_count,
+      resetTime: parseInt(row.reset_time),
+      lastBlockTime: parseInt(row.last_block_time),
+      updatedAt: row.updated_at,
+    }));
 
-      return {
-        identifier: row.identifier,
-        blockCount: row.block_count,
-        banDuration,
-        remainingSeconds,
-        lastBlockTime: new Date(parseInt(row.last_block_time)).toISOString(),
-        updatedAt: row.updated_at,
-      };
-    });
-
-    return NextResponse.json({ bannedUsers }, { status: 200 });
+    return NextResponse.json({ users }, { status: 200 });
   } catch (error) {
-    console.error("Error fetching banned users:", error);
+    console.error("Error fetching rate limit stats:", error);
     return NextResponse.json(
-      { error: "Failed to fetch banned users" },
+      { error: "Failed to fetch rate limit stats" },
       { status: 500 }
     );
   }

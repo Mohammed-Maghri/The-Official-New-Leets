@@ -13,6 +13,7 @@ import { UserData } from "@/component/navbar/navbar.types";
 
 import { VipHeader, TeamGrid, LoadMore, AccessDenied, VipAdmin } from "./components";
 import BannedUsersPopup from "@/component/BannedUsersPopup";
+import RateLimitStatsPopup from "@/component/RateLimitStatsPopup";
 
 const VipPage = () => {
   const [dataReturned, setDataReturned] = React.useState<
@@ -35,6 +36,7 @@ const VipPage = () => {
   const [specificProjectFilter, setSpecificProjectFilter] = React.useState<SpecificProjectFilterType>("all");
   const [showAdminPanel, setShowAdminPanel] = React.useState<boolean>(false);
   const [showBannedUsers, setShowBannedUsers] = React.useState<boolean>(false);
+  const [showRateLimitStats, setShowRateLimitStats] = React.useState<boolean>(false);
   const [currentUser, setCurrentUser] = React.useState<UserData | null>(null);
   const [isAdminUser, setIsAdminUser] = React.useState<boolean>(false);
   const [searchQuery, setSearchQuery] = React.useState<string>("");
@@ -270,6 +272,13 @@ const VipPage = () => {
           >
             <span className="text-xl font-bold font-Tektur">🚫</span>
           </button>
+          <button
+            onClick={() => setShowRateLimitStats(true)}
+            className="w-14 h-14 bg-cyan-500/20 hover:bg-cyan-500/30 border-2 border-cyan-500/40 hover:border-cyan-500/60 text-white rounded-lg transition-all duration-300 flex items-center justify-center shadow-lg hover:scale-105"
+            title="Rate Limit Monitor"
+          >
+            <span className="text-xl font-bold font-Tektur">📊</span>
+          </button>
         </div>
       )}
 
@@ -281,6 +290,11 @@ const VipPage = () => {
       <BannedUsersPopup
         isVisible={showBannedUsers}
         onClose={() => setShowBannedUsers(false)}
+      />
+
+      <RateLimitStatsPopup
+        isVisible={showRateLimitStats}
+        onClose={() => setShowRateLimitStats(false)}
       />
 
       {isLoading ? (
