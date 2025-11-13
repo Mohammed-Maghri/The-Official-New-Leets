@@ -6,7 +6,23 @@ import { rateLimit, RateLimitPresets } from "@/utils/rateLimit";
 export const POST = async (request: NextRequest) => {
   // Rate limiting: 15 requests per minute (write operations)
   const rateLimitResult = rateLimit(request, RateLimitPresets.WRITE);
-  if (rateLimitResult) return rateLimitResult;
+  if (rateLimitResult) {
+    // Log spam attempt for VIP endpoint
+    const ip = request.headers.get("x-forwarded-for") || request.headers.get("x-real-ip") || "unknown";
+    const userAgent = request.headers.get("user-agent") || "unknown";
+    const authCookie = request.cookies.get("auth_code");
+    
+    console.warn("⚠️ [VIP SPAM ATTEMPT]", {
+      timestamp: new Date().toISOString(),
+      ip: ip,
+      userAgent: userAgent,
+      hasAuth: !!authCookie,
+      endpoint: "/api/vip",
+      method: "POST"
+    });
+    
+    return rateLimitResult;
+  }
 
   let client: Pool | null = null;
   

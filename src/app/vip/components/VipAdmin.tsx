@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
+import { useRateLimitHandler } from "@/component/hooks/useRateLimitHandler";
+import RateLimitPopup from "@/component/RateLimitPopup";
 
 interface VipUser {
   id: number;
@@ -20,6 +22,7 @@ export default function VipAdmin({ isVisible, onClose }: VipAdminProps) {
   const [newUserCategory, setNewUserCategory] = useState("student");
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState({ text: "", type: "" });
+  const { rateLimitState, handleRateLimitResponse, closeRateLimitPopup } = useRateLimitHandler();
 
   useEffect(() => {
     if (isVisible) {
@@ -30,6 +33,11 @@ export default function VipAdmin({ isVisible, onClose }: VipAdminProps) {
   const fetchVipUsers = async () => {
     try {
       const response = await fetch("/api/vip");
+      
+      // Check for rate limiting
+      const isRateLimited = await handleRateLimitResponse(response);
+      if (isRateLimited) return;
+      
       const data = await response.json();
 
       if (response.ok) {
@@ -61,6 +69,13 @@ export default function VipAdmin({ isVisible, onClose }: VipAdminProps) {
         }),
       });
 
+      // Check for rate limiting
+      const isRateLimited = await handleRateLimitResponse(response);
+      if (isRateLimited) {
+        setLoading(false);
+        return;
+      }
+
       const data = await response.json();
 
       if (response.ok) {
@@ -87,6 +102,10 @@ export default function VipAdmin({ isVisible, onClose }: VipAdminProps) {
       const response = await fetch(`/api/vip?login=${login}`, {
         method: "DELETE",
       });
+
+      // Check for rate limiting
+      const isRateLimited = await handleRateLimitResponse(response);
+      if (isRateLimited) return;
 
       const data = await response.json();
 
@@ -229,6 +248,13 @@ export default function VipAdmin({ isVisible, onClose }: VipAdminProps) {
           </div>
         </div>
       </motion.div>
+      
+      {/* Rate Limit Popup */}
+      <RateLimitPopup
+        show={rateLimitState.isRateLimited}
+        onClose={closeRateLimitPopup}
+        retryAfter={rateLimitState.retryAfter}
+      />
     </motion.div>
   );
 }

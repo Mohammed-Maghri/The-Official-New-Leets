@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { DecryptionFunction } from "../../auth/type.auth";
 import * as jose from "jose";
 import pg from "pg";
+import { rateLimit, RateLimitPresets } from "@/utils/rateLimit";
 
 const { Pool } = pg;
 
@@ -10,6 +11,10 @@ const pool = new Pool({
 });
 
 export async function POST(request: NextRequest) {
+  // Rate limiting: 30 requests per minute
+  const rateLimitResult = rateLimit(request, RateLimitPresets.STANDARD);
+  if (rateLimitResult) return rateLimitResult;
+
   try {
     const user = request.cookies.get("auth_code");
     

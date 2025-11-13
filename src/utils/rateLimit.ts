@@ -55,8 +55,10 @@ export function rateLimit(
     const retryAfter = Math.ceil((entry.resetTime - now) / 1000);
     return NextResponse.json(
       {
-        error: "Too many requests. Please try again later.",
+        error: "Take it easy bro! 😎",
+        message: "You're making too many requests. Please slow down and try again in a moment.",
         retryAfter: retryAfter,
+        showPopup: true,
       },
       {
         status: 429,

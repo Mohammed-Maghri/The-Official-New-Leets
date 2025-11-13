@@ -5,6 +5,8 @@ import { motion } from "motion/react";
 import { cloneData, CloseIfNotClicked } from "./progress.types";
 import { ContextCreator } from "@/component/context/context";
 import { ContextProps, UserData } from "@/component/context/context.types";
+import { useRateLimitHandler } from "@/component/hooks/useRateLimitHandler";
+import RateLimitPopup from "@/component/RateLimitPopup";
 
 import {
   MonthList,
@@ -21,6 +23,7 @@ const ProgressBar: React.FC<{
   pageNumber: number;
   setIsFetchingData: React.Dispatch<React.SetStateAction<boolean>>;
 }> = ({ setUserData, pageNumber, setIsFetchingData }) => {
+  const { rateLimitState, handleRateLimitResponse, closeRateLimitPopup } = useRateLimitHandler();
   const [cursuson, setCursuson] = React.useState<boolean>(false);
   const [campusOn, setCampusOn] = React.useState<boolean>(false);
   const [monthOn, setMonthOn] = React.useState<boolean>(false);
@@ -97,6 +100,14 @@ const ProgressBar: React.FC<{
       },
       body: JSON.stringify(object),
     });
+    
+    // Check for rate limiting
+    const isRateLimited = await handleRateLimitResponse(response);
+    if (isRateLimited) {
+      setIsFetchingData(false);
+      return;
+    }
+    
     if (!response.ok) {
       console.error("Failed to fetch progress data");
       setIsFetchingData(false);
@@ -313,6 +324,13 @@ const ProgressBar: React.FC<{
       >
         <CiSearch color="white" />
       </div>
+      
+      {/* Rate Limit Popup */}
+      <RateLimitPopup
+        show={rateLimitState.isRateLimited}
+        onClose={closeRateLimitPopup}
+        retryAfter={rateLimitState.retryAfter}
+      />
     </div>
   );
 };

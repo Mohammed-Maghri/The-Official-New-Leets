@@ -3,6 +3,8 @@
 import React, { useState, useEffect, useContext } from "react";
 import { FaCaretDown } from "react-icons/fa";
 import { ContextCreator } from "@/component/context/context";
+import { useRateLimitHandler } from "@/component/hooks/useRateLimitHandler";
+import RateLimitPopup from "@/component/RateLimitPopup";
 
 interface Project {
   state: string;
@@ -93,6 +95,7 @@ const CampusList: CampusType[] = [
 const PeerFinderPage = () => {
   const context = useContext(ContextCreator);
   const userData = context?.userData;
+  const { rateLimitState, handleRateLimitResponse, closeRateLimitPopup } = useRateLimitHandler();
   
   const [projects, setProjects] = useState<Project[]>([]);
   const [selectedProject, setSelectedProject] = useState<string>("Select Project");
@@ -149,6 +152,12 @@ const PeerFinderPage = () => {
         credentials: "include",
       });
 
+      // Check for rate limiting
+      const isRateLimited = await handleRateLimitResponse(response);
+      if (isRateLimited) {
+        setLoadingPeers(false);
+        return;
+      }
 
       if (!response.ok) {
         const errorData = await response.json().catch(() => ({}));
@@ -203,6 +212,12 @@ const PeerFinderPage = () => {
         credentials: "include",
       });
 
+      // Check for rate limiting
+      const isRateLimited = await handleRateLimitResponse(response);
+      if (isRateLimited) {
+        setLoadingPeers(false);
+        return;
+      }
 
       if (!response.ok) {
         const errorData = await response.json();
@@ -242,6 +257,13 @@ const PeerFinderPage = () => {
           credentials: "include",
         }
       );
+
+      // Check for rate limiting
+      const isRateLimited = await handleRateLimitResponse(response);
+      if (isRateLimited) {
+        setLoadingPeers(false);
+        return;
+      }
 
       if (!response.ok) {
         throw new Error("Failed to fetch peers");
@@ -505,6 +527,13 @@ const PeerFinderPage = () => {
           </div>
         ) : null}
       </div>
+      
+      {/* Rate Limit Popup */}
+      <RateLimitPopup
+        show={rateLimitState.isRateLimited}
+        onClose={closeRateLimitPopup}
+        retryAfter={rateLimitState.retryAfter}
+      />
     </div>
   );
 };
