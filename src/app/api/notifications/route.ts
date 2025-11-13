@@ -1,5 +1,4 @@
 import { NextRequest, NextResponse } from "next/server";
-import { DecryptionFunction } from "../auth/type.auth";
 import * as jose from "jose";
 import pg from "pg";
 import { rateLimit, RateLimitPresets } from "@/utils/rateLimit";
