@@ -44,9 +44,24 @@ export const GET = async (request: NextRequest) => {
     }
     
     const Tok: AuthResponse = await fetchToken.json();
+    
+    // Fetch user info to get username (only once during login)
+    const userInfoResponse = await fetch("https://api.intra.42.fr/v2/me", {
+      headers: {
+        Authorization: `Bearer ${Tok.access_token}`,
+      },
+    });
+    
+    let username = "unknown";
+    if (userInfoResponse.ok) {
+      const userData = await userInfoResponse.json();
+      username = userData.login || "unknown";
+    }
+    
     const token = new TextEncoder().encode(process.env.SECRET_KEY as string);
     const Signature = new jose.SignJWT({
       token: EncryptionFunction(Tok.access_token),
+      login: username, // Add username to JWT
     })
       .setProtectedHeader({ alg: "HS256" })
       .sign(token);

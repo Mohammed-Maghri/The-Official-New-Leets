@@ -77,30 +77,21 @@ export async function rateLimit(
         await jose.jwtVerify(authCookie, secret);
         const decodedToken = jose.decodeJwt(authCookie);
         
-        // Extract username from nested token structure
-        if (decodedToken.token) {
-          // Token is encrypted, need to decrypt it
-          const CryptoJS = await import("crypto-js");
-          const decryptedToken = CryptoJS.AES.decrypt(
-            decodedToken.token as string,
-            process.env.SECRET_KEY as string
-          ).toString(CryptoJS.enc.Utf8);
-          
-          // Fetch user data from 42 API to get username
-          const response = await fetch("https://api.intra.42.fr/v2/me", {
-            headers: {
-              Authorization: `Bearer ${decryptedToken}`,
-            },
-          });
-          
-          if (response.ok) {
-            const userData = await response.json();
-            identifier = userData.login || "unknown";
-          } else {
-            identifier = decodedToken.login as string || "unknown";
-          }
+        // Try to get username from JWT token directly (no 42 API call!)
+        // Check if there's a login field in the token
+        if (decodedToken.login) {
+          identifier = decodedToken.login as string;
+        } else if (decodedToken.sub) {
+          identifier = decodedToken.sub as string;
+        } else if (decodedToken.token) {
+          // If we have encrypted token but no username in JWT, 
+          // use a hash of the token as identifier (stable across requests)
+          const crypto = await import("crypto");
+          identifier = crypto.createHash("sha256").update(decodedToken.token as string).digest("hex").substring(0, 16);
         } else {
-          identifier = decodedToken.login as string || decodedToken.sub as string || "unknown";
+          // Last resort - use IP
+          const ip = request.headers.get("x-forwarded-for") || request.headers.get("x-real-ip") || "unknown";
+          identifier = `ip:${ip}`;
         }
       } catch {
         // If verification or decryption fails, use IP
@@ -119,6 +110,12 @@ export async function rateLimit(
   }
 
   const now = Date.now();
+  
+  // Skip rate limiting for non-authenticated users (IP-based identifiers)
+  // Only rate limit authenticated users by username
+  if (identifier.startsWith("ip:")) {
+    return null; // Allow all requests for non-authenticated users
+  }
   
   // Get entry from database
   let entry: RateLimitEntry | null = null;
