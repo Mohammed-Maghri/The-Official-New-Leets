@@ -240,15 +240,6 @@ const Navbar = () => {
     DataToFetch();
     fetchNotifications();
   }, []);
-
-  // Poll for new notifications every 30 seconds
-  React.useEffect(() => {
-    const interval = setInterval(() => {
-      fetchNotifications();
-    }, 30000);
-
-    return () => clearInterval(interval);
-  }, []);
   return (
     <nav className="w-full h-16 bg-blue-950/30 border-b border-blue-800/50 backdrop-blur-xl z-20 flex items-center justify-between px-6">
       <div className="flex items-center gap-1">
