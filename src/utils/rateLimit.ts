@@ -43,6 +43,40 @@ export function rateLimit(
   const now = Date.now();
   const entry = rateLimitMap.get(identifier);
 
+  // Check if user is currently blocked (has been rate limited before)
+  if (entry && entry.blockCount > 0 && now < entry.resetTime) {
+    // User is still in blocked state - reject immediately
+    const retryAfter = Math.ceil((entry.resetTime - now) / 1000);
+    let blockMessage: string;
+    
+    if (entry.blockCount === 1) {
+      blockMessage = "First warning! Please wait 2 minutes.";
+    } else if (entry.blockCount === 2) {
+      blockMessage = "Second warning! Please wait 5 minutes.";
+    } else {
+      blockMessage = "Final warning! Please wait 10 minutes.";
+    }
+    
+    return NextResponse.json(
+      {
+        error: "Take it easy bro! 😎",
+        message: blockMessage,
+        retryAfter: retryAfter,
+        showPopup: true,
+        blockCount: entry.blockCount,
+      },
+      {
+        status: 429,
+        headers: {
+          "Retry-After": retryAfter.toString(),
+          "X-RateLimit-Limit": config.maxRequests.toString(),
+          "X-RateLimit-Remaining": "0",
+          "X-RateLimit-Reset": new Date(entry.resetTime).toISOString(),
+        },
+      }
+    );
+  }
+
   if (!entry || now > entry.resetTime) {
     // First request or window expired, create new entry
     // Reset block count if enough time has passed (1 hour)
