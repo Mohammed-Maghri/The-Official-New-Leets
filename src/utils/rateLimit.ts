@@ -64,10 +64,26 @@ export async function rateLimit(
   request: NextRequest,
   config: RateLimitConfig = { maxRequests: 30, windowMs: 60000 } // Default: 30 requests per minute
 ): Promise<NextResponse | null> {
-  // Get user identifier (cookie or IP)
-  const authCookie = request.cookies.get("auth_code")?.value;
-  const ip = request.headers.get("x-forwarded-for") || request.headers.get("x-real-ip") || "unknown";
-  const identifier = authCookie || ip;
+  // Get user identifier - use username from JWT token to prevent bypass by logout
+  let identifier: string;
+  
+  try {
+    const authCookie = request.cookies.get("auth_code")?.value;
+    if (authCookie) {
+      const jose = await import("jose");
+      const decodedToken = jose.decodeJwt(authCookie);
+      // Use username from token if available
+      identifier = (decodedToken.login as string) || (decodedToken.sub as string) || "unknown";
+    } else {
+      // Fall back to IP if not logged in
+      const ip = request.headers.get("x-forwarded-for") || request.headers.get("x-real-ip") || "unknown";
+      identifier = `ip:${ip}`;
+    }
+  } catch {
+    // If token decode fails, use IP
+    const ip = request.headers.get("x-forwarded-for") || request.headers.get("x-real-ip") || "unknown";
+    identifier = `ip:${ip}`;
+  }
 
   const now = Date.now();
   
