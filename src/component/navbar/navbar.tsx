@@ -10,6 +10,8 @@ import { ContextCreator } from "../context/context";
 import { ContextProps } from "../context/context.types";
 import { CiLogout } from "react-icons/ci";
 import { IoMdNotificationsOutline } from "react-icons/io";
+import { useRateLimitHandler } from "@/component/hooks/useRateLimitHandler";
+import RateLimitPopup from "@/component/RateLimitPopup";
 
 interface Notification {
   id: number;
@@ -83,6 +85,7 @@ const Navbar = () => {
   const [notificationCount, setNotificationCount] = React.useState(0);
   const [notifications, setNotifications] = React.useState<Notification[]>([]);
   const [showNotifications, setShowNotifications] = React.useState(false);
+  const { rateLimitState, handleRateLimitResponse, closeRateLimitPopup } = useRateLimitHandler();
   
   const fetchNotifications = async () => {
     try {
@@ -93,6 +96,10 @@ const Navbar = () => {
         },
         credentials: "include",
       });
+
+      // Check for rate limiting
+      const isRateLimited = await handleRateLimitResponse(response);
+      if (isRateLimited) return;
 
       if (!response.ok) {
         console.error("Failed to fetch notifications");
@@ -206,6 +213,10 @@ const Navbar = () => {
         },
         credentials: "include",
       });
+      
+      // Check for rate limiting
+      const isRateLimited = await handleRateLimitResponse(response);
+      if (isRateLimited) return;
       
       if (!response.ok) {
         // Only logout on 401 (unauthorized), not other errors
@@ -406,6 +417,13 @@ const Navbar = () => {
         </div>
         <DropDownMenu />
       </div>
+      
+      {/* Rate Limit Popup */}
+      <RateLimitPopup
+        show={rateLimitState.isRateLimited}
+        onClose={closeRateLimitPopup}
+        retryAfter={rateLimitState.retryAfter}
+      />
     </nav>
   );
 };
