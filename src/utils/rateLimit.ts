@@ -3,6 +3,8 @@ import { NextRequest, NextResponse } from "next/server";
 interface RateLimitEntry {
   count: number;
   resetTime: number;
+  blockCount: number; // Track how many times user has been blocked
+  lastBlockTime: number; // When they were last blocked
 }
 
 // Store rate limit data in memory (per user/IP)
@@ -43,27 +45,54 @@ export function rateLimit(
 
   if (!entry || now > entry.resetTime) {
     // First request or window expired, create new entry
+    // Reset block count if enough time has passed (1 hour)
+    const existingBlockCount = entry && (now - entry.lastBlockTime) < 3600000 ? entry.blockCount : 0;
+    
     rateLimitMap.set(identifier, {
       count: 1,
       resetTime: now + config.windowMs,
+      blockCount: existingBlockCount,
+      lastBlockTime: entry?.lastBlockTime || 0,
     });
     return null; // Allow request
   }
 
   if (entry.count >= config.maxRequests) {
-    // Rate limit exceeded
-    const retryAfter = Math.ceil((entry.resetTime - now) / 1000);
+    // Rate limit exceeded - apply escalating block times
+    const newBlockCount = entry.blockCount + 1;
+    
+    // Progressive block durations: 2min -> 5min -> 10min
+    let blockDuration: number;
+    let blockMessage: string;
+    
+    if (newBlockCount === 1) {
+      blockDuration = 2 * 60; // 2 minutes
+      blockMessage = "First warning! Please wait 2 minutes.";
+    } else if (newBlockCount === 2) {
+      blockDuration = 5 * 60; // 5 minutes
+      blockMessage = "Second warning! Please wait 5 minutes.";
+    } else {
+      blockDuration = 10 * 60; // 10 minutes
+      blockMessage = "Final warning! Please wait 10 minutes.";
+    }
+    
+    // Update entry with new block count
+    entry.blockCount = newBlockCount;
+    entry.lastBlockTime = now;
+    entry.resetTime = now + (blockDuration * 1000);
+    
     return NextResponse.json(
       {
         error: "Take it easy bro! 😎",
-        message: "You're making too many requests. Please slow down and try again in a moment.",
-        retryAfter: retryAfter,
+        message: blockMessage,
+        retryAfter: blockDuration,
         showPopup: true,
+        blockCount: newBlockCount,
       },
       {
         status: 429,
         headers: {
-          "Retry-After": retryAfter.toString(),
+          "Retry-After": blockDuration.toString(),
           "X-RateLimit-Limit": config.maxRequests.toString(),
           "X-RateLimit-Remaining": "0",
           "X-RateLimit-Reset": new Date(entry.resetTime).toISOString(),
