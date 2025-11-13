@@ -12,6 +12,7 @@ import {
 import { UserData } from "@/component/navbar/navbar.types";
 
 import { VipHeader, TeamGrid, LoadMore, AccessDenied, VipAdmin } from "./components";
+import BannedUsersPopup from "@/component/BannedUsersPopup";
 
 const VipPage = () => {
   const [dataReturned, setDataReturned] = React.useState<
@@ -33,6 +34,7 @@ const VipPage = () => {
   const [projectFilter, setProjectFilter] = React.useState<ProjectFilterType>("all");
   const [specificProjectFilter, setSpecificProjectFilter] = React.useState<SpecificProjectFilterType>("all");
   const [showAdminPanel, setShowAdminPanel] = React.useState<boolean>(false);
+  const [showBannedUsers, setShowBannedUsers] = React.useState<boolean>(false);
   const [currentUser, setCurrentUser] = React.useState<UserData | null>(null);
   const [isAdminUser, setIsAdminUser] = React.useState<boolean>(false);
   const [searchQuery, setSearchQuery] = React.useState<string>("");
@@ -253,7 +255,7 @@ const VipPage = () => {
   return (
     <div className="flex flex-1 items-center justify-start overflow-x-hidden flex-col z-10 relative p-6">
       {currentUser && isAdminUser && (
-        <div className="fixed top-6 left-6 z-40">
+        <div className="fixed top-6 left-6 z-40 flex flex-col gap-3">
           <button
             onClick={() => setShowAdminPanel(true)}
             className="w-14 h-14 bg-[#0070ef]/20 hover:bg-[#0070ef]/30 border-2 border-[#0070ef]/40 hover:border-[#0070ef]/60 text-white rounded-lg transition-all duration-300 flex items-center justify-center shadow-lg hover:scale-105"
@@ -261,12 +263,24 @@ const VipPage = () => {
           >
             <span className="text-xl font-bold font-Tektur">★</span>
           </button>
+          <button
+            onClick={() => setShowBannedUsers(true)}
+            className="w-14 h-14 bg-red-500/20 hover:bg-red-500/30 border-2 border-red-500/40 hover:border-red-500/60 text-white rounded-lg transition-all duration-300 flex items-center justify-center shadow-lg hover:scale-105"
+            title="Banned Users"
+          >
+            <span className="text-xl font-bold font-Tektur">🚫</span>
+          </button>
         </div>
       )}
 
       <VipAdmin
         isVisible={showAdminPanel}
         onClose={() => setShowAdminPanel(false)}
+      />
+      
+      <BannedUsersPopup
+        isVisible={showBannedUsers}
+        onClose={() => setShowBannedUsers(false)}
       />
 
       {isLoading ? (
