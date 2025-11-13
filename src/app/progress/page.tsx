@@ -17,6 +17,7 @@ const Progress = () => {
   const [filteredUsers, setFilteredUsers] = React.useState<UserData[] | null[]>(userData);
   const [isSearching, setIsSearching] = React.useState(false);
   const [isFetchingData, setIsFetchingData] = React.useState(true); // Start with true for initial load
+  const [enable3D, setEnable3D] = React.useState(false); // 3D effect toggle
 
   // Filter users based on search query
   React.useEffect(() => {
@@ -100,6 +101,19 @@ const Progress = () => {
               <BsGridFill className="w-4 h-4" />
             </button>
           </div>
+
+          {/* 3D Effect Toggle Button */}
+          <button
+            onClick={() => setEnable3D(!enable3D)}
+            className={`px-3 py-2 rounded transition-all duration-200 flex items-center gap-2 ${
+              enable3D
+                ? "bg-[#0070ef]/30 border border-[#0070ef]/50 text-[#0070ef]"
+                : "text-gray-400 hover:text-white bg-gray-900/50 border border-gray-600/30"
+            }`}
+            title={enable3D ? "Disable 3D Effect" : "Enable 3D Effect"}
+          >
+            <span className="text-base">3D</span>
+          </button>
         </div>
       </div>
 
@@ -178,17 +192,17 @@ const Progress = () => {
                         <div className="flex md:hidden flex-col items-center gap-4 max-w-[320px] mx-auto">
                           {filteredUsers[0] && (
                             <div className="w-full">
-                              <RankComponent userData={filteredUsers[0]} rank={1} isGridView={true} podiumPosition="gold" />
+                              <RankComponent userData={filteredUsers[0]} rank={1} isGridView={true} podiumPosition="gold" enable3D={enable3D} />
                             </div>
                           )}
                           {filteredUsers[1] && (
                             <div className="w-full">
-                              <RankComponent userData={filteredUsers[1]} rank={2} isGridView={true} podiumPosition="silver" />
+                              <RankComponent userData={filteredUsers[1]} rank={2} isGridView={true} podiumPosition="silver" enable3D={enable3D} />
                             </div>
                           )}
                           {filteredUsers[2] && (
                             <div className="w-full">
-                              <RankComponent userData={filteredUsers[2]} rank={3} isGridView={true} podiumPosition="bronze" />
+                              <RankComponent userData={filteredUsers[2]} rank={3} isGridView={true} podiumPosition="bronze" enable3D={enable3D} />
                             </div>
                           )}
                         </div>
@@ -199,7 +213,7 @@ const Progress = () => {
                           {filteredUsers[1] && (
                             <div className="flex flex-col items-center flex-1 max-w-[240px]" style={{ paddingTop: '60px' }}>
                               <div className="w-full">
-                                <RankComponent userData={filteredUsers[1]} rank={2} isGridView={true} podiumPosition="silver" />
+                                <RankComponent userData={filteredUsers[1]} rank={2} isGridView={true} podiumPosition="silver" enable3D={enable3D} />
                               </div>
                             </div>
                           )}
@@ -208,7 +222,7 @@ const Progress = () => {
                           {filteredUsers[0] && (
                             <div className="flex flex-col items-center flex-1 max-w-[260px]" style={{ paddingTop: '0px' }}>
                               <div className="w-full">
-                                <RankComponent userData={filteredUsers[0]} rank={1} isGridView={true} podiumPosition="gold" />
+                                <RankComponent userData={filteredUsers[0]} rank={1} isGridView={true} podiumPosition="gold" enable3D={enable3D} />
                               </div>
                             </div>
                           )}
@@ -217,7 +231,7 @@ const Progress = () => {
                           {filteredUsers[2] && (
                             <div className="flex flex-col items-center flex-1 max-w-[240px]" style={{ paddingTop: '120px' }}>
                               <div className="w-full">
-                                <RankComponent userData={filteredUsers[2]} rank={3} isGridView={true} podiumPosition="bronze" />
+                                <RankComponent userData={filteredUsers[2]} rank={3} isGridView={true} podiumPosition="bronze" enable3D={enable3D} />
                               </div>
                             </div>
                           )}
@@ -231,7 +245,7 @@ const Progress = () => {
                     if (index < 3) return null; // Skip top 3, already displayed in podium
                     return (
                       <div key={index} className="w-full">
-                        <RankComponent userData={fakedata} rank={index + 1} isGridView={true} />
+                        <RankComponent userData={fakedata} rank={index + 1} isGridView={true} enable3D={enable3D} />
                       </div>
                     );
                   })}
@@ -245,7 +259,7 @@ const Progress = () => {
                     key={index}
                     className="w-[100%] tillme:w-[850px] rounded-md"
                   >
-                    <RankComponent userData={fakedata} rank={index + 1} isGridView={false} />
+                    <RankComponent userData={fakedata} rank={index + 1} isGridView={false} enable3D={enable3D} />
                   </div>
                 ))}
               </div>

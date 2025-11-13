@@ -404,18 +404,19 @@ const ContactInformation: React.FC<{ email: string }> = ({ email }) => {
   );
 };
 
-const RankComponent: React.FC<{ userData: UserData | null; rank: number; isGridView?: boolean; podiumPosition?: "gold" | "silver" | "bronze" }> = ({
+const RankComponent: React.FC<{ userData: UserData | null; rank: number; isGridView?: boolean; podiumPosition?: "gold" | "silver" | "bronze"; enable3D?: boolean }> = ({
   userData,
   rank,
   isGridView = false,
   podiumPosition,
+  enable3D = true,
 }) => {
   const cardRef = React.useRef<HTMLDivElement>(null);
   const [cardTransform, setCardTransform] = React.useState('');
 
   // Enhanced 3D tilt effect with stronger rotation and elevation
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
-    if (!isGridView || !cardRef.current) return;
+    if (!enable3D || !isGridView || !cardRef.current) return;
     
     const card = cardRef.current;
     const rect = card.getBoundingClientRect();
@@ -436,7 +437,7 @@ const RankComponent: React.FC<{ userData: UserData | null; rank: number; isGridV
   };
 
   const handleMouseLeave = () => {
-    if (!isGridView) return;
+    if (!enable3D || !isGridView) return;
     setCardTransform('perspective(1000px) rotateX(0deg) rotateY(0deg) translateZ(0px) scale3d(1, 1, 1)');
   };
 
@@ -500,15 +501,15 @@ const RankComponent: React.FC<{ userData: UserData | null; rank: number; isGridV
         isGridView ? "hover:shadow-2xl hover:shadow-blue-500/30" : "hover:scale-[1.01] transition-all duration-300"
       }`}
       style={{
-        transform: isGridView && cardTransform ? cardTransform : isGridView ? 'perspective(1000px) rotateX(0deg) rotateY(0deg) translateZ(0px)' : undefined,
+        transform: enable3D && isGridView && cardTransform ? cardTransform : isGridView && enable3D ? 'perspective(1000px) rotateX(0deg) rotateY(0deg) translateZ(0px)' : undefined,
         transition: isGridView ? 'transform 0.15s ease-out, box-shadow 0.3s ease, filter 0.3s ease' : 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
-        transformStyle: 'preserve-3d',
-        willChange: 'transform',
-        filter: isGridView && cardTransform ? 'brightness(1.1) drop-shadow(0 20px 40px rgba(59, 130, 246, 0.3))' : undefined,
+        transformStyle: enable3D ? 'preserve-3d' : undefined,
+        willChange: enable3D ? 'transform' : undefined,
+        filter: enable3D && isGridView && cardTransform ? 'brightness(1.1) drop-shadow(0 20px 40px rgba(59, 130, 246, 0.3))' : undefined,
       }}
     >
       {/* 3D Background Layer - Creates depth */}
-      {isGridView && (
+      {enable3D && isGridView && (
         <div 
           className="absolute inset-0 rounded-2xl opacity-30 pointer-events-none"
           style={{
@@ -520,7 +521,7 @@ const RankComponent: React.FC<{ userData: UserData | null; rank: number; isGridV
       )}
       
       {/* Shine overlay for enhanced 3D */}
-      {isGridView && (
+      {enable3D && isGridView && (
         <div 
           className="absolute inset-0 rounded-2xl opacity-0 hover:opacity-100 transition-opacity duration-300 pointer-events-none overflow-hidden"
           style={{
@@ -535,7 +536,7 @@ const RankComponent: React.FC<{ userData: UserData | null; rank: number; isGridV
           {rank !== -1 && rank >= 1 && rank < 4 && (
             <div 
               className={`z-20 absolute ${isGridView ? "top-[-15px] left-1/2 -translate-x-1/2" : "top-[-25px] left-[-45px]"} rotate-[-40deg] flex items-center justify-center`}
-              style={isGridView ? { transform: 'translateZ(40px) rotate(-40deg)' } : undefined}
+              style={enable3D && isGridView ? { transform: 'translateZ(40px) rotate(-40deg)' } : undefined}
             >
               <GiQueenCrown
                 size={isGridView ? 45 : 50}
@@ -561,14 +562,14 @@ const RankComponent: React.FC<{ userData: UserData | null; rank: number; isGridV
                   <svg 
                     className="absolute w-[160px] h-[160px] -rotate-90 transition-all duration-300"
                     viewBox="0 0 130 130"
-                    style={{ transform: 'translateZ(20px)' }}
+                    style={enable3D ? { transform: 'translateZ(20px)' } : undefined}
                     onMouseEnter={(e) => {
-                      if (isGridView) {
+                      if (enable3D && isGridView) {
                         e.currentTarget.style.transform = 'translateZ(50px) scale(1.05)';
                       }
                     }}
                     onMouseLeave={(e) => {
-                      if (isGridView) {
+                      if (enable3D && isGridView) {
                         e.currentTarget.style.transform = 'translateZ(20px) scale(1)';
                       }
                     }}
@@ -617,7 +618,7 @@ const RankComponent: React.FC<{ userData: UserData | null; rank: number; isGridV
                   {/* Avatar - Centered in Ring with 3D depth */}
                   <div 
                     className="relative w-[120px] h-[120px] rounded-full overflow-visible border-4 border-[#0070ef]/40 flex-shrink-0 z-10 transition-all duration-300 group"
-                    style={{ transform: 'translateZ(30px)' }}
+                    style={enable3D ? { transform: 'translateZ(30px)' } : undefined}
                   >
                     <div className="absolute inset-0 bg-gradient-to-br from-[#0070ef]/20 to-transparent pointer-events-none rounded-full"></div>
                     <img
@@ -628,12 +629,12 @@ const RankComponent: React.FC<{ userData: UserData | null; rank: number; isGridV
                         transition: 'transform 0.3s ease-out',
                       }}
                       onMouseEnter={(e) => {
-                        if (isGridView) {
+                        if (enable3D && isGridView) {
                           e.currentTarget.style.transform = 'translateZ(60px) scale(1.1)';
                         }
                       }}
                       onMouseLeave={(e) => {
-                        if (isGridView) {
+                        if (enable3D && isGridView) {
                           e.currentTarget.style.transform = 'translateZ(0px) scale(1)';
                         }
                       }}
@@ -642,7 +643,7 @@ const RankComponent: React.FC<{ userData: UserData | null; rank: number; isGridV
                     {/* Rank Badge - On Top Right of Avatar with enhanced 3D */}
                     <div 
                       className="absolute -top-3 -right-3 z-20 transition-all duration-300"
-                      style={{ transform: 'translateZ(50px)' }}
+                      style={enable3D ? { transform: 'translateZ(50px)' } : undefined}
                     >
                       <p className="font-Tektur border-solid border-[2px] border-[#0070ef]/60 text-white font-black w-[48px] h-[48px] text-[18px] rounded-full flex items-center justify-center bg-gradient-to-br from-gray-700 to-gray-800 backdrop-blur-sm shadow-lg shadow-blue-500/50">
                         {rank}
@@ -657,14 +658,14 @@ const RankComponent: React.FC<{ userData: UserData | null; rank: number; isGridV
                 {/* Username Box with 3D pop-out on hover */}
                 <div 
                   className="px-4 py-2 bg-gradient-to-r from-yellow-400/20 to-amber-500/20 border border-yellow-400/50 rounded-lg transition-all duration-300 hover:shadow-lg hover:shadow-yellow-500/30"
-                  style={{ transform: 'translateZ(10px)' }}
+                  style={enable3D ? { transform: 'translateZ(10px)' } : undefined}
                   onMouseEnter={(e) => {
-                    if (isGridView) {
+                    if (enable3D && isGridView) {
                       e.currentTarget.style.transform = 'translateZ(70px) scale(1.05)';
                     }
                   }}
                   onMouseLeave={(e) => {
-                    if (isGridView) {
+                    if (enable3D && isGridView) {
                       e.currentTarget.style.transform = 'translateZ(10px) scale(1)';
                     }
                   }}
@@ -677,7 +678,7 @@ const RankComponent: React.FC<{ userData: UserData | null; rank: number; isGridV
                 {/* Level Display */}
                 <span 
                   className="text-[18px] font-black text-white font-Tektur transition-all duration-300"
-                  style={{ transform: 'translateZ(15px)' }}
+                  style={enable3D ? { transform: 'translateZ(15px)' } : undefined}
                 >
                   {userData.level.toFixed(2)}
                 </span>
@@ -685,15 +686,15 @@ const RankComponent: React.FC<{ userData: UserData | null; rank: number; isGridV
                 {/* Name with 3D pop-out on hover */}
                 <p 
                   className="font-Tektur text-[15px] text-white/95 text-center line-clamp-2 font-semibold leading-tight px-2 min-h-[36px] flex items-center justify-center transition-all duration-300 hover:text-white"
-                  style={{ transform: 'translateZ(20px)' }}
+                  style={enable3D ? { transform: 'translateZ(20px)' } : undefined}
                   onMouseEnter={(e) => {
-                    if (isGridView) {
+                    if (enable3D && isGridView) {
                       e.currentTarget.style.transform = 'translateZ(80px) scale(1.08)';
                       e.currentTarget.style.textShadow = '0 0 20px rgba(59, 130, 246, 0.6)';
                     }
                   }}
                   onMouseLeave={(e) => {
-                    if (isGridView) {
+                    if (enable3D && isGridView) {
                       e.currentTarget.style.transform = 'translateZ(20px) scale(1)';
                       e.currentTarget.style.textShadow = 'none';
                     }
