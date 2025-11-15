@@ -161,7 +161,9 @@ const ProgressBar: React.FC<{
         false
       );
     }
+    
     document.addEventListener("click", CloseEvent);
+    
     return () => {
       document.removeEventListener("click", CloseEvent);
     };
@@ -315,6 +317,26 @@ const ProgressBar: React.FC<{
           </motion.div>
         )}
       </div>
+      
+      {/* Global Rank Button */}
+      <div
+        onClick={() => {
+          setUserData(cloneData as null[]);
+          const globalData = {
+            ...DataSearch,
+            campus: { name: "All", id: 0 },
+            cursus: { name: "Cursus", id: 21 },
+            page: 1,
+          };
+          setDataSearch(globalData);
+          FetchData(globalData, false);
+        }}
+        className="w-[30px] cursor-pointer rounded-md border-solid border-[1px] border-white/4 h-[30px] bg-yellow-500/20 hover:bg-yellow-500/30 flex items-center justify-center transition-all duration-200"
+        title="Global Rank"
+      >
+        <span className="text-[16px]">🌍</span>
+      </div>
+      
       <div
         onClick={() => {
           setUserData(cloneData as null[]);

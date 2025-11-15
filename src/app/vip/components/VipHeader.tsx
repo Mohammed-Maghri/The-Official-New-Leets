@@ -19,6 +19,8 @@ interface VipHeaderProps {
   ) => void;
   searchQuery: string;
   onSearchChange: (query: string) => void;
+  dateFilter: "all" | "today" | "yesterday" | "2days";
+  onDateFilterChange: (filter: "all" | "today" | "yesterday" | "2days") => void;
 }
 
 export const VipHeader: React.FC<VipHeaderProps> = ({
@@ -32,6 +34,8 @@ export const VipHeader: React.FC<VipHeaderProps> = ({
   onFiltersChange,
   searchQuery,
   onSearchChange,
+  dateFilter,
+  onDateFilterChange,
 }) => {
   const [campusDropdownOpen, setCampusDropdownOpen] = React.useState<boolean>(false);
   const [projectFilterDropdownOpen, setProjectFilterDropdownOpen] = React.useState<boolean>(false);
@@ -96,25 +100,66 @@ export const VipHeader: React.FC<VipHeaderProps> = ({
 
   return (
     <div className="flex flex-col space-y-4 md:space-y-6 mb-8 md:mb-10">
-      <div className="flex flex-col xl:flex-row xl:items-center justify-between space-y-4 xl:space-y-0">
-        <div className="flex flex-col space-y-2">
-          <h1 className="text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-bold font-Tektur text-white">
-            Teams & Projects
-          </h1>
-          <p className="text-base md:text-lg text-gray-400 font-Tektur">
-            The Ui is Shit Because Its Coocked By Ai Not me hhh No time For it
-          </p>
-        </div>
-        
-        {/* Search Input */}
-        <div className="w-full xl:w-auto xl:flex-1 xl:max-w-md xl:mx-6">
-          <input
-            type="text"
-            placeholder="Search by name or username..."
-            value={searchQuery}
-            onChange={(e) => onSearchChange(e.target.value)}
-            className="w-full px-4 py-2.5 rounded-lg bg-[#0070ef]/10 backdrop-blur-sm border border-[#0070ef]/30 text-white placeholder-gray-400 font-Tektur focus:outline-none focus:border-[#0070ef] transition-all duration-300"
-          />
+      <div className="flex flex-col space-y-4">
+        <div className="flex flex-col lg:flex-row lg:items-center justify-between space-y-4 lg:space-y-0">
+          <div className="flex flex-col space-y-2">
+            <h1 className="text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-bold font-Tektur text-white">
+              Teams & Projects
+            </h1>
+          </div>
+          
+          {/* Search Input */}
+          <div className="w-full lg:w-auto lg:flex-1 lg:max-w-md lg:mx-6">
+            <input
+              type="text"
+              placeholder="Search by name or username..."
+              value={searchQuery}
+              onChange={(e) => onSearchChange(e.target.value)}
+              className="w-full px-4 py-2.5 rounded-lg bg-[#0070ef]/10 backdrop-blur-sm border border-[#0070ef]/30 text-white placeholder-gray-400 font-Tektur focus:outline-none focus:border-[#0070ef] transition-all duration-300"
+            />
+          </div>
+
+          {/* Date Filter Buttons */}
+          <div className="flex flex-wrap items-center gap-2">
+            <button 
+              onClick={() => onDateFilterChange("today")}
+              className={`px-3 py-2 md:px-4 md:py-2.5 rounded-lg border font-Tektur text-sm font-semibold backdrop-blur-sm transition-all duration-300 ${
+                dateFilter === "today"
+                  ? "bg-[#0070ef]/20 border-[#0070ef] text-white"
+                  : "bg-[#0070ef]/10 border-[#0070ef]/30 text-white/80 hover:bg-[#0070ef]/20"
+              }`}
+            >
+              Today
+            </button>
+            <button 
+              onClick={() => onDateFilterChange("yesterday")}
+              className={`px-3 py-2 md:px-4 md:py-2.5 rounded-lg border font-Tektur text-sm font-semibold backdrop-blur-sm transition-all duration-300 ${
+                dateFilter === "yesterday"
+                  ? "bg-[#0070ef]/20 border-[#0070ef] text-white"
+                  : "bg-[#0070ef]/10 border-[#0070ef]/30 text-white/80 hover:bg-[#0070ef]/20"
+              }`}
+            >
+              Yesterday
+            </button>
+            <button 
+              onClick={() => onDateFilterChange("2days")}
+              className={`px-3 py-2 md:px-4 md:py-2.5 rounded-lg border font-Tektur text-sm font-semibold backdrop-blur-sm transition-all duration-300 ${
+                dateFilter === "2days"
+                  ? "bg-[#0070ef]/20 border-[#0070ef] text-white"
+                  : "bg-[#0070ef]/10 border-[#0070ef]/30 text-white/80 hover:bg-[#0070ef]/20"
+              }`}
+            >
+              2 Days Ago
+            </button>
+            {dateFilter !== "all" && (
+              <button 
+                onClick={() => onDateFilterChange("all")}
+                className="px-3 py-2 md:px-4 md:py-2.5 rounded-lg bg-red-500/20 backdrop-blur-sm border border-red-500/30 text-red-300 font-Tektur text-sm font-semibold hover:bg-red-500/30 transition-all duration-300"
+              >
+                Clear
+              </button>
+            )}
+          </div>
         </div>
         
         <div className="flex flex-col sm:flex-row lg:flex-wrap xl:flex-nowrap items-start sm:items-center gap-2 md:gap-3">

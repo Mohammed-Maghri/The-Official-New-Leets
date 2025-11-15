@@ -11,12 +11,56 @@ import * as jose from "jose";
 
 export const GET = async (request: NextRequest) => {
   let client: Pool | null = null;
-  let connection = null;
   
   try {
     const requestUrl = new URL(request.url);
     const campusParam = requestUrl.searchParams.get("campus") || "16";
     const pageParam = requestUrl.searchParams.get("page") || "1";
+    const dateFilter = requestUrl.searchParams.get("date") || "today"; // "today", "yesterday", "2days"
+    
+    // Calculate date range based on filter
+    let startDate: { year: string; month: string; day: string };
+    let endDate: { year: string; month: string; day: string };
+    
+    const now = new Date();
+    
+    if (dateFilter === "yesterday") {
+      const yesterday = new Date(now);
+      yesterday.setDate(yesterday.getDate() - 1);
+      const dayAfterYesterday = new Date(yesterday);
+      dayAfterYesterday.setDate(dayAfterYesterday.getDate() + 1);
+      
+      startDate = {
+        year: yesterday.getFullYear().toString(),
+        month: (yesterday.getMonth() + 1).toString().padStart(2, '0'),
+        day: yesterday.getDate().toString().padStart(2, '0')
+      };
+      endDate = {
+        year: dayAfterYesterday.getFullYear().toString(),
+        month: (dayAfterYesterday.getMonth() + 1).toString().padStart(2, '0'),
+        day: dayAfterYesterday.getDate().toString().padStart(2, '0')
+      };
+    } else if (dateFilter === "2days") {
+      const twoDaysAgo = new Date(now);
+      twoDaysAgo.setDate(twoDaysAgo.getDate() - 2);
+      const dayAfter = new Date(twoDaysAgo);
+      dayAfter.setDate(dayAfter.getDate() + 1);
+      
+      startDate = {
+        year: twoDaysAgo.getFullYear().toString(),
+        month: (twoDaysAgo.getMonth() + 1).toString().padStart(2, '0'),
+        day: twoDaysAgo.getDate().toString().padStart(2, '0')
+      };
+      endDate = {
+        year: dayAfter.getFullYear().toString(),
+        month: (dayAfter.getMonth() + 1).toString().padStart(2, '0'),
+        day: dayAfter.getDate().toString().padStart(2, '0')
+      };
+    } else {
+      // Default to today
+      startDate = today;
+      endDate = tomorow;
+    }
     
     
     // Verify JWT token first
@@ -40,37 +84,24 @@ export const GET = async (request: NextRequest) => {
       throw new Error("Failed to fetch user data");
     }
     
-    const userData = await fetchme.json();
+    await fetchme.json();
     
-    // Create pool and connection
+    // Create pool for badge queries (no VIP role checking required)
     client = new Pool({ connectionString: process.env.DATABASE_KEY });
-    connection = await client.connect();
-    
-    // Check VIP status
-    const query = `SELECT * FROM leets.vip where login=$1`;
-    const result = await connection.query(query, [userData.login]);
-    const respond = result.rows[0]?.login;
-
-    if (!respond) {
-      return NextResponse.json(
-        { error: "User not found or not a VIP" },
-        { status: 404 }
-      );
-    }
 
     const apiParams = new URLSearchParams({
       "range[closed_at]":
-        today.year +
+        startDate.year +
         "-" +
-        today.month +
+        startDate.month +
         "-" +
-        today.day +
+        startDate.day +
         "," +
-        tomorow.year +
+        endDate.year +
         "-" +
-        tomorow.month +
+        endDate.month +
         "-" +
-        tomorow.day,
+        endDate.day,
       "filter[campus]": campusParam,
       "page[size]": "100",
       "page[number]": pageParam,
@@ -202,13 +233,6 @@ export const GET = async (request: NextRequest) => {
     );
   } finally {
     // Always cleanup resources
-    if (connection) {
-      try {
-        connection.release();
-      } catch (releaseError) {
-        console.error("Error releasing connection:", releaseError);
-      }
-    }
     if (client) {
       try {
         await client.end();

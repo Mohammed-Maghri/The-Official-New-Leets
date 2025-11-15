@@ -36,15 +36,21 @@ export const POST = async (request: NextRequest) => {
       parseInt(Body.year) + 1
     }-01-01`;
 
-
-    const url: URLSearchParams = new URLSearchParams({
+    // Build URL parameters
+    const urlParams: Record<string, string> = {
       cursus_id: Body.cursus.id,
-      "range[begin_at]": Body.cursus.id == 9 ? MonthRange : YearRange,
       "page[size]": "100",
       "page[number]": Body.page,
       sort: "-level",
-      "filter[campus_id]": Body.campus.id,
-    });
+    };
+
+    // Only add filters if campus_id is not 0 (All Campuses)
+    if (Body.campus.id !== 0) {
+      urlParams["range[begin_at]"] = Body.cursus.id == 9 ? MonthRange : YearRange;
+      urlParams["filter[campus_id]"] = Body.campus.id;
+    }
+
+    const url: URLSearchParams = new URLSearchParams(urlParams);
 
     const data = await fetch(
       process.env.INTRA_TOKEN + "/v2/cursus_users?" + url.toString(),
@@ -159,7 +165,7 @@ export const POST = async (request: NextRequest) => {
         level: item.level,
         badge: topBadge, // { type: 'creator'|'vip'|'feedback', name: 'Badge Name' } or null
       };
-    });
+    }).filter((user: { level: number }) => user.level <= 26); // Filter out test accounts (level > 26)
     
     return NextResponse.json(NewRespons, { status: 200 });
   } catch (error) {

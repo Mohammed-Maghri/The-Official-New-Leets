@@ -11,28 +11,6 @@ const LaoderComp: React.FC = () => {
         </div>
         <div className="absolute inset-0 w-[50px] h-[50px] rounded-full border-2 border-blue-400/30 animate-ping"></div>
       </div>
-
-      <div className="text-center space-y-2">
-        <h3 className="text-xl font-medium text-white font-Tektur">
-          Checking User State
-        </h3>
-        <p className="text-gray-400 font-Tektur text-sm">
-          Verifying your access privileges...
-        </p>
-
-        <div className="flex justify-center space-x-1 mt-3">
-          {[0, 1, 2].map((index) => (
-            <div
-              key={index}
-              className="w-2 h-2 bg-blue-400 rounded-full animate-bounce"
-              style={{
-                animationDelay: `${index * 0.2}s`,
-                animationDuration: "1s",
-              }}
-            ></div>
-          ))}
-        </div>
-      </div>
     </div>
   );
 };

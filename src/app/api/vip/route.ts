@@ -123,47 +123,11 @@ export const POST = async (request: NextRequest) => {
   }
 };
 
-export const GET = async (request: NextRequest) => {
+export const GET = async () => {
   let client: Pool | null = null;
   
   try {
-    // Verify JWT first
-    await jose.jwtVerify(
-      request.cookies.get("auth_code")?.value as string,
-      new TextEncoder().encode(process.env.SECRET_KEY as string)
-    );
-    
-    const whoUrl = new URL("/api/who", request.url);
-    const fetchme = await fetch(whoUrl, {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-        Cookie: `auth_code=${request.cookies.get("auth_code")?.value};`,
-      },
-      credentials: "include",
-    });
-
-    if (!fetchme.ok) {
-      return NextResponse.json(
-        { error: "Authentication failed" },
-        { status: 401 }
-      );
-    }
-
-    const currentUser = await fetchme.json();
-    
     client = new Pool({ connectionString: process.env.DATABASE_KEY });
-
-    // Check if user is a creator in the database
-    const adminCheckQuery = `SELECT * FROM leets.vip WHERE login = $1 AND token = 'creator'`;
-    const adminCheckResult = await client.query(adminCheckQuery, [currentUser.login]);
-    
-    if (adminCheckResult.rows.length === 0) {
-      return NextResponse.json(
-        { error: "Unauthorized. Only creators can view VIP users." },
-        { status: 403 }
-      );
-    }
 
     // Updated query to include token (vip status) and feedback badges
     const query = `

@@ -6,9 +6,9 @@ export async function middleware(request: NextRequest) {
   const paths: string[] = [
     "/dashboard",
     "/progress",
-    "/vip",
     "/calculator",
     "/peerfinder",
+    "/vip",
   ];
   const cookie = (await cookies()).get("auth_code");
   if (request.nextUrl.pathname === "/") {

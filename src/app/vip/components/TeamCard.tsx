@@ -22,6 +22,24 @@ export const TeamCard: React.FC<TeamCardProps> = ({
   getProjectDuration,
   handleTeamClick,
 }) => {
+  // Calculate relative date
+  const getRelativeDate = (dateString: string | null) => {
+    if (!dateString) return "Not Closed";
+    
+    const date = new Date(dateString);
+    const now = new Date();
+    const diffTime = now.getTime() - date.getTime();
+    const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
+    
+    if (diffDays === 0) return "Today";
+    if (diffDays === 1) return "Yesterday";
+    if (diffDays === 2) return "2 days ago";
+    if (diffDays < 7) return `${diffDays} days ago`;
+    if (diffDays < 30) return `${Math.floor(diffDays / 7)} weeks ago`;
+    if (diffDays < 365) return `${Math.floor(diffDays / 30)} months ago`;
+    return `${Math.floor(diffDays / 365)} years ago`;
+  };
+
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
@@ -168,9 +186,7 @@ export const TeamCard: React.FC<TeamCardProps> = ({
             Closed At
           </div>
           <div className="font-medium text-gray-100 font-Tektur text-xs md:text-sm">
-            {team.closed_at
-              ? new Date(team.closed_at).toLocaleDateString()
-              : "Not Closed"}
+            {getRelativeDate(team.closed_at)}
           </div>
         </div>
       </div>

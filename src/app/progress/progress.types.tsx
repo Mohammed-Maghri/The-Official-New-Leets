@@ -63,6 +63,7 @@ const monthsIndex: string[] = [
   "december",
 ];
 const CampusList: CampusNameId[] = [
+  { name: "All", id: 0 },
   { name: "Khouribga", id: 16 },
   { name: "Bengrir", id: 21 },
   { name: "Tetouan", id: 55 },
