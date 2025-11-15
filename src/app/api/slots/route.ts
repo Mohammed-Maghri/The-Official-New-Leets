@@ -8,6 +8,7 @@ import {
 import { Pool } from "pg";
 import { DecryptionFunction } from "../auth/type.auth";
 import * as jose from "jose";
+import { profileCache } from "@/utils/profileCache";
 
 export const GET = async (request: NextRequest) => {
   let client: Pool | null = null;
@@ -170,6 +171,55 @@ export const GET = async (request: NextRequest) => {
       )
     );
     
+    // Check cache first
+    const userProfileMap = profileCache.getMany(allUserLogins);
+    const missingLogins = profileCache.getMissingLogins(allUserLogins);
+    
+    console.log(`Profile cache: ${userProfileMap.size} hits, ${missingLogins.length} misses out of ${allUserLogins.length} total`);
+    
+    // Fetch user profile pictures in batches only for missing logins
+    if (missingLogins.length > 0) {
+      const batchSize = 50;
+      
+      for (let i = 0; i < missingLogins.length; i += batchSize) {
+        const batch = missingLogins.slice(i, i + batchSize);
+        const userParams = new URLSearchParams({
+          "filter[login]": batch.join(","),
+          "page[size]": batchSize.toString(),
+        });
+        
+        try {
+          const usersResponse = await fetch(
+            `${process.env.INTRA_TOKEN}/v2/users?${userParams.toString()}`,
+            {
+              method: "GET",
+              headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${decryptedToken}`,
+              },
+            }
+          );
+          
+          if (usersResponse.ok) {
+            const users: Array<{
+              id: number;
+              login: string;
+              image?: { link?: string; versions?: { small?: string } };
+            }> = await usersResponse.json();
+            
+            users.forEach(user => {
+              const profilePicture = user.image?.link || user.image?.versions?.small || "";
+              userProfileMap.set(user.login, profilePicture);
+              profileCache.set(user.login, profilePicture);
+            });
+          }
+        } catch (error) {
+          console.error("Error fetching user profiles batch:", error);
+          // Continue even if batch fails
+        }
+      }
+    }
+    
     const userBadgeMap: Map<string, { vipStatus: string | null; badges: string[] }> = new Map();
     
     if (allUserLogins.length > 0 && client) {
@@ -211,6 +261,7 @@ export const GET = async (request: NextRequest) => {
           const badgeData = userBadgeMap.get(user.login);
           return {
             ...user,
+            profile_picture: userProfileMap.get(user.login) || null,
             vip_status: badgeData?.vipStatus || null,
             badges: badgeData?.badges || []
           };

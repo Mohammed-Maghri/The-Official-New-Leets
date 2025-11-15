@@ -1,6 +1,7 @@
 export interface User {
   login: string;
   leader: boolean;
+  profile_picture?: string | null;
   vip_status?: string | null;
   badges?: string[];
 }

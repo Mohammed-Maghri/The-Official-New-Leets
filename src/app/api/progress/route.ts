@@ -4,6 +4,7 @@ import { decodeJwt, jwtVerify } from "jose";
 import { DecryptionFunction } from "../auth/type.auth";
 import { Pool } from "pg";
 import { rateLimit, RateLimitPresets } from "@/utils/rateLimit";
+import { progressCache } from "@/utils/profileCache";
 
 export const POST = async (request: NextRequest) => {
   // Rate limiting: 20 requests per minute
@@ -23,6 +24,21 @@ export const POST = async (request: NextRequest) => {
       request.cookies.get("auth_code")?.value as string
     ).token) as string;
 
+    // Create cache key from request parameters
+    const cacheKey = `progress_${Body.cursus.id}_${Body.campus.id}_${Body.year}_${Body.month}_${Body.page}`;
+    
+    // Check cache first
+    const cachedData = progressCache.get(cacheKey);
+    if (cachedData) {
+      const cacheAge = progressCache.getAge(cacheKey);
+      console.log(`Progress cache HIT for ${cacheKey} (age: ${cacheAge} minutes)`);
+      return NextResponse.json(cachedData, { 
+        status: 200,
+        headers: { 'X-Cache': 'HIT' }
+      });
+    }
+    
+    console.log(`Progress cache MISS for ${cacheKey}`);
 
     const MonthRange: string = `${Body.year}-${
       Body.month.toString().length == 1 ? `0${Body.month}` : Body.month
@@ -167,7 +183,14 @@ export const POST = async (request: NextRequest) => {
       };
     }).filter((user: { level: number }) => user.level <= 26); // Filter out test accounts (level > 26)
     
-    return NextResponse.json(NewRespons, { status: 200 });
+    // Cache the result for 20 minutes
+    progressCache.set(cacheKey, NewRespons);
+    console.log(`Progress data cached for ${cacheKey}`);
+    
+    return NextResponse.json(NewRespons, { 
+      status: 200,
+      headers: { 'X-Cache': 'MISS' }
+    });
   } catch (error) {
     console.error("Error in progress route:", error);
     return NextResponse.json(

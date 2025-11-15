@@ -3,6 +3,7 @@ import {
   FaUsersViewfinder,
   RiVipCrown2Line,
   CiCalculator1,
+  MdAssessment,
 } from "./navbar.imports";
 
 interface UserData {
@@ -37,6 +38,11 @@ const PathsObject: ButtonsProps[] = [
     icon: <RiVipCrown2Line size={15} className="text-rose-500" />,
     title: "Teams",
     route: "/teams",
+  },
+  {
+    icon: <MdAssessment size={15} className="text-purple-400" />,
+    title: "Evaluations",
+    route: "/evaluations",
   },
   {
     icon: <CiCalculator1 size={15} className="text-orange-400" />,

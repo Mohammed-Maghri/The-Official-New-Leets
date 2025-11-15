@@ -112,6 +112,16 @@ export const TeamCard: React.FC<TeamCardProps> = ({
                   : "bg-gray-700/50 text-gray-300 border-gray-600/50"
               }`}
             >
+              {user.profile_picture && (
+                <img
+                  src={user.profile_picture}
+                  alt={user.login}
+                  className="w-5 h-5 rounded-full border border-white/30"
+                  onError={(e) => {
+                    e.currentTarget.style.display = 'none';
+                  }}
+                />
+              )}
               <span>
                 {user.leader && "★ "}
                 {user.login}

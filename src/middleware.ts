@@ -9,6 +9,7 @@ export async function middleware(request: NextRequest) {
     "/calculator",
     "/peerfinder",
     "/teams",
+    "/evaluations",
   ];
   const cookie = (await cookies()).get("auth_code");
   if (request.nextUrl.pathname === "/") {
