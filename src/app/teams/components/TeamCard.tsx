@@ -1,8 +1,8 @@
 "use client";
 import React from "react";
 import { motion } from "motion/react";
-import { ResponseData } from "../vip.types";
-import { AnimationConfig } from "../vip.constants";
+import { ResponseData } from "../teams.types";
+import { AnimationConfig } from "../teams.constants";
 import { UserBadges } from "@/component/badges/UserBadges";
 
 interface TeamCardProps {

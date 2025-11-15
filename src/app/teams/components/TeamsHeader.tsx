@@ -2,10 +2,10 @@
 import React from "react";
 import { motion } from "motion/react";
 import { FaCaretDown } from "react-icons/fa";
-import { CampusType, ProjectFilterType, SpecificProjectFilterType } from "../vip.types";
-import { CampusList, ProjectFilterOptions, AnimationConfig } from "../vip.constants";
+import { CampusType, ProjectFilterType, SpecificProjectFilterType } from "../teams.types";
+import { CampusList, ProjectFilterOptions, AnimationConfig } from "../teams.constants";
 
-interface VipHeaderProps {
+interface TeamsHeaderProps {
   selectedCampus: CampusType;
   teamCount: number;
   onCampusChange: (campus: CampusType) => void;
@@ -23,7 +23,7 @@ interface VipHeaderProps {
   onDateFilterChange: (filter: "all" | "today" | "yesterday" | "2days") => void;
 }
 
-export const VipHeader: React.FC<VipHeaderProps> = ({
+export const TeamsHeader: React.FC<TeamsHeaderProps> = ({
   selectedCampus,
   teamCount,
   onCampusChange,

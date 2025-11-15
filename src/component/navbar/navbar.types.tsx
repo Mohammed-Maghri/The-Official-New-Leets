@@ -35,8 +35,8 @@ interface ButtonsProps {
 const PathsObject: ButtonsProps[] = [
   {
     icon: <RiVipCrown2Line size={15} className="text-rose-500" />,
-    title: "Vip",
-    route: "/vip",
+    title: "Teams",
+    route: "/teams",
   },
   {
     icon: <CiCalculator1 size={15} className="text-orange-400" />,

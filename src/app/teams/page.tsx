@@ -1,6 +1,6 @@
 "use client";
 import React from "react";
-import { LaoderComp } from "@/app/vip/vip.component";
+import { LaoderComp } from "@/app/teams/teams.component";
 import { ContextCreator } from "@/component/context/context";
 
 import {
@@ -9,11 +9,11 @@ import {
   ProjectInfo,
   ProjectFilterType,
   SpecificProjectFilterType,
-} from "./vip.types";
+} from "./teams.types";
 
-import { VipHeader, TeamGrid, LoadMore } from "./components";
+import { TeamsHeader, TeamGrid, LoadMore } from "./components";
 
-const VipPage = () => {
+const TeamsPage = () => {
   const context = React.useContext(ContextCreator);
   const userData = context?.userData;
   
@@ -230,7 +230,7 @@ const VipPage = () => {
         </div>
       ) : dataReturned && Array.isArray(dataReturned) ? (
         <div className="w-full cursor-pointer bg-white/5 backdrop-blur-xl rounded-xl border border-white/10 flex flex-1 flex-col p-8 space-y-6">
-          <VipHeader
+          <TeamsHeader
             selectedCampus={selectedCampus}
             teamCount={filteredData?.length || 0}
             onCampusChange={handleCampusChange}
@@ -272,4 +272,4 @@ const VipPage = () => {
   );
 };
 
-export default VipPage;
+export default TeamsPage;

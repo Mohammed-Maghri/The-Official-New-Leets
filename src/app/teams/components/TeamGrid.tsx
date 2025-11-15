@@ -1,8 +1,8 @@
 "use client";
 import React from "react";
 import { motion } from "motion/react";
-import { ResponseData } from "../vip.types";
-import { GridConfig } from "../vip.constants";
+import { ResponseData } from "../teams.types";
+import { GridConfig } from "../teams.constants";
 import { TeamCard } from "./TeamCard";
 
 interface TeamGridProps {

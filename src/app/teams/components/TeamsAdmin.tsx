@@ -32,7 +32,7 @@ export default function VipAdmin({ isVisible, onClose }: VipAdminProps) {
 
   const fetchVipUsers = async () => {
     try {
-      const response = await fetch("/api/vip");
+      const response = await fetch("/api/teams");
       
       // Check for rate limiting
       const isRateLimited = await handleRateLimitResponse(response);
@@ -58,7 +58,7 @@ export default function VipAdmin({ isVisible, onClose }: VipAdminProps) {
 
     setLoading(true);
     try {
-      const response = await fetch("/api/vip", {
+      const response = await fetch("/api/teams", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -99,7 +99,7 @@ export default function VipAdmin({ isVisible, onClose }: VipAdminProps) {
     }
 
     try {
-      const response = await fetch(`/api/vip?login=${login}`, {
+      const response = await fetch(`/api/teams?login=${login}`, {
         method: "DELETE",
       });
 
