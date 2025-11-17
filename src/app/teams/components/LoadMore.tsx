@@ -46,11 +46,11 @@ export const LoadMore: React.FC<LoadMoreProps> = ({
         whileTap={!isLoading ? { scale: 0.95 } : {}}
         className={`
           relative overflow-hidden px-8 md:px-12 py-3 md:py-4 
-          bg-[#0070ef]
+          bg-[#001226]
           text-white font-bold font-Tektur rounded-xl md:rounded-2xl 
-          shadow-lg hover:shadow-2xl border border-[#0070ef]/50 
+          shadow-lg hover:shadow-2xl border border-white/20 hover:border-[#0070ef]
           transition-all duration-300 group text-base md:text-lg
-          ${isLoading ? 'cursor-not-allowed opacity-70' : 'hover:bg-[#0070ef]/80'}
+          ${isLoading ? 'cursor-not-allowed opacity-70' : 'hover:bg-[#0070ef]/20'}
         `}
       >
         <div className="absolute inset-0 bg-white/10 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-700"></div>

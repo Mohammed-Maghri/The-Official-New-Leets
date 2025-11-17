@@ -226,30 +226,30 @@ const EvaluationsPage = () => {
                 <div className="flex items-center gap-2">
                   <button
                     onClick={() => setStatusFilter("all")}
-                    className={`px-3 py-2 md:px-4 md:py-2.5 rounded-lg border font-Tektur text-sm font-semibold backdrop-blur-sm transition-all duration-300 ${
+                    className={`px-3 py-2 md:px-4 md:py-2.5 rounded-lg border font-Tektur text-sm font-semibold transition-all duration-300 ${
                       statusFilter === "all"
-                        ? "bg-[#0070ef]/20 border-[#0070ef] text-white"
-                        : "bg-[#0070ef]/10 border-[#0070ef]/30 text-white/80 hover:bg-[#0070ef]/20"
+                        ? "bg-[#001226] border-[#0070ef] text-white"
+                        : "bg-[#001226]/50 border-white/10 text-white/80 hover:border-[#0070ef]/50"
                     }`}
                   >
                     All
                   </button>
                   <button
                     onClick={() => setStatusFilter("passed")}
-                    className={`px-3 py-2 md:px-4 md:py-2.5 rounded-lg border font-Tektur text-sm font-semibold backdrop-blur-sm transition-all duration-300 ${
+                    className={`px-3 py-2 md:px-4 md:py-2.5 rounded-lg border font-Tektur text-sm font-semibold transition-all duration-300 ${
                       statusFilter === "passed"
-                        ? "bg-green-500/20 border-green-500 text-green-300"
-                        : "bg-green-500/10 border-green-500/30 text-green-400/80 hover:bg-green-500/20"
+                        ? "bg-[#001226] border-green-500 text-green-300"
+                        : "bg-[#001226]/50 border-white/10 text-green-400/80 hover:border-green-500/50"
                     }`}
                   >
                     Passed
                   </button>
                   <button
                     onClick={() => setStatusFilter("failed")}
-                    className={`px-3 py-2 md:px-4 md:py-2.5 rounded-lg border font-Tektur text-sm font-semibold backdrop-blur-sm transition-all duration-300 ${
+                    className={`px-3 py-2 md:px-4 md:py-2.5 rounded-lg border font-Tektur text-sm font-semibold transition-all duration-300 ${
                       statusFilter === "failed"
-                        ? "bg-red-500/20 border-red-500 text-red-300"
-                        : "bg-red-500/10 border-red-500/30 text-red-400/80 hover:bg-red-500/20"
+                        ? "bg-[#001226] border-red-500 text-red-300"
+                        : "bg-[#001226]/50 border-white/10 text-red-400/80 hover:border-red-500/50"
                     }`}
                   >
                     Failed
@@ -261,7 +261,7 @@ const EvaluationsPage = () => {
                   <div
                     ref={campusTriggerRef}
                     onClick={() => setCampusDropdownOpen(!campusDropdownOpen)}
-                    className="flex items-center space-x-2 bg-[#0070ef]/10 backdrop-blur-sm px-4 py-2.5 rounded-lg border border-[#0070ef]/30 cursor-pointer hover:bg-[#0070ef]/20 transition-all duration-300"
+                    className="transition-all duration-200 cursor-pointer rounded-md border-solid border-[1px] border-white/5 bg-[#0070ef]/5 px-4 py-2.5 flex items-center space-x-2 hover:bg-[#0070ef]/10"
                   >
                     <span className="text-sm md:text-base font-semibold text-white font-Tektur">
                       {selectedCampus.name}
@@ -303,11 +303,11 @@ const EvaluationsPage = () => {
                   type="date"
                   value={selectedDate}
                   onChange={handleDateChange}
-                  className="px-4 py-2.5 rounded-lg bg-[#0070ef]/10 backdrop-blur-sm border border-[#0070ef]/30 text-white font-Tektur text-sm md:text-base focus:outline-none focus:border-[#0070ef] transition-all duration-300"
+                  className="transition-all duration-200 cursor-pointer rounded-md border-solid border-[1px] border-white/5 bg-[#0070ef]/5 px-4 py-2.5 text-white font-Tektur text-sm md:text-base focus:outline-none focus:border-[#0070ef]/50"
                 />
 
                 {/* Count Badge */}
-                <div className="bg-[#0070ef]/20 backdrop-blur-sm px-4 py-2.5 rounded-lg border border-[#0070ef]/30">
+                <div className="bg-[#001226] px-4 py-2.5 rounded-lg border border-white/10">
                   <div className="flex items-center space-x-2">
                     <span className="text-sm md:text-base font-bold text-white font-Tektur">
                       {filteredEvaluations?.length || 0}
@@ -331,7 +331,7 @@ const EvaluationsPage = () => {
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.3 }}
-                    className="bg-gradient-to-br from-white/5 to-white/[0.02] backdrop-blur-sm rounded-xl border border-white/10 p-4 md:p-5 hover:border-[#0070ef]/50 hover:shadow-lg hover:shadow-[#0070ef]/10 transition-all duration-300"
+                    className="bg-[#001226] rounded-xl border border-white/10 p-4 md:p-5 hover:border-[#0070ef]/50 transition-all duration-300"
                   >
                     {/* Project Name */}
                     <div className="mb-3 pb-3 border-b border-white/10">
@@ -361,7 +361,7 @@ const EvaluationsPage = () => {
                           href={`https://profile.intra.42.fr/users/${evaluation.corrector.login}`}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="ml-2 px-2 py-1 bg-[#0070ef]/20 hover:bg-[#0070ef]/30 border border-[#0070ef]/50 rounded text-xs font-Tektur text-white transition-all duration-200 flex-shrink-0"
+                          className="ml-2 px-2 py-1 bg-[#001226] hover:bg-[#0070ef]/20 border border-white/20 hover:border-[#0070ef] rounded text-xs font-Tektur text-white transition-all duration-200 flex-shrink-0"
                         >
                           View
                         </a>
@@ -391,7 +391,7 @@ const EvaluationsPage = () => {
                               href={`https://profile.intra.42.fr/users/${corrected.login}`}
                               target="_blank"
                               rel="noopener noreferrer"
-                              className="ml-2 px-2 py-1 bg-blue-500/20 hover:bg-blue-500/30 border border-blue-500/50 rounded text-xs font-Tektur text-white transition-all duration-200 flex-shrink-0"
+                              className="ml-2 px-2 py-1 bg-[#001226] hover:bg-[#0070ef]/20 border border-white/20 hover:border-[#0070ef] rounded text-xs font-Tektur text-white transition-all duration-200 flex-shrink-0"
                             >
                               View
                             </a>
@@ -402,13 +402,13 @@ const EvaluationsPage = () => {
 
                     {/* Score and Status */}
                     <div className="flex items-center justify-between mt-4 pt-3 border-t border-white/10">
-                      <div className="px-3 py-1.5 rounded-lg font-Tektur font-bold text-sm bg-[#0070ef]/20 text-white border border-[#0070ef]/50">
+                      <div className="px-3 py-1.5 rounded-lg font-Tektur font-bold text-sm bg-[#001226] text-white border border-white/20">
                         {evaluation.final_mark !== null ? `${evaluation.final_mark}/100` : "N/A"}
                       </div>
                       <div className={`px-3 py-1.5 rounded-lg font-Tektur font-semibold text-sm border ${
                         evaluation.passed 
-                          ? "bg-green-500/20 text-green-400 border-green-500/50"
-                          : "bg-red-500/20 text-red-400 border-red-500/50"
+                          ? "bg-[#001226] text-green-400 border-green-500/50"
+                          : "bg-[#001226] text-red-400 border-red-500/50"
                       }`}>
                         {evaluation.passed ? "✓ Pass" : "✗ Fail"}
                       </div>
@@ -439,7 +439,7 @@ const EvaluationsPage = () => {
                   <button
                     onClick={handleLoadMore}
                     disabled={isLoadingMore}
-                    className="px-6 py-3 bg-[#0070ef]/20 hover:bg-[#0070ef]/30 border border-[#0070ef]/50 rounded-lg text-white font-Tektur font-semibold transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
+                    className="px-6 py-3 bg-[#001226] hover:bg-[#0070ef]/20 border border-white/20 hover:border-[#0070ef] rounded-lg text-white font-Tektur font-semibold transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
                   >
                     {isLoadingMore ? "Loading..." : "Load More"}
                   </button>

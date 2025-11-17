@@ -123,30 +123,30 @@ export const TeamsHeader: React.FC<TeamsHeaderProps> = ({
           <div className="flex flex-wrap items-center gap-2">
             <button 
               onClick={() => onDateFilterChange("today")}
-              className={`px-3 py-2 md:px-4 md:py-2.5 rounded-lg border font-Tektur text-sm font-semibold backdrop-blur-sm transition-all duration-300 ${
+              className={`px-3 py-2 md:px-4 md:py-2.5 rounded-lg border font-Tektur text-sm font-semibold transition-all duration-300 ${
                 dateFilter === "today"
-                  ? "bg-[#0070ef]/20 border-[#0070ef] text-white"
-                  : "bg-[#0070ef]/10 border-[#0070ef]/30 text-white/80 hover:bg-[#0070ef]/20"
+                  ? "bg-[#001226] border-[#0070ef] text-white"
+                  : "bg-[#001226]/50 border-white/10 text-white/80 hover:border-[#0070ef]/50"
               }`}
             >
               Today
             </button>
             <button 
               onClick={() => onDateFilterChange("yesterday")}
-              className={`px-3 py-2 md:px-4 md:py-2.5 rounded-lg border font-Tektur text-sm font-semibold backdrop-blur-sm transition-all duration-300 ${
+              className={`px-3 py-2 md:px-4 md:py-2.5 rounded-lg border font-Tektur text-sm font-semibold transition-all duration-300 ${
                 dateFilter === "yesterday"
-                  ? "bg-[#0070ef]/20 border-[#0070ef] text-white"
-                  : "bg-[#0070ef]/10 border-[#0070ef]/30 text-white/80 hover:bg-[#0070ef]/20"
+                  ? "bg-[#001226] border-[#0070ef] text-white"
+                  : "bg-[#001226]/50 border-white/10 text-white/80 hover:border-[#0070ef]/50"
               }`}
             >
               Yesterday
             </button>
             <button 
               onClick={() => onDateFilterChange("2days")}
-              className={`px-3 py-2 md:px-4 md:py-2.5 rounded-lg border font-Tektur text-sm font-semibold backdrop-blur-sm transition-all duration-300 ${
+              className={`px-3 py-2 md:px-4 md:py-2.5 rounded-lg border font-Tektur text-sm font-semibold transition-all duration-300 ${
                 dateFilter === "2days"
-                  ? "bg-[#0070ef]/20 border-[#0070ef] text-white"
-                  : "bg-[#0070ef]/10 border-[#0070ef]/30 text-white/80 hover:bg-[#0070ef]/20"
+                  ? "bg-[#001226] border-[#0070ef] text-white"
+                  : "bg-[#001226]/50 border-white/10 text-white/80 hover:border-[#0070ef]/50"
               }`}
             >
               2 Days Ago
@@ -154,7 +154,7 @@ export const TeamsHeader: React.FC<TeamsHeaderProps> = ({
             {dateFilter !== "all" && (
               <button 
                 onClick={() => onDateFilterChange("all")}
-                className="px-3 py-2 md:px-4 md:py-2.5 rounded-lg bg-red-500/20 backdrop-blur-sm border border-red-500/30 text-red-300 font-Tektur text-sm font-semibold hover:bg-red-500/30 transition-all duration-300"
+                className="px-3 py-2 md:px-4 md:py-2.5 rounded-lg bg-[#001226] border border-red-500/50 text-red-300 font-Tektur text-sm font-semibold hover:bg-red-500/20 hover:border-red-500 transition-all duration-300"
               >
                 Clear
               </button>
@@ -167,7 +167,7 @@ export const TeamsHeader: React.FC<TeamsHeaderProps> = ({
             <div
               ref={campusTriggerRef}
               onClick={() => setCampusDropdownOpen(!campusDropdownOpen)}
-              className="flex items-center justify-between sm:justify-start space-x-2 bg-[#0070ef]/10 backdrop-blur-sm px-3 py-2 md:px-4 md:py-2.5 rounded-lg border border-[#0070ef]/30 cursor-pointer hover:bg-[#0070ef]/20 transition-all duration-300 w-full sm:w-auto"
+              className="transition-all duration-200 cursor-pointer rounded-md border-solid border-[1px] border-white/5 bg-[#0070ef]/5 flex items-center justify-between sm:justify-start space-x-2 px-3 py-2 md:px-4 md:py-2.5 hover:bg-[#0070ef]/10 w-full sm:w-auto"
             >
               <div className="flex items-center space-x-2">
                 <span className="text-sm md:text-base font-semibold text-white font-Tektur">
@@ -213,7 +213,7 @@ export const TeamsHeader: React.FC<TeamsHeaderProps> = ({
             <div
               ref={projectFilterTriggerRef}
               onClick={() => setProjectFilterDropdownOpen(!projectFilterDropdownOpen)}
-              className="flex items-center justify-between sm:justify-start space-x-2 bg-[#0070ef]/10 backdrop-blur-sm px-3 py-2 md:px-4 md:py-2.5 rounded-lg border border-[#0070ef]/30 cursor-pointer hover:bg-[#0070ef]/20 transition-all duration-300 w-full sm:w-auto"
+              className="transition-all duration-200 cursor-pointer rounded-md border-solid border-[1px] border-white/5 bg-[#0070ef]/5 flex items-center justify-between sm:justify-start space-x-2 px-3 py-2 md:px-4 md:py-2.5 hover:bg-[#0070ef]/10 w-full sm:w-auto"
             >
               <div className="flex items-center space-x-2">
                 <span className="text-sm md:text-sm font-semibold text-white font-Tektur">
@@ -256,7 +256,7 @@ export const TeamsHeader: React.FC<TeamsHeaderProps> = ({
             <div
               ref={specificProjectTriggerRef}
               onClick={() => setSpecificProjectDropdownOpen(!specificProjectDropdownOpen)}
-              className="flex items-center justify-between sm:justify-start space-x-2 bg-[#0070ef]/10 backdrop-blur-sm px-3 py-2 md:px-4 md:py-2.5 rounded-lg border border-[#0070ef]/30 cursor-pointer hover:bg-[#0070ef]/20 transition-all duration-300 w-full sm:w-auto"
+              className="transition-all duration-200 cursor-pointer rounded-md border-solid border-[1px] border-white/5 bg-[#0070ef]/5 flex items-center justify-between sm:justify-start space-x-2 px-3 py-2 md:px-4 md:py-2.5 hover:bg-[#0070ef]/10 w-full sm:w-auto"
             >
               <div className="flex items-center space-x-2 min-w-0">
                 <span className="text-sm md:text-sm font-semibold text-white font-Tektur truncate">
@@ -351,7 +351,7 @@ export const TeamsHeader: React.FC<TeamsHeaderProps> = ({
             </motion.button>
           )}
 
-          <div className="bg-[#0070ef]/20 backdrop-blur-sm px-3 py-2 md:px-4 md:py-2.5 rounded-lg border border-[#0070ef]/30 w-full sm:w-auto">
+          <div className="bg-[#001226] px-3 py-2 md:px-4 md:py-2.5 rounded-lg border border-white/10 w-full sm:w-auto">
             <div className="flex items-center justify-center sm:justify-start space-x-2">
               <span className="text-sm md:text-base font-bold text-white font-Tektur">
                 {teamCount}
