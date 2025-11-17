@@ -186,8 +186,12 @@ const EvaluationsPage = () => {
   return (
     <div className="flex flex-1 items-center justify-start overflow-x-hidden flex-col z-10 relative p-6">
       {isLoading ? (
-        <div className="w-full h-full flex items-center justify-center">
+        <div className="w-full h-full flex flex-col items-center justify-center gap-6">
           <div className="animate-spin rounded-full h-16 w-16 border-t-2 border-b-2 border-[#0070ef]"></div>
+          <div className="text-center space-y-2">
+            <p className="text-white font-Tektur text-lg">Loading evaluations...</p>
+            <p className="text-gray-400 font-Tektur text-sm">This may take a few seconds due to 42 API response time</p>
+          </div>
         </div>
       ) : (
         <div className="w-full cursor-pointer bg-white/5 backdrop-blur-xl rounded-xl border border-white/10 flex flex-1 flex-col p-8 space-y-6">
