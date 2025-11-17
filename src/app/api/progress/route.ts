@@ -31,14 +31,14 @@ export const POST = async (request: NextRequest) => {
     const cachedData = progressCache.get(cacheKey);
     if (cachedData) {
       const cacheAge = progressCache.getAge(cacheKey);
-      console.log(`Progress cache HIT for ${cacheKey} (age: ${cacheAge} minutes)`);
+      console.log(`✅ Progress cache HIT for ${cacheKey} (age: ${cacheAge}min, size: ${progressCache.size()} entries)`);
       return NextResponse.json(cachedData, { 
         status: 200,
         headers: { 'X-Cache': 'HIT' }
       });
     }
     
-    console.log(`Progress cache MISS for ${cacheKey}`);
+    console.log(`❌ Progress cache MISS for ${cacheKey} (cache size: ${progressCache.size()} entries)`);
 
     const MonthRange: string = `${Body.year}-${
       Body.month.toString().length == 1 ? `0${Body.month}` : Body.month
@@ -78,7 +78,20 @@ export const POST = async (request: NextRequest) => {
       }
     );
     if (!data.ok) {
-      console.error("Failed to fetch progress data");
+      console.error(`⚠️ 42 API Error (HTTP ${data.status})`);
+      
+      // If API is down (502, 503, 504), return empty array instead of error
+      if (data.status >= 502 && data.status <= 504) {
+        console.log("🔄 42 API temporarily unavailable, returning empty result");
+        return NextResponse.json([], {
+          status: 200,
+          headers: { 
+            'X-Cache': 'MISS',
+            'X-API-Status': 'unavailable'
+          }
+        });
+      }
+      
       return NextResponse.json(
         { error: "Failed to fetch progress data" },
         { status: 500 }
@@ -185,7 +198,7 @@ export const POST = async (request: NextRequest) => {
     
     // Cache the result for 20 minutes
     progressCache.set(cacheKey, NewRespons);
-    console.log(`Progress data cached for ${cacheKey}`);
+    console.log(`💾 Progress data cached for ${cacheKey} (cache size: ${progressCache.size()} entries)`);
     
     return NextResponse.json(NewRespons, { 
       status: 200,

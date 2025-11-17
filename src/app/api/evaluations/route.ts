@@ -106,14 +106,14 @@ export const GET = async (request: NextRequest) => {
     const cachedData = progressCache.get(cacheKey);
     if (cachedData) {
       const cacheAge = progressCache.getAge(cacheKey);
-      console.log(`Evaluations cache HIT for ${cacheKey} (age: ${cacheAge} minutes)`);
+      console.log(`✅ Evaluations cache HIT for ${cacheKey} (age: ${cacheAge}min, size: ${progressCache.size()} entries)`);
       return NextResponse.json(cachedData, { 
         status: 200,
         headers: { 'X-Cache': 'HIT' }
       });
     }
     
-    console.log(`Evaluations cache MISS for ${cacheKey}`);
+    console.log(`❌ Evaluations cache MISS for ${cacheKey} (cache size: ${progressCache.size()} entries)`);
     
     
     // Calculate next day for date range
@@ -192,8 +192,21 @@ export const GET = async (request: NextRequest) => {
     
     if (!scaleTeamsResponse.ok) {
       const errorBody = await scaleTeamsResponse.text();
-      console.error("42 API Error:", errorBody);
-      throw new Error(`Failed to fetch scale_teams: HTTP ${scaleTeamsResponse.status} - ${errorBody}`);
+      console.error(`⚠️ 42 API Error (HTTP ${scaleTeamsResponse.status}):`, errorBody.substring(0, 200));
+      
+      // If API is down (502, 503, 504), return empty array instead of crashing
+      if (scaleTeamsResponse.status >= 502 && scaleTeamsResponse.status <= 504) {
+        console.log("🔄 42 API temporarily unavailable, returning empty result");
+        return NextResponse.json([], {
+          status: 200,
+          headers: { 
+            'X-Cache': 'MISS',
+            'X-API-Status': 'unavailable'
+          }
+        });
+      }
+      
+      throw new Error(`Failed to fetch scale_teams: HTTP ${scaleTeamsResponse.status}`);
     }
     
     const scaleTeamsData: ScaleTeam[] = await scaleTeamsResponse.json();
@@ -293,7 +306,7 @@ export const GET = async (request: NextRequest) => {
     
     // Cache the result for 20 minutes
     progressCache.set(cacheKey, transformedEvaluations);
-    console.log(`Evaluations data cached for ${cacheKey}`);
+    console.log(`💾 Evaluations data cached for ${cacheKey} (cache size: ${progressCache.size()} entries)`);
     
     return NextResponse.json(transformedEvaluations, {
       status: 200,

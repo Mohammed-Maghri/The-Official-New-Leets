@@ -131,7 +131,23 @@ class GenericCache<T> {
   }
 }
 
-export const profileCache = new ProfileCache();
-
+// Global singleton instances - shared across all requests
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-export const progressCache = new GenericCache<any>(20);
+const globalForCache = global as typeof globalThis & {
+  profileCache?: ProfileCache;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  progressCache?: GenericCache<any>;
+};
+
+export const profileCache = globalForCache.profileCache ?? new ProfileCache();
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export const progressCache = globalForCache.progressCache ?? new GenericCache<any>(20);
+
+// Ensure singletons persist across hot reloads in development
+if (process.env.NODE_ENV !== 'production') {
+  globalForCache.profileCache = profileCache;
+  globalForCache.progressCache = progressCache;
+}
+
+// Log cache initialization
+console.log('🔧 Cache initialized - Profile TTL: 1hr, Progress TTL: 20min');

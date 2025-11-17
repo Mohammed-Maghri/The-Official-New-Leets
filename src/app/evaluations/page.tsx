@@ -24,6 +24,7 @@ const EvaluationsPage = () => {
   const [campusDropdownOpen, setCampusDropdownOpen] = React.useState<boolean>(false);
   const [pageNumber, setPageNumber] = React.useState<number>(1);
   const [isLoadingMore, setIsLoadingMore] = React.useState<boolean>(false);
+  const [apiError, setApiError] = React.useState<string | null>(null);
   
   const campusRef = React.useRef<HTMLDivElement>(null);
   const campusTriggerRef = React.useRef<HTMLDivElement>(null);
@@ -60,6 +61,7 @@ const EvaluationsPage = () => {
     try {
       if (!loadMore) {
         setIsLoading(true);
+        setApiError(null);
       } else {
         setIsLoadingMore(true);
       }
@@ -79,6 +81,11 @@ const EvaluationsPage = () => {
       );
       
       if (!response.ok) {
+        if (response.status >= 502 && response.status <= 504) {
+          setApiError("42 API is temporarily unavailable. Please try again in a few minutes.");
+        } else {
+          setApiError("Failed to fetch evaluations. Please try again.");
+        }
         setEvaluations([]);
         setIsLoading(false);
         setIsLoadingMore(false);
@@ -86,6 +93,14 @@ const EvaluationsPage = () => {
       }
       
       const data = await response.json();
+      
+      // Check if API was unavailable
+      const apiStatus = response.headers.get('X-API-Status');
+      if (apiStatus === 'unavailable') {
+        setApiError("42 API is temporarily down. Showing cached data if available.");
+      } else {
+        setApiError(null);
+      }
       
       if (loadMore) {
         setEvaluations(prev => prev ? [...prev, ...data] : data);
@@ -97,6 +112,7 @@ const EvaluationsPage = () => {
       setIsLoadingMore(false);
     } catch (error) {
       console.error("Error fetching evaluations:", error);
+      setApiError("Network error. Please check your connection and try again.");
       setEvaluations([]);
       setIsLoading(false);
       setIsLoadingMore(false);
@@ -175,6 +191,18 @@ const EvaluationsPage = () => {
         </div>
       ) : (
         <div className="w-full cursor-pointer bg-white/5 backdrop-blur-xl rounded-xl border border-white/10 flex flex-1 flex-col p-8 space-y-6">
+          {/* API Error Banner */}
+          {apiError && (
+            <motion.div
+              initial={{ opacity: 0, y: -10 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="w-full bg-yellow-500/10 border border-yellow-500/30 rounded-lg p-4 flex items-center gap-3"
+            >
+              <span className="text-yellow-500 text-xl">⚠️</span>
+              <p className="text-yellow-200 font-Tektur">{apiError}</p>
+            </motion.div>
+          )}
+          
           {/* Header */}
           <div className="flex flex-col space-y-4">
             <div className="flex flex-col lg:flex-row lg:items-center justify-between space-y-4 lg:space-y-0">
