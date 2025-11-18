@@ -205,6 +205,13 @@ const TeamsPage = () => {
   const handleCampusChange = (campus: CampusType) => {
     setSelectedCampus(campus);
     setPageNumber(1);
+    setDataReturned(null); // Reset data when changing campus
+  };
+
+  const handleDateFilterChange = (filter: "all" | "today" | "yesterday" | "2days") => {
+    setDateFilter(filter);
+    setPageNumber(1);
+    setDataReturned(null); // Reset data when changing date filter
   };
 
   const handleFiltersChange = (
@@ -242,7 +249,7 @@ const TeamsPage = () => {
             searchQuery={searchQuery}
             onSearchChange={setSearchQuery}
             dateFilter={dateFilter}
-            onDateFilterChange={setDateFilter}
+            onDateFilterChange={handleDateFilterChange}
           />
 
           <TeamGrid
@@ -253,9 +260,9 @@ const TeamsPage = () => {
             handleTeamClick={handleTeamClick}
           />
 
-          {filteredData && filteredData.length > 0 && (
+          {filteredData && filteredData.length > 0 && dataReturned && dataReturned.length >= 100 && (
             <LoadMore
-              hasMore={true}
+              hasMore={dataReturned.length >= 100}
               isLoading={isLoadingMore}
               onLoadMore={handleLoadMore}
             />

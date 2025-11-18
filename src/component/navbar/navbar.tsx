@@ -27,8 +27,33 @@ interface Notification {
 
 const DropDownMenu = () => {
   const [isOpen, setIsOpen] = React.useState(false);
+  const menuRef = React.useRef<HTMLDivElement>(null);
+  const buttonRef = React.useRef<HTMLDivElement>(null);
+
+  React.useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (
+        menuRef.current &&
+        !menuRef.current.contains(event.target as Node) &&
+        buttonRef.current &&
+        !buttonRef.current.contains(event.target as Node)
+      ) {
+        setIsOpen(false);
+      }
+    };
+
+    if (isOpen) {
+      document.addEventListener("mousedown", handleClickOutside);
+    }
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [isOpen]);
+
   return (
     <motion.div
+      ref={buttonRef}
       className="w-8 cursor-pointer items-center relative justify-center flex lg:hidden h-8"
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
@@ -41,6 +66,7 @@ const DropDownMenu = () => {
       />
       {isOpen && (
         <motion.div
+          ref={menuRef}
           initial={{ opacity: 0, y: -50 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.3 }}
@@ -242,7 +268,10 @@ const Navbar = () => {
   }, []);
   return (
     <nav className="w-full h-16 bg-blue-950/30 border-b border-blue-800/50 backdrop-blur-xl z-20 flex items-center justify-between px-6">
-      <div className="flex items-center gap-1">
+      <div 
+        onClick={() => router.push('/progress')}
+        className="flex items-center gap-1 cursor-pointer hover:opacity-80 transition-opacity duration-200"
+      >
         <div className="w-8 h-8 bg-gradient-to-br from-blue-600 to-blue-700 rounded-lg flex items-center justify-center rotate-3">
           <span className="text-white font-Tektur text-sm font-bold">
             13
