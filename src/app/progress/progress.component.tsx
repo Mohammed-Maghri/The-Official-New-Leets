@@ -40,6 +40,16 @@ const ProgressBar: React.FC<{
     page: 1,
   });
 
+  // Store the last searched parameters for Load More
+  const [lastSearchedParams, setLastSearchedParams] = React.useState<SearchDeliverData>({
+    month: "Month",
+    year: "Year",
+    cursus: { name: "Cursus", id: 21 },
+    campus: { name: "Campus", id: 0 },
+    set: true,
+    page: 1,
+  });
+
   const monthRef = React.useRef<HTMLDivElement>(null);
   const yearRef = React.useRef<HTMLDivElement>(null);
   const campusRef = React.useRef<HTMLDivElement>(null);
@@ -125,7 +135,7 @@ const ProgressBar: React.FC<{
 
   React.useEffect(() => {
     if (pageNumber > 1) {
-      FetchData({ ...DataSearch, page: pageNumber }, true);
+      FetchData({ ...lastSearchedParams, page: pageNumber }, true);
     }
   }, [pageNumber]);
 
@@ -134,7 +144,7 @@ const ProgressBar: React.FC<{
       const initialMonth = monthsIndex
         .findIndex((find) => find == (userData.pool_month as string))
         .toString();
-      setDataSearch({
+      const initialSearchParams = {
         ...DataSearch,
         set: true,
         month: initialMonth.length == 1 ? `0${initialMonth}` : initialMonth,
@@ -144,22 +154,11 @@ const ProgressBar: React.FC<{
           id: userData.kind === "student" ? 21 : 9,
         },
         campus: { name: userData.campus_name, id: userData.campus_id },
-      });
-      FetchData(
-        {
-          ...DataSearch,
-          set: true,
-          month: initialMonth.length == 1 ? `0${initialMonth}` : initialMonth,
-          year: userData.pool_year,
-          cursus: {
-            name: userData.kind,
-            id: userData.kind === "student" ? 21 : 9,
-          },
-          campus: { name: userData.campus_name, id: userData.campus_id },
-          page: 1,
-        },
-        false
-      );
+        page: 1,
+      };
+      setDataSearch(initialSearchParams);
+      setLastSearchedParams(initialSearchParams);
+      FetchData(initialSearchParams, false);
     }
     
     document.addEventListener("click", CloseEvent);
@@ -329,6 +328,7 @@ const ProgressBar: React.FC<{
             page: 1,
           };
           setDataSearch(globalData);
+          setLastSearchedParams(globalData);
           FetchData(globalData, false);
         }}
         className="w-[30px] cursor-pointer rounded-md border-solid border-[1px] border-white/4 h-[30px] bg-yellow-500/20 hover:bg-yellow-500/30 flex items-center justify-center transition-all duration-200"
@@ -340,6 +340,7 @@ const ProgressBar: React.FC<{
       <div
         onClick={() => {
           setUserData(cloneData as null[]);
+          setLastSearchedParams(DataSearch);
           FetchData(DataSearch, false);
         }}
         className="w-[30px] cursor-pointer rounded-md border-solid border-[1px] border-white/4 h-[30px] bg-[#0070ef]/20 flex items-center justify-center"

@@ -190,28 +190,30 @@ const TeamsPage = () => {
     loadProjectsData();
   }, [loadProjectsData]);
 
-  React.useEffect(() => {
-    functionfetchdata();
-  }, [functionfetchdata]);
+  // Removed auto-fetch on filter change - only fetch on explicit search button click
 
   const handleLoadMore = () => {
     if (!isLoadingMore) {
       const nextPage = pageNumber + 1;
       setPageNumber(nextPage);
-      functionfetchdata(selectedCampus.id, nextPage, true);
+      functionfetchdata(selectedCampus.id, nextPage, true, dateFilter);
     }
+  };
+
+  const handleSearch = () => {
+    setPageNumber(1);
+    setDataReturned(null);
+    functionfetchdata(selectedCampus.id, 1, false, dateFilter);
   };
 
   const handleCampusChange = (campus: CampusType) => {
     setSelectedCampus(campus);
     setPageNumber(1);
-    setDataReturned(null); // Reset data when changing campus
   };
 
   const handleDateFilterChange = (filter: "all" | "today" | "yesterday" | "2days") => {
     setDateFilter(filter);
     setPageNumber(1);
-    setDataReturned(null); // Reset data when changing date filter
   };
 
   const handleFiltersChange = (
@@ -250,6 +252,7 @@ const TeamsPage = () => {
             onSearchChange={setSearchQuery}
             dateFilter={dateFilter}
             onDateFilterChange={handleDateFilterChange}
+            onSearch={handleSearch}
           />
 
           <TeamGrid

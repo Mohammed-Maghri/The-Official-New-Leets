@@ -2,6 +2,7 @@
 import React from "react";
 import { motion } from "motion/react";
 import { FaCaretDown } from "react-icons/fa";
+import { CiSearch } from "react-icons/ci";
 import { CampusType, ProjectFilterType, SpecificProjectFilterType } from "../teams.types";
 import { CampusList, ProjectFilterOptions, AnimationConfig } from "../teams.constants";
 
@@ -21,6 +22,7 @@ interface TeamsHeaderProps {
   onSearchChange: (query: string) => void;
   dateFilter: "all" | "today" | "yesterday" | "2days";
   onDateFilterChange: (filter: "all" | "today" | "yesterday" | "2days") => void;
+  onSearch: () => void;
 }
 
 export const TeamsHeader: React.FC<TeamsHeaderProps> = ({
@@ -36,6 +38,7 @@ export const TeamsHeader: React.FC<TeamsHeaderProps> = ({
   onSearchChange,
   dateFilter,
   onDateFilterChange,
+  onSearch,
 }) => {
   const [campusDropdownOpen, setCampusDropdownOpen] = React.useState<boolean>(false);
   const [projectFilterDropdownOpen, setProjectFilterDropdownOpen] = React.useState<boolean>(false);
@@ -350,6 +353,15 @@ export const TeamsHeader: React.FC<TeamsHeaderProps> = ({
               <span className="text-sm font-semibold text-red-300 font-Tektur">Clear Filters</span>
             </motion.button>
           )}
+
+          {/* Search Button */}
+          <div
+            onClick={onSearch}
+            className="w-[30px] h-[30px] md:w-[35px] md:h-[35px] cursor-pointer rounded-md border-solid border-[1px] border-white/10 bg-[#0070ef]/20 hover:bg-[#0070ef]/30 flex items-center justify-center transition-all duration-200"
+            title="Apply filters and search"
+          >
+            <CiSearch className="text-white text-lg md:text-xl" />
+          </div>
 
           <div className="bg-[#001226] px-3 py-2 md:px-4 md:py-2.5 rounded-lg border border-white/10 w-full sm:w-auto">
             <div className="flex items-center justify-center sm:justify-start space-x-2">
