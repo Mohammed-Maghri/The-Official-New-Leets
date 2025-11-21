@@ -5,7 +5,7 @@ interface RateLimitEntry {
   count: number;
   resetTime: number;
   blockCount: number; // Track how many times user has been blocked
-  lastBlockTime: number; // When they were last blocked
+  lastBlockTime: number;
 }
 
 // PostgreSQL connection pool
