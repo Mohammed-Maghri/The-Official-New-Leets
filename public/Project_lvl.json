@@ -3891,5 +3891,21 @@
     "rules": "",
     "description": "FR Apprentissage RNCP 7 - 2 an",
     "slug": "fr-apprentissage-rncp-7-2-an"
+  },
+  {
+    "state": "unavailable",
+    "final_mark": null,
+    "id": 2560,
+    "kind": "project",
+    "name": "ft_IaC",
+    "x": 0,
+    "y": 0,
+    "by": [],
+    "project_id": 2560,
+    "difficulty": 21000,
+    "duration": "",
+    "rules": "",
+    "description": "ft_IaC",
+    "slug": "ft_iac"
   }
 ]
