@@ -6,6 +6,7 @@ The application uses a custom in-memory rate limiting system to prevent API abus
 ## Implementation
 
 
+
 ### Backend (`/src/utils/rateLimit.ts`)
 - **Storage**: In-memory Map tracking requests per user/IP
 - **Cleanup**: Automatic cleanup every 5 minutes
