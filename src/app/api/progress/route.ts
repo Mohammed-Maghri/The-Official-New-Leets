@@ -4,7 +4,44 @@ import { decodeJwt, jwtVerify } from "jose";
 import { DecryptionFunction } from "../auth/type.auth";
 import { Pool } from "pg";
 import { rateLimit, RateLimitPresets } from "@/utils/rateLimit";
-import { progressCache } from "@/utils/profileCache";
+import { progressCache, blockedLoginsCache } from "@/utils/profileCache";
+
+// 42 API group IDs for test and staff accounts
+const TEST_ACCOUNT_GROUP = 119;
+const STAFF_GROUP = 1;
+
+async function fetchGroupLogins(groupId: number, token: string): Promise<string[]> {
+  const logins: string[] = [];
+  let page = 1;
+  while (true) {
+    const res = await fetch(
+      `${process.env.INTRA_TOKEN}/v2/groups/${groupId}/users?page[size]=100&page[number]=${page}`,
+      { headers: { Authorization: `Bearer ${token}` } }
+    );
+    if (!res.ok) break;
+    const users = await res.json();
+    if (!users.length) break;
+    logins.push(...users.map((u: { login: string }) => u.login));
+    if (users.length < 100) break;
+    page++;
+  }
+  return logins;
+}
+
+async function getBlockedLogins(token: string): Promise<Set<string>> {
+  const cached = blockedLoginsCache.get("blocked_logins");
+  if (cached) return cached;
+
+  const [testLogins, staffLogins] = await Promise.all([
+    fetchGroupLogins(TEST_ACCOUNT_GROUP, token),
+    fetchGroupLogins(STAFF_GROUP, token),
+  ]);
+
+  const blocked = new Set([...testLogins, ...staffLogins]);
+  blockedLoginsCache.set("blocked_logins", blocked);
+  console.log(`Blocked logins cached: ${blocked.size} test/staff accounts`);
+  return blocked;
+}
 
 export const POST = async (request: NextRequest) => {
   // Rate limiting: 20 requests per minute
@@ -99,7 +136,10 @@ export const POST = async (request: NextRequest) => {
     }
 
     const response = await data.json();
-    
+
+    // Fetch blocked logins (test/staff accounts) from 42 API groups
+    const blockedLogins = await getBlockedLogins(DecryptionFunction(Decode));
+
     // Get all user logins from the response
     const allUserLogins = response.map((item: UserProgress) => item.user.login);
     
@@ -194,7 +234,9 @@ export const POST = async (request: NextRequest) => {
         level: item.level,
         badge: topBadge, // { type: 'creator'|'vip'|'feedback', name: 'Badge Name' } or null
       };
-    }).filter((user: { level: number }) => user.level <= 26); // Filter out test accounts (level > 26)
+    }).filter((user: { login: string; staff: boolean; kind: string }) =>
+      !user.staff && user.kind === "student" && !blockedLogins.has(user.login)
+    ); // Filter out test/staff accounts
     
     // Cache the result for 20 minutes
     progressCache.set(cacheKey, NewRespons);

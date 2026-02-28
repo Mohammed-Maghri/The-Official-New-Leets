@@ -137,16 +137,20 @@ const globalForCache = global as typeof globalThis & {
   profileCache?: ProfileCache;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   progressCache?: GenericCache<any>;
+  blockedLoginsCache?: GenericCache<Set<string>>;
 };
 
 export const profileCache = globalForCache.profileCache ?? new ProfileCache();
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const progressCache = globalForCache.progressCache ?? new GenericCache<any>(20);
+// Cached set of test/staff logins - refreshed every 6 hours
+export const blockedLoginsCache = globalForCache.blockedLoginsCache ?? new GenericCache<Set<string>>(360);
 
 // Ensure singletons persist across hot reloads in development
 if (process.env.NODE_ENV !== 'production') {
   globalForCache.profileCache = profileCache;
   globalForCache.progressCache = progressCache;
+  globalForCache.blockedLoginsCache = blockedLoginsCache;
 }
 
 // Log cache initialization
