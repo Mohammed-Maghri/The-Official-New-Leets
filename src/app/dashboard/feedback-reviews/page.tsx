@@ -231,13 +231,18 @@ const FeedbackReviewsPage = () => {
   };
 
   return (
-    <div className="flex flex-1 items-center justify-start overflow-x-hidden flex-col bg-gradient-to-br z-20 from-gray-900/50 via-[#0070ef]/20 to-rose-500/30 relative p-4 sm:p-6 lg:p-10">
-      <div className="w-full flex-1 bg-white/5 backdrop-blur-xl rounded-xl border border-white/10 flex flex-col p-4 sm:p-6 lg:p-8 space-y-4 sm:space-y-6 overflow-hidden">
+    <div className="flex flex-1 overflow-auto overflow-x-hidden flex-col z-20 p-4 sm:p-6 lg:p-10" style={{ fontFamily: "var(--font-pixel)" }}>
+      <div className="relative w-full flex-1 border-4 border-slate-600/60 bg-gray-950/98 flex flex-col p-4 sm:p-6 lg:p-8 space-y-4 sm:space-y-6 overflow-hidden" style={{ boxShadow: "4px 4px 0 rgba(0,0,0,0.3), inset 0 1px 0 rgba(71,85,105,0.3)" }}>
+        {/* Pixel corner accents */}
+        <div className="absolute top-0 left-0 w-4 h-4 border-l-2 border-t-2 border-slate-600/60" />
+        <div className="absolute top-0 right-0 w-4 h-4 border-r-2 border-t-2 border-slate-600/60" />
+        <div className="absolute bottom-0 left-0 w-4 h-4 border-l-2 border-b-2 border-slate-600/60" />
+        <div className="absolute bottom-0 right-0 w-4 h-4 border-r-2 border-b-2 border-slate-600/60" />
         {/* Header */}
         <div className="flex-shrink-0">
           <button
             onClick={handleBackClick}
-            className="mb-3 sm:mb-4 flex items-center gap-2 text-gray-400 hover:text-white transition-colors font-Tektur text-sm sm:text-base"
+            className="mb-3 sm:mb-4 flex items-center gap-2 theme-text-muted hover:text-[var(--theme-text)] transition-colors text-sm sm:text-base font-bold uppercase tracking-wider"
           >
             <IoArrowBack className="w-4 h-4 sm:w-5 sm:h-5" />
             <span>Back to Dashboard</span>
@@ -245,14 +250,14 @@ const FeedbackReviewsPage = () => {
           
           <div className="flex items-center gap-2 sm:gap-3 mb-2">
             <BsStars className="w-6 h-6 sm:w-8 sm:h-8 text-yellow-400" />
-            <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold font-Tektur text-white">
+            <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold theme-text uppercase tracking-wider">
               Feedback Reviews
             </h1>
           </div>
           
           {!isLoading && !error && (
-            <p className="text-gray-400 text-xs sm:text-sm font-Tektur mt-2">
-              Total Reviews: <span className="text-blue-400 font-semibold">{reviews.length}</span>
+            <p className="theme-text-muted text-xs sm:text-sm mt-2 font-bold uppercase tracking-wider">
+              Total Reviews: <span className="text-[var(--theme-primary)] font-semibold">{reviews.length}</span>
             </p>
           )}
         </div>
@@ -261,15 +266,16 @@ const FeedbackReviewsPage = () => {
         <div className="flex-1 overflow-y-auto overflow-x-hidden">
         {isLoading ? (
           <div className="flex items-center justify-center h-full min-h-[400px]">
-            <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500"></div>
+            <div className="animate-spin h-12 w-12 border-2 border-slate-600 border-t-[var(--theme-primary)]" style={{ boxShadow: "2px 2px 0 rgba(0,0,0,0.2)" }}></div>
           </div>
         ) : error ? (
           <div className="flex items-center justify-center h-full min-h-[400px]">
-            <div className="text-center bg-red-500/10 border border-red-500/30 rounded-xl p-6 sm:p-8">
-              <p className="text-red-400 text-base sm:text-lg font-Tektur">{error}</p>
+            <div className="text-center border-2 border-red-500/50 bg-red-500/10 p-6 sm:p-8" style={{ boxShadow: "4px 4px 0 rgba(0,0,0,0.2)" }}>
+              <p className="text-red-400 text-base sm:text-lg font-bold uppercase tracking-wider">{error}</p>
               <button
                 onClick={() => router.push("/dashboard")}
-                className="mt-4 px-4 sm:px-6 py-2 bg-gray-700 hover:bg-gray-600 text-white rounded-lg font-Tektur transition-colors text-sm sm:text-base"
+                className="mt-4 px-4 sm:px-6 py-2 border-2 border-slate-600/60 bg-gray-950/98 theme-text font-bold uppercase tracking-wider transition-all active:translate-y-0.5"
+                style={{ boxShadow: "2px 2px 0 rgba(0,0,0,0.2)" }}
               >
                 Return to Dashboard
               </button>
@@ -277,8 +283,8 @@ const FeedbackReviewsPage = () => {
           </div>
         ) : reviews.length === 0 ? (
           <div className="flex items-center justify-center flex-1 min-h-[400px]">
-            <div className="text-center bg-gray-800/40 border border-gray-700/50 rounded-xl p-6 sm:p-8">
-              <p className="text-gray-400 text-base sm:text-lg font-Tektur">No feedback reviews yet</p>
+            <div className="text-center border-2 border-slate-600/60 bg-gray-950/98 p-6 sm:p-8" style={{ boxShadow: "4px 4px 0 rgba(0,0,0,0.2)" }}>
+              <p className="theme-text-muted text-base sm:text-lg font-bold uppercase tracking-wider">No feedback reviews yet</p>
             </div>
           </div>
         ) : (
@@ -287,20 +293,22 @@ const FeedbackReviewsPage = () => {
               <div
                 key={review.id}
                 onClick={() => handleReviewClick(review)}
-                className="bg-gray-800/40 border border-gray-700/50 rounded-xl p-4 hover:bg-gray-800/60 hover:border-blue-500/50 transition-all duration-300 cursor-pointer group"
+                className="relative border-2 border-slate-600/60 bg-gray-950/98 p-4 hover:border-[var(--theme-primary)]/50 transition-all duration-300 cursor-pointer group"
+                style={{ boxShadow: "3px 3px 0 rgba(0,0,0,0.2)" }}
               >
                 {/* User Info */}
                 <div className="flex items-center gap-3 mb-3">
                   <img
                     src={review.user_image}
                     alt={review.user_login}
-                    className="w-12 h-12 rounded-full border-2 border-gray-600 group-hover:border-blue-500 transition-colors object-cover flex-shrink-0"
+                    className="w-12 h-12 border-2 border-slate-600/60 group-hover:border-[var(--theme-primary)] transition-colors object-cover flex-shrink-0"
+                    style={{ imageRendering: "pixelated", boxShadow: "2px 2px 0 rgba(0,0,0,0.2)" }}
                   />
                   <div className="flex-1 min-w-0">
-                    <p className="text-white font-Tektur font-semibold truncate text-sm sm:text-base">
+                    <p className="theme-text font-bold truncate text-sm sm:text-base uppercase tracking-wider">
                       {review.user_login}
                     </p>
-                    <p className="text-gray-400 text-xs font-Tektur truncate">
+                    <p className="theme-text-muted text-xs truncate font-bold uppercase tracking-wider">
                       {review.campus_name}
                     </p>
                   </div>
@@ -312,18 +320,18 @@ const FeedbackReviewsPage = () => {
                     <IoStar
                       key={star}
                       className={`w-4 h-4 ${
-                        star <= review.rating ? "text-yellow-400" : "text-gray-600"
+                        star <= review.rating ? "text-yellow-400" : "text-slate-600"
                       }`}
                     />
                   ))}
-                  <span className="text-gray-400 text-xs sm:text-sm font-Tektur ml-2">
+                  <span className="theme-text-muted text-xs sm:text-sm ml-2 font-bold uppercase tracking-wider">
                     {review.rating}/5
                   </span>
                 </div>
 
                 {/* Preview Text */}
                 {review.feedback && (
-                  <p className="text-gray-300 text-xs sm:text-sm font-Tektur line-clamp-2 mb-3">
+                  <p className="theme-text-muted text-xs sm:text-sm line-clamp-2 mb-3">
                     {review.feedback}
                   </p>
                 )}
@@ -331,7 +339,7 @@ const FeedbackReviewsPage = () => {
                 {/* Badges */}
                 <div className="flex items-center gap-2 flex-wrap mb-2">
                   {review.wants_to_contribute && (
-                    <span className="text-xs bg-emerald-500/20 text-emerald-400 px-2 py-1 rounded-full font-Tektur border border-emerald-500/30">
+                    <span className="text-[10px] bg-emerald-500/20 text-emerald-400 px-2 py-1 border-2 border-emerald-500/30 font-bold uppercase tracking-wider" style={{ boxShadow: "2px 2px 0 rgba(0,0,0,0.2)" }}>
                       Contributor
                     </span>
                   )}
@@ -393,9 +401,9 @@ const FeedbackReviewsPage = () => {
                     const Icon = config.icon;
                     
                     return (
-                      <div className={`px-2 py-1 border-2 rounded-full shadow-xl flex flex-row items-center gap-1 bg-gradient-to-r ${config.bg} ${config.border} ${config.shadow}`}>
+                      <div className={`px-2 py-1 border-2 flex flex-row items-center gap-1 bg-gradient-to-r ${config.bg} ${config.border} ${config.shadow}`} style={{ boxShadow: "2px 2px 0 rgba(0,0,0,0.2)" }}>
                         <Icon className={`${config.text} text-[10px]`} />
-                        <span className={`${config.text} font-Tektur text-[7px] font-bold tracking-widest`}>
+                        <span className={`${config.text} text-[7px] font-bold tracking-widest uppercase`}>
                           {review.badge_type.toUpperCase()}
                         </span>
                       </div>
@@ -404,7 +412,7 @@ const FeedbackReviewsPage = () => {
                 </div>
 
                 {/* Date */}
-                <p className="text-gray-500 text-xs font-Tektur">
+                <p className="theme-text-muted text-xs font-bold uppercase tracking-wider">
                   {new Date(review.created_at).toLocaleDateString("en-US", {
                     month: "short",
                     day: "numeric",
@@ -425,30 +433,38 @@ const FeedbackReviewsPage = () => {
           onClick={closeDetailModal}
         >
           <div
-            className="relative w-full max-w-3xl max-h-[95vh] sm:max-h-[90vh] rounded-xl sm:rounded-2xl bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 border border-gray-700/50 shadow-2xl overflow-hidden"
+            className="relative w-full max-w-3xl max-h-[95vh] sm:max-h-[90vh] bg-gray-950/98 border-4 theme-border-strong overflow-hidden"
+            style={{ boxShadow: "6px 6px 0 var(--theme-shadow-lg), inset 0 1px 0 rgba(255,255,255,0.05)" }}
             onClick={(e) => e.stopPropagation()}
           >
+            {/* Pixel corner accents */}
+            <div className="absolute top-0 left-0 w-4 h-4 border-l-2 border-t-2 theme-border z-20" />
+            <div className="absolute top-0 right-0 w-4 h-4 border-r-2 border-t-2 theme-border z-20" />
+            <div className="absolute bottom-0 left-0 w-4 h-4 border-l-2 border-b-2 theme-border z-20" />
+            <div className="absolute bottom-0 right-0 w-4 h-4 border-r-2 border-b-2 theme-border z-20" />
             {/* Close Button */}
             <button
               onClick={closeDetailModal}
-              className="absolute top-2 right-2 sm:top-4 sm:right-4 z-10 p-2 rounded-full bg-gray-800/50 hover:bg-gray-700/50 border border-gray-600/30 transition-all duration-300 group"
+              className="absolute top-2 right-2 sm:top-4 sm:right-4 z-10 p-2 border-2 theme-border bg-[var(--theme-bg-card)] hover:border-[var(--theme-primary)] transition-all duration-300 group active:translate-y-0.5"
+              style={{ boxShadow: "2px 2px 0 rgba(0,0,0,0.2)" }}
             >
-              <IoArrowBack className="w-4 h-4 sm:w-5 sm:h-5 text-gray-400 group-hover:text-white transition-colors rotate-180" />
+              <IoArrowBack className="w-4 h-4 sm:w-5 sm:h-5 theme-text-muted group-hover:text-[var(--theme-text)] transition-colors rotate-180" />
             </button>
 
-            <div className="overflow-y-auto p-4 sm:p-6 lg:p-8 max-h-[90vh]">
+            <div className="overflow-y-auto p-4 sm:p-6 lg:p-8 max-h-[90vh]" style={{ fontFamily: "var(--font-pixel)" }}>
               {/* User Header */}
-              <div className="flex items-start gap-3 sm:gap-4 mb-4 sm:mb-6 pb-4 sm:pb-6 border-b border-gray-700/50">
+              <div className="flex items-start gap-3 sm:gap-4 mb-4 sm:mb-6 pb-4 sm:pb-6 border-b-2 theme-border">
                 <img
                   src={selectedReview.user_image}
                   alt={selectedReview.user_login}
-                  className="w-14 h-14 sm:w-16 sm:h-16 lg:w-20 lg:h-20 rounded-full border-2 border-blue-500 object-cover flex-shrink-0"
+                  className="w-14 h-14 sm:w-16 sm:h-16 lg:w-20 lg:h-20 border-2 theme-border object-cover flex-shrink-0"
+                  style={{ imageRendering: "pixelated", boxShadow: "3px 3px 0 rgba(0,0,0,0.2)" }}
                 />
                 <div className="flex-1 min-w-0">
-                  <h3 className="text-lg sm:text-xl lg:text-2xl font-bold font-Tektur text-white mb-2">
+                  <h3 className="text-lg sm:text-xl lg:text-2xl font-bold theme-text mb-2 uppercase tracking-wider">
                     {selectedReview.user_login}
                   </h3>
-                  <div className="flex flex-wrap gap-2 sm:gap-3 text-xs sm:text-sm text-gray-400 font-Tektur">
+                  <div className="flex flex-wrap gap-2 sm:gap-3 text-xs sm:text-sm theme-text-muted font-bold uppercase tracking-wider">
                     <div className="flex items-center gap-1">
                       <FiMail className="w-3 h-3 sm:w-4 sm:h-4 flex-shrink-0" />
                       <span className="truncate">{selectedReview.user_email}</span>
@@ -464,11 +480,11 @@ const FeedbackReviewsPage = () => {
                       <IoStar
                         key={star}
                         className={`w-4 h-4 sm:w-5 sm:h-5 ${
-                          star <= selectedReview.rating ? "text-yellow-400" : "text-gray-600"
+                          star <= selectedReview.rating ? "text-yellow-400" : "text-slate-600"
                         }`}
                       />
                     ))}
-                    <span className="text-white font-Tektur ml-2 text-sm sm:text-base">
+                    <span className="theme-text ml-2 text-sm sm:text-base font-bold uppercase tracking-wider">
                       {selectedReview.rating}/5
                     </span>
                   </div>
@@ -478,33 +494,33 @@ const FeedbackReviewsPage = () => {
               {/* Feedback Content */}
               <div className="space-y-3 sm:space-y-4">
                 {selectedReview.feedback && (
-                  <div className="bg-gray-800/30 border border-blue-500/20 rounded-lg sm:rounded-xl p-3 sm:p-4">
-                    <p className="text-blue-400 text-xs sm:text-sm font-Tektur font-semibold mb-2">
+                  <div className="border-2 border-[var(--theme-primary)]/50 bg-[var(--theme-bg-card)] p-3 sm:p-4" style={{ boxShadow: "3px 3px 0 rgba(0,0,0,0.2)" }}>
+                    <p className="text-[var(--theme-primary)] text-xs sm:text-sm font-bold mb-2 uppercase tracking-wider">
                       Feature Ideas
                     </p>
-                    <p className="text-gray-300 text-xs sm:text-sm font-Tektur whitespace-pre-wrap break-words">
+                    <p className="theme-text text-xs sm:text-sm whitespace-pre-wrap break-words">
                       {selectedReview.feedback}
                     </p>
                   </div>
                 )}
 
                 {selectedReview.dislikes && (
-                  <div className="bg-gray-800/30 border border-red-500/20 rounded-lg sm:rounded-xl p-3 sm:p-4">
-                    <p className="text-red-400 text-xs sm:text-sm font-Tektur font-semibold mb-2">
+                  <div className="border-2 border-red-500/50 bg-red-500/10 p-3 sm:p-4" style={{ boxShadow: "3px 3px 0 rgba(0,0,0,0.2)" }}>
+                    <p className="text-red-400 text-xs sm:text-sm font-bold mb-2 uppercase tracking-wider">
                       Dislikes
                     </p>
-                    <p className="text-gray-300 text-xs sm:text-sm font-Tektur whitespace-pre-wrap break-words">
+                    <p className="theme-text text-xs sm:text-sm whitespace-pre-wrap break-words">
                       {selectedReview.dislikes}
                     </p>
                   </div>
                 )}
 
                 {selectedReview.improvements && (
-                  <div className="bg-gray-800/30 border border-yellow-500/20 rounded-lg sm:rounded-xl p-3 sm:p-4">
-                    <p className="text-yellow-400 text-xs sm:text-sm font-Tektur font-semibold mb-2">
+                  <div className="border-2 border-amber-500/50 bg-amber-500/10 p-3 sm:p-4" style={{ boxShadow: "3px 3px 0 rgba(0,0,0,0.2)" }}>
+                    <p className="text-amber-400 text-xs sm:text-sm font-bold mb-2 uppercase tracking-wider">
                       Improvements
                     </p>
-                    <p className="text-gray-300 text-xs sm:text-sm font-Tektur whitespace-pre-wrap break-words">
+                    <p className="theme-text text-xs sm:text-sm whitespace-pre-wrap break-words">
                       {selectedReview.improvements}
                     </p>
                   </div>
@@ -512,32 +528,33 @@ const FeedbackReviewsPage = () => {
 
                 {/* Contribution Section */}
                 {selectedReview.wants_to_contribute && (
-                  <div className="bg-gray-800/30 border border-emerald-500/20 rounded-lg sm:rounded-xl p-3 sm:p-4">
-                    <p className="text-emerald-400 text-xs sm:text-sm font-Tektur font-semibold mb-3">
+                  <div className="border-2 border-emerald-500/50 bg-emerald-500/10 p-3 sm:p-4" style={{ boxShadow: "3px 3px 0 rgba(0,0,0,0.2)" }}>
+                    <p className="text-emerald-400 text-xs sm:text-sm font-bold mb-3 uppercase tracking-wider">
                       Wants to Contribute
                     </p>
                     {selectedReview.skills && (
                       <div className="mb-3">
-                        <p className="text-gray-400 text-xs font-Tektur mb-1">Skills:</p>
-                        <p className="text-gray-300 text-xs sm:text-sm font-Tektur break-words">
-                          {selectedReview.skills}
+                        <p className="theme-text-muted text-xs font-bold mb-1 uppercase tracking-wider">Skills:</p>
+                  <p className="theme-text text-xs sm:text-sm break-words">
+                      {selectedReview.skills}
                         </p>
                       </div>
                     )}
                     {selectedReview.contribution_area && selectedReview.contribution_area.length > 0 && (
                       <div>
-                        <p className="text-gray-400 text-xs font-Tektur mb-2">Areas:</p>
+                        <p className="theme-text-muted text-xs font-bold mb-2 uppercase tracking-wider">Areas:</p>
                         <div className="flex gap-2 flex-wrap">
                           {selectedReview.contribution_area.map((area) => (
                             <div
                               key={area}
-                              className={`flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg text-xs sm:text-sm ${
+                              className={`flex items-center gap-1.5 px-2.5 py-1.5 border-2 text-xs sm:text-sm font-bold uppercase tracking-wider ${
                                 area === "frontend"
-                                  ? "bg-blue-500/20 text-blue-400 border border-blue-500/30"
+                                  ? "bg-blue-500/20 text-blue-400 border-blue-500/30"
                                   : area === "backend"
-                                  ? "bg-purple-500/20 text-purple-400 border border-purple-500/30"
-                                  : "bg-pink-500/20 text-pink-400 border border-pink-500/30"
+                                  ? "bg-purple-500/20 text-purple-400 border-purple-500/30"
+                                  : "bg-pink-500/20 text-pink-400 border-pink-500/30"
                               }`}
+                              style={{ boxShadow: "2px 2px 0 rgba(0,0,0,0.2)" }}
                             >
                               {area === "frontend" && <BsCodeSlash className="w-3 h-3 sm:w-4 sm:h-4" />}
                               {area === "backend" && <AiOutlineDatabase className="w-3 h-3 sm:w-4 sm:h-4" />}
@@ -553,8 +570,8 @@ const FeedbackReviewsPage = () => {
               </div>
 
               {/* Footer */}
-              <div className="mt-4 sm:mt-6 pt-3 sm:pt-4 border-t border-gray-700/50">
-                <p className="text-gray-500 text-xs sm:text-sm font-Tektur break-words mb-3">
+              <div className="mt-4 sm:mt-6 pt-3 sm:pt-4 border-t-2 theme-border">
+                <p className="theme-text-muted text-xs sm:text-sm font-bold break-words mb-3 uppercase tracking-wider">
                   Submitted on{" "}
                   {new Date(selectedReview.created_at).toLocaleDateString("en-US", {
                     month: "long",
@@ -570,15 +587,16 @@ const FeedbackReviewsPage = () => {
                   <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3">
                     {selectedReview.badge_awarded ? (
                       <div className="flex items-center gap-3">
-                        <div className="flex items-center gap-2 bg-yellow-500/20 px-3 py-1.5 rounded-full border border-yellow-500/30">
+                        <div className="flex items-center gap-2 bg-yellow-500/20 px-3 py-1.5 border-2 border-yellow-500/30 font-bold uppercase tracking-wider" style={{ boxShadow: "2px 2px 0 rgba(0,0,0,0.2)" }}>
                           <BsStars className="w-4 h-4 text-yellow-400" />
-                          <span className="text-yellow-400 text-xs sm:text-sm font-Tektur font-semibold">
+                          <span className="text-yellow-400 text-xs sm:text-sm font-bold">
                             {selectedReview.badge_type || "Badge Awarded"}
                           </span>
                         </div>
                         <button
                           onClick={() => handleRemoveBadge(selectedReview.id)}
-                          className="px-3 py-1.5 bg-red-500/20 hover:bg-red-500/30 text-red-400 rounded-lg text-xs sm:text-sm font-Tektur transition-colors border border-red-500/30"
+                          className="px-3 py-1.5 border-2 border-red-500/50 bg-red-500/10 hover:bg-red-500/20 text-red-400 text-xs sm:text-sm font-bold uppercase tracking-wider transition-all active:translate-y-0.5"
+                          style={{ boxShadow: "2px 2px 0 rgba(0,0,0,0.2)" }}
                         >
                           Remove Badge
                         </button>
@@ -586,7 +604,12 @@ const FeedbackReviewsPage = () => {
                     ) : (
                       <button
                         onClick={() => openBadgeModal(selectedReview.id)}
-                        className="px-4 py-2 bg-gradient-to-r from-yellow-500 to-orange-500 hover:from-yellow-600 hover:to-orange-600 text-white rounded-lg text-xs sm:text-sm font-Tektur font-semibold transition-all duration-300 flex items-center gap-2"
+                        className="px-4 py-2 border-2 theme-border-strong font-bold uppercase tracking-wider transition-all duration-300 flex items-center gap-2 active:translate-y-0.5"
+                        style={{
+                          color: "var(--theme-text)",
+                          background: "linear-gradient(to bottom, color-mix(in srgb, var(--theme-primary) 60%, transparent), color-mix(in srgb, var(--theme-primary-dark) 70%, transparent))",
+                          boxShadow: "4px 4px 0 var(--theme-shadow-lg), inset 0 1px 0 rgba(255,255,255,0.15)",
+                        }}
                       >
                         <BsStars className="w-4 h-4" />
                         Give Badge
@@ -597,7 +620,8 @@ const FeedbackReviewsPage = () => {
                   {/* Delete Button */}
                   <button
                     onClick={() => handleDeleteFeedback(selectedReview.id)}
-                    className="w-full sm:w-auto px-4 py-2 bg-red-500/10 hover:bg-red-500/20 text-red-400 hover:text-red-300 rounded-lg text-xs sm:text-sm font-Tektur font-semibold transition-all duration-300 flex items-center justify-center gap-2 border border-red-500/30 hover:border-red-500/50"
+                    className="w-full sm:w-auto px-4 py-2 border-2 border-red-500/50 bg-red-500/10 hover:bg-red-500/20 text-red-400 text-xs sm:text-sm font-bold uppercase tracking-wider transition-all flex items-center justify-center gap-2 active:translate-y-0.5"
+                    style={{ boxShadow: "2px 2px 0 rgba(0,0,0,0.2)" }}
                   >
                     <IoTrashOutline className="w-4 h-4" />
                     Delete Feedback
@@ -616,22 +640,29 @@ const FeedbackReviewsPage = () => {
           onClick={closeBadgeModal}
         >
           <div
-            className="relative w-full max-w-md rounded-2xl bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 border border-gray-700/50 shadow-2xl p-6"
+            className="relative w-full max-w-md bg-gray-950/98 border-4 theme-border-strong p-6"
+            style={{ boxShadow: "6px 6px 0 var(--theme-shadow-lg), inset 0 1px 0 rgba(255,255,255,0.05)" }}
             onClick={(e) => e.stopPropagation()}
           >
+            {/* Pixel corner accents */}
+            <div className="absolute top-0 left-0 w-4 h-4 border-l-2 border-t-2 theme-border" />
+            <div className="absolute top-0 right-0 w-4 h-4 border-r-2 border-t-2 theme-border" />
+            <div className="absolute bottom-0 left-0 w-4 h-4 border-l-2 border-b-2 theme-border" />
+            <div className="absolute bottom-0 right-0 w-4 h-4 border-r-2 border-b-2 theme-border" />
             {/* Header */}
-            <div className="flex items-center justify-between mb-6">
+            <div className="flex items-center justify-between mb-6" style={{ fontFamily: "var(--font-pixel)" }}>
               <div className="flex items-center gap-2">
                 <BsStars className="w-6 h-6 text-yellow-400" />
-                <h3 className="text-xl font-bold font-Tektur text-white">
+                <h3 className="text-xl font-bold theme-text uppercase tracking-wider">
                   Select Badge Type
                 </h3>
               </div>
               <button
                 onClick={closeBadgeModal}
-                className="p-2 rounded-full bg-gray-800/50 hover:bg-gray-700/50 transition-colors"
+                className="p-2 border-2 theme-border bg-[var(--theme-bg-card)] hover:border-[var(--theme-primary)] transition-all active:translate-y-0.5"
+                style={{ boxShadow: "2px 2px 0 rgba(0,0,0,0.2)" }}
               >
-                <IoArrowBack className="w-5 h-5 text-gray-400 rotate-180" />
+                <IoArrowBack className="w-5 h-5 theme-text-muted rotate-180" />
               </button>
             </div>
 
@@ -713,11 +744,12 @@ const FeedbackReviewsPage = () => {
                 return (
                   <label
                     key={key}
-                    className={`flex items-center justify-between gap-3 p-4 rounded-lg cursor-pointer transition-all duration-300 ${
+                    className={`flex items-center justify-between gap-3 p-4 border-2 cursor-pointer transition-all duration-300 ${
                       isSelected
-                        ? `bg-gray-700/50 border-2 ${config.selectionBorder}`
-                        : "bg-gray-800/30 border-2 border-gray-700/30 hover:border-gray-600/50"
+                        ? `bg-[var(--theme-bg-card)] ${config.selectionBorder}`
+                        : "border-slate-600/60 bg-gray-950/98 hover:border-slate-500/70"
                     }`}
+                    style={{ boxShadow: "2px 2px 0 rgba(0,0,0,0.2)" }}
                   >
                     <div className="flex items-center gap-3">
                       <input
@@ -726,15 +758,15 @@ const FeedbackReviewsPage = () => {
                         value={value}
                         checked={isSelected}
                         onChange={(e) => setSelectedBadgeType(e.target.value)}
-                        className="w-4 h-4 text-yellow-500 bg-gray-700 border-gray-600 focus:ring-yellow-500"
+                        className="w-4 h-4 text-[var(--theme-primary)] bg-[var(--theme-bg-card)] border-slate-600 focus:ring-[var(--theme-primary)]"
                       />
-                      <span className="text-white font-Tektur text-sm font-medium">{value}</span>
+                      <span className="theme-text text-sm font-bold uppercase tracking-wider">{value}</span>
                     </div>
                     
                     {/* Badge Pill Preview - Exact as it will appear */}
-                    <div className={`px-3 py-1.5 border-2 rounded-full shadow-xl flex flex-row items-center gap-1 bg-gradient-to-r ${config.bg} ${config.border} ${config.shadow}`}>
+                    <div className={`px-3 py-1.5 border-2 flex flex-row items-center gap-1 bg-gradient-to-r ${config.bg} ${config.border} ${config.shadow}`} style={{ boxShadow: "2px 2px 0 rgba(0,0,0,0.2)" }}>
                       <Icon className={`${config.text} text-[12px]`} />
-                      <span className={`${config.text} font-Tektur text-[8px] font-bold tracking-widest`}>
+                      <span className={`${config.text} text-[8px] font-bold tracking-widest uppercase`}>
                         {value.toUpperCase()}
                       </span>
                     </div>
@@ -745,7 +777,7 @@ const FeedbackReviewsPage = () => {
 
             {/* Custom Message Section */}
             <div className="mb-6">
-              <label className="block text-sm font-Tektur text-gray-300 mb-2">
+              <label className="block text-sm theme-text-muted font-bold mb-2 uppercase tracking-wider">
                 Message for Recipient (Optional)
               </label>
               <textarea
@@ -753,10 +785,11 @@ const FeedbackReviewsPage = () => {
                 onChange={(e) => setCustomMessage(e.target.value.slice(0, 500))}
                 placeholder="Write a custom message to accompany the badge..."
                 maxLength={500}
-                className="w-full px-4 py-3 bg-gray-800/50 border border-gray-600/50 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:border-yellow-500/50 font-Tektur text-sm resize-none"
+                className="w-full px-4 py-3 bg-[var(--theme-bg-card)] border-2 theme-border text-[var(--theme-text)] placeholder-[var(--theme-text-muted)] focus:outline-none focus:border-[var(--theme-primary)] text-sm resize-none"
+                style={{ boxShadow: "2px 2px 0 rgba(0,0,0,0.2)" }}
                 rows={4}
               />
-              <p className="text-xs text-gray-500 font-Tektur mt-1">
+              <p className="text-xs theme-text-muted mt-1 font-bold uppercase tracking-wider">
                 {customMessage.length}/500 characters
               </p>
             </div>
@@ -766,14 +799,20 @@ const FeedbackReviewsPage = () => {
               <button
                 onClick={closeBadgeModal}
                 disabled={isAwarding}
-                className="flex-1 px-4 py-2.5 bg-gray-700 hover:bg-gray-600 text-white rounded-lg font-Tektur transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                className="flex-1 px-4 py-2.5 border-2 theme-border bg-[var(--theme-bg-card)] theme-text font-bold uppercase tracking-wider transition-all active:translate-y-0.5 disabled:opacity-50 disabled:cursor-not-allowed"
+                style={{ boxShadow: "2px 2px 0 rgba(0,0,0,0.2)" }}
               >
                 Cancel
               </button>
               <button
                 onClick={handleAwardBadge}
                 disabled={!selectedBadgeType || isAwarding}
-                className="flex-1 px-4 py-2.5 bg-gradient-to-r from-yellow-500 to-orange-500 hover:from-yellow-600 hover:to-orange-600 text-white rounded-lg font-Tektur font-semibold transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+                className="flex-1 px-4 py-2.5 border-2 theme-border-strong font-bold uppercase tracking-wider transition-all flex items-center justify-center gap-2 active:translate-y-0.5 disabled:opacity-50 disabled:cursor-not-allowed"
+                style={{
+                  color: "var(--theme-text)",
+                  background: "linear-gradient(to bottom, color-mix(in srgb, var(--theme-primary) 60%, transparent), color-mix(in srgb, var(--theme-primary-dark) 70%, transparent))",
+                  boxShadow: "4px 4px 0 var(--theme-shadow-lg), inset 0 1px 0 rgba(255,255,255,0.15)",
+                }}
               >
                 {isAwarding ? (
                   <>
@@ -799,25 +838,31 @@ const FeedbackReviewsPage = () => {
           onClick={cancelDeleteFeedback}
         >
           <div
-            className="relative w-full max-w-md rounded-2xl bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 border border-red-500/30 shadow-2xl p-6"
+            className="relative w-full max-w-md bg-gray-950/98 border-4 border-red-500/50 p-6"
+            style={{ boxShadow: "6px 6px 0 var(--theme-shadow-lg), inset 0 1px 0 rgba(255,255,255,0.05)" }}
             onClick={(e) => e.stopPropagation()}
           >
+            {/* Pixel corner accents */}
+            <div className="absolute top-0 left-0 w-4 h-4 border-l-2 border-t-2 border-red-500/50" />
+            <div className="absolute top-0 right-0 w-4 h-4 border-r-2 border-t-2 border-red-500/50" />
+            <div className="absolute bottom-0 left-0 w-4 h-4 border-l-2 border-b-2 border-red-500/50" />
+            <div className="absolute bottom-0 right-0 w-4 h-4 border-r-2 border-b-2 border-red-500/50" />
             {/* Header */}
             <div className="flex items-center justify-center mb-4">
-              <div className="p-3 rounded-full bg-red-500/20 border-2 border-red-500/50">
+              <div className="p-3 border-2 border-red-500/50 bg-red-500/20" style={{ boxShadow: "4px 4px 0 rgba(0,0,0,0.2)" }}>
                 <IoTrashOutline className="w-8 h-8 text-red-400" />
               </div>
             </div>
             
-            <h3 className="text-xl font-bold font-Tektur text-white text-center mb-3">
+            <h3 className="text-xl font-bold theme-text text-center mb-3 uppercase tracking-wider" style={{ fontFamily: "var(--font-pixel)" }}>
               Delete Feedback?
             </h3>
             
-            <p className="text-gray-300 text-sm font-Tektur text-center mb-2">
+            <p className="theme-text-muted text-sm text-center mb-2 font-bold uppercase tracking-wider">
               Are you sure you want to delete this feedback?
             </p>
             
-            <p className="text-gray-400 text-xs font-Tektur text-center mb-6">
+            <p className="theme-text-muted text-xs text-center mb-6 font-bold uppercase tracking-wider">
               This will soft-delete the feedback. It can be recovered from the database if needed.
             </p>
 
@@ -826,14 +871,16 @@ const FeedbackReviewsPage = () => {
               <button
                 onClick={cancelDeleteFeedback}
                 disabled={isDeleting}
-                className="flex-1 px-4 py-2.5 bg-gray-700 hover:bg-gray-600 text-white rounded-lg font-Tektur transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                className="flex-1 px-4 py-2.5 border-2 theme-border bg-[var(--theme-bg-card)] theme-text font-bold uppercase tracking-wider transition-all active:translate-y-0.5 disabled:opacity-50 disabled:cursor-not-allowed"
+                style={{ boxShadow: "2px 2px 0 rgba(0,0,0,0.2)" }}
               >
                 Cancel
               </button>
               <button
                 onClick={confirmDeleteFeedback}
                 disabled={isDeleting}
-                className="flex-1 px-4 py-2.5 bg-red-500 hover:bg-red-600 text-white rounded-lg font-Tektur font-semibold transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+                className="flex-1 px-4 py-2.5 border-2 border-red-500/50 bg-red-500/20 text-red-400 font-bold uppercase tracking-wider transition-all flex items-center justify-center gap-2 active:translate-y-0.5 disabled:opacity-50 disabled:cursor-not-allowed"
+                style={{ boxShadow: "4px 4px 0 rgba(0,0,0,0.2)" }}
               >
                 {isDeleting ? (
                   <>

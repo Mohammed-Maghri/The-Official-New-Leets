@@ -341,7 +341,7 @@ const Navbar = () => {
                               {notification.title}
                             </p>
                             <p className="theme-text-muted text-[9px] uppercase">
-                              by @{notification.sender_username}
+                              by {notification.sender_username}
                             </p>
                             <p className="theme-text-muted text-[9px] mt-1">
                               {notification.message}

@@ -4,6 +4,43 @@ import { DecryptionFunction } from "../auth/type.auth";
 import * as jose from "jose";
 import { rateLimit, RateLimitPresets } from "@/utils/rateLimit";
 
+async function fetchPeersForProject(
+  accessToken: string,
+  campusId: number,
+  projectId: number,
+  projectName: string
+) {
+  const peersUrl = `https://api.intra.42.fr/v2/projects/${projectId}/projects_users?filter[status]=in_progress&filter[cursus]=21&filter[campus]=${campusId}&page[number]=1&page[size]=100`;
+  const peersResponse = await fetch(peersUrl, {
+    method: "GET",
+    headers: {
+      Authorization: `Bearer ${accessToken}`,
+      "Content-Type": "application/json",
+    },
+  });
+
+  if (!peersResponse.ok) {
+    return NextResponse.json(
+      { campus: { id: campusId, name: "Your Campus" }, project: { id: projectId, name: projectName }, peers: [] },
+      { status: 200 }
+    );
+  }
+
+  const peersData = await peersResponse.json();
+  const filteredPeers = peersData.filter((pu: unknown) => {
+    const peerUser = pu as { user?: { "alumni?"?: boolean }; status?: string };
+    const isNotAlumni = !peerUser.user?.["alumni?"];
+    const isNotFinished = peerUser.status !== "finished";
+    return isNotAlumni && isNotFinished;
+  });
+
+  return NextResponse.json({
+    campus: { id: campusId, name: "Your Campus" },
+    project: { id: projectId, name: projectName },
+    peers: filteredPeers,
+  });
+}
+
 export async function GET(request: NextRequest) {
   // Rate limiting: 20 requests per minute (makes 42 API calls)
   const rateLimitResult = await rateLimit(request, RateLimitPresets.STRICT);
@@ -83,26 +120,15 @@ export async function GET(request: NextRequest) {
 
         if (!projectsResponse.ok) {
           console.error("Failed to fetch projects, status:", projectsResponse.status);
-          // Treat as "no projects" scenario
-          return NextResponse.json({ 
-            campus: { id: userCampusId, name: "Your Campus" },
-            project: null,
-            peers: [],
-            noProjects: true,
-            message: "Oops! I guess you're not subscribed to any projects yet. Please search for a project to find peers!"
-          });
+          // Default to Inception when projects fetch fails
+          return fetchPeersForProject(accessToken, Number(userCampusId), 1983, "Inception");
         }
 
         const userProjects = await projectsResponse.json();
         
         if (userProjects.length === 0) {
-          return NextResponse.json({ 
-            campus: { id: userCampusId, name: "Your Campus" },
-            project: null,
-            peers: [],
-            noProjects: true,
-            message: "You are not currently subscribed to any projects. Please search for a project to find peers!"
-          });
+          // Default to Inception when user has no in-progress projects
+          return fetchPeersForProject(accessToken, Number(userCampusId), 1983, "Inception");
         }
 
         // Get first in-progress project

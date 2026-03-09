@@ -268,19 +268,23 @@ const StatusGrid: React.FC<{
   kind: string;
   staff: boolean;
   correction_point: number;
+  badge?: { type: 'creator' | 'vip' | 'owner' | 'staff' | 'feedback'; name: string } | null;
   muted?: boolean;
-}> = ({ wallet, kind, staff, correction_point, muted }) => {
+}> = ({ wallet, kind, staff, correction_point, badge, muted }) => {
   const cardClass = muted ? "border-2 border-slate-600/50 bg-gray-950/98 p-3 sm:p-4" : "border-2 theme-border bg-gray-950/98 p-3 sm:p-4";
   const cardShadow = { boxShadow: muted ? "3px 3px 0 rgba(0,0,0,0.2)" : "3px 3px 0 var(--theme-shadow-sm)" };
   const labelClass = "text-[10px] font-bold text-[var(--theme-primary-muted)] uppercase tracking-wider mb-1.5";
   const valueClass = "text-base font-bold theme-text";
   const subClass = "text-[9px] text-[var(--theme-primary-muted)] uppercase tracking-wider mt-1";
 
+  // Account type: prefer badge (owner, creator, staff, vip) over 42 kind (student, pooler)
+  const accountType = badge ? badge.name : kind;
+
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2 sm:gap-4" style={{ fontFamily: "var(--font-pixel)" }}>
       <div className={cardClass} style={cardShadow}>
         <p className={labelClass}>Account Type</p>
-        <p className={valueClass}>{kind}</p>
+        <p className={valueClass}>{accountType}</p>
         <p className={subClass}>{staff ? "Staff Member" : "Student Account"}</p>
       </div>
       <div className={cardClass} style={cardShadow}>
@@ -741,7 +745,7 @@ const RankComponent: React.FC<{ userData: UserData | null; rank: number; isGridV
                   <p className={`text-[11px] font-bold text-center line-clamp-1 uppercase tracking-wider ${
                     isOwnerCard || podiumPosition === "gold" ? "text-amber-200" : isStaffCard ? "text-sky-200" : podiumPosition === "silver" ? "text-slate-200" : podiumPosition === "bronze" ? "text-amber-200" : "text-white"
                   }`}>
-                    @{userData.login}
+                    {userData.login}
                   </p>
                 </div>
 

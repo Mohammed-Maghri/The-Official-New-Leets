@@ -79,7 +79,7 @@ const Dashboard = () => {
               </div>
               <div className="text-center w-full">
                 <p className="text-[11px] font-bold theme-text uppercase truncate">
-                  @{userData.login}
+                  {userData.login}
                 </p>
                 <p className="text-[10px] font-bold theme-text-muted mt-0.5">
                   {userData.level.toFixed(2)}
@@ -150,6 +150,7 @@ const Dashboard = () => {
                 kind={userData.kind}
                 staff={userData.staff}
                 correction_point={userData.correction_point}
+                badge={userData.badge}
                 muted
               />
               <PoolInformation

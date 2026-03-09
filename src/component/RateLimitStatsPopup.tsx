@@ -182,7 +182,7 @@ export default function RateLimitStatsPopup({ isVisible, onClose }: RateLimitSta
                             <span className="text-white font-Tektur font-semibold truncate">
                               {user.identifier.startsWith("ip:") 
                                 ? user.identifier 
-                                : `@${user.identifier}`}
+                                : user.identifier}
                             </span>
                             {user.blockCount > 0 && (
                               <span className="px-2 py-0.5 rounded-full text-xs font-Tektur bg-red-500/20 text-red-400 border border-red-500/30">

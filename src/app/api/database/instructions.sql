@@ -78,3 +78,21 @@ CREATE INDEX IF NOT EXISTS idx_feedback_campus_id ON leets.feedback(campus_id);
 CREATE INDEX IF NOT EXISTS idx_feedback_created_at ON leets.feedback(created_at DESC);
 CREATE INDEX IF NOT EXISTS idx_feedback_badge_awarded ON leets.feedback(badge_awarded);
 CREATE INDEX IF NOT EXISTS idx_feedback_badge_type ON leets.feedback(badge_type);
+
+-- Blocked logins (test/staff accounts) - cached from 42 API, refreshed monthly
+CREATE TABLE IF NOT EXISTS leets.blocked_logins (
+    login TEXT PRIMARY KEY,
+    source TEXT NOT NULL CHECK (source IN ('test', 'staff')),
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE IF NOT EXISTS leets.blocked_logins_meta (
+    id INTEGER PRIMARY KEY DEFAULT 1 CHECK (id = 1),
+    last_refreshed_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
+
+INSERT INTO leets.blocked_logins_meta (id, last_refreshed_at)
+VALUES (1, '1970-01-01'::timestamp)
+ON CONFLICT (id) DO NOTHING;
+
+CREATE INDEX IF NOT EXISTS idx_blocked_logins_source ON leets.blocked_logins(source);

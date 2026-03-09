@@ -2,13 +2,14 @@ import { NextRequest, NextResponse } from "next/server";
 import { UserProgress } from "./progress.types";
 import { decodeJwt, jwtVerify } from "jose";
 import { DecryptionFunction } from "../auth/type.auth";
-import { Pool } from "pg";
+import { Pool, PoolClient } from "pg";
 import { rateLimit, RateLimitPresets } from "@/utils/rateLimit";
-import { progressCache, blockedLoginsCache } from "@/utils/profileCache";
+import { progressCache } from "@/utils/profileCache";
 
 // 42 API group IDs for test and staff accounts
 const TEST_ACCOUNT_GROUP = 119;
 const STAFF_GROUP = 1;
+const CACHE_VALIDITY_DAYS = 30; // Refresh from 42 API once per month
 
 async function fetchGroupLogins(groupId: number, token: string): Promise<string[]> {
   const logins: string[] = [];
@@ -28,19 +29,62 @@ async function fetchGroupLogins(groupId: number, token: string): Promise<string[
   return logins;
 }
 
-async function getBlockedLogins(token: string): Promise<Set<string>> {
-  const cached = blockedLoginsCache.get("blocked_logins");
-  if (cached) return cached;
+async function getBlockedLoginsFromDb(client: PoolClient): Promise<{ logins: Set<string>; lastRefreshed: Date | null }> {
+  const metaResult = await client.query(
+    "SELECT last_refreshed_at FROM leets.blocked_logins_meta WHERE id = 1"
+  );
+  const lastRefreshed = metaResult.rows[0]?.last_refreshed_at
+    ? new Date(metaResult.rows[0].last_refreshed_at)
+    : null;
 
+  const loginsResult = await client.query("SELECT login FROM leets.blocked_logins");
+  const logins = new Set(loginsResult.rows.map((r: { login: string }) => r.login));
+
+  return { logins, lastRefreshed };
+}
+
+async function refreshBlockedLoginsInDb(client: PoolClient, token: string): Promise<Set<string>> {
   const [testLogins, staffLogins] = await Promise.all([
     fetchGroupLogins(TEST_ACCOUNT_GROUP, token),
     fetchGroupLogins(STAFF_GROUP, token),
   ]);
 
   const blocked = new Set([...testLogins, ...staffLogins]);
-  blockedLoginsCache.set("blocked_logins", blocked);
-  console.log(`Blocked logins cached: ${blocked.size} test/staff accounts`);
+
+  await client.query("TRUNCATE leets.blocked_logins");
+  const entries = [...blocked].map((login) => ({
+    login,
+    source: testLogins.includes(login) ? "test" : "staff",
+  }));
+  for (const { login, source } of entries) {
+    await client.query(
+      "INSERT INTO leets.blocked_logins (login, source) VALUES ($1, $2) ON CONFLICT (login) DO UPDATE SET source = EXCLUDED.source",
+      [login, source]
+    );
+  }
+
+  await client.query(
+    "UPDATE leets.blocked_logins_meta SET last_refreshed_at = CURRENT_TIMESTAMP WHERE id = 1"
+  );
+  console.log(`Blocked logins refreshed in DB: ${blocked.size} test/staff accounts`);
   return blocked;
+}
+
+async function getBlockedLogins(client: PoolClient, token: string): Promise<Set<string>> {
+  const { logins, lastRefreshed } = await getBlockedLoginsFromDb(client);
+
+  const now = new Date();
+  const cacheValid =
+    lastRefreshed &&
+    logins.size > 0 &&
+    (now.getTime() - lastRefreshed.getTime()) / (1000 * 60 * 60 * 24) < CACHE_VALIDITY_DAYS;
+
+  if (cacheValid) {
+    console.log(`Blocked logins from DB: ${logins.size} (last refreshed: ${lastRefreshed?.toISOString()})`);
+    return logins;
+  }
+
+  return refreshBlockedLoginsInDb(client, token);
 }
 
 export const POST = async (request: NextRequest) => {
@@ -137,27 +181,34 @@ export const POST = async (request: NextRequest) => {
 
     const response = await data.json();
 
-    // Fetch blocked logins (test/staff accounts) from 42 API groups
-    const blockedLogins = await getBlockedLogins(DecryptionFunction(Decode));
-
     // Get all user logins from the response
     const allUserLogins = response.map((item: UserProgress) => item.user.login);
-    
+
+    // Create DB client for blocked logins and VIP lookup
+    client = new Pool({ connectionString: process.env.DATABASE_KEY });
+    const dbClient = await client.connect();
+
+    let blockedLogins: Set<string>;
     const vipTokenMap = new Map<string, string>();
-    
-    if (allUserLogins.length > 0) {
-      try {
-        client = new Pool({ connectionString: process.env.DATABASE_KEY });
-        const vipResult = await client.query(
-          `SELECT login, token FROM leets.vip WHERE login = ANY($1)`,
-          [allUserLogins]
-        );
-        vipResult.rows.forEach((row: { login: string; token: string }) => {
-          vipTokenMap.set(row.login, row.token);
-        });
-      } catch (err) {
-        console.error("Error fetching VIP tokens:", err);
+    try {
+      // Fetch blocked logins from DB (refreshes from 42 API monthly)
+      blockedLogins = await getBlockedLogins(dbClient, DecryptionFunction(Decode));
+
+      if (allUserLogins.length > 0) {
+        try {
+          const vipResult = await dbClient.query(
+            `SELECT login, token FROM leets.vip WHERE login = ANY($1)`,
+            [allUserLogins]
+          );
+          vipResult.rows.forEach((row: { login: string; token: string }) => {
+            vipTokenMap.set(row.login, row.token);
+          });
+        } catch (err) {
+          console.error("Error fetching VIP tokens:", err);
+        }
       }
+    } finally {
+      dbClient.release();
     }
     
     const getBadge = (login: string) => {

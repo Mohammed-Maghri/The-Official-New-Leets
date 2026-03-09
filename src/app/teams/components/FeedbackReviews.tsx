@@ -82,27 +82,33 @@ const FeedbackReviews: React.FC<FeedbackReviewsProps> = ({ isVisible, onClose })
   if (!isVisible) return null;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-md p-4">
-      <div className="relative w-full max-w-7xl max-h-[90vh] rounded-2xl bg-[#001226] border border-[#0070ef]/30 shadow-2xl overflow-hidden">
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-md p-4" style={{ fontFamily: "var(--font-pixel)" }}>
+      <div className="relative w-full max-w-7xl max-h-[90vh] bg-gray-950/98 border-4 theme-border-strong overflow-hidden" style={{ boxShadow: "6px 6px 0 var(--theme-shadow-lg), inset 0 1px 0 rgba(255,255,255,0.05)" }}>
+        {/* Pixel corner accents */}
+        <div className="absolute top-0 left-0 w-4 h-4 border-l-2 border-t-2 theme-border z-20" />
+        <div className="absolute top-0 right-0 w-4 h-4 border-r-2 border-t-2 theme-border z-20" />
+        <div className="absolute bottom-0 left-0 w-4 h-4 border-l-2 border-b-2 theme-border z-20" />
+        <div className="absolute bottom-0 right-0 w-4 h-4 border-r-2 border-b-2 theme-border z-20" />
         {/* Header */}
-        <div className="sticky top-0 z-10 bg-gray-900/95 backdrop-blur-md border-b border-gray-700/50 p-6">
+        <div className="sticky top-0 z-10 bg-gray-950/98 border-b-2 theme-border p-6">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
               <BsStars className="w-8 h-8 text-yellow-400" />
-              <h2 className="text-2xl sm:text-3xl font-bold font-Tektur text-white">
+              <h2 className="text-2xl sm:text-3xl font-bold theme-text uppercase tracking-wider">
                 Feedback Reviews
               </h2>
             </div>
             <button
               onClick={onClose}
-              className="p-2 rounded-full bg-gray-800/50 hover:bg-gray-700/50 border border-gray-600/30 transition-all duration-300 group"
+              className="p-2 border-2 theme-border bg-[var(--theme-bg-card)] hover:border-[var(--theme-primary)] transition-all active:translate-y-0.5"
+              style={{ boxShadow: "2px 2px 0 rgba(0,0,0,0.2)" }}
             >
-              <IoClose className="w-6 h-6 text-gray-400 group-hover:text-white transition-colors" />
+              <IoClose className="w-6 h-6 theme-text-muted" />
             </button>
           </div>
           {!isLoading && !error && (
-            <p className="text-gray-400 text-sm font-Tektur mt-2">
-              Total Reviews: <span className="text-blue-400 font-semibold">{reviews.length}</span>
+            <p className="theme-text-muted text-sm mt-2 font-bold uppercase tracking-wider">
+              Total Reviews: <span className="text-[var(--theme-primary)] font-semibold">{reviews.length}</span>
             </p>
           )}
         </div>
@@ -111,18 +117,18 @@ const FeedbackReviews: React.FC<FeedbackReviewsProps> = ({ isVisible, onClose })
         <div className="overflow-y-auto p-6 max-h-[calc(90vh-100px)]">
           {isLoading ? (
             <div className="flex items-center justify-center h-64">
-              <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500"></div>
+              <div className="h-12 w-12 border-2 border-slate-600 border-t-[var(--theme-primary)] animate-spin" style={{ boxShadow: "2px 2px 0 rgba(0,0,0,0.2)" }}></div>
             </div>
           ) : error ? (
             <div className="flex items-center justify-center h-64">
               <div className="text-center">
-                <p className="text-red-400 text-lg font-Tektur">{error}</p>
+                <p className="text-red-400 text-lg font-bold uppercase tracking-wider">{error}</p>
               </div>
             </div>
           ) : reviews.length === 0 ? (
             <div className="flex items-center justify-center h-64">
               <div className="text-center">
-                <p className="text-gray-400 text-lg font-Tektur">No feedback reviews yet</p>
+                <p className="theme-text-muted text-lg font-bold uppercase tracking-wider">No feedback reviews yet</p>
               </div>
             </div>
           ) : (
@@ -131,20 +137,22 @@ const FeedbackReviews: React.FC<FeedbackReviewsProps> = ({ isVisible, onClose })
                 <div
                   key={review.id}
                   onClick={() => handleReviewClick(review)}
-                  className="bg-gray-800/40 border border-gray-700/50 rounded-xl p-4 hover:bg-gray-800/60 hover:border-blue-500/50 transition-all duration-300 cursor-pointer group"
+                  className="relative border-2 border-slate-600/60 bg-gray-950/98 p-4 hover:border-[var(--theme-primary)]/50 transition-all duration-300 cursor-pointer group"
+                  style={{ boxShadow: "3px 3px 0 rgba(0,0,0,0.2)" }}
                 >
                   {/* User Info */}
                   <div className="flex items-center gap-3 mb-3">
                     <img
                       src={review.user_image}
                       alt={review.user_login}
-                      className="w-12 h-12 rounded-full border-2 border-gray-600 group-hover:border-blue-500 transition-colors"
+                      className="w-12 h-12 border-2 border-slate-600/60 group-hover:border-[var(--theme-primary)] transition-colors object-cover"
+                      style={{ imageRendering: "pixelated", boxShadow: "2px 2px 0 rgba(0,0,0,0.2)" }}
                     />
                     <div className="flex-1 min-w-0">
-                      <p className="text-white font-Tektur font-semibold truncate">
+                      <p className="theme-text font-bold truncate uppercase tracking-wider">
                         {review.user_login}
                       </p>
-                      <p className="text-gray-400 text-xs font-Tektur truncate">
+                      <p className="theme-text-muted text-xs truncate font-bold uppercase tracking-wider">
                         {review.campus_name}
                       </p>
                     </div>
@@ -156,18 +164,18 @@ const FeedbackReviews: React.FC<FeedbackReviewsProps> = ({ isVisible, onClose })
                       <IoStar
                         key={star}
                         className={`w-4 h-4 ${
-                          star <= review.rating ? "text-yellow-400" : "text-gray-600"
+                          star <= review.rating ? "text-yellow-400" : "text-slate-600"
                         }`}
                       />
                     ))}
-                    <span className="text-gray-400 text-sm font-Tektur ml-2">
+                    <span className="theme-text-muted text-sm ml-2 font-bold uppercase tracking-wider">
                       {review.rating}/5
                     </span>
                   </div>
 
                   {/* Preview Text */}
                   {review.feedback && (
-                    <p className="text-gray-300 text-sm font-Tektur line-clamp-2 mb-3">
+                    <p className="theme-text-muted text-sm line-clamp-2 mb-3">
                       {review.feedback}
                     </p>
                   )}
@@ -175,12 +183,12 @@ const FeedbackReviews: React.FC<FeedbackReviewsProps> = ({ isVisible, onClose })
                   {/* Badges */}
                   <div className="flex items-center gap-2 flex-wrap">
                     {review.wants_to_contribute && (
-                      <span className="text-xs bg-emerald-500/20 text-emerald-400 px-2 py-1 rounded-full font-Tektur">
+                      <span className="text-[10px] bg-emerald-500/20 text-emerald-400 px-2 py-1 border-2 border-emerald-500/30 font-bold uppercase tracking-wider" style={{ boxShadow: "2px 2px 0 rgba(0,0,0,0.2)" }}>
                         Contributor
                       </span>
                     )}
                     {review.badge_awarded && (
-                      <span className="text-xs bg-yellow-500/20 text-yellow-400 px-2 py-1 rounded-full font-Tektur flex items-center gap-1">
+                      <span className="text-[10px] bg-yellow-500/20 text-yellow-400 px-2 py-1 border-2 border-yellow-500/30 font-bold uppercase tracking-wider flex items-center gap-1" style={{ boxShadow: "2px 2px 0 rgba(0,0,0,0.2)" }}>
                         <BsStars className="w-3 h-3" />
                         Badge
                       </span>
@@ -188,7 +196,7 @@ const FeedbackReviews: React.FC<FeedbackReviewsProps> = ({ isVisible, onClose })
                   </div>
 
                   {/* Date */}
-                  <p className="text-gray-500 text-xs font-Tektur mt-3">
+                  <p className="theme-text-muted text-xs mt-3 font-bold uppercase tracking-wider">
                     {new Date(review.created_at).toLocaleDateString("en-US", {
                       month: "short",
                       day: "numeric",
@@ -209,30 +217,38 @@ const FeedbackReviews: React.FC<FeedbackReviewsProps> = ({ isVisible, onClose })
           onClick={closeDetailModal}
         >
           <div
-            className="relative w-full max-w-3xl max-h-[90vh] rounded-2xl bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 border border-gray-700/50 shadow-2xl overflow-hidden"
+            className="relative w-full max-w-3xl max-h-[90vh] bg-gray-950/98 border-4 theme-border-strong overflow-hidden"
+            style={{ boxShadow: "6px 6px 0 var(--theme-shadow-lg), inset 0 1px 0 rgba(255,255,255,0.05)" }}
             onClick={(e) => e.stopPropagation()}
           >
+            {/* Pixel corner accents */}
+            <div className="absolute top-0 left-0 w-4 h-4 border-l-2 border-t-2 theme-border z-20" />
+            <div className="absolute top-0 right-0 w-4 h-4 border-r-2 border-t-2 theme-border z-20" />
+            <div className="absolute bottom-0 left-0 w-4 h-4 border-l-2 border-b-2 theme-border z-20" />
+            <div className="absolute bottom-0 right-0 w-4 h-4 border-r-2 border-b-2 theme-border z-20" />
             {/* Close Button */}
             <button
               onClick={closeDetailModal}
-              className="absolute top-4 right-4 z-10 p-2 rounded-full bg-gray-800/50 hover:bg-gray-700/50 border border-gray-600/30 transition-all duration-300 group"
+              className="absolute top-4 right-4 z-10 p-2 border-2 theme-border bg-[var(--theme-bg-card)] hover:border-[var(--theme-primary)] transition-all active:translate-y-0.5"
+              style={{ boxShadow: "2px 2px 0 rgba(0,0,0,0.2)" }}
             >
-              <IoClose className="w-5 h-5 text-gray-400 group-hover:text-white transition-colors" />
+              <IoClose className="w-5 h-5 theme-text-muted" />
             </button>
 
             <div className="overflow-y-auto p-8 max-h-[90vh]">
               {/* User Header */}
-              <div className="flex items-start gap-4 mb-6 pb-6 border-b border-gray-700/50">
+              <div className="flex items-start gap-4 mb-6 pb-6 border-b-2 theme-border">
                 <img
                   src={selectedReview.user_image}
                   alt={selectedReview.user_login}
-                  className="w-20 h-20 rounded-full border-2 border-blue-500"
+                  className="w-20 h-20 border-2 theme-border object-cover"
+                  style={{ imageRendering: "pixelated", boxShadow: "3px 3px 0 rgba(0,0,0,0.2)" }}
                 />
                 <div className="flex-1">
-                  <h3 className="text-2xl font-bold font-Tektur text-white mb-2">
+                  <h3 className="text-2xl font-bold theme-text mb-2 uppercase tracking-wider">
                     {selectedReview.user_login}
                   </h3>
-                  <div className="flex flex-wrap gap-3 text-sm text-gray-400 font-Tektur">
+                  <div className="flex flex-wrap gap-3 text-sm theme-text-muted font-bold uppercase tracking-wider">
                     <div className="flex items-center gap-1">
                       <FiMail className="w-4 h-4" />
                       {selectedReview.user_email}
@@ -248,11 +264,11 @@ const FeedbackReviews: React.FC<FeedbackReviewsProps> = ({ isVisible, onClose })
                       <IoStar
                         key={star}
                         className={`w-5 h-5 ${
-                          star <= selectedReview.rating ? "text-yellow-400" : "text-gray-600"
+                          star <= selectedReview.rating ? "text-yellow-400" : "text-slate-600"
                         }`}
                       />
                     ))}
-                    <span className="text-white font-Tektur ml-2">
+                    <span className="theme-text ml-2 font-bold uppercase tracking-wider">
                       {selectedReview.rating}/5
                     </span>
                   </div>
@@ -262,33 +278,33 @@ const FeedbackReviews: React.FC<FeedbackReviewsProps> = ({ isVisible, onClose })
               {/* Feedback Content */}
               <div className="space-y-4">
                 {selectedReview.feedback && (
-                  <div className="bg-gray-800/30 border border-blue-500/20 rounded-xl p-4">
-                    <p className="text-blue-400 text-sm font-Tektur font-semibold mb-2">
+                  <div className="border-2 border-[var(--theme-primary)]/50 bg-[var(--theme-bg-card)] p-4" style={{ boxShadow: "3px 3px 0 rgba(0,0,0,0.2)" }}>
+                    <p className="text-[var(--theme-primary)] text-sm font-bold mb-2 uppercase tracking-wider">
                       Feature Ideas
                     </p>
-                    <p className="text-gray-300 text-sm font-Tektur whitespace-pre-wrap">
+                    <p className="theme-text text-sm whitespace-pre-wrap">
                       {selectedReview.feedback}
                     </p>
                   </div>
                 )}
 
                 {selectedReview.dislikes && (
-                  <div className="bg-gray-800/30 border border-red-500/20 rounded-xl p-4">
-                    <p className="text-red-400 text-sm font-Tektur font-semibold mb-2">
+                  <div className="border-2 border-red-500/50 bg-red-500/10 p-4" style={{ boxShadow: "3px 3px 0 rgba(0,0,0,0.2)" }}>
+                    <p className="text-red-400 text-sm font-bold mb-2 uppercase tracking-wider">
                       Dislikes
                     </p>
-                    <p className="text-gray-300 text-sm font-Tektur whitespace-pre-wrap">
+                    <p className="theme-text text-sm whitespace-pre-wrap">
                       {selectedReview.dislikes}
                     </p>
                   </div>
                 )}
 
                 {selectedReview.improvements && (
-                  <div className="bg-gray-800/30 border border-yellow-500/20 rounded-xl p-4">
-                    <p className="text-yellow-400 text-sm font-Tektur font-semibold mb-2">
+                  <div className="border-2 border-amber-500/50 bg-amber-500/10 p-4" style={{ boxShadow: "3px 3px 0 rgba(0,0,0,0.2)" }}>
+                    <p className="text-amber-400 text-sm font-bold mb-2 uppercase tracking-wider">
                       Improvements
                     </p>
-                    <p className="text-gray-300 text-sm font-Tektur whitespace-pre-wrap">
+                    <p className="theme-text text-sm whitespace-pre-wrap">
                       {selectedReview.improvements}
                     </p>
                   </div>
@@ -296,37 +312,38 @@ const FeedbackReviews: React.FC<FeedbackReviewsProps> = ({ isVisible, onClose })
 
                 {/* Contribution Section */}
                 {selectedReview.wants_to_contribute && (
-                  <div className="bg-gray-800/30 border border-emerald-500/20 rounded-xl p-4">
-                    <p className="text-emerald-400 text-sm font-Tektur font-semibold mb-3">
+                  <div className="border-2 border-emerald-500/50 bg-emerald-500/10 p-4" style={{ boxShadow: "3px 3px 0 rgba(0,0,0,0.2)" }}>
+                    <p className="text-emerald-400 text-sm font-bold mb-3 uppercase tracking-wider">
                       Wants to Contribute
                     </p>
                     {selectedReview.skills && (
                       <div className="mb-3">
-                        <p className="text-gray-400 text-xs font-Tektur mb-1">Skills:</p>
-                        <p className="text-gray-300 text-sm font-Tektur">
+                        <p className="theme-text-muted text-xs font-bold mb-1 uppercase tracking-wider">Skills:</p>
+                        <p className="theme-text text-sm">
                           {selectedReview.skills}
                         </p>
                       </div>
                     )}
                     {selectedReview.contribution_area && selectedReview.contribution_area.length > 0 && (
                       <div>
-                        <p className="text-gray-400 text-xs font-Tektur mb-2">Areas:</p>
+                        <p className="theme-text-muted text-xs font-bold mb-2 uppercase tracking-wider">Areas:</p>
                         <div className="flex gap-2 flex-wrap">
                           {selectedReview.contribution_area.map((area) => (
                             <div
                               key={area}
-                              className={`flex items-center gap-2 px-3 py-2 rounded-lg ${
+                              className={`flex items-center gap-2 px-3 py-2 border-2 font-bold uppercase tracking-wider ${
                                 area === "frontend"
-                                  ? "bg-blue-500/20 text-blue-400 border border-blue-500/30"
+                                  ? "bg-blue-500/20 text-blue-400 border-blue-500/30"
                                   : area === "backend"
-                                  ? "bg-purple-500/20 text-purple-400 border border-purple-500/30"
-                                  : "bg-pink-500/20 text-pink-400 border border-pink-500/30"
+                                  ? "bg-purple-500/20 text-purple-400 border-purple-500/30"
+                                  : "bg-pink-500/20 text-pink-400 border-pink-500/30"
                               }`}
+                              style={{ boxShadow: "2px 2px 0 rgba(0,0,0,0.2)" }}
                             >
                               {area === "frontend" && <BsCodeSlash className="w-4 h-4" />}
                               {area === "backend" && <AiOutlineDatabase className="w-4 h-4" />}
                               {area === "design" && <MdDesignServices className="w-4 h-4" />}
-                              <span className="text-sm font-Tektur capitalize">{area}</span>
+                              <span className="text-sm capitalize">{area}</span>
                             </div>
                           ))}
                         </div>
@@ -337,8 +354,8 @@ const FeedbackReviews: React.FC<FeedbackReviewsProps> = ({ isVisible, onClose })
               </div>
 
               {/* Footer */}
-              <div className="mt-6 pt-4 border-t border-gray-700/50 flex items-center justify-between">
-                <p className="text-gray-500 text-sm font-Tektur">
+              <div className="mt-6 pt-4 border-t-2 theme-border flex items-center justify-between">
+                <p className="theme-text-muted text-sm font-bold uppercase tracking-wider">
                   Submitted on{" "}
                   {new Date(selectedReview.created_at).toLocaleDateString("en-US", {
                     month: "long",
@@ -349,9 +366,9 @@ const FeedbackReviews: React.FC<FeedbackReviewsProps> = ({ isVisible, onClose })
                   })}
                 </p>
                 {selectedReview.badge_awarded && (
-                  <div className="flex items-center gap-2 bg-yellow-500/20 px-3 py-1 rounded-full">
+                  <div className="flex items-center gap-2 bg-yellow-500/20 px-3 py-1.5 border-2 border-yellow-500/30 font-bold uppercase tracking-wider" style={{ boxShadow: "2px 2px 0 rgba(0,0,0,0.2)" }}>
                     <BsStars className="w-4 h-4 text-yellow-400" />
-                    <span className="text-yellow-400 text-sm font-Tektur font-semibold">
+                    <span className="text-yellow-400 text-sm font-bold">
                       Badge Awarded
                     </span>
                   </div>

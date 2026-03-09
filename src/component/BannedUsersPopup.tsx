@@ -129,7 +129,7 @@ export default function BannedUsersPopup({ isVisible, onClose }: BannedUsersPopu
                           <span className="text-white font-Tektur font-semibold truncate">
                             {user.identifier.startsWith("ip:") 
                               ? user.identifier 
-                              : `@${user.identifier}`}
+                              : user.identifier}
                           </span>
                           <span className={`px-2 py-0.5 rounded-full text-xs font-Tektur ${
                             user.blockCount === 1 
