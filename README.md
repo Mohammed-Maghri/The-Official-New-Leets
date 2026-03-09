@@ -1,6 +1,6 @@
 # 🎓 The Official New Leets
 
-A modern, feature-rich platform for 42 Network students built with Next.js 15, TypeScript, and PostgreSQL.
+A modern, feature-rich platform for 42 Network students built with Next.js 15, TypeScript, and PostgreSQL. Features real-time **ranking** by cursus and campus, with a distinctive **pixelated** aesthetic throughout the UI.
 
 ![Next.js](https://img.shields.io/badge/Next.js-15.3.4-black?style=for-the-badge&logo=next.js)
 ![TypeScript](https://img.shields.io/badge/TypeScript-5.0-blue?style=for-the-badge&logo=typescript)
@@ -197,8 +197,9 @@ The-Official-New-Leets/
 
 ## 🎨 Design System
 
+- **Pixelated Vibe**: Retro pixel-style UI with chunky borders, pixel fonts, and a nostalgic gaming aesthetic
 - **Color Scheme**: Dark theme with blue accents (#0070ef)
-- **Typography**: Tektur font for headings, system fonts for body
+- **Typography**: Tektur font for headings, pixel fonts for UI elements
 - **Glassmorphism**: Backdrop blur effects throughout
 - **Responsive**: Mobile-first design
 - **Animations**: Smooth transitions with Framer Motion

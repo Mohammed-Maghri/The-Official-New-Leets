@@ -65,12 +65,12 @@ export async function GET(request: NextRequest) {
     
     client = new Pool({ connectionString: process.env.DATABASE_KEY });
     
-    const creatorCheckQuery = `SELECT * FROM leets.vip WHERE login = $1 AND token = 'creator'`;
+    const creatorCheckQuery = `SELECT * FROM leets.vip WHERE login = $1 AND token IN ('owner', 'creator')`;
     const creatorCheckResult = await client.query(creatorCheckQuery, [userInfo.login]);
     
     if (creatorCheckResult.rows.length === 0) {
       return NextResponse.json(
-        { error: "Unauthorized. Only creators can access feedback reviews." },
+        { error: "Unauthorized. Only owners and creators can access feedback reviews." },
         { status: 403 }
       );
     }
@@ -368,12 +368,12 @@ export async function DELETE(request: NextRequest) {
     
     client = new Pool({ connectionString: process.env.DATABASE_KEY });
     
-    const creatorCheckQuery = `SELECT * FROM leets.vip WHERE login = $1 AND token = 'creator'`;
+    const creatorCheckQuery = `SELECT * FROM leets.vip WHERE login = $1 AND token IN ('owner', 'creator')`;
     const creatorCheckResult = await client.query(creatorCheckQuery, [userInfo.login]);
     
     if (creatorCheckResult.rows.length === 0) {
       return NextResponse.json(
-        { error: "Unauthorized. Only creators can delete feedback." },
+        { error: "Unauthorized. Only owners and creators can delete feedback." },
         { status: 403 }
       );
     }

@@ -52,8 +52,8 @@ export const GET = async (request: NextRequest) => {
     
     client = new Pool({ connectionString: process.env.DATABASE_KEY });
 
-    // Check if user is a creator in the database (NOT owner/vip)
-    const creatorCheckQuery = `SELECT * FROM leets.vip WHERE login = $1 AND token = 'creator'`;
+    // Check if user is owner or creator (can review dashboard)
+    const creatorCheckQuery = `SELECT * FROM leets.vip WHERE login = $1 AND token IN ('owner', 'creator')`;
     const creatorCheckResult = await client.query(creatorCheckQuery, [userInfo.login]);
     
     return NextResponse.json(

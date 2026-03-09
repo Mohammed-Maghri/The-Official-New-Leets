@@ -71,12 +71,12 @@ export async function POST(req: Request) {
 
     client = new Pool({ connectionString: process.env.DATABASE_KEY });
 
-    const creatorCheckQuery = `SELECT * FROM leets.vip WHERE login = $1 AND token = 'creator'`;
+    const creatorCheckQuery = `SELECT * FROM leets.vip WHERE login = $1 AND token IN ('owner', 'creator')`;
     const creatorCheckResult = await client.query(creatorCheckQuery, [currentUser.login]);
-
+    
     if (creatorCheckResult.rows.length === 0) {
       return NextResponse.json(
-        { error: "Unauthorized. Only creators can award badges." },
+        { error: "Unauthorized. Only owners and creators can award badges." },
         { status: 403 }
       );
     }
@@ -254,12 +254,12 @@ export async function DELETE(req: Request) {
 
     client = new Pool({ connectionString: process.env.DATABASE_KEY });
 
-    const creatorCheckQuery = `SELECT * FROM leets.vip WHERE login = $1 AND token = 'creator'`;
+    const creatorCheckQuery = `SELECT * FROM leets.vip WHERE login = $1 AND token IN ('owner', 'creator')`;
     const creatorCheckResult = await client.query(creatorCheckQuery, [currentUser.login]);
-
+    
     if (creatorCheckResult.rows.length === 0) {
       return NextResponse.json(
-        { error: "Unauthorized. Only creators can remove badges." },
+        { error: "Unauthorized. Only owners and creators can remove badges." },
         { status: 403 }
       );
     }
