@@ -18,7 +18,11 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
   const overlayTo = isLight ? config.overlayClassLight : config.overlayClass;
 
   return (
-    <div className={`relative h-full flex-1 flex flex-col w-full bg-gradient-to-br ${bgFrom} ${bgVia} ${bgTo} overflow-hidden`}>
+    <div
+      className={`relative h-full flex-1 flex flex-col w-full min-h-0 overflow-y-auto overflow-x-hidden bg-gradient-to-br ${bgFrom} ${bgVia} ${bgTo} ${
+        pathname !== "/" ? "lg:overflow-hidden" : ""
+      }`}
+    >
       {pathname !== "/" && <Navbar />}
       {children}
 
