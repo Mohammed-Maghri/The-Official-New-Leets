@@ -1,9 +1,11 @@
 @import url("https://fonts.googleapis.com/css2?family=Tektur:wght@400..900&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Silkscreen:wght@400;700&display=swap");
 
 @import "tailwindcss";
 
 @theme {
   --font-Tektur: "Tektur", system-ui;
+  --font-pixel: "Silkscreen", monospace;
   --breakpoint-tillme: 866px; 
 }
 
@@ -19,6 +21,240 @@
 body {
   font-family: Arial, Helvetica, sans-serif;
 }
+
+/* Theme CSS Variables - applied via data-theme-color on html */
+[data-theme-color="violet"] {
+  --theme-primary: #8b5cf6;
+  --theme-primary-muted: #a78bfa;
+  --theme-primary-dark: #7c3aed;
+  --theme-bg: rgba(139, 92, 246, 0.4);
+  --theme-bg-card: rgba(139, 92, 246, 0.15);
+  --theme-border: rgba(139, 92, 246, 0.5);
+  --theme-border-strong: rgba(139, 92, 246, 0.7);
+  --theme-text: #f1f5f9;
+  --theme-text-muted: #cbd5e1;
+  --theme-shadow: rgba(88, 28, 135, 0.25);
+  --theme-shadow-sm: rgba(88, 28, 135, 0.2);
+  --theme-shadow-md: rgba(88, 28, 135, 0.4);
+  --theme-shadow-lg: rgba(88, 28, 135, 0.6);
+}
+[data-theme-color="blue"] {
+  --theme-primary: #3b82f6;
+  --theme-primary-muted: #60a5fa;
+  --theme-primary-dark: #2563eb;
+  --theme-bg: rgba(59, 130, 246, 0.4);
+  --theme-bg-card: rgba(59, 130, 246, 0.15);
+  --theme-border: rgba(59, 130, 246, 0.5);
+  --theme-border-strong: rgba(59, 130, 246, 0.7);
+  --theme-text: #f1f5f9;
+  --theme-text-muted: #cbd5e1;
+  --theme-shadow: rgba(37, 99, 235, 0.25);
+  --theme-shadow-sm: rgba(37, 99, 235, 0.2);
+  --theme-shadow-md: rgba(37, 99, 235, 0.4);
+  --theme-shadow-lg: rgba(37, 99, 235, 0.6);
+}
+[data-theme-color="cyan"] {
+  --theme-primary: #06b6d4;
+  --theme-primary-muted: #22d3ee;
+  --theme-primary-dark: #0891b2;
+  --theme-bg: rgba(6, 182, 212, 0.4);
+  --theme-bg-card: rgba(6, 182, 212, 0.15);
+  --theme-border: rgba(6, 182, 212, 0.5);
+  --theme-border-strong: rgba(6, 182, 212, 0.7);
+  --theme-text: #f1f5f9;
+  --theme-text-muted: #cbd5e1;
+  --theme-shadow: rgba(8, 145, 178, 0.25);
+  --theme-shadow-sm: rgba(8, 145, 178, 0.2);
+  --theme-shadow-md: rgba(8, 145, 178, 0.4);
+  --theme-shadow-lg: rgba(8, 145, 178, 0.6);
+}
+[data-theme-color="emerald"] {
+  --theme-primary: #10b981;
+  --theme-primary-muted: #34d399;
+  --theme-primary-dark: #059669;
+  --theme-bg: rgba(16, 185, 129, 0.4);
+  --theme-bg-card: rgba(16, 185, 129, 0.15);
+  --theme-border: rgba(16, 185, 129, 0.5);
+  --theme-border-strong: rgba(16, 185, 129, 0.7);
+  --theme-text: #f1f5f9;
+  --theme-text-muted: #cbd5e1;
+  --theme-shadow: rgba(5, 150, 105, 0.25);
+  --theme-shadow-sm: rgba(5, 150, 105, 0.2);
+  --theme-shadow-md: rgba(5, 150, 105, 0.4);
+  --theme-shadow-lg: rgba(5, 150, 105, 0.6);
+}
+[data-theme-color="amber"] {
+  --theme-primary: #f59e0b;
+  --theme-primary-muted: #fbbf24;
+  --theme-primary-dark: #d97706;
+  --theme-bg: rgba(245, 158, 11, 0.4);
+  --theme-bg-card: rgba(245, 158, 11, 0.15);
+  --theme-border: rgba(245, 158, 11, 0.5);
+  --theme-border-strong: rgba(245, 158, 11, 0.7);
+  --theme-text: #f1f5f9;
+  --theme-text-muted: #cbd5e1;
+  --theme-shadow: rgba(120, 53, 15, 0.25);
+  --theme-shadow-sm: rgba(120, 53, 15, 0.2);
+  --theme-shadow-md: rgba(120, 53, 15, 0.4);
+  --theme-shadow-lg: rgba(120, 53, 15, 0.6);
+}
+[data-theme-color="rose"] {
+  --theme-primary: #f43f5e;
+  --theme-primary-muted: #fb7185;
+  --theme-primary-dark: #e11d48;
+  --theme-bg: rgba(244, 63, 94, 0.4);
+  --theme-bg-card: rgba(244, 63, 94, 0.15);
+  --theme-border: rgba(244, 63, 94, 0.5);
+  --theme-border-strong: rgba(244, 63, 94, 0.7);
+  --theme-text: #f1f5f9;
+  --theme-text-muted: #cbd5e1;
+  --theme-shadow: rgba(190, 18, 60, 0.25);
+  --theme-shadow-sm: rgba(190, 18, 60, 0.2);
+  --theme-shadow-md: rgba(190, 18, 60, 0.4);
+  --theme-shadow-lg: rgba(190, 18, 60, 0.6);
+}
+[data-theme-color="indigo"] {
+  --theme-primary: #6366f1;
+  --theme-primary-muted: #818cf8;
+  --theme-primary-dark: #4f46e5;
+  --theme-bg: rgba(99, 102, 241, 0.4);
+  --theme-bg-card: rgba(99, 102, 241, 0.15);
+  --theme-border: rgba(99, 102, 241, 0.5);
+  --theme-border-strong: rgba(99, 102, 241, 0.7);
+  --theme-text: #f1f5f9;
+  --theme-text-muted: #cbd5e1;
+  --theme-shadow: rgba(67, 56, 202, 0.25);
+  --theme-shadow-sm: rgba(67, 56, 202, 0.2);
+  --theme-shadow-md: rgba(67, 56, 202, 0.4);
+  --theme-shadow-lg: rgba(67, 56, 202, 0.6);
+}
+[data-theme-color="purple"] {
+  --theme-primary: #a855f7;
+  --theme-primary-muted: #c084fc;
+  --theme-primary-dark: #9333ea;
+  --theme-bg: rgba(168, 85, 247, 0.4);
+  --theme-bg-card: rgba(168, 85, 247, 0.15);
+  --theme-border: rgba(168, 85, 247, 0.5);
+  --theme-border-strong: rgba(168, 85, 247, 0.7);
+  --theme-text: #f1f5f9;
+  --theme-text-muted: #cbd5e1;
+  --theme-shadow: rgba(126, 34, 206, 0.25);
+  --theme-shadow-sm: rgba(126, 34, 206, 0.2);
+  --theme-shadow-md: rgba(126, 34, 206, 0.4);
+  --theme-shadow-lg: rgba(126, 34, 206, 0.6);
+}
+[data-theme-color="teal"] {
+  --theme-primary: #14b8a6;
+  --theme-primary-muted: #2dd4bf;
+  --theme-primary-dark: #0d9488;
+  --theme-bg: rgba(20, 184, 166, 0.4);
+  --theme-bg-card: rgba(20, 184, 166, 0.15);
+  --theme-border: rgba(20, 184, 166, 0.5);
+  --theme-border-strong: rgba(20, 184, 166, 0.7);
+  --theme-text: #f1f5f9;
+  --theme-text-muted: #cbd5e1;
+  --theme-shadow: rgba(13, 148, 136, 0.25);
+  --theme-shadow-sm: rgba(13, 148, 136, 0.2);
+  --theme-shadow-md: rgba(13, 148, 136, 0.4);
+  --theme-shadow-lg: rgba(13, 148, 136, 0.6);
+}
+[data-theme-color="lime"] {
+  --theme-primary: #84cc16;
+  --theme-primary-muted: #a3e635;
+  --theme-primary-dark: #65a30d;
+  --theme-bg: rgba(132, 204, 22, 0.4);
+  --theme-bg-card: rgba(132, 204, 22, 0.15);
+  --theme-border: rgba(132, 204, 22, 0.5);
+  --theme-border-strong: rgba(132, 204, 22, 0.7);
+  --theme-text: #f1f5f9;
+  --theme-text-muted: #cbd5e1;
+  --theme-shadow: rgba(101, 163, 13, 0.25);
+  --theme-shadow-sm: rgba(101, 163, 13, 0.2);
+  --theme-shadow-md: rgba(101, 163, 13, 0.4);
+  --theme-shadow-lg: rgba(101, 163, 13, 0.6);
+}
+[data-theme-color="orange"] {
+  --theme-primary: #f97316;
+  --theme-primary-muted: #fb923c;
+  --theme-primary-dark: #ea580c;
+  --theme-bg: rgba(249, 115, 22, 0.4);
+  --theme-bg-card: rgba(249, 115, 22, 0.15);
+  --theme-border: rgba(249, 115, 22, 0.5);
+  --theme-border-strong: rgba(249, 115, 22, 0.7);
+  --theme-text: #f1f5f9;
+  --theme-text-muted: #cbd5e1;
+  --theme-shadow: rgba(194, 65, 12, 0.25);
+  --theme-shadow-sm: rgba(194, 65, 12, 0.2);
+  --theme-shadow-md: rgba(194, 65, 12, 0.4);
+  --theme-shadow-lg: rgba(194, 65, 12, 0.6);
+}
+[data-theme-color="pink"] {
+  --theme-primary: #ec4899;
+  --theme-primary-muted: #f472b6;
+  --theme-primary-dark: #db2777;
+  --theme-bg: rgba(236, 72, 153, 0.4);
+  --theme-bg-card: rgba(236, 72, 153, 0.15);
+  --theme-border: rgba(236, 72, 153, 0.5);
+  --theme-border-strong: rgba(236, 72, 153, 0.7);
+  --theme-text: #f1f5f9;
+  --theme-text-muted: #cbd5e1;
+  --theme-shadow: rgba(219, 39, 119, 0.25);
+  --theme-shadow-sm: rgba(219, 39, 119, 0.2);
+  --theme-shadow-md: rgba(219, 39, 119, 0.4);
+  --theme-shadow-lg: rgba(219, 39, 119, 0.6);
+}
+[data-theme-color="sky"] {
+  --theme-primary: #0ea5e9;
+  --theme-primary-muted: #38bdf8;
+  --theme-primary-dark: #0284c7;
+  --theme-bg: rgba(14, 165, 233, 0.4);
+  --theme-bg-card: rgba(14, 165, 233, 0.15);
+  --theme-border: rgba(14, 165, 233, 0.5);
+  --theme-border-strong: rgba(14, 165, 233, 0.7);
+  --theme-text: #f1f5f9;
+  --theme-text-muted: #cbd5e1;
+  --theme-shadow: rgba(2, 132, 199, 0.25);
+  --theme-shadow-sm: rgba(2, 132, 199, 0.2);
+  --theme-shadow-md: rgba(2, 132, 199, 0.4);
+  --theme-shadow-lg: rgba(2, 132, 199, 0.6);
+}
+[data-theme-color="fuchsia"] {
+  --theme-primary: #d946ef;
+  --theme-primary-muted: #e879f9;
+  --theme-primary-dark: #c026d3;
+  --theme-bg: rgba(217, 70, 239, 0.4);
+  --theme-bg-card: rgba(217, 70, 239, 0.15);
+  --theme-border: rgba(217, 70, 239, 0.5);
+  --theme-border-strong: rgba(217, 70, 239, 0.7);
+  --theme-text: #f1f5f9;
+  --theme-text-muted: #cbd5e1;
+  --theme-shadow: rgba(192, 38, 211, 0.25);
+  --theme-shadow-sm: rgba(192, 38, 211, 0.2);
+  --theme-shadow-md: rgba(192, 38, 211, 0.4);
+  --theme-shadow-lg: rgba(192, 38, 211, 0.6);
+}
+
+/* Safe area for notched devices */
+@supports (padding: env(safe-area-inset-top)) {
+  .safe-area-insets {
+    padding-top: max(1rem, env(safe-area-inset-top));
+    padding-bottom: max(1rem, env(safe-area-inset-bottom));
+    padding-left: max(1rem, env(safe-area-inset-left));
+    padding-right: max(1rem, env(safe-area-inset-right));
+  }
+}
+
+/* Theme utility classes */
+.theme-border { border-color: var(--theme-border); }
+.theme-border-strong { border-color: var(--theme-border-strong); }
+.theme-bg { background-color: var(--theme-bg); }
+.theme-bg-card { background-color: var(--theme-bg-card); }
+.theme-text { color: var(--theme-text); }
+.theme-text-muted { color: var(--theme-text-muted); }
+.theme-shadow { box-shadow: 3px 3px 0 var(--theme-shadow); }
+.theme-shadow-sm { box-shadow: 2px 2px 0 var(--theme-shadow-sm); }
+.theme-shadow-md { box-shadow: 3px 3px 0 var(--theme-shadow-md); }
+.theme-shadow-lg { box-shadow: 4px 4px 0 var(--theme-shadow-lg); }
 
 /* Enhanced 3D Card Effects */
 .perspective-1000 {
@@ -65,3 +301,65 @@ body {
     background-position: 200% center;
   }
 }
+
+/* Pixelated skeleton shimmer */
+@keyframes skeleton-shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+.skeleton-shimmer {
+  background: linear-gradient(
+    90deg,
+    rgba(15, 23, 42, 0.98) 0%,
+    rgba(30, 41, 59, 0.9) 30%,
+    rgba(51, 65, 85, 0.98) 50%,
+    rgba(30, 41, 59, 0.9) 70%,
+    rgba(15, 23, 42, 0.98) 100%
+  );
+  background-size: 200% 100%;
+  animation: skeleton-shimmer 1.8s ease-in-out infinite;
+}
+
+/* Chrome dinosaur animation */
+@keyframes dino-bounce {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-6px); }
+}
+@keyframes dino-leg-front {
+  0%, 100% { transform: rotate(-20deg); }
+  50% { transform: rotate(15deg); }
+}
+@keyframes dino-leg-back {
+  0%, 100% { transform: rotate(15deg); }
+  50% { transform: rotate(-20deg); }
+}
+.animate-dino-bounce {
+  animation: dino-bounce 0.5s ease-in-out infinite;
+}
+.animate-dino-leg-front {
+  animation: dino-leg-front 0.5s ease-in-out infinite;
+}
+.animate-dino-leg-back {
+  animation: dino-leg-back 0.5s ease-in-out infinite;
+}
+
+/* Landing card intro animation */
+@keyframes landing-intro {
+  0% {
+    opacity: 0;
+    transform: scale(0.85) translateY(20px);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+.animate-landing-intro {
+  animation: landing-intro 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+

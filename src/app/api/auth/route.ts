@@ -60,7 +60,8 @@ export const GET = async (request: NextRequest) => {
       const userData = await userInfoResponse.json();
       username = userData.login || "unknown";
       userId = userData.id || null;
-      campusId = userData.campus_users?.[0]?.campus_id || null;
+      const primaryCampus = userData.campus_users?.find((cu: { is_primary?: boolean }) => cu.is_primary);
+      campusId = primaryCampus?.campus_id ?? userData.campus_users?.[0]?.campus_id ?? null;
     }
     
     const token = new TextEncoder().encode(process.env.SECRET_KEY as string);

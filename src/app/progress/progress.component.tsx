@@ -21,8 +21,10 @@ import { useRouter } from "next/navigation";
 const ProgressBar: React.FC<{
   setUserData: React.Dispatch<React.SetStateAction<UserData[] | null[]>>;
   pageNumber: number;
+  setPageNumber: React.Dispatch<React.SetStateAction<number>>;
   setIsFetchingData: React.Dispatch<React.SetStateAction<boolean>>;
-}> = ({ setUserData, pageNumber, setIsFetchingData }) => {
+  setIsLoadingMore: React.Dispatch<React.SetStateAction<boolean>>;
+}> = ({ setUserData, pageNumber, setPageNumber, setIsFetchingData, setIsLoadingMore }) => {
   const { rateLimitState, handleRateLimitResponse, closeRateLimitPopup } = useRateLimitHandler();
   const [cursuson, setCursuson] = React.useState<boolean>(false);
   const [campusOn, setCampusOn] = React.useState<boolean>(false);
@@ -100,8 +102,11 @@ const ProgressBar: React.FC<{
   };
 
   const FetchData = async (object: SearchDeliverData, more: boolean) => {
-    if (!more) {
+    if (more) {
+      setIsLoadingMore(true);
+    } else {
       setIsFetchingData(true);
+      setPageNumber(1);
     }
     const response = await fetch("/api/progress", {
       method: "POST",
@@ -115,12 +120,14 @@ const ProgressBar: React.FC<{
     const isRateLimited = await handleRateLimitResponse(response);
     if (isRateLimited) {
       setIsFetchingData(false);
+      setIsLoadingMore(false);
       return;
     }
     
     if (!response.ok) {
       console.error("Failed to fetch progress data");
       setIsFetchingData(false);
+      setIsLoadingMore(false);
       fetchLogout();
       return;
     }
@@ -131,6 +138,7 @@ const ProgressBar: React.FC<{
       setUserData(data);
     }
     setIsFetchingData(false);
+    setIsLoadingMore(false);
   };
 
   React.useEffect(() => {
@@ -141,6 +149,7 @@ const ProgressBar: React.FC<{
 
   React.useEffect(() => {
     if (userData !== null) {
+      setPageNumber(1);
       const initialMonth = monthsIndex
         .findIndex((find) => find == (userData.pool_month as string))
         .toString();
@@ -168,35 +177,33 @@ const ProgressBar: React.FC<{
     };
   }, [userData]);
 
+  const dropdownTriggerClass = "transition-all duration-200 min-w-0 flex-1 sm:flex-none sm:w-[90px] cursor-pointer relative h-8 rounded-md border border-white/10 bg-white/5 gap-0.5 flex items-center justify-center hover:bg-white/10 hover:border-white/20";
+  const dropdownPanelClass = "absolute overflow-y-auto top-10 left-0 right-0 w-full min-w-[60px] sm:min-w-[90px] bg-gray-900/95 backdrop-blur-sm border border-white/10 rounded-md p-1.5 flex flex-col gap-0.5 min-h-[70px] max-h-[90px] z-50 shadow-xl";
+  const dropdownItemClass = "text-slate-200 flex-1 flex items-center justify-center text-[9px] sm:text-[10px] cursor-pointer hover:bg-white/10 rounded px-2 py-1.5 font-medium transition-colors";
+
   return (
-    <div className="w-full z-20 gap-2 h-[60px] bg-gray-800/90 flex items-center justify-center">
+    <div className="grid grid-cols-[1fr_1fr_1fr_auto_auto] sm:flex sm:flex-wrap items-center gap-2 w-full" style={{ fontFamily: "var(--font-pixel)" }}>
       <div
         ref={monthTriggerRef}
-        onClick={() => {
-          setMonthOn(!monthOn);
-        }}
-        className={`${
-          DataSearch.cursus.name == "Piscine" ? "flex" : "hidden"
-        } transition-all duration-200 w-[70px] sm:w-[110px] cursor-pointer
-           relative rounded-md border-solid border-[1px] border-white/5 h-[30px]
-                 bg-[#0070ef]/5 gap-1 items-center justify-center`}
+        onClick={() => setMonthOn(!monthOn)}
+        className={`${DataSearch.cursus.name == "Piscine" ? "flex" : "hidden"} ${dropdownTriggerClass}`}
       >
-        <p className="font-Tektur font-extralight text-white text-[10px] sm:text-[12px]">
+        <p className="text-slate-200 text-[9px] sm:text-[10px] font-medium truncate">
           {DataSearch.month}
         </p>
-        <FaCaretDown color="white" />
+        <FaCaretDown className="text-slate-400 flex-shrink-0 w-2.5 h-2.5 sm:w-3 sm:h-3" />
         <motion.div
           ref={monthRef}
           initial={{ opacity: 0, y: -10 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.3 }}
+          transition={{ duration: 0.2 }}
           style={{ display: monthOn ? "flex" : "none" }}
-          className={`absolute overflow-scroll top-8 bg-[#001226] w-[70px] overflow-x-hidden sm:w-[110px] h-[100px] rounded-md p-2 flex-col gap-1`}
+          className={dropdownPanelClass}
         >
           {MonthList.map((month) => (
             <div
               key={month}
-              className="text-white flex-1 flex items-center justify-center text-[12px] cursor-pointer hover:bg-[#0070ef]/10 p-1 rounded-md"
+              className={dropdownItemClass}
               onClick={() => {
                 setMonthOn(false);
                 setDataSearch({ ...DataSearch, month: month });
@@ -208,29 +215,24 @@ const ProgressBar: React.FC<{
         </motion.div>
       </div>
 
-      <div
-        ref={yearTriggerRef}
-        onClick={() => setYearOn(!yearOn)}
-        className="transition-all duration-200 w-[70px] sm:w-[110px] cursor-pointer relative rounded-md border-solid border-[1px] border-white/5 h-[30px]
-                 bg-[#0070ef]/5 gap-1 flex items-center justify-center"
-      >
-        <p className="font-Tektur font-extralight text-white text-[10px] sm:text-[12px]">
+      <div ref={yearTriggerRef} onClick={() => setYearOn(!yearOn)} className={dropdownTriggerClass}>
+        <p className="text-slate-200 text-[9px] sm:text-[10px] font-medium truncate">
           {DataSearch.year}
         </p>
-        <FaCaretDown color="white" />
+        <FaCaretDown className="text-slate-400 flex-shrink-0 w-2.5 h-2.5 sm:w-3 sm:h-3" />
         {yearOn && (
           <motion.div
             ref={yearRef}
             initial={{ opacity: 0, y: -10 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.3 }}
+            transition={{ duration: 0.2 }}
             style={{ display: yearOn ? "flex" : "none" }}
-            className={`absolute overflow-scroll top-8 bg-[#001226] w-[70px] overflow-x-hidden sm:w-[110px] h-[100px] rounded-md p-2 flex-col gap-1`}
+            className={dropdownPanelClass}
           >
             {YearList.map((year) => (
               <div
                 key={year}
-                className="text-white flex-1 flex items-center justify-center text-[12px] cursor-pointer hover:bg-[#0070ef]/10 p-1 rounded-md"
+                className={dropdownItemClass}
                 onClick={() => {
                   setYearOn(false);
                   setDataSearch({ ...DataSearch, year: year });
@@ -243,34 +245,26 @@ const ProgressBar: React.FC<{
         )}
       </div>
 
-      <div
-        ref={cursusTriggerRef}
-        onClick={() => setCursuson(!cursuson)}
-        className="transition-all duration-200 w-[70px] sm:w-[110px] cursor-pointer relative rounded-md border-solid border-[1px] border-white/5 h-[30px]
-                 bg-[#0070ef]/5 gap-1 flex items-center justify-center"
-      >
-        <p className="font-Tektur font-extralight text-white text-[10px] sm:text-[12px]">
+      <div ref={cursusTriggerRef} onClick={() => setCursuson(!cursuson)} className={dropdownTriggerClass}>
+        <p className="text-slate-200 text-[9px] sm:text-[10px] font-medium truncate">
           {DataSearch.cursus.name}
         </p>
-        <FaCaretDown color="white" />
+        <FaCaretDown className="text-slate-400 flex-shrink-0 w-2.5 h-2.5 sm:w-3 sm:h-3" />
         {cursuson && (
           <motion.div
             ref={cursusRef}
             initial={{ opacity: 0, y: -10 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.3 }}
-            className={`absolute top-8 bg-[#001226] w-[70px] overflow-x-hidden sm:w-[110px] h-[70px] rounded-md p-2 flex-col gap-1`}
+            transition={{ duration: 0.2 }}
+            className={dropdownPanelClass}
           >
             {CursusList.map((cursus) => (
               <div
                 key={cursus.id}
-                className="text-white flex-1 flex items-center justify-center text-[12px] cursor-pointer hover:bg-[#0070ef]/10 p-1 rounded-md"
+                className={dropdownItemClass}
                 onClick={() => {
                   setCursuson(false);
-                  setDataSearch({
-                    ...DataSearch,
-                    cursus: { name: cursus.name, id: cursus.id },
-                  });
+                  setDataSearch({ ...DataSearch, cursus: { name: cursus.name, id: cursus.id } });
                 }}
               >
                 {cursus.name}
@@ -280,34 +274,26 @@ const ProgressBar: React.FC<{
         )}
       </div>
 
-      <div
-        ref={campusTriggerRef}
-        onClick={() => setCampusOn(!campusOn)}
-        className="transition-all duration-200 w-[70px] sm:w-[110px] cursor-pointer relative rounded-md border-solid border-[1px] border-white/5 h-[30px]
-                 bg-[#0070ef]/5 gap-1 flex items-center justify-center"
-      >
-        <p className="font-Tektur font-extralight text-white text-[10px] sm:text-[12px]">
+      <div ref={campusTriggerRef} onClick={() => setCampusOn(!campusOn)} className={dropdownTriggerClass}>
+        <p className="text-slate-200 text-[9px] sm:text-[10px] font-medium truncate">
           {DataSearch.campus.name}
         </p>
-        <FaCaretDown color="white" />
+        <FaCaretDown className="text-slate-400 flex-shrink-0 w-2.5 h-2.5 sm:w-3 sm:h-3" />
         {campusOn && (
           <motion.div
             ref={campusRef}
             initial={{ opacity: 0, y: -10 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.3 }}
-            className="absolute overflow-scroll top-8 bg-[#001226] w-[70px] overflow-x-hidden sm:w-[110px] h-[100px] rounded-md p-2 flex-col gap-1"
+            transition={{ duration: 0.2 }}
+            className={dropdownPanelClass}
           >
             {CampusList.map((campus) => (
               <div
                 key={campus.id}
-                className="text-white flex-1 flex items-center justify-center text-[12px] cursor-pointer hover:bg-[#0070ef]/10 p-1 rounded-md"
+                className={dropdownItemClass}
                 onClick={() => {
                   setCampusOn(false);
-                  setDataSearch({
-                    ...DataSearch,
-                    campus: { name: campus.name, id: campus.id },
-                  });
+                  setDataSearch({ ...DataSearch, campus: { name: campus.name, id: campus.id } });
                 }}
               >
                 {campus.name}
@@ -321,31 +307,28 @@ const ProgressBar: React.FC<{
       <div
         onClick={() => {
           setUserData(cloneData as null[]);
-          const globalData = {
-            ...DataSearch,
-            campus: { name: "All", id: 0 },
-            cursus: { name: "Cursus", id: 21 },
-            page: 1,
-          };
+          setPageNumber(1);
+          const globalData = { ...DataSearch, campus: { name: "All", id: 0 }, cursus: { name: "Cursus", id: 21 }, page: 1 };
           setDataSearch(globalData);
           setLastSearchedParams(globalData);
           FetchData(globalData, false);
         }}
-        className="w-[30px] cursor-pointer rounded-md border-solid border-[1px] border-white/4 h-[30px] bg-yellow-500/20 hover:bg-yellow-500/30 flex items-center justify-center transition-all duration-200"
+        className="w-8 h-8 flex-shrink-0 cursor-pointer rounded-md border border-white/10 bg-white/5 flex items-center justify-center transition-all duration-200 hover:bg-white/10 hover:border-white/20"
         title="Global Rank"
       >
-        <span className="text-[16px]">🌍</span>
+        <span className="text-sm">🌍</span>
       </div>
       
       <div
         onClick={() => {
           setUserData(cloneData as null[]);
+          setPageNumber(1);
           setLastSearchedParams(DataSearch);
           FetchData(DataSearch, false);
         }}
-        className="w-[30px] cursor-pointer rounded-md border-solid border-[1px] border-white/4 h-[30px] bg-[#0070ef]/20 flex items-center justify-center"
+        className="w-8 h-8 flex-shrink-0 cursor-pointer rounded-md border border-white/10 bg-white/5 flex items-center justify-center transition-all duration-200 hover:bg-white/10 hover:border-white/20"
       >
-        <CiSearch color="white" />
+        <CiSearch className="text-slate-300 w-4 h-4" />
       </div>
       
       {/* Rate Limit Popup */}

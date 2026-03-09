@@ -110,33 +110,39 @@ export async function GET(request: NextRequest) {
       );
     }
     
-    let badge: { type: 'creator' | 'vip' | 'feedback'; name: string } | null = null;
+    let badge: { type: 'creator' | 'vip' | 'owner' | 'staff' | 'feedback'; name: string } | null = null;
     try {
       const pool = new Pool({ connectionString: process.env.DATABASE_KEY });
       
-      const feedbackQuery = `
-        SELECT badge_type 
-        FROM leets.feedback 
-        WHERE user_login = $1 
-        AND badge_awarded = TRUE 
-        ORDER BY created_at DESC 
-        LIMIT 1
-      `;
-      const feedbackResult = await pool.query(feedbackQuery, [userResponse.login]);
+      // Priority: Owner > Creator > VIP > feedback (check VIP first)
+      const vipQuery = `SELECT token FROM leets.vip WHERE login = $1`;
+      const vipResult = await pool.query(vipQuery, [userResponse.login]);
       
-      if (feedbackResult.rows.length > 0 && feedbackResult.rows[0].badge_type) {
-        badge = { type: 'feedback', name: feedbackResult.rows[0].badge_type };
-      } else {
-        const vipQuery = `SELECT token FROM leets.vip WHERE login = $1`;
-        const vipResult = await pool.query(vipQuery, [userResponse.login]);
-        
-        if (vipResult.rows.length > 0) {
-          const token = vipResult.rows[0].token;
-          if (token === 'creator') {
-            badge = { type: 'creator', name: 'creator' };
-          } else if (token === 'vip' || token === 'owner') {
-            badge = { type: 'vip', name: token };
-          }
+      if (vipResult.rows.length > 0) {
+        const token = String(vipResult.rows[0].token || '').toLowerCase();
+        if (token === 'owner') {
+          badge = { type: 'owner', name: 'owner' };
+        } else if (token === 'creator') {
+          badge = { type: 'creator', name: 'creator' };
+        } else if (token === 'staff') {
+          badge = { type: 'staff', name: 'staff' };
+        } else if (token === 'vip') {
+          badge = { type: 'vip', name: 'vip' };
+        }
+      }
+      
+      if (!badge) {
+        const feedbackQuery = `
+          SELECT badge_type 
+          FROM leets.feedback 
+          WHERE user_login = $1 
+          AND badge_awarded = TRUE 
+          ORDER BY created_at DESC 
+          LIMIT 1
+        `;
+        const feedbackResult = await pool.query(feedbackQuery, [userResponse.login]);
+        if (feedbackResult.rows.length > 0 && feedbackResult.rows[0].badge_type) {
+          badge = { type: 'feedback', name: feedbackResult.rows[0].badge_type };
         }
       }
       
@@ -159,8 +165,18 @@ export async function GET(request: NextRequest) {
         pool_year: userResponse.pool_year || null,
         location: userResponse.location || null,
         wallet: userResponse.wallet || 0,
-        campus_id: userResponse.campus?.[0]?.id || 0,
-        campus_name: userResponse.campus?.[0]?.name || "Unknown",
+        campus_id: (() => {
+          const primaryCampus = userResponse.campus_users?.find((cu: { is_primary?: boolean }) => cu.is_primary);
+          const campusId = primaryCampus?.campus_id ?? userResponse.campus_users?.[0]?.campus_id;
+          const campus = userResponse.campus?.find((c: { id: number }) => c.id === campusId);
+          return campus?.id || userResponse.campus?.[0]?.id || 0;
+        })(),
+        campus_name: (() => {
+          const primaryCampus = userResponse.campus_users?.find((cu: { is_primary?: boolean }) => cu.is_primary);
+          const campusId = primaryCampus?.campus_id ?? userResponse.campus_users?.[0]?.campus_id;
+          const campus = userResponse.campus?.find((c: { id: number }) => c.id === campusId);
+          return campus?.name || userResponse.campus?.[0]?.name || "Unknown";
+        })(),
         level: userResponse?.cursus_users?.[1]?.level || 0,
         fullname: userResponse.usual_full_name || userResponse.displayname || userResponse.login,
         badge: badge,

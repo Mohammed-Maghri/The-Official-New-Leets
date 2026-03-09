@@ -2,22 +2,39 @@
 import React, { FC } from "react";
 import { ButtonsProps } from "./navbar.types";
 import { motion } from "motion/react";
-import { useRouter } from "next/navigation";
+import { useRouter, usePathname } from "next/navigation";
 
 const Buttons: FC<ButtonsProps> = ({ icon, title, route }) => {
   const router = useRouter();
+  const pathname = usePathname();
+  const isActive = pathname === route;
+
   return (
     <motion.div
       onClick={() => router.push(route)}
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
-      transition={{ duration: 1 }}
-      className="flex bg-blue-950/20 border-solid border-[1px] border-blue-800/40
-     w-[120px] cursor-pointer rounded-lg hover:border-blue-700/60 hover:bg-blue-950/30
-     duration-200 items-center justify-center gap-1 h-[30px]"
+      transition={{ duration: 0.3 }}
+      className={`
+        flex border-2 items-center justify-center gap-1.5 h-8 px-3 cursor-pointer
+        transition-all duration-150 active:translate-y-0.5
+        font-bold text-[10px] uppercase tracking-wider
+        ${isActive
+          ? "theme-border-strong bg-[var(--theme-bg)] text-white shadow-[0_0_15px_var(--theme-bg)]"
+          : "theme-border bg-[var(--theme-bg-card)] theme-text hover:border-[var(--theme-border-strong)] hover:bg-[var(--theme-bg)]"
+        }
+      `}
+      style={{
+        fontFamily: "var(--font-pixel)",
+        boxShadow: isActive
+          ? "3px 3px 0 var(--theme-shadow-md), inset 0 1px 0 rgba(255,255,255,0.1)"
+          : "2px 2px 0 rgba(0,0,0,0.3)",
+      }}
     >
-      <div className="  flex items-center justify-center">{icon}</div>
-      <p className="text-white font-Tektur text-[11px]">{title}</p>
+      <div className="flex items-center justify-center [&>svg]:w-3.5 [&>svg]:h-3.5">
+        {icon}
+      </div>
+      <span>{title}</span>
     </motion.div>
   );
 };

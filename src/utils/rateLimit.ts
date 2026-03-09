@@ -64,6 +64,11 @@ export async function rateLimit(
   request: NextRequest,
   config: RateLimitConfig = { maxRequests: 30, windowMs: 60000 } // Default: 30 requests per minute
 ): Promise<NextResponse | null> {
+  // Skip rate limiting in development
+  if (process.env.NODE_ENV === "development") {
+    return null;
+  }
+
   // Get user identifier - use username from JWT token to prevent bypass by logout
   let identifier: string;
   

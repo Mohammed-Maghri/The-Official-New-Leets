@@ -143,80 +143,34 @@ export const POST = async (request: NextRequest) => {
     // Get all user logins from the response
     const allUserLogins = response.map((item: UserProgress) => item.user.login);
     
-    const userBadgeMap: Map<string, { vipStatus: string | null; badges: string[] }> = new Map();
+    const vipTokenMap = new Map<string, string>();
     
     if (allUserLogins.length > 0) {
       try {
         client = new Pool({ connectionString: process.env.DATABASE_KEY });
-        
-        const badgeQuery = `
-          SELECT 
-            users.login,
-            v.token as vip_status,
-            COALESCE(
-              array_agg(f.badge_type ORDER BY 
-                CASE f.badge_type
-                  WHEN 'Top Feedback' THEN 1
-                  WHEN 'Innovative' THEN 2
-                  WHEN 'Critical Thinker' THEN 3
-                  WHEN 'Helpful' THEN 4
-                  WHEN 'Contributor' THEN 5
-                  ELSE 6
-                END
-              ) FILTER (WHERE f.badge_awarded = TRUE),
-              ARRAY[]::text[]
-            ) as badges
-          FROM (
-            SELECT DISTINCT login FROM leets.vip WHERE login = ANY($1)
-            UNION
-            SELECT DISTINCT user_login FROM leets.feedback WHERE user_login = ANY($1) AND badge_awarded = TRUE
-          ) users(login)
-          LEFT JOIN leets.vip v ON v.login = users.login
-          LEFT JOIN leets.feedback f ON f.user_login = users.login AND f.badge_awarded = TRUE
-          GROUP BY users.login, v.token
-        `;
-        const badgeResult = await client.query(badgeQuery, [allUserLogins]);
-        
-        badgeResult.rows.forEach(row => {
-          userBadgeMap.set(row.login, {
-            vipStatus: row.vip_status,
-            badges: row.badges || []
-          });
+        const vipResult = await client.query(
+          `SELECT login, token FROM leets.vip WHERE login = ANY($1)`,
+          [allUserLogins]
+        );
+        vipResult.rows.forEach((row: { login: string; token: string }) => {
+          vipTokenMap.set(row.login, row.token);
         });
-      } catch (badgeError) {
-        console.error("Error fetching badges:", badgeError);
-        // Continue without badges if query fails
+      } catch (err) {
+        console.error("Error fetching VIP tokens:", err);
       }
     }
     
-    // Helper function to get the highest priority badge
-    const getTopBadge = (login: string) => {
-      const badgeData = userBadgeMap.get(login);
-      
-      if (!badgeData) {
-        return null;
-      }
-      
-      // Priority: Creator > VIP > Best Feedback Badge
-      if (badgeData.vipStatus === 'creator') {
-        return { type: 'creator', name: 'Creator' };
-      }
-      
-      if (badgeData.vipStatus === 'vip' || badgeData.vipStatus === 'owner') {
-        return { type: 'vip', name: badgeData.vipStatus === 'owner' ? 'Owner' : 'VIP' };
-      }
-      
-      // Get the best feedback badge (already sorted by priority in SQL)
-      if (badgeData.badges && badgeData.badges.length > 0) {
-        return { type: 'feedback', name: badgeData.badges[0] };
-      }
-      
+    const getBadge = (login: string) => {
+      const token = vipTokenMap.get(login)?.toLowerCase();
+      if (!token) return null;
+      if (token === 'owner') return { type: 'owner', name: 'owner' };
+      if (token === 'creator') return { type: 'creator', name: 'Creator' };
+      if (token === 'staff') return { type: 'staff', name: 'staff' };
+      if (token === 'vip') return { type: 'vip', name: 'VIP' };
       return null;
     };
     
     const NewRespons = response.map((item: UserProgress) => {
-      const topBadge = getTopBadge(item.user.login);
-      
       return {
         fullname: item.user.usual_full_name,
         email: item.user.email,
@@ -232,7 +186,7 @@ export const POST = async (request: NextRequest) => {
         campus_id: "",
         campus_name: "",
         level: item.level,
-        badge: topBadge, // { type: 'creator'|'vip'|'feedback', name: 'Badge Name' } or null
+        badge: getBadge(item.user.login),
       };
     }).filter((user: { login: string; staff: boolean; kind: string }) =>
       !user.staff && user.kind === "student" && !blockedLogins.has(user.login)

@@ -167,9 +167,11 @@ const PeerFinderPage = () => {
 
       const data = await response.json();
       
-      // Check if user has no projects
+      // Check if user has no projects - default to Inception (project_id 1983)
       if (data.noProjects) {
-        setError(data.message || "You are not subscribed to any projects. Please search for a project to find peers!");
+        setSelectedProject("Inception");
+        setSelectedProjectId(1983);
+        setError(null);
         setLoadingPeers(false);
         return;
       }
@@ -338,8 +340,8 @@ const PeerFinderPage = () => {
 
   if (loading) {
     return (
-      <div className="flex flex-1 items-center justify-center bg-gradient-to-br from-gray-900/50 via-gray-800/30 to-gray-900/50">
-        <div className="text-white text-xl font-Tektur animate-pulse">
+      <div className="flex flex-1 items-center justify-center">
+        <div className="theme-text text-xl animate-pulse" style={{ fontFamily: "var(--font-pixel)" }}>
           Loading Peer Finder...
         </div>
       </div>
@@ -347,14 +349,26 @@ const PeerFinderPage = () => {
   }
 
   return (
-    <div className="flex flex-1 items-center justify-start overflow-x-hidden flex-col bg-gradient-to-br z-10 from-gray-900/50 via-gray-800/30 to-gray-900/50 relative p-6">
-      <div className="w-full bg-blue-950/30 backdrop-blur-xl rounded-2xl border border-blue-800/50 flex flex-1 flex-col p-4 md:p-6 lg:p-8 space-y-4 md:space-y-6">
+    <div className="flex flex-1 items-center justify-start overflow-x-hidden flex-col z-10 relative w-full">
+      <div
+        className="relative w-full border-4 theme-border-strong bg-gray-950/98 flex flex-1 flex-col p-4 md:p-6 lg:p-8 space-y-4 md:space-y-6"
+        style={{
+          fontFamily: "var(--font-pixel)",
+          boxShadow: "6px 6px 0 var(--theme-shadow-lg), inset 0 1px 0 rgba(255,255,255,0.05)",
+        }}
+      >
+        {/* Pixel corners */}
+        <div className="absolute top-0 left-0 w-4 h-4 border-l-2 border-t-2 theme-border z-10" />
+        <div className="absolute top-0 right-0 w-4 h-4 border-r-2 border-t-2 theme-border z-10" />
+        <div className="absolute bottom-0 left-0 w-4 h-4 border-l-2 border-b-2 theme-border z-10" />
+        <div className="absolute bottom-0 right-0 w-4 h-4 border-r-2 border-b-2 theme-border z-10" />
+
         {/* Header */}
         <div className="flex flex-col space-y-2">
-          <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold font-Tektur text-white">
+          <h1 className="text-2xl md:text-3xl lg:text-4xl font-bold theme-text uppercase tracking-[0.15em]">
             Peer Finder
           </h1>
-          <p className="text-base md:text-lg text-gray-400 font-Tektur">
+          <p className="text-sm md:text-base theme-text-muted uppercase tracking-wider">
             {isPromoPeers 
               ? "Your promo peers in the common core"
               : "Find students working on the same project in your campus"}
@@ -365,23 +379,27 @@ const PeerFinderPage = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-3 md:gap-4">
           {/* Campus Selector */}
           <div className="space-y-2 relative z-[100]">
-            <label className="text-sm font-semibold text-gray-300 font-Tektur">
+            <label className="text-[10px] font-bold theme-text-muted uppercase tracking-wider">
               Select Campus
             </label>
             <div className="relative">
               <div
                 onClick={() => setCampusDropdownOpen(!campusDropdownOpen)}
-                className="w-full px-4 py-3 rounded-xl bg-blue-950/20 backdrop-blur-sm border border-blue-800/40 text-white font-Tektur cursor-pointer hover:bg-blue-950/30 transition-all duration-300 flex items-center justify-between"
+                className="w-full px-4 py-3 border-2 theme-border bg-[var(--theme-bg-card)] theme-text cursor-pointer hover:border-[var(--theme-primary)] transition-all flex items-center justify-between"
+                style={{ fontFamily: "var(--font-pixel)", boxShadow: "2px 2px 0 rgba(0,0,0,0.2)" }}
               >
                 <span>{selectedCampus.name}</span>
                 <FaCaretDown
-                  className={`transition-transform duration-300 ${
+                  className={`transition-transform duration-200 ${
                     campusDropdownOpen ? "rotate-180" : ""
                   }`}
                 />
               </div>
               {campusDropdownOpen && (
-                <div className="absolute top-full left-0 mt-2 w-full bg-blue-950/95 border border-blue-800/50 rounded-xl z-[9999] max-h-[300px] overflow-y-auto scrollbar-thin scrollbar-thumb-blue-700/50 scrollbar-track-blue-950">
+                <div
+                  className="absolute top-full left-0 mt-2 w-full border-2 theme-border bg-gray-950/98 z-[9999] max-h-[300px] overflow-y-auto"
+                  style={{ boxShadow: "4px 4px 0 rgba(0,0,0,0.3)" }}
+                >
                   {CampusList.map((campus) => (
                     <div
                       key={campus.id}
@@ -391,11 +409,12 @@ const PeerFinderPage = () => {
                         setPeers([]);
                         fetchPromoPeers();
                       }}
-                      className={`px-4 py-3 text-sm font-Tektur cursor-pointer transition-all duration-200 border-b border-blue-800/30 last:border-b-0 ${
+                      className={`px-4 py-3 text-xs cursor-pointer transition-all border-b theme-border last:border-b-0 ${
                         selectedCampus.id === campus.id
-                          ? "bg-blue-900/40 text-white"
-                          : "text-gray-300 hover:bg-blue-900/20"
+                          ? "bg-[var(--theme-bg-card)] theme-text"
+                          : "theme-text-muted hover:bg-[var(--theme-bg-card)] hover:theme-text"
                       }`}
+                      style={{ fontFamily: "var(--font-pixel)" }}
                     >
                       {campus.name}
                     </div>
@@ -407,7 +426,7 @@ const PeerFinderPage = () => {
 
           {/* Project Selector */}
           <div className="space-y-2 relative z-[90]">
-            <label className="text-sm font-semibold text-gray-300 font-Tektur">
+            <label className="text-[10px] font-bold theme-text-muted uppercase tracking-wider">
               Select Project
             </label>
             <div className="relative">
@@ -423,10 +442,14 @@ const PeerFinderPage = () => {
                   setTimeout(() => setDropdownOpen(false), 200);
                 }}
                 placeholder="Search for a project..."
-                className="w-full px-4 py-3 rounded-xl bg-blue-950/20 backdrop-blur-sm border border-blue-800/40 text-white placeholder-gray-500 font-Tektur outline-none focus:border-blue-700/60 hover:bg-blue-950/30 transition-all duration-300"
+                className="w-full px-4 py-3 border-2 theme-border bg-[var(--theme-bg-card)] theme-text placeholder-[var(--theme-text-muted)] outline-none focus:border-[var(--theme-primary)] transition-all"
+                style={{ fontFamily: "var(--font-pixel)", boxShadow: "2px 2px 0 rgba(0,0,0,0.2)" }}
               />
               {dropdownOpen && filteredProjects.length > 0 && (
-                <div className="absolute top-full left-0 mt-2 w-full max-h-64 overflow-auto bg-blue-950/95 border border-blue-800/50 rounded-xl z-[9999]">
+                <div
+                  className="absolute top-full left-0 mt-2 w-full max-h-64 overflow-auto border-2 theme-border bg-gray-950/98 z-[9999]"
+                  style={{ boxShadow: "4px 4px 0 rgba(0,0,0,0.3)" }}
+                >
                   {filteredProjects.map((project, index) => (
                     <div
                       key={index}
@@ -434,9 +457,10 @@ const PeerFinderPage = () => {
                         e.preventDefault();
                         handleProjectSelect(project.name, project.project_id);
                       }}
-                      className="px-4 py-3 text-sm font-Tektur cursor-pointer transition-all duration-200 text-gray-300 hover:bg-blue-900/40 hover:text-white border-b border-blue-800/30 last:border-b-0"
+                      className="px-4 py-3 text-xs cursor-pointer transition-all theme-text-muted hover:bg-[var(--theme-bg-card)] hover:theme-text border-b theme-border last:border-b-0"
+                      style={{ fontFamily: "var(--font-pixel)" }}
                     >
-                      <div className="font-semibold">{project.name}</div>
+                      <div className="font-bold uppercase">{project.name}</div>
                     </div>
                   ))}
                 </div>
@@ -449,59 +473,62 @@ const PeerFinderPage = () => {
         <button
           onClick={handleSearch}
           disabled={!selectedProjectId || loadingPeers}
-          className="w-full py-4 bg-gradient-to-r from-blue-600 to-blue-500 hover:from-blue-700 hover:to-blue-600 text-white font-Tektur font-bold rounded-xl transition-all duration-300 hover:scale-[1.02] disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100 relative z-20"
+          className="w-full py-4 border-2 theme-border-strong font-bold uppercase tracking-wider transition-all duration-200 hover:scale-[1.02] active:translate-y-0.5 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100 relative z-20"
+          style={{
+            fontFamily: "var(--font-pixel)",
+            color: "var(--theme-text)",
+            background: "linear-gradient(to bottom, color-mix(in srgb, var(--theme-primary) 30%, transparent), color-mix(in srgb, var(--theme-primary-dark) 40%, transparent))",
+            boxShadow: "4px 4px 0 var(--theme-shadow-lg), inset 0 1px 0 rgba(255,255,255,0.1)",
+          }}
         >
           {loadingPeers ? "Searching..." : "Find Peers"}
         </button>
 
         {/* Error Message */}
         {error && (
-          <div className="bg-red-500/10 border border-red-500/30 rounded-xl p-4 text-red-300 font-Tektur text-sm">
-            {error}
+          <div className="border-2 border-red-500/50 bg-red-500/10 p-4 theme-text" style={{ fontFamily: "var(--font-pixel)" }}>
+            <span className="text-red-400">{error}</span>
           </div>
         )}
 
         {/* Peers List */}
         {loadingPeers ? (
           <div className="flex items-center justify-center py-20">
-            <div className="text-white text-xl font-Tektur animate-pulse">
+            <div className="theme-text text-xl animate-pulse" style={{ fontFamily: "var(--font-pixel)" }}>
               Loading peers...
             </div>
           </div>
         ) : peers.length > 0 ? (
-          <div className="space-y-3 pt-4 border-t border-white/10">
-            <h3 className="text-lg md:text-xl font-semibold text-white font-Tektur">
+          <div className="space-y-3 pt-4 border-t-2 theme-border">
+            <h3 className="text-sm md:text-base font-bold theme-text uppercase tracking-wider">
               {isPromoPeers ? `Your Promo (${peers.length} peers)` : `Available Peers (${peers.length})`}
             </h3>
-            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-6">
+            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4">
               {peers.map((peer) => (
                 <div
-                  key={isPromoPeers ? peer.id : peer.id}
+                  key={isPromoPeers ? `promo-${getDisplayLogin(peer)}` : peer.id}
                   onClick={() => handleUserClick(getDisplayLogin(peer))}
-                  className="bg-blue-950/30 backdrop-blur-sm border border-blue-700/70 rounded-xl hover:bg-blue-950/40 transition-all duration-300 cursor-pointer hover:scale-105 flex flex-col items-center py-6 px-3 gap-3"
+                  className="border-2 theme-border bg-[var(--theme-bg-card)] hover:border-[var(--theme-border-strong)] transition-all cursor-pointer hover:scale-[1.02] active:translate-y-0.5 flex flex-col items-center py-6 px-3 gap-3"
+                  style={{ boxShadow: "2px 2px 0 rgba(0,0,0,0.2)" }}
                 >
-                  {/* Avatar with border */}
                   <div className="flex flex-col items-center gap-2">
                     <div className="relative">
                       <img
                         src={getDisplayImage(peer)}
                         alt={getDisplayLogin(peer)}
-                        className="w-24 h-24 rounded-full object-cover border-4 border-blue-700/50"
+                        className="w-20 h-20 sm:w-24 sm:h-24 object-cover border-2 theme-border"
+                        style={{ imageRendering: "pixelated" }}
                       />
                     </div>
                   </div>
-
-                  {/* Username */}
                   <div className="text-center w-full">
-                    <p className="text-white font-Tektur font-semibold text-sm truncate px-2">
+                    <p className="theme-text font-bold text-xs truncate px-2 uppercase tracking-wider">
                       {getDisplayLogin(peer)}
                     </p>
                   </div>
-
-                  {/* Status */}
                   <div className="w-full flex justify-center">
-                    <div className="px-3 py-1 bg-green-500/20 border border-green-500/40 rounded-lg">
-                      <p className="text-xs text-green-300 font-Tektur font-semibold">
+                    <div className="px-3 py-1 border-2 border-green-500/50 bg-green-500/20">
+                      <p className="text-[10px] text-green-300 font-bold uppercase tracking-wider">
                         {getDisplayStatus(peer)}
                       </p>
                     </div>
@@ -512,16 +539,16 @@ const PeerFinderPage = () => {
           </div>
         ) : selectedProjectId && !loadingPeers ? (
           <div className="flex flex-col items-center justify-center py-20 space-y-4">
-            <div className="text-gray-400 text-lg font-Tektur">
+            <div className="theme-text-muted text-sm uppercase tracking-wider" style={{ fontFamily: "var(--font-pixel)" }}>
               No peers found for this project
             </div>
-            <p className="text-gray-500 text-sm font-Tektur text-center max-w-md">
+            <p className="theme-text-muted text-[10px] text-center max-w-md uppercase tracking-wider">
               Try searching for a different project or check another campus
             </p>
           </div>
         ) : !loadingPeers && !isPromoPeers ? (
           <div className="flex flex-col items-center justify-center py-20 space-y-4">
-            <div className="text-gray-400 text-lg font-Tektur">
+            <div className="theme-text-muted text-sm uppercase tracking-wider" style={{ fontFamily: "var(--font-pixel)" }}>
               Select a project to find peers
             </div>
           </div>

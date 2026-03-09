@@ -10,14 +10,12 @@ import { ContextCreator } from "../context/context";
 import { ContextProps } from "../context/context.types";
 import { CiLogout } from "react-icons/ci";
 import { IoMdNotificationsOutline } from "react-icons/io";
-import { useRateLimitHandler } from "@/component/hooks/useRateLimitHandler";
-import RateLimitPopup from "@/component/RateLimitPopup";
 
 interface Notification {
   id: number;
   title: string;
   message: string;
-  type: 'info' | 'success' | 'warning' | 'error';
+  type: "info" | "success" | "warning" | "error";
   created_at: string;
   link: string | null;
   is_seen: boolean;
@@ -57,22 +55,28 @@ const DropDownMenu = () => {
       className="w-8 cursor-pointer items-center relative justify-center flex lg:hidden h-8"
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
-      transition={{ duration: 1 }}
+      transition={{ duration: 0.3 }}
       exit={{ opacity: 0 }}
     >
-      <CiMenuFries
+      <button
         onClick={() => setIsOpen(!isOpen)}
-        className="text-blue-400 text-2xl"
-      />
+        className="w-8 h-8 flex items-center justify-center border-2 theme-border bg-[var(--theme-bg-card)]
+          hover:bg-[var(--theme-bg)] hover:border-[var(--theme-border-strong)] transition-all duration-150 active:translate-y-0.5 theme-shadow-sm"
+        style={{ fontFamily: "var(--font-pixel)" }}
+      >
+        <CiMenuFries className="theme-text text-xl" />
+      </button>
       {isOpen && (
         <motion.div
           ref={menuRef}
-          initial={{ opacity: 0, y: -50 }}
+          initial={{ opacity: 0, y: -10 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.3 }}
-          exit={{ opacity: 0, scale: 0.5 }}
-          className="absolute right-2 bg-blue-950/95 gap-2 flex items-center justify-start 
-          p-2 flex-col border-solid border-[1px] border-blue-800/50 rounded-xl top-10"
+          transition={{ duration: 0.2 }}
+          className="absolute right-0 top-12 border-2 theme-border bg-gray-950/98 p-2 flex flex-col gap-1 theme-shadow-md"
+          style={{
+            fontFamily: "var(--font-pixel)",
+            boxShadow: "4px 4px 0 var(--theme-shadow-md), 0 0 30px var(--theme-bg-card)",
+          }}
         >
           {PathsObject.map((path, index) => (
             <Buttons
@@ -111,32 +115,20 @@ const Navbar = () => {
   const [notificationCount, setNotificationCount] = React.useState(0);
   const [notifications, setNotifications] = React.useState<Notification[]>([]);
   const [showNotifications, setShowNotifications] = React.useState(false);
-  const { rateLimitState, handleRateLimitResponse, closeRateLimitPopup } = useRateLimitHandler();
-  
+
   const fetchNotifications = async () => {
     try {
       const response = await fetch("/api/notifications", {
         method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-        },
+        headers: { "Content-Type": "application/json" },
         credentials: "include",
       });
-
-      // Check for rate limiting
-      const isRateLimited = await handleRateLimitResponse(response);
-      if (isRateLimited) return;
-
-      if (!response.ok) {
-        console.error("Failed to fetch notifications");
-        return;
-      }
-
+      if (!response.ok) return;
       const data = await response.json();
       setNotifications(data.notifications);
       setNotificationCount(data.unread_count);
-    } catch (error) {
-      console.error("Error fetching notifications:", error);
+    } catch (err) {
+      console.error("Failed to fetch notifications", err);
     }
   };
 
@@ -144,19 +136,13 @@ const Navbar = () => {
     try {
       const response = await fetch("/api/notifications/mark-seen", {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
+        headers: { "Content-Type": "application/json" },
         credentials: "include",
         body: JSON.stringify({ notification_id: notificationId }),
       });
-
-      if (response.ok) {
-        // Refresh notifications
-        fetchNotifications();
-      }
-    } catch (error) {
-      console.error("Error marking notification as seen:", error);
+      if (response.ok) fetchNotifications();
+    } catch (err) {
+      console.error("Failed to mark as seen", err);
     }
   };
 
@@ -164,68 +150,51 @@ const Navbar = () => {
     try {
       const response = await fetch("/api/notifications/mark-seen", {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
+        headers: { "Content-Type": "application/json" },
         credentials: "include",
         body: JSON.stringify({ mark_all: true }),
       });
-
-      if (response.ok) {
-        // Refresh notifications
-        fetchNotifications();
-      }
-    } catch (error) {
-      console.error("Error marking all notifications as seen:", error);
+      if (response.ok) fetchNotifications();
+    } catch (err) {
+      console.error("Failed to mark all as seen", err);
     }
   };
 
   const handleNotificationClick = (notification: Notification) => {
-    if (!notification.is_seen) {
-      markAsSeen(notification.id);
-    }
-    if (notification.link) {
-      router.push(notification.link);
-    }
+    if (!notification.is_seen) markAsSeen(notification.id);
+    if (notification.link) router.push(notification.link);
     setShowNotifications(false);
   };
 
   const getNotificationColor = (type: string) => {
     switch (type) {
-      case 'success':
-        return 'border-l-4 border-l-green-500';
-      case 'warning':
-        return 'border-l-4 border-l-yellow-500';
-      case 'error':
-        return 'border-l-4 border-l-red-500';
+      case "success":
+        return "border-l-4 border-l-green-500";
+      case "warning":
+        return "border-l-4 border-l-yellow-500";
+      case "error":
+        return "border-l-4 border-l-red-500";
       default:
-        return 'border-l-4 border-l-[#0070ef]';
+        return "border-l-4 border-l-[var(--theme-primary)]";
     }
   };
 
   const formatTimeAgo = (dateString: string) => {
     const date = new Date(dateString);
-    const now = new Date();
-    const seconds = Math.floor((now.getTime() - date.getTime()) / 1000);
-
-    if (seconds < 60) return 'Just now';
+    const seconds = Math.floor((Date.now() - date.getTime()) / 1000);
+    if (seconds < 60) return "Just now";
     if (seconds < 3600) return `${Math.floor(seconds / 60)}m ago`;
     if (seconds < 86400) return `${Math.floor(seconds / 3600)}h ago`;
     if (seconds < 604800) return `${Math.floor(seconds / 86400)}d ago`;
     return date.toLocaleDateString();
   };
-  
+
   const Logout = async () => {
     const response = await fetch("/api/logout", {
       method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-      },
+      headers: { "Content-Type": "application/json" },
     });
-    if (!response.ok) {
-      console.error("Failed to log out");
-      return;
-    }
+    if (!response.ok) return;
     setUserData(null);
     router.push("/");
   };
@@ -234,196 +203,198 @@ const Navbar = () => {
     try {
       const response = await fetch("/api/who", {
         method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-        },
+        headers: { "Content-Type": "application/json" },
         credentials: "include",
       });
-      
-      // Check for rate limiting
-      const isRateLimited = await handleRateLimitResponse(response);
-      if (isRateLimited) return;
-      
       if (!response.ok) {
-        // Only logout on 401 (unauthorized), not other errors
-        if (response.status === 401) {
-          Logout();
-        } else {
-          console.error("Failed to fetch user data:", response.status);
-        }
+        if (response.status === 401) Logout();
         return;
       }
-      
       const data = await response.json();
       setUserData(data);
-    } catch (error) {
-      console.error("Error fetching user data:", error);
+    } catch (err) {
+      console.error("Failed to fetch user data", err);
     }
   };
-
 
   React.useEffect(() => {
     DataToFetch();
     fetchNotifications();
   }, []);
+
   return (
-    <nav className="w-full h-16 bg-blue-950/30 border-b border-blue-800/50 backdrop-blur-xl z-20 flex items-center justify-between px-6">
-      <div 
-        onClick={() => router.push('/progress')}
-        className="flex items-center gap-1 cursor-pointer hover:opacity-80 transition-opacity duration-200"
+    <nav
+      className="relative w-full h-16 z-20 flex items-center justify-between px-4 sm:px-6 border-b-4 theme-border-strong bg-gray-950/98 backdrop-blur-xl"
+      style={{
+        fontFamily: "var(--font-pixel)",
+        boxShadow: "0 4px 0 var(--theme-shadow-md), 0 0 50px var(--theme-bg-card), inset 0 1px 0 var(--theme-border)",
+      }}
+    >
+      {/* Pixel corner accents */}
+      <div className="absolute top-0 left-0 w-4 h-4 border-l-2 border-t-2 theme-border" />
+      <div className="absolute top-0 right-0 w-4 h-4 border-r-2 border-t-2 theme-border" />
+      {/* Logo */}
+      <div
+        onClick={() => router.push("/progress")}
+        className="flex items-center cursor-pointer group"
       >
-        <div className="w-8 h-8 bg-gradient-to-br from-blue-600 to-blue-700 rounded-lg flex items-center justify-center rotate-3">
-          <span className="text-white font-Tektur text-sm font-bold">
-            13
-          </span>
-        </div>
-        <h1 className="text:[15px] sm:text-2xl m-2 sm:m-0 text-white font-Tektur tracking-tight">
-          1337leets
+        <h1
+          className="text-base sm:text-xl theme-text font-bold tracking-[0.15em]"
+          style={{
+            textShadow: "1px 0 0 var(--theme-primary-dark), -1px 0 0 var(--theme-primary-dark), 0 1px 0 var(--theme-primary-dark), 0 -1px 0 var(--theme-primary-dark)",
+          }}
+        >
+          1337LEETS
         </h1>
       </div>
-      <div className="flex items-center  h-full space-x-2 sm:space-x-4 md:space-x-6">
+
+      {/* Nav links */}
+      <div className="flex items-center h-full gap-2 sm:gap-3 md:gap-4">
         <Paths />
-        <div className="flex items-center space-x-2 sm:space-x-3 md:space-x-4 text-xs text-gray-600">
-          {/* Notification Bell */}
-          <div className="relative">
-            <button
-              onClick={() => setShowNotifications(!showNotifications)}
-              className="transition-all duration-200 flex cursor-pointer hover:scale-110 items-center 
-                justify-center w-[30px] h-[30px] sm:w-[35px] sm:h-[35px] rounded-full bg-blue-950/20 hover:bg-blue-900/30 
-                border border-blue-800/40 hover:border-blue-700/60 relative"
-            >
-              <IoMdNotificationsOutline className="text-white text-lg sm:text-xl" />
-              {notificationCount > 0 && (
-                <span className="absolute -top-1 -right-1 w-4 h-4 sm:w-5 sm:h-5 bg-red-500 rounded-full 
-                  flex items-center justify-center text-white text-[9px] sm:text-[10px] font-bold font-Tektur 
-                  border-2 border-gray-900 animate-pulse">
-                  {notificationCount > 9 ? '9+' : notificationCount}
-                </span>
-              )}
-            </button>
 
-            {/* Notifications Dropdown */}
-            {showNotifications && (
-              <>
-                {/* Mobile Overlay */}
-                <div 
-                  className="fixed inset-0 bg-black/50 z-[100] sm:hidden"
-                  onClick={() => setShowNotifications(false)}
-                />
-                
-                <motion.div
-                  initial={{ opacity: 0, y: -10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.2 }}
-                  className="fixed sm:absolute top-0 left-0 right-0 bottom-0 sm:inset-auto sm:right-0 sm:top-12 
-                    w-full h-screen sm:w-80 sm:h-auto bg-blue-950/95 border-0 sm:border border-blue-800/50 
-                    sm:rounded-xl z-[101] sm:max-h-96 overflow-y-auto flex flex-col backdrop-blur-xl"
-                >
-                  <div className="p-3 sm:p-4 border-b border-blue-800/50 flex items-center justify-between sticky top-0 bg-blue-950/95 backdrop-blur-xl z-10">
-                    <h3 className="text-white font-Tektur font-semibold text-base sm:text-base">
-                      Notifications {notificationCount > 0 && `(${notificationCount})`}
-                    </h3>
-                    <div className="flex items-center gap-2">
-                      {notificationCount > 0 && (
-                        <button
-                          onClick={markAllAsSeen}
-                          className="text-blue-400 hover:text-blue-300 font-Tektur text-xs"
-                        >
-                          Mark all read
-                        </button>
-                      )}
-                      <button 
-                        onClick={() => setShowNotifications(false)}
-                        className="sm:hidden text-gray-400 hover:text-white text-3xl leading-none"
-                      >
-                        ×
-                      </button>
-                    </div>
-                  </div>
-                  
-                  {notifications.length === 0 ? (
-                    <div className="p-6 sm:p-8 text-center flex-1 flex items-center justify-center">
-                      <p className="text-gray-400 font-Tektur text-sm">
-                        No notifications yet
-                      </p>
-                    </div>
-                  ) : (
-                    <div className="divide-y divide-blue-800/30 flex-1 overflow-y-auto">
-                      {notifications.map((notification) => (
-                        <div
-                          key={notification.id}
-                          onClick={() => handleNotificationClick(notification)}
-                          className={`p-3 sm:p-4 hover:bg-blue-900/30 transition-colors cursor-pointer ${
-                            !notification.is_seen ? 'bg-blue-900/20' : ''
-                          } ${getNotificationColor(notification.type)}`}
-                        >
-                          <div className="flex gap-3">
-                            {/* Sender Profile Picture */}
-                            <div className="flex-shrink-0">
-                              <img
-                                src={notification.sender_image}
-                                alt={notification.sender_username}
-                                className="w-10 h-10 rounded-full border-2 border-blue-700/40"
-                              />
-                            </div>
-                            
-                            {/* Notification Content */}
-                            <div className="flex-1 min-w-0">
-                              <div className="flex items-start justify-between gap-2">
-                                <div className="flex-1 min-w-0">
-                                  <p className="text-white font-Tektur text-sm font-semibold">
-                                    {notification.title}
-                                  </p>
-                                  <p className="text-gray-400 font-Tektur text-xs">
-                                    by @{notification.sender_username}
-                                  </p>
-                                </div>
-                                {!notification.is_seen && (
-                                  <div className="w-2 h-2 bg-blue-400 rounded-full flex-shrink-0 mt-1"></div>
-                                )}
-                              </div>
-                              <p className="text-gray-300 font-Tektur text-xs mt-2">
-                                {notification.message}
-                              </p>
-                              <p className="text-gray-500 font-Tektur text-xs mt-2">
-                                {formatTimeAgo(notification.created_at)}
-                              </p>
-                            </div>
-                          </div>
-                        </div>
-                      ))}
-                    </div>
-                  )}
-                </motion.div>
-              </>
-            )}
-          </div>
-
-          <div
-            onClick={Logout}
-            className="transition-all duration-200 flex cursor-pointer hover:scale-110 ml-1 items-center 
-          justify-center w-[25px] h-[25px] mr-1 rounded-full bg-blue-950/20 hover:bg-blue-900/30 border border-blue-800/40"
+        {/* Notification Bell */}
+        <div className="relative">
+          <button
+            onClick={() => setShowNotifications(!showNotifications)}
+            className="w-8 h-8 sm:w-9 sm:h-9 flex items-center justify-center border-2 theme-border
+              bg-[var(--theme-bg-card)] hover:bg-[var(--theme-bg)] hover:border-[var(--theme-border-strong)]
+              transition-all duration-150 active:translate-y-0.5 theme-shadow-sm"
           >
-            <CiLogout color="white" className="text-white" />
-          </div>
-          <div className="hidden sm:flex items-center space-x-1">
-            <div className="w-1.5 h-1.5 bg-green-400 rounded-full animate-pulse"></div>
-            <span className="font-Tektur ">Online</span>
-          </div>
+            <IoMdNotificationsOutline className="theme-text text-lg" />
+            {notificationCount > 0 && (
+              <span
+                className="absolute -top-0.5 -right-0.5 min-w-[18px] h-[18px] px-1 flex items-center justify-center
+                  bg-[var(--theme-primary)] text-white text-[9px] font-bold border-2 border-gray-950"
+              >
+                {notificationCount > 9 ? "9+" : notificationCount}
+              </span>
+            )}
+          </button>
+
+          {/* Notifications Dropdown */}
+          {showNotifications && (
+            <>
+              <div
+                className="fixed inset-0 bg-black/50 z-[100] sm:hidden"
+                onClick={() => setShowNotifications(false)}
+              />
+              <motion.div
+                initial={{ opacity: 0, y: -10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.2 }}
+                className="fixed sm:absolute top-0 left-0 right-0 bottom-0 sm:inset-auto sm:right-0 sm:top-12
+                  w-full h-screen sm:w-80 sm:h-auto sm:max-h-96 overflow-y-auto flex flex-col
+                  border-2 theme-border bg-gray-950/98 z-[101]"
+                style={{
+                  boxShadow: "6px 6px 0 var(--theme-shadow-md), 0 0 40px var(--theme-bg)",
+                }}
+              >
+                <div className="p-3 sm:p-4 border-b-2 theme-border flex items-center justify-between sticky top-0 bg-gray-950/98 z-10">
+                  <h3 className="theme-text font-bold text-xs uppercase tracking-wider">
+                    Notifications {notificationCount > 0 && `(${notificationCount})`}
+                  </h3>
+                  <div className="flex items-center gap-2">
+                    {notificationCount > 0 && (
+                      <button
+                        onClick={markAllAsSeen}
+                        className="theme-text-muted hover:text-[var(--theme-text)] text-[9px] font-bold uppercase"
+                      >
+                        Mark all read
+                      </button>
+                    )}
+                    <button
+                      onClick={() => setShowNotifications(false)}
+                      className="sm:hidden theme-text-muted hover:text-white text-2xl leading-none"
+                    >
+                      ×
+                    </button>
+                  </div>
+                </div>
+
+                {notifications.length === 0 ? (
+                  <div className="p-6 flex-1 flex items-center justify-center">
+                    <p className="theme-text-muted text-[10px] uppercase tracking-wider">
+                      No notifications yet
+                    </p>
+                  </div>
+                ) : (
+                  <div className="divide-y flex-1 overflow-y-auto" style={{ borderColor: "var(--theme-border)" }}>
+                    {notifications.map((notification) => (
+                      <div
+                        key={notification.id}
+                        onClick={() => handleNotificationClick(notification)}
+                        className={`p-3 sm:p-4 hover:bg-[var(--theme-bg-card)] cursor-pointer transition-colors ${getNotificationColor(
+                          notification.type
+                        )}`}
+                      >
+                        <div className="flex gap-3">
+                          <div className="flex-shrink-0">
+                            <img
+                              src={notification.sender_image}
+                              alt={notification.sender_username}
+                              className="w-10 h-10 border-2 theme-border object-cover"
+                              style={{ imageRendering: "pixelated" }}
+                            />
+                          </div>
+                          <div className="flex-1 min-w-0">
+                            <p className="theme-text font-bold text-[10px] uppercase">
+                              {notification.title}
+                            </p>
+                            <p className="theme-text-muted text-[9px] uppercase">
+                              by @{notification.sender_username}
+                            </p>
+                            <p className="theme-text-muted text-[9px] mt-1">
+                              {notification.message}
+                            </p>
+                            <p className="theme-text-muted text-[8px] mt-1 uppercase opacity-80">
+                              {formatTimeAgo(notification.created_at)}
+                            </p>
+                          </div>
+                          {!notification.is_seen && (
+                            <div className="w-2 h-2 bg-[var(--theme-primary)] flex-shrink-0 mt-1" />
+                          )}
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </motion.div>
+            </>
+          )}
         </div>
 
+        {/* Logout */}
+        <button
+          onClick={Logout}
+          className="w-7 h-7 sm:w-8 sm:h-8 flex items-center justify-center border-2 theme-border
+            bg-[var(--theme-bg-card)] hover:bg-[var(--theme-bg)] hover:border-[var(--theme-border-strong)]
+            transition-all duration-150 active:translate-y-0.5 theme-shadow-sm"
+        >
+          <CiLogout className="theme-text text-base" />
+        </button>
+
+        {/* Online indicator */}
+        <div className="hidden sm:flex items-center gap-1.5">
+          <div className="w-2 h-2 bg-green-400 animate-pulse" />
+          <span className="text-[9px] theme-text-muted uppercase tracking-wider">
+            Online
+          </span>
+        </div>
+
+        {/* User Avatar */}
         <div
           onClick={() => router.push("/dashboard")}
-          className="w-10 h-10 bg-gradient-to-br from-blue-600/20 to-blue-700/10 
-        rounded-full flex cursor-pointer items-center justify-center border border-blue-700/40"
+          className="w-9 h-9 sm:w-10 sm:h-10 flex items-center justify-center border-2 theme-border
+            bg-[var(--theme-bg-card)] cursor-pointer hover:border-[var(--theme-border-strong)] hover:shadow-[0_0_15px_var(--theme-bg-card)]
+            transition-all duration-150 active:translate-y-0.5 theme-shadow-sm"
         >
           {userData == null ? (
             <Skeleton
               animation={false}
-              sx={{ bgcolor: "#0070ef", m: 0, p: 0 }}
-              variant="circular"
-              width={29}
-              height={30}
+              sx={{ bgcolor: "var(--theme-primary-dark)", m: 0, p: 0 }}
+              variant="rectangular"
+              width="100%"
+              height="100%"
             />
           ) : (
             <img
@@ -431,19 +402,15 @@ const Navbar = () => {
               alt="User Avatar"
               width={40}
               height={40}
-              className="rounded-full w-full h-full object-cover border-solid border-[2px] border-blue-700/40"
+              className="w-full h-full object-cover"
+              style={{ imageRendering: "pixelated" }}
             />
           )}
         </div>
+
         <DropDownMenu />
       </div>
-      
-      {/* Rate Limit Popup */}
-      <RateLimitPopup
-        show={rateLimitState.isRateLimited}
-        onClose={closeRateLimitPopup}
-        retryAfter={rateLimitState.retryAfter}
-      />
+
     </nav>
   );
 };
