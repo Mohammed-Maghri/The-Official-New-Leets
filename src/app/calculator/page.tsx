@@ -50,6 +50,7 @@ const CalculatorPage = () => {
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [validatedProjects, setValidatedProjects] = useState<ValidatedProject[]>([]);
   const [isInternship, setIsInternship] = useState(false);
+  const [customProjectXp, setCustomProjectXp] = useState("");
 
   useEffect(() => {
     fetch("/Project_lvl.json")
@@ -119,6 +120,14 @@ const CalculatorPage = () => {
       }
     }
 
+    // Cap at max level if XP exceeds table
+    if (i >= levelsXp.length) {
+      return levelsXp.length - 1;
+    }
+    if (i <= 0) {
+      return 0;
+    }
+
     const maxXp = levelsXp[i] - levelsXp[i - 1];
     finalXp -= levelsXp[i - 1];
 
@@ -138,25 +147,45 @@ const CalculatorPage = () => {
     setIsInternship(isInternshipProject);
   };
 
+  const handleUseCustomProject = () => {
+    const xp = parseFloat(customProjectXp);
+    if (isNaN(xp) || xp <= 0) return;
+    setSelectedProject("Custom Project");
+    setProjectDifficulty(xp);
+    setSearchValue("");
+    setDropdownOpen(false);
+    setIsInternship(false);
+  };
+
   const handleCalculate = () => {
+    const levelNum = parseFloat(currentLevel);
+    const scoreNum = parseFloat(score);
+
     if (
       !currentLevel ||
       !score ||
       selectedProject === "Select Project" ||
-      projectDifficulty === 0
+      !projectDifficulty ||
+      projectDifficulty <= 0 ||
+      isNaN(levelNum) ||
+      !Number.isFinite(levelNum) ||
+      levelNum < 0 ||
+      isNaN(scoreNum) ||
+      !Number.isFinite(scoreNum) ||
+      scoreNum < 0
     ) {
       setCalculatedLevel("fill the form");
       return;
     }
 
     const result = levelCalculator(
-      parseFloat(currentLevel),
+      levelNum,
       projectDifficulty,
-      parseFloat(score),
+      scoreNum,
       coalitionEnabled
     );
 
-    if (isNaN(result)) {
+    if (isNaN(result) || !Number.isFinite(result)) {
       setCalculatedLevel("NaN");
     } else {
       setCalculatedLevel(result.toFixed(2));
@@ -197,6 +226,7 @@ const CalculatorPage = () => {
       setProjectDifficulty(0);
       setCalculatedLevel("");
       setCoalitionEnabled(false);
+      setCustomProjectXp("");
     }
   };
 
@@ -337,10 +367,50 @@ const CalculatorPage = () => {
           </div>
         </div>
 
+        {/* Custom Project - prominent at top */}
+        <div
+          className="p-4 border-2 theme-border bg-[var(--theme-bg-card)]"
+          style={{ boxShadow: "2px 2px 0 rgba(0,0,0,0.2)" }}
+        >
+          <p className="text-[10px] font-bold theme-text uppercase tracking-wider mb-3">
+            Add custom project (XP)
+          </p>
+          <div className="flex flex-col sm:flex-row gap-3 items-start">
+            <div className="space-y-2 flex-1 w-full sm:max-w-[200px]">
+              <label className="text-[10px] font-bold theme-text-muted uppercase tracking-wider">
+                XP
+              </label>
+              <input
+                type="number"
+                min="1"
+                value={customProjectXp}
+                onChange={(e) => setCustomProjectXp(e.target.value)}
+                placeholder="e.g. 1000"
+                className="w-full px-4 py-2 border-2 theme-border bg-gray-950/98 theme-text placeholder-[var(--theme-text-muted)] outline-none focus:border-[var(--theme-primary)] transition-all text-sm"
+                style={{ fontFamily: "var(--font-pixel)" }}
+              />
+            </div>
+            <button
+            type="button"
+            onClick={handleUseCustomProject}
+            disabled={!customProjectXp || parseFloat(customProjectXp) <= 0}
+            className="self-end w-full sm:w-auto px-4 py-2 border-2 theme-border font-bold uppercase tracking-wider text-sm disabled:opacity-50 disabled:cursor-not-allowed hover:scale-[1.02] active:translate-y-0.5 transition-all"
+            style={{
+              fontFamily: "var(--font-pixel)",
+              color: "var(--theme-text)",
+              background: "linear-gradient(to bottom, color-mix(in srgb, var(--theme-primary) 25%, transparent), color-mix(in srgb, var(--theme-primary-dark) 35%, transparent))",
+              boxShadow: "2px 2px 0 rgba(0,0,0,0.2)",
+            }}
+          >
+            Use this project
+          </button>
+          </div>
+        </div>
+
         {/* Project Selector */}
         <div className="space-y-2 relative z-[100]">
           <label className="text-[10px] font-bold theme-text-muted uppercase tracking-wider">
-            Select Project
+            Or select from list
           </label>
           <div className="relative">
             <input
