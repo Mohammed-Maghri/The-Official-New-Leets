@@ -363,3 +363,29 @@ body {
   animation: landing-intro 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
+/* Database schema table nodes - ensure rounded corners and edit overlays on top */
+.react-flow__node-databaseTable > div {
+  border-radius: 1rem !important;
+  overflow: visible;
+}
+.react-flow__node-databaseTable.selected > div,
+.react-flow__node-databaseTable:has(.nodrag) > div {
+  z-index: 50 !important;
+}
+
+/* React Flow pane - full width on mobile (database schema page) */
+.database-react-flow-wrapper .react-flow,
+.database-react-flow-wrapper .react-flow__renderer,
+.database-react-flow-wrapper .react-flow__pane {
+  width: 100% !important;
+  min-width: 100% !important;
+}
+
+/* React Flow controls and minimap - ensure they show above nodes */
+.database-react-flow-wrapper .react-flow__controls {
+  z-index: 10 !important;
+}
+.database-react-flow-wrapper .react-flow__minimap {
+  z-index: 10 !important;
+}
+

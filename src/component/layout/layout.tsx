@@ -26,7 +26,8 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
       {pathname !== "/" && <Navbar />}
       {children}
 
-      {/* Decorative pixel grid - fills empty space */}
+      {/* Decorative pixel grid - fills empty space (hidden on database to avoid obscuring tables) */}
+      {pathname !== "/database" && (
       <div className="fixed inset-0 overflow-hidden pointer-events-none z-[1]">
         <div
           className={`absolute inset-0 ${isLight ? "opacity-[0.04]" : "opacity-[0.02]"}`}
@@ -36,10 +37,13 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
           }}
         />
       </div>
+      )}
 
-      <div className="fixed inset-0 overflow-hidden pointer-events-none">
-        <div className={`absolute inset-0 bg-gradient-to-t ${isLight ? "from-white/30" : "from-black/60"} via-transparent ${overlayTo}`} />
-      </div>
+      {pathname !== "/database" && (
+        <div className="fixed inset-0 overflow-hidden pointer-events-none">
+          <div className={`absolute inset-0 bg-gradient-to-t ${isLight ? "from-white/30" : "from-black/60"} via-transparent ${overlayTo}`} />
+        </div>
+      )}
 
       {/* Rank page: blur + dim overlay to soften background colors */}
       {pathname === "/progress" && (
@@ -48,6 +52,7 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
         </div>
       )}
 
+      {pathname !== "/database" && (
       <div
         className={`h-full bg-transparent w-full absolute z-0 inset-0 ${!isLight ? "opacity-50" : ""}`}
         style={{ width: "100%", height: "100%" }}
@@ -87,6 +92,7 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
           )}
         </div>
       </div>
+      )}
 
       {pathname === "/" && (
         <div

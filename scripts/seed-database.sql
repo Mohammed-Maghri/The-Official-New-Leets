@@ -155,7 +155,35 @@ CREATE INDEX IF NOT EXISTS idx_flagged_messages_severity ON leets.chat_flagged_m
 CREATE INDEX IF NOT EXISTS idx_flagged_messages_reviewed ON leets.chat_flagged_messages(reviewed);
 CREATE INDEX IF NOT EXISTS idx_flagged_messages_created_at ON leets.chat_flagged_messages(created_at DESC);
 
--- 5. Seed VIP data
+-- 5. Schema design projects (database architect)
+CREATE TABLE IF NOT EXISTS leets.schema_projects (
+    id SERIAL PRIMARY KEY,
+    name VARCHAR(255) NOT NULL,
+    user_login TEXT,
+    nodes JSONB NOT NULL DEFAULT '[]',
+    edges JSONB NOT NULL DEFAULT '[]',
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE INDEX IF NOT EXISTS idx_schema_projects_user_login ON leets.schema_projects(user_login);
+CREATE INDEX IF NOT EXISTS idx_schema_projects_updated_at ON leets.schema_projects(updated_at DESC);
+
+-- 5b. Canvas projects (whiteboard)
+CREATE TABLE IF NOT EXISTS leets.canvas_projects (
+    id SERIAL PRIMARY KEY,
+    name VARCHAR(255) NOT NULL,
+    user_login TEXT,
+    image_data TEXT,
+    board_mode VARCHAR(10) DEFAULT 'black',
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE INDEX IF NOT EXISTS idx_canvas_projects_user_login ON leets.canvas_projects(user_login);
+CREATE INDEX IF NOT EXISTS idx_canvas_projects_updated_at ON leets.canvas_projects(updated_at DESC);
+
+-- 6. Seed VIP data
 INSERT INTO leets.vip (category, login, profile, token)
 VALUES ('student', 'mmaghri', '', 'owner')
 ON CONFLICT (login) DO UPDATE SET token = 'owner';
@@ -164,7 +192,7 @@ INSERT INTO leets.vip (category, login, profile, token)
 VALUES ('student', 'asnaji', '', 'owner')
 ON CONFLICT (login) DO UPDATE SET token = 'owner';
 
--- 6. Seed sample notification
+-- 7. Seed sample notification
 INSERT INTO notifications (title, message, type, target_type, sender_username, sender_image, link)
 VALUES (
     'Welcome to Leets! 🎉',

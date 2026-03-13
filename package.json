@@ -7,13 +7,17 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "seed": "node scripts/seed-database.js"
+    "seed": "node scripts/seed-database.js",
+    "migrate:schema-projects": "node scripts/migrate-schema-projects.js",
+    "migrate:schema-projects": "node -e \"require('fs').readFileSync('scripts/migrate-schema-projects.sql','utf8').split(';').filter(s=>s.trim()).forEach(q=>console.log(q+';'))\" | psql $DATABASE_KEY 2>/dev/null || node scripts/migrate-schema-projects.js",
+    "migrate:canvas-projects": "node scripts/migrate-canvas-projects.js"
   },
   "dependencies": {
     "@emotion/react": "^11.14.0",
     "@emotion/styled": "^11.14.1",
     "@gsap/react": "^2.1.2",
     "@mui/material": "^7.2.0",
+    "@xyflow/react": "^12.10.1",
     "crypto-js": "^4.2.0",
     "gsap": "^3.14.2",
     "jose": "^6.0.11",

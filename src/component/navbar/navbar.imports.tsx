@@ -5,5 +5,7 @@ import { CiCalculator1 } from "react-icons/ci";
 import { FaUsersViewfinder } from "react-icons/fa6";
 import { CiMenuFries } from "react-icons/ci";
 import { MdAssessment } from "react-icons/md";
+import { AiOutlineDatabase } from "react-icons/ai";
+import { TbBrush } from "react-icons/tb";
 
-export { CiMenuFries, GiRank3, RiVipCrown2Line, TbMoodCrazyHappy, CiCalculator1, FaUsersViewfinder, MdAssessment };
+export { CiMenuFries, GiRank3, RiVipCrown2Line, TbMoodCrazyHappy, CiCalculator1, FaUsersViewfinder, MdAssessment, AiOutlineDatabase, TbBrush };

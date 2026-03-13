@@ -2,6 +2,8 @@ import {
   GiRank3,
   FaUsersViewfinder,
   CiCalculator1,
+  AiOutlineDatabase,
+  TbBrush,
 } from "./navbar.imports";
 
 interface UserData {
@@ -36,6 +38,16 @@ const PathsObject: ButtonsProps[] = [
     icon: <CiCalculator1 size={15} className="text-orange-400" />,
     title: "Calculator",
     route: "/calculator",
+  },
+  {
+    icon: <AiOutlineDatabase size={15} className="text-cyan-400" />,
+    title: "Database",
+    route: "/database",
+  },
+  {
+    icon: <TbBrush size={15} className="text-pink-400" />,
+    title: "tldrw",
+    route: "/dashboard/canvas",
   },
   {
     icon: <FaUsersViewfinder size={15} className="text-green-400" />,

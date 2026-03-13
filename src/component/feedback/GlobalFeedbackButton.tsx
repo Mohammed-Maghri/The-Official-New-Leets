@@ -18,8 +18,8 @@ const GlobalFeedbackButton: React.FC = () => {
   }, []);
 
   useEffect(() => {
-    // Don't show on landing page
-    if (pathname === "/") {
+    // Don't show on landing page, canvas (tldrw), or database (tables)
+    if (pathname === "/" || pathname === "/dashboard/canvas" || pathname === "/database") {
       setShowButton(false);
       return;
     }

@@ -72,7 +72,7 @@ const DropDownMenu = () => {
           initial={{ opacity: 0, y: -10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.2 }}
-          className="absolute right-0 top-12 border-2 theme-border bg-gray-950/98 p-2 flex flex-col gap-1 theme-shadow-md"
+          className="absolute right-0 top-12 z-[110] border-2 theme-border bg-gray-950/98 p-2 flex flex-col gap-1 theme-shadow-md"
           style={{
             fontFamily: "var(--font-pixel)",
             boxShadow: "4px 4px 0 var(--theme-shadow-md), 0 0 30px var(--theme-bg-card)",
@@ -224,7 +224,7 @@ const Navbar = () => {
 
   return (
     <nav
-      className="relative w-full h-16 z-20 flex items-center justify-between px-4 sm:px-6 border-b-4 theme-border-strong bg-gray-950/98 backdrop-blur-xl"
+      className="relative w-full h-16 z-[100] flex items-center justify-between px-4 sm:px-6 border-b-4 theme-border-strong bg-gray-950/98 backdrop-blur-xl"
       style={{
         fontFamily: "var(--font-pixel)",
         boxShadow: "0 4px 0 var(--theme-shadow-md), 0 0 50px var(--theme-bg-card), inset 0 1px 0 var(--theme-border)",

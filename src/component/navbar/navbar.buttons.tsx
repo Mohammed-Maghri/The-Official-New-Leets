@@ -34,7 +34,7 @@ const Buttons: FC<ButtonsProps> = ({ icon, title, route }) => {
       <div className="flex items-center justify-center [&>svg]:w-3.5 [&>svg]:h-3.5">
         {icon}
       </div>
-      <span>{title}</span>
+      <span className="max-w-[80px] sm:max-w-[100px] truncate" title={title}>{title}</span>
     </motion.div>
   );
 };
