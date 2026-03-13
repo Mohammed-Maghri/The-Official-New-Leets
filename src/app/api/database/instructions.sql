@@ -70,6 +70,9 @@ CREATE TABLE IF NOT EXISTS leets.feedback (
     badge_awarded BOOLEAN DEFAULT FALSE,
     badge_type VARCHAR(50),
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    deleted_at TIMESTAMP,
+    deleted_by TEXT
 );
 
 -- Index for faster queries by user and campus
