@@ -7,7 +7,7 @@ import { cloneData } from "./progress.types";
 import { BsLayoutSidebar, BsGridFill } from "react-icons/bs";
 
 const SkeletonCard: React.FC = () => (
-  <div className="flex flex-col w-full h-auto border-4 theme-border-strong bg-gray-950/98 py-6 px-3 gap-6 relative" style={{ fontFamily: "var(--font-pixel)", boxShadow: "4px 4px 0 var(--theme-shadow-sm)" }}>
+  <div className="flex flex-col w-full h-auto border-4 theme-border-strong bg-gray-950/98 py-6 px-3 gap-6 relative" style={{ fontFamily: "var(--font-ui)", boxShadow: "4px 4px 0 var(--theme-shadow-sm)" }}>
     <div className="absolute top-0 left-0 w-4 h-4 border-l-2 border-t-2 theme-border" />
     <div className="absolute top-0 right-0 w-4 h-4 border-r-2 border-t-2 theme-border" />
     <div className="absolute bottom-0 left-0 w-4 h-4 border-l-2 border-b-2 theme-border" />
@@ -35,7 +35,7 @@ const SkeletonCard: React.FC = () => (
 );
 
 const SkeletonListCard: React.FC = () => (
-  <div className="flex flex-row w-full min-h-[110px] border-4 theme-border-strong bg-gray-950/98 p-2 sm:p-4 gap-2 relative" style={{ fontFamily: "var(--font-pixel)", boxShadow: "4px 4px 0 var(--theme-shadow-sm)" }}>
+  <div className="flex flex-row w-full min-h-[110px] border-4 theme-border-strong bg-gray-950/98 p-2 sm:p-4 gap-2 relative" style={{ fontFamily: "var(--font-ui)", boxShadow: "4px 4px 0 var(--theme-shadow-sm)" }}>
     <div className="absolute top-0 left-0 w-4 h-4 border-l-2 border-t-2 theme-border" />
     <div className="absolute top-0 right-0 w-4 h-4 border-r-2 border-t-2 theme-border" />
     <div className="absolute bottom-0 left-0 w-4 h-4 border-l-2 border-b-2 theme-border" />
@@ -100,7 +100,7 @@ const Progress = () => {
       {/* Rank Controls - softer, unified design */}
       <div
         className="relative w-full mx-4 sm:mx-6 md:mx-8 mt-2 sm:mt-4 mb-2 p-3 sm:p-4 flex flex-col gap-3 sm:gap-4 bg-gray-950/90 backdrop-blur-sm border border-white/10"
-        style={{ fontFamily: "var(--font-pixel)" }}
+        style={{ fontFamily: "var(--font-ui)" }}
       >
         {/* Row 1: Filters (Year, Month, Cursus, Campus) + Apply + Global */}
         <div className="flex flex-wrap items-center gap-2 sm:gap-3">
@@ -153,7 +153,7 @@ const Progress = () => {
         {isSearching || isFetchingData ? (
           // Pixelated skeleton - same layout as actual data (top 3 podium + grid)
           <div className="w-full flex flex-col gap-6">
-            <p className="text-[10px] font-bold theme-text-muted uppercase tracking-wider text-center" style={{ fontFamily: "var(--font-pixel)" }}>
+            <p className="text-[10px] font-bold theme-text-muted uppercase tracking-wider text-center" style={{ fontFamily: "var(--font-ui)" }}>
               {isSearching ? "Searching..." : "Loading..."}
             </p>
             {viewMode === "grid" ? (

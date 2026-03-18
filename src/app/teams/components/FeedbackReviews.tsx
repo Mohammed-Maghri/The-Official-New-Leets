@@ -82,7 +82,7 @@ const FeedbackReviews: React.FC<FeedbackReviewsProps> = ({ isVisible, onClose })
   if (!isVisible) return null;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-md p-4" style={{ fontFamily: "var(--font-pixel)" }}>
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-md p-4" style={{ fontFamily: "var(--font-ui)" }}>
       <div className="relative w-full max-w-7xl max-h-[90vh] bg-gray-950/98 border-4 theme-border-strong overflow-hidden" style={{ boxShadow: "6px 6px 0 var(--theme-shadow-lg), inset 0 1px 0 rgba(255,255,255,0.05)" }}>
         {/* Pixel corner accents */}
         <div className="absolute top-0 left-0 w-4 h-4 border-l-2 border-t-2 theme-border z-20" />

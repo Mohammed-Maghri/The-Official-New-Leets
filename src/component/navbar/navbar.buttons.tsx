@@ -25,7 +25,7 @@ const Buttons: FC<ButtonsProps> = ({ icon, title, route }) => {
         }
       `}
       style={{
-        fontFamily: "var(--font-pixel)",
+        fontFamily: "var(--font-ui)",
         boxShadow: isActive
           ? "3px 3px 0 var(--theme-shadow-md), inset 0 1px 0 rgba(255,255,255,0.1)"
           : "2px 2px 0 rgba(0,0,0,0.3)",

@@ -97,7 +97,7 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
       {pathname === "/" && (
         <div
           className="fixed bottom-4 left-4 z-50 group"
-          style={{ fontFamily: "var(--font-pixel)" }}
+          style={{ fontFamily: "var(--font-ui)" }}
         >
           <div className="flex items-center gap-2 border-2 theme-border-strong bg-gray-950/95 p-1 transition-all duration-200 hover:border-[var(--theme-primary)] hover:shadow-[0_0_25px_var(--theme-bg-card)]" style={{ boxShadow: "0 0 20px var(--theme-bg-card)" }}>
             <div className="w-8 h-8 border-2 theme-border flex items-center justify-center overflow-hidden bg-[var(--theme-bg-card)]">

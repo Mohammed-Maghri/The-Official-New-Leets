@@ -81,7 +81,7 @@ const SplitText: React.FC<SplitTextProps> = ({
         textAlign,
         overflow: "hidden",
         display: "inline-block",
-        fontFamily: "var(--font-pixel)",
+        fontFamily: "var(--font-ui)",
         ...style,
       }}
     >

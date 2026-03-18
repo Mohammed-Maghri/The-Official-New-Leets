@@ -291,7 +291,7 @@ const CalculatorPage = () => {
   if (loading) {
     return (
       <div className="flex flex-1 items-center justify-center">
-        <div className="theme-text text-xl animate-pulse" style={{ fontFamily: "var(--font-pixel)" }}>
+        <div className="theme-text text-xl animate-pulse" style={{ fontFamily: "var(--font-ui)" }}>
           Loading Calculator...
         </div>
       </div>
@@ -303,7 +303,7 @@ const CalculatorPage = () => {
       <div
         className="relative w-full border-4 theme-border-strong bg-gray-950/98 flex flex-1 flex-col p-4 md:p-6 lg:p-8 space-y-4 md:space-y-6"
         style={{
-          fontFamily: "var(--font-pixel)",
+          fontFamily: "var(--font-ui)",
           boxShadow: "6px 6px 0 var(--theme-shadow-lg), inset 0 1px 0 rgba(255,255,255,0.05)",
         }}
       >
@@ -342,7 +342,7 @@ const CalculatorPage = () => {
               onChange={(e) => setCurrentLevel(e.target.value)}
               placeholder="e.g. 4.20"
               className="w-full px-4 py-3 border-2 theme-border bg-[var(--theme-bg-card)] theme-text placeholder-[var(--theme-text-muted)] outline-none focus:border-[var(--theme-primary)] transition-all relative z-20"
-              style={{ fontFamily: "var(--font-pixel)", boxShadow: "2px 2px 0 rgba(0,0,0,0.2)" }}
+              style={{ fontFamily: "var(--font-ui)", boxShadow: "2px 2px 0 rgba(0,0,0,0.2)" }}
             />
           </div>
 
@@ -357,7 +357,7 @@ const CalculatorPage = () => {
               onChange={(e) => setScore(e.target.value)}
               placeholder={isInternship ? "e.g. 100 (completed)" : "e.g. 125"}
               className="w-full px-4 py-3 border-2 theme-border bg-[var(--theme-bg-card)] theme-text placeholder-[var(--theme-text-muted)] outline-none focus:border-[var(--theme-primary)] transition-all relative z-20"
-              style={{ fontFamily: "var(--font-pixel)", boxShadow: "2px 2px 0 rgba(0,0,0,0.2)" }}
+              style={{ fontFamily: "var(--font-ui)", boxShadow: "2px 2px 0 rgba(0,0,0,0.2)" }}
             />
             {isInternship && (
               <p className="text-[9px] theme-text-muted uppercase tracking-wider">
@@ -387,7 +387,7 @@ const CalculatorPage = () => {
                 onChange={(e) => setCustomProjectXp(e.target.value)}
                 placeholder="e.g. 1000"
                 className="w-full px-4 py-2 border-2 theme-border bg-gray-950/98 theme-text placeholder-[var(--theme-text-muted)] outline-none focus:border-[var(--theme-primary)] transition-all text-sm"
-                style={{ fontFamily: "var(--font-pixel)" }}
+                style={{ fontFamily: "var(--font-ui)" }}
               />
             </div>
             <button
@@ -396,7 +396,7 @@ const CalculatorPage = () => {
             disabled={!customProjectXp || parseFloat(customProjectXp) <= 0}
             className="self-end w-full sm:w-auto px-4 py-2 border-2 theme-border font-bold uppercase tracking-wider text-sm disabled:opacity-50 disabled:cursor-not-allowed hover:scale-[1.02] active:translate-y-0.5 transition-all"
             style={{
-              fontFamily: "var(--font-pixel)",
+              fontFamily: "var(--font-ui)",
               color: "var(--theme-text)",
               background: "linear-gradient(to bottom, color-mix(in srgb, var(--theme-primary) 25%, transparent), color-mix(in srgb, var(--theme-primary-dark) 35%, transparent))",
               boxShadow: "2px 2px 0 rgba(0,0,0,0.2)",
@@ -426,7 +426,7 @@ const CalculatorPage = () => {
               }}
               placeholder="Search for a project..."
               className="w-full px-4 py-3 border-2 theme-border bg-[var(--theme-bg-card)] theme-text placeholder-[var(--theme-text-muted)] outline-none focus:border-[var(--theme-primary)] transition-all relative z-30"
-              style={{ fontFamily: "var(--font-pixel)", boxShadow: "2px 2px 0 rgba(0,0,0,0.2)" }}
+              style={{ fontFamily: "var(--font-ui)", boxShadow: "2px 2px 0 rgba(0,0,0,0.2)" }}
             />
             {dropdownOpen && filteredProjects.length > 0 && (
               <div
@@ -441,7 +441,7 @@ const CalculatorPage = () => {
                       handleProjectSelect(project.name, project.difficulty);
                     }}
                     className="px-4 py-3 text-xs cursor-pointer transition-all theme-text-muted hover:bg-[var(--theme-bg-card)] hover:theme-text border-b theme-border last:border-b-0"
-                    style={{ fontFamily: "var(--font-pixel)" }}
+                    style={{ fontFamily: "var(--font-ui)" }}
                   >
                     <div className="font-bold uppercase">{project.name}</div>
                     <div className="text-[9px] theme-text-muted mt-1 uppercase tracking-wider">
@@ -498,7 +498,7 @@ const CalculatorPage = () => {
           onClick={handleCalculate}
           className="w-full py-4 border-2 theme-border-strong font-bold uppercase tracking-wider transition-all duration-200 hover:scale-[1.02] active:translate-y-0.5 relative z-20"
           style={{
-            fontFamily: "var(--font-pixel)",
+            fontFamily: "var(--font-ui)",
             color: "var(--theme-text)",
             background: "linear-gradient(to bottom, color-mix(in srgb, var(--theme-primary) 30%, transparent), color-mix(in srgb, var(--theme-primary-dark) 40%, transparent))",
             boxShadow: "4px 4px 0 var(--theme-shadow-lg), inset 0 1px 0 rgba(255,255,255,0.1)",

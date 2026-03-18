@@ -74,7 +74,7 @@ const MazeLanding: React.FC<MazeLandingProps> = ({ children }) => {
   return (
     <div
       className="relative flex flex-col items-center justify-center py-8"
-      style={{ fontFamily: "var(--font-pixel)" }}
+      style={{ fontFamily: "var(--font-ui)" }}
     >
       {/* Maze frame with card cutout */}
       <div

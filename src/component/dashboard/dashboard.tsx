@@ -39,7 +39,7 @@ const LocationUserDetails: React.FC<{
   const dotClass = muted ? "bg-slate-400" : location ? "bg-emerald-400" : "bg-red-400";
   const statusTextClass = muted ? "text-slate-400" : location ? "text-emerald-300" : "text-red-300";
   return (
-    <div className="p-1 sm:p-2 h-full flex items-center justify-center flex-row gap-1 sm:gap-2 min-w-0 flex-1" style={{ fontFamily: "var(--font-pixel)" }}>
+    <div className="p-1 sm:p-2 h-full flex items-center justify-center flex-row gap-1 sm:gap-2 min-w-0 flex-1" style={{ fontFamily: "var(--font-ui)" }}>
       <div
         className={`gap-1 sm:gap-1.5 px-1.5 sm:px-2 py-1 sm:py-1.5 w-[60px] sm:w-[75px] border-2 flex items-center justify-center flex-shrink-0 ${statusClass}`}
         style={{ boxShadow: "2px 2px 0 rgba(0,0,0,0.2)" }}
@@ -72,7 +72,7 @@ const WalletCoins: React.FC<{ wallet: number; correctionPoints: number; muted?: 
   const valueClass = "font-bold text-[10px] text-white leading-tight";
   const labelClass = muted ? "font-bold text-[8px] text-[var(--theme-primary-muted)] uppercase tracking-wider leading-tight" : "font-bold text-[8px] text-slate-400 uppercase tracking-wider leading-tight";
   return (
-    <div className="absolute right-4 hidden sm:flex gap-2" style={{ fontFamily: "var(--font-pixel)" }}>
+    <div className="absolute right-4 hidden sm:flex gap-2" style={{ fontFamily: "var(--font-ui)" }}>
       <div className={`border-2 ${borderClass} bg-gray-950/98 px-2 py-1.5 flex flex-col items-center justify-center`} style={shadowStyle}>
         <p className={valueClass}>{wallet}</p>
         <p className={labelClass}>Wallet</p>
@@ -212,7 +212,7 @@ const LevelProgress: React.FC<{
   })();
 
   return (
-    <div className="flex relative items-center justify-start flex-col w-full h-[50%] px-2 sm:px-4 py-1 min-w-0" style={{ fontFamily: "var(--font-pixel)" }}>
+    <div className="flex relative items-center justify-start flex-col w-full h-[50%] px-2 sm:px-4 py-1 min-w-0" style={{ fontFamily: "var(--font-ui)" }}>
       <div className="w-full mb-2 min-h-[24px] flex items-center justify-between">
         <div className="flex items-center gap-2 flex-row">
           <span className={`text-[9px] font-bold uppercase tracking-wider ${muted ? "text-[var(--theme-primary-muted)]" : "text-slate-400"}`}>Rank</span>
@@ -281,7 +281,7 @@ const StatusGrid: React.FC<{
   const accountType = badge ? badge.name : kind;
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2 sm:gap-4" style={{ fontFamily: "var(--font-pixel)" }}>
+    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2 sm:gap-4" style={{ fontFamily: "var(--font-ui)" }}>
       <div className={cardClass} style={cardShadow}>
         <p className={labelClass}>Account Type</p>
         <p className={valueClass}>{accountType}</p>
@@ -309,7 +309,7 @@ const PoolInformation: React.FC<{
 }> = ({ pool_month, pool_year, location, muted }) => {
   const borderClass = muted ? "border-2 border-slate-600/50" : "border-2 theme-border";
   return (
-    <div style={{ fontFamily: "var(--font-pixel)" }}>
+    <div style={{ fontFamily: "var(--font-ui)" }}>
       <h3 className="text-xs font-bold text-[var(--theme-primary-muted)] uppercase tracking-wider mb-2">
         Pool Information
       </h3>
@@ -336,7 +336,7 @@ const CampusInformation: React.FC<{
 }> = ({ campus_name, campus_id, muted }) => {
   const borderClass = muted ? "border-2 border-slate-600/50" : "border-2 theme-border";
   return (
-    <div style={{ fontFamily: "var(--font-pixel)" }}>
+    <div style={{ fontFamily: "var(--font-ui)" }}>
       <h3 className="text-xs font-bold text-[var(--theme-primary-muted)] uppercase tracking-wider mb-2">
         Campus Details
       </h3>
@@ -360,7 +360,7 @@ const CampusInformation: React.FC<{
 const ContactInformation: React.FC<{ email: string; muted?: boolean }> = ({ email, muted }) => {
   const borderClass = muted ? "border-2 border-slate-600/50" : "border-2 theme-border";
   return (
-    <div className="flex-1" style={{ fontFamily: "var(--font-pixel)" }}>
+    <div className="flex-1" style={{ fontFamily: "var(--font-ui)" }}>
       <h3 className="text-xs font-bold text-[var(--theme-primary-muted)] uppercase tracking-wider mb-2">
         Contact Information
       </h3>
@@ -603,7 +603,7 @@ const RankComponent: React.FC<{ userData: UserData | null; rank: number; isGridV
           )}
           {isGridView ? (
             // Grid Layout - pixel/theme vibe, podium gets metal accents
-            <div className="flex flex-col w-full h-full items-center justify-start gap-6" style={{ fontFamily: "var(--font-pixel)" }}>
+            <div className="flex flex-col w-full h-full items-center justify-start gap-6" style={{ fontFamily: "var(--font-ui)" }}>
               {/* Top Section - Avatar with Circular Level Progress Ring */}
               <div className="w-full flex justify-center pt-4 pb-2 relative">
                 <div className="relative flex items-center justify-center">
@@ -814,7 +814,7 @@ const RankComponent: React.FC<{ userData: UserData | null; rank: number; isGridV
                 <div className="w-full min-h-[20px] mb-1 sm:mb-2 pl-2 sm:pl-4 flex items-center justify-start min-w-0">
                   <p className={`font-bold text-[10px] sm:text-[11px] uppercase tracking-wider truncate ${
                     isOwnerCard ? "text-amber-200" : isStaffCard ? "text-sky-200" : podiumPosition === "gold" ? "text-yellow-200" : podiumPosition === "silver" ? "text-slate-200" : podiumPosition === "bronze" ? "text-amber-200" : "text-white"
-                  }`} style={{ fontFamily: "var(--font-pixel)" }}>
+                  }`} style={{ fontFamily: "var(--font-ui)" }}>
                     {userData.fullname}
                   </p>
                 </div>
@@ -831,7 +831,7 @@ const RankComponent: React.FC<{ userData: UserData | null; rank: number; isGridV
           )}
         </>
       ) : (
-        <div className="relative flex flex-1 w-full min-h-[110px] sm:min-h-[130px] flex-row p-2 sm:p-4 gap-2" style={{ fontFamily: "var(--font-pixel)" }}>
+        <div className="relative flex flex-1 w-full min-h-[110px] sm:min-h-[130px] flex-row p-2 sm:p-4 gap-2" style={{ fontFamily: "var(--font-ui)" }}>
           {/* Skeleton matching horizontal/list layout */}
           <div className="w-[80px] sm:w-[110px] h-full flex-shrink-0 border-2 theme-border skeleton-shimmer" style={{ boxShadow: "3px 3px 0 var(--theme-shadow-sm)", minHeight: "90px" }} />
           <div className="flex-1 flex flex-col gap-2 min-w-0">

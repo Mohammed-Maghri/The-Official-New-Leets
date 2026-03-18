@@ -33,7 +33,7 @@ const LandingComponent: FC<LandingComponentProps> = () => {
       {/* Main content - landing page only, no intro */}
       <motion.div
         className="flex min-h-screen min-h-[100dvh] flex-col items-center justify-center px-3 sm:px-6 py-6 sm:py-8 overflow-y-auto overflow-x-hidden"
-        style={{ fontFamily: "var(--font-pixel)", imageRendering: "pixelated" }}
+        style={{ fontFamily: "var(--font-ui)", imageRendering: "pixelated" }}
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
@@ -320,7 +320,7 @@ const LandingComponent: FC<LandingComponentProps> = () => {
             {/* Center content - Entering */}
             <motion.div
               className="absolute inset-0 flex flex-col items-center justify-center gap-4 z-10"
-              style={{ fontFamily: "var(--font-pixel)" }}
+              style={{ fontFamily: "var(--font-ui)" }}
               initial={{ opacity: 0, scale: 0.9 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{

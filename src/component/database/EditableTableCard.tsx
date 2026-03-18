@@ -65,7 +65,7 @@ export const EditableTableCard: React.FC<EditableTableCardProps> = ({
     <div
       className="border-2 theme-border bg-[var(--theme-bg-card)] p-3 cursor-grab active:cursor-grabbing min-w-[180px] max-w-[220px] select-none"
       style={{
-        fontFamily: "var(--font-pixel)",
+        fontFamily: "var(--font-ui)",
         boxShadow: "4px 4px 0 var(--theme-shadow-sm)",
       }}
       onMouseDown={handleMouseDown}

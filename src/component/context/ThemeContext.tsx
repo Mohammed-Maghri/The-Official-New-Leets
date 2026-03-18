@@ -5,14 +5,17 @@ import React from "react";
 export type ThemeColor = "violet" | "blue" | "cyan" | "emerald" | "amber" | "rose" | "indigo" | "purple" | "teal" | "lime" | "orange" | "pink" | "sky" | "fuchsia";
 export type ThemeMode = "dark" | "light";
 export type BackgroundVariant = "floatingLines" | "pixelBlast";
+export type FontChoice = "pixel" | "readable" | "tektur";
 
 interface ThemeContextType {
   themeColor: ThemeColor;
   themeMode: ThemeMode;
   backgroundVariant: BackgroundVariant;
+  fontChoice: FontChoice;
   setThemeColor: (color: ThemeColor) => void;
   setThemeMode: (mode: ThemeMode) => void;
   setBackgroundVariant: (variant: BackgroundVariant) => void;
+  setFontChoice: (font: FontChoice) => void;
 }
 
 const ThemeContext = React.createContext<ThemeContextType | null>(null);
@@ -23,9 +26,10 @@ const defaultTheme = {
   themeColor: "rose" as ThemeColor,
   themeMode: "dark" as ThemeMode,
   backgroundVariant: "floatingLines" as BackgroundVariant,
+  fontChoice: "readable" as FontChoice,
 };
 
-function loadTheme(): { themeColor: ThemeColor; themeMode: ThemeMode; backgroundVariant: BackgroundVariant } {
+function loadTheme(): { themeColor: ThemeColor; themeMode: ThemeMode; backgroundVariant: BackgroundVariant; fontChoice: FontChoice } {
   if (typeof window === "undefined") return defaultTheme;
   try {
     const stored = localStorage.getItem(STORAGE_KEY);
@@ -35,6 +39,7 @@ function loadTheme(): { themeColor: ThemeColor; themeMode: ThemeMode; background
         themeColor: parsed.themeColor ?? defaultTheme.themeColor,
         themeMode: parsed.themeMode ?? defaultTheme.themeMode,
         backgroundVariant: parsed.backgroundVariant ?? defaultTheme.backgroundVariant,
+        fontChoice: parsed.fontChoice ?? defaultTheme.fontChoice,
       };
     }
   } catch {
@@ -43,10 +48,10 @@ function loadTheme(): { themeColor: ThemeColor; themeMode: ThemeMode; background
   return defaultTheme;
 }
 
-function saveTheme(themeColor: ThemeColor, themeMode: ThemeMode, backgroundVariant: BackgroundVariant) {
+function saveTheme(themeColor: ThemeColor, themeMode: ThemeMode, backgroundVariant: BackgroundVariant, fontChoice: FontChoice) {
   if (typeof window === "undefined") return;
   try {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify({ themeColor, themeMode, backgroundVariant }));
+    localStorage.setItem(STORAGE_KEY, JSON.stringify({ themeColor, themeMode, backgroundVariant, fontChoice }));
   } catch {
     /* ignore */
   }
@@ -205,12 +210,13 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
   React.useEffect(() => {
     document.documentElement.setAttribute("data-theme-color", theme.themeColor);
     document.documentElement.setAttribute("data-theme-mode", theme.themeMode);
-  }, [theme.themeColor, theme.themeMode]);
+    document.documentElement.setAttribute("data-font", theme.fontChoice);
+  }, [theme.themeColor, theme.themeMode, theme.fontChoice]);
 
   const setThemeColor = React.useCallback((themeColor: ThemeColor) => {
     setThemeState((prev) => {
       const next = { ...prev, themeColor };
-      saveTheme(next.themeColor, next.themeMode, next.backgroundVariant);
+      saveTheme(next.themeColor, next.themeMode, next.backgroundVariant, next.fontChoice);
       return next;
     });
   }, []);
@@ -218,7 +224,7 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
   const setThemeMode = React.useCallback((themeMode: ThemeMode) => {
     setThemeState((prev) => {
       const next = { ...prev, themeMode };
-      saveTheme(next.themeColor, next.themeMode, next.backgroundVariant);
+      saveTheme(next.themeColor, next.themeMode, next.backgroundVariant, next.fontChoice);
       return next;
     });
   }, []);
@@ -226,7 +232,15 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
   const setBackgroundVariant = React.useCallback((backgroundVariant: BackgroundVariant) => {
     setThemeState((prev) => {
       const next = { ...prev, backgroundVariant };
-      saveTheme(next.themeColor, next.themeMode, next.backgroundVariant);
+      saveTheme(next.themeColor, next.themeMode, next.backgroundVariant, next.fontChoice);
+      return next;
+    });
+  }, []);
+
+  const setFontChoice = React.useCallback((fontChoice: FontChoice) => {
+    setThemeState((prev) => {
+      const next = { ...prev, fontChoice };
+      saveTheme(next.themeColor, next.themeMode, next.backgroundVariant, next.fontChoice);
       return next;
     });
   }, []);
@@ -237,9 +251,11 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
         themeColor: theme.themeColor,
         themeMode: theme.themeMode,
         backgroundVariant: theme.backgroundVariant,
+        fontChoice: theme.fontChoice,
         setThemeColor,
         setThemeMode,
         setBackgroundVariant,
+        setFontChoice,
       }}
     >
       {children}
@@ -249,5 +265,5 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
 
 export function useTheme() {
   const ctx = React.useContext(ThemeContext);
-  return ctx ?? { ...defaultTheme, setThemeColor: () => {}, setThemeMode: () => {}, setBackgroundVariant: () => {} };
+  return ctx ?? { ...defaultTheme, setThemeColor: () => {}, setThemeMode: () => {}, setBackgroundVariant: () => {}, setFontChoice: () => {} };
 }

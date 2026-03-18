@@ -21,7 +21,7 @@ export const DatabaseSchema: React.FC = () => {
   return (
     <div
       className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4"
-      style={{ fontFamily: "var(--font-pixel)" }}
+      style={{ fontFamily: "var(--font-ui)" }}
     >
       <div className="min-w-0">
         <TableCard table={vip} />

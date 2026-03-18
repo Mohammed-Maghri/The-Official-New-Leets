@@ -45,7 +45,7 @@ const ReadingText: React.FC<ReadingTextProps> = ({
   }, [hasStarted, visibleCount, text.length, charSpeed, onComplete]);
 
   return (
-    <p className={`leading-relaxed ${className}`} style={{ fontFamily: "var(--font-pixel)" }}>
+    <p className={`leading-relaxed ${className}`} style={{ fontFamily: "var(--font-ui)" }}>
       <span className="text-[var(--theme-primary)]">
         {text.slice(0, visibleCount)}
       </span>

@@ -29,6 +29,7 @@ export default function RootLayout({
                     var t = JSON.parse(s);
                     document.documentElement.setAttribute('data-theme-color', t.themeColor || 'rose');
                     document.documentElement.setAttribute('data-theme-mode', t.themeMode || 'dark');
+                    document.documentElement.setAttribute('data-font', t.fontChoice || 'readable');
                   }
                 } catch (e) {}
               })();

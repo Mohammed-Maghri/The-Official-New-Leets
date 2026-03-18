@@ -62,7 +62,7 @@ const DropDownMenu = () => {
         onClick={() => setIsOpen(!isOpen)}
         className="w-8 h-8 flex items-center justify-center border-2 theme-border bg-[var(--theme-bg-card)]
           hover:bg-[var(--theme-bg)] hover:border-[var(--theme-border-strong)] transition-all duration-150 active:translate-y-0.5 theme-shadow-sm"
-        style={{ fontFamily: "var(--font-pixel)" }}
+        style={{ fontFamily: "var(--font-ui)" }}
       >
         <CiMenuFries className="theme-text text-xl" />
       </button>
@@ -74,7 +74,7 @@ const DropDownMenu = () => {
           transition={{ duration: 0.2 }}
           className="absolute right-0 top-12 z-[110] border-2 theme-border bg-gray-950/98 p-2 flex flex-col gap-1 theme-shadow-md"
           style={{
-            fontFamily: "var(--font-pixel)",
+            fontFamily: "var(--font-ui)",
             boxShadow: "4px 4px 0 var(--theme-shadow-md), 0 0 30px var(--theme-bg-card)",
           }}
         >
@@ -226,7 +226,7 @@ const Navbar = () => {
     <nav
       className="relative w-full h-16 z-[100] flex items-center justify-between px-4 sm:px-6 border-b-4 theme-border-strong bg-gray-950/98 backdrop-blur-xl"
       style={{
-        fontFamily: "var(--font-pixel)",
+        fontFamily: "var(--font-ui)",
         boxShadow: "0 4px 0 var(--theme-shadow-md), 0 0 50px var(--theme-bg-card), inset 0 1px 0 var(--theme-border)",
       }}
     >

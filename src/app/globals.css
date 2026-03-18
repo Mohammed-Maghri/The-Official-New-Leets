@@ -1,12 +1,28 @@
 @import url("https://fonts.googleapis.com/css2?family=Tektur:wght@400..900&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=Silkscreen:wght@400;700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap");
 
 @import "tailwindcss";
 
 @theme {
   --font-Tektur: "Tektur", system-ui;
   --font-pixel: "Silkscreen", monospace;
+  --font-readable: "Inter", system-ui, sans-serif;
   --breakpoint-tillme: 866px; 
+}
+
+/* Font choice - applied via data-font on html. Default: readable for better accessibility */
+html {
+  --font-ui: var(--font-readable);
+}
+[data-font="pixel"] {
+  --font-ui: var(--font-pixel);
+}
+[data-font="readable"] {
+  --font-ui: var(--font-readable);
+}
+[data-font="tektur"] {
+  --font-ui: var(--font-Tektur);
 }
 
 /* 

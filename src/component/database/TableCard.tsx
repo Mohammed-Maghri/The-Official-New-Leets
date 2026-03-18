@@ -14,7 +14,7 @@ export const TableCard: React.FC<TableCardProps> = ({ table }) => {
     <div
       className="border-2 theme-border bg-[var(--theme-bg-card)] p-3 sm:p-4 min-w-0"
       style={{
-        fontFamily: "var(--font-pixel)",
+        fontFamily: "var(--font-ui)",
         boxShadow: "3px 3px 0 var(--theme-shadow-sm)",
       }}
     >

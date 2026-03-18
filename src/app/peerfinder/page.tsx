@@ -341,7 +341,7 @@ const PeerFinderPage = () => {
   if (loading) {
     return (
       <div className="flex flex-1 items-center justify-center">
-        <div className="theme-text text-xl animate-pulse" style={{ fontFamily: "var(--font-pixel)" }}>
+        <div className="theme-text text-xl animate-pulse" style={{ fontFamily: "var(--font-ui)" }}>
           Loading Peer Finder...
         </div>
       </div>
@@ -353,7 +353,7 @@ const PeerFinderPage = () => {
       <div
         className="relative w-full border-4 theme-border-strong bg-gray-950/98 flex flex-1 flex-col p-4 md:p-6 lg:p-8 space-y-4 md:space-y-6"
         style={{
-          fontFamily: "var(--font-pixel)",
+          fontFamily: "var(--font-ui)",
           boxShadow: "6px 6px 0 var(--theme-shadow-lg), inset 0 1px 0 rgba(255,255,255,0.05)",
         }}
       >
@@ -386,7 +386,7 @@ const PeerFinderPage = () => {
               <div
                 onClick={() => setCampusDropdownOpen(!campusDropdownOpen)}
                 className="w-full px-4 py-3 border-2 theme-border bg-[var(--theme-bg-card)] theme-text cursor-pointer hover:border-[var(--theme-primary)] transition-all flex items-center justify-between"
-                style={{ fontFamily: "var(--font-pixel)", boxShadow: "2px 2px 0 rgba(0,0,0,0.2)" }}
+                style={{ fontFamily: "var(--font-ui)", boxShadow: "2px 2px 0 rgba(0,0,0,0.2)" }}
               >
                 <span>{selectedCampus.name}</span>
                 <FaCaretDown
@@ -414,7 +414,7 @@ const PeerFinderPage = () => {
                           ? "bg-[var(--theme-bg-card)] theme-text"
                           : "theme-text-muted hover:bg-[var(--theme-bg-card)] hover:theme-text"
                       }`}
-                      style={{ fontFamily: "var(--font-pixel)" }}
+                      style={{ fontFamily: "var(--font-ui)" }}
                     >
                       {campus.name}
                     </div>
@@ -443,7 +443,7 @@ const PeerFinderPage = () => {
                 }}
                 placeholder="Search for a project..."
                 className="w-full px-4 py-3 border-2 theme-border bg-[var(--theme-bg-card)] theme-text placeholder-[var(--theme-text-muted)] outline-none focus:border-[var(--theme-primary)] transition-all"
-                style={{ fontFamily: "var(--font-pixel)", boxShadow: "2px 2px 0 rgba(0,0,0,0.2)" }}
+                style={{ fontFamily: "var(--font-ui)", boxShadow: "2px 2px 0 rgba(0,0,0,0.2)" }}
               />
               {dropdownOpen && filteredProjects.length > 0 && (
                 <div
@@ -458,7 +458,7 @@ const PeerFinderPage = () => {
                         handleProjectSelect(project.name, project.project_id);
                       }}
                       className="px-4 py-3 text-xs cursor-pointer transition-all theme-text-muted hover:bg-[var(--theme-bg-card)] hover:theme-text border-b theme-border last:border-b-0"
-                      style={{ fontFamily: "var(--font-pixel)" }}
+                      style={{ fontFamily: "var(--font-ui)" }}
                     >
                       <div className="font-bold uppercase">{project.name}</div>
                     </div>
@@ -475,7 +475,7 @@ const PeerFinderPage = () => {
           disabled={!selectedProjectId || loadingPeers}
           className="w-full py-4 border-2 theme-border-strong font-bold uppercase tracking-wider transition-all duration-200 hover:scale-[1.02] active:translate-y-0.5 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100 relative z-20"
           style={{
-            fontFamily: "var(--font-pixel)",
+            fontFamily: "var(--font-ui)",
             color: "var(--theme-text)",
             background: "linear-gradient(to bottom, color-mix(in srgb, var(--theme-primary) 30%, transparent), color-mix(in srgb, var(--theme-primary-dark) 40%, transparent))",
             boxShadow: "4px 4px 0 var(--theme-shadow-lg), inset 0 1px 0 rgba(255,255,255,0.1)",
@@ -486,7 +486,7 @@ const PeerFinderPage = () => {
 
         {/* Error Message */}
         {error && (
-          <div className="border-2 border-red-500/50 bg-red-500/10 p-4 theme-text" style={{ fontFamily: "var(--font-pixel)" }}>
+          <div className="border-2 border-red-500/50 bg-red-500/10 p-4 theme-text" style={{ fontFamily: "var(--font-ui)" }}>
             <span className="text-red-400">{error}</span>
           </div>
         )}
@@ -494,7 +494,7 @@ const PeerFinderPage = () => {
         {/* Peers List */}
         {loadingPeers ? (
           <div className="flex items-center justify-center py-20">
-            <div className="theme-text text-xl animate-pulse" style={{ fontFamily: "var(--font-pixel)" }}>
+            <div className="theme-text text-xl animate-pulse" style={{ fontFamily: "var(--font-ui)" }}>
               Loading peers...
             </div>
           </div>
@@ -539,7 +539,7 @@ const PeerFinderPage = () => {
           </div>
         ) : selectedProjectId && !loadingPeers ? (
           <div className="flex flex-col items-center justify-center py-20 space-y-4">
-            <div className="theme-text-muted text-sm uppercase tracking-wider" style={{ fontFamily: "var(--font-pixel)" }}>
+            <div className="theme-text-muted text-sm uppercase tracking-wider" style={{ fontFamily: "var(--font-ui)" }}>
               No peers found for this project
             </div>
             <p className="theme-text-muted text-[10px] text-center max-w-md uppercase tracking-wider">
@@ -548,7 +548,7 @@ const PeerFinderPage = () => {
           </div>
         ) : !loadingPeers && !isPromoPeers ? (
           <div className="flex flex-col items-center justify-center py-20 space-y-4">
-            <div className="theme-text-muted text-sm uppercase tracking-wider" style={{ fontFamily: "var(--font-pixel)" }}>
+            <div className="theme-text-muted text-sm uppercase tracking-wider" style={{ fontFamily: "var(--font-ui)" }}>
               Select a project to find peers
             </div>
           </div>

@@ -231,7 +231,7 @@ const FeedbackReviewsPage = () => {
   };
 
   return (
-    <div className="flex flex-1 overflow-auto overflow-x-hidden flex-col z-20 p-4 sm:p-6 lg:p-10" style={{ fontFamily: "var(--font-pixel)" }}>
+    <div className="flex flex-1 overflow-auto overflow-x-hidden flex-col z-20 p-4 sm:p-6 lg:p-10" style={{ fontFamily: "var(--font-ui)" }}>
       <div className="relative w-full flex-1 border-4 border-slate-600/60 bg-gray-950/98 flex flex-col p-4 sm:p-6 lg:p-8 space-y-4 sm:space-y-6 overflow-hidden" style={{ boxShadow: "4px 4px 0 rgba(0,0,0,0.3), inset 0 1px 0 rgba(71,85,105,0.3)" }}>
         {/* Pixel corner accents */}
         <div className="absolute top-0 left-0 w-4 h-4 border-l-2 border-t-2 border-slate-600/60" />
@@ -451,7 +451,7 @@ const FeedbackReviewsPage = () => {
               <IoArrowBack className="w-4 h-4 sm:w-5 sm:h-5 theme-text-muted group-hover:text-[var(--theme-text)] transition-colors rotate-180" />
             </button>
 
-            <div className="overflow-y-auto p-4 sm:p-6 lg:p-8 max-h-[90vh]" style={{ fontFamily: "var(--font-pixel)" }}>
+            <div className="overflow-y-auto p-4 sm:p-6 lg:p-8 max-h-[90vh]" style={{ fontFamily: "var(--font-ui)" }}>
               {/* User Header */}
               <div className="flex items-start gap-3 sm:gap-4 mb-4 sm:mb-6 pb-4 sm:pb-6 border-b-2 theme-border">
                 <img
@@ -650,7 +650,7 @@ const FeedbackReviewsPage = () => {
             <div className="absolute bottom-0 left-0 w-4 h-4 border-l-2 border-b-2 theme-border" />
             <div className="absolute bottom-0 right-0 w-4 h-4 border-r-2 border-b-2 theme-border" />
             {/* Header */}
-            <div className="flex items-center justify-between mb-6" style={{ fontFamily: "var(--font-pixel)" }}>
+            <div className="flex items-center justify-between mb-6" style={{ fontFamily: "var(--font-ui)" }}>
               <div className="flex items-center gap-2">
                 <BsStars className="w-6 h-6 text-yellow-400" />
                 <h3 className="text-xl font-bold theme-text uppercase tracking-wider">
@@ -854,7 +854,7 @@ const FeedbackReviewsPage = () => {
               </div>
             </div>
             
-            <h3 className="text-xl font-bold theme-text text-center mb-3 uppercase tracking-wider" style={{ fontFamily: "var(--font-pixel)" }}>
+            <h3 className="text-xl font-bold theme-text text-center mb-3 uppercase tracking-wider" style={{ fontFamily: "var(--font-ui)" }}>
               Delete Feedback?
             </h3>
             

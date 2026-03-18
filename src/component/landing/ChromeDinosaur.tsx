@@ -5,7 +5,7 @@ const ChromeDinosaur: React.FC = () => {
   return (
     <div
       className="relative flex items-end justify-center h-20"
-      style={{ fontFamily: "var(--font-pixel)", imageRendering: "pixelated" }}
+      style={{ fontFamily: "var(--font-ui)", imageRendering: "pixelated" }}
     >
       <div className="relative animate-dino-bounce">
         {/* Chrome T-Rex - pixel art style */}

@@ -840,7 +840,7 @@ export default function CanvasPage() {
   }, []);
 
   return (
-    <div className="relative z-10 flex flex-1 flex-col min-h-0 w-full h-full overflow-hidden" style={{ fontFamily: "var(--font-pixel)" }}>
+    <div className="relative z-10 flex flex-1 flex-col min-h-0 w-full h-full overflow-hidden" style={{ fontFamily: "var(--font-ui)" }}>
       <ProjectNameModal
         isOpen={nameModalOpen}
         onClose={() => setNameModalOpen(false)}

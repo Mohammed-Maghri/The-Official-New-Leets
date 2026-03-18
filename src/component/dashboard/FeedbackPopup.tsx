@@ -119,7 +119,7 @@ const FeedbackPopup: React.FC<FeedbackPopupProps> = ({ onClose, username }) => {
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-md animate-fadeIn p-0 sm:p-4" style={{ fontFamily: "var(--font-pixel)" }}>
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-md animate-fadeIn p-0 sm:p-4" style={{ fontFamily: "var(--font-ui)" }}>
       <div className="relative w-full h-full sm:max-w-4xl sm:max-h-[90vh] bg-gray-950/98 border-2 sm:border-4 theme-border-strong overflow-hidden"
         style={{ boxShadow: "6px 6px 0 var(--theme-shadow-lg), inset 0 1px 0 rgba(255,255,255,0.05)" }}
       >

@@ -18,7 +18,7 @@ export const TableLink: React.FC<TableLinkProps> = ({
   return (
     <div
       className={`flex items-center justify-center gap-1 sm:gap-2 flex-shrink-0 ${className}`}
-      style={{ fontFamily: "var(--font-pixel)" }}
+      style={{ fontFamily: "var(--font-ui)" }}
       data-from={from}
       data-to={to}
     >

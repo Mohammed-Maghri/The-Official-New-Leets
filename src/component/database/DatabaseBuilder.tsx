@@ -88,7 +88,7 @@ export const DatabaseBuilder: React.FC = () => {
   return (
     <div
       className="flex flex-1 flex-col min-h-0 overflow-hidden"
-      style={{ fontFamily: "var(--font-pixel)" }}
+      style={{ fontFamily: "var(--font-ui)" }}
     >
       <div className="flex items-center gap-2 p-2 border-b-2 theme-border flex-shrink-0">
         <button

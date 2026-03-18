@@ -12,12 +12,12 @@ import { ContextCreator } from "@/component/context/context";
 import { ContextProps, UserData } from "@/component/context/context.types";
 import { fetchVIPUsers } from "@/component/dashboard/dashboard.types";
 import { BsStars } from "react-icons/bs";
-import { useTheme, themeConfig, type ThemeColor } from "@/component/context/ThemeContext";
+import { useTheme, themeConfig, type ThemeColor, type FontChoice } from "@/component/context/ThemeContext";
 
 const Dashboard = () => {
   const router = useRouter();
   const { userData } = React.useContext(ContextCreator) as ContextProps;
-  const { themeColor, setThemeColor, backgroundVariant, setBackgroundVariant } = useTheme();
+  const { themeColor, setThemeColor, backgroundVariant, setBackgroundVariant, fontChoice, setFontChoice } = useTheme();
   const [isCreator, setIsCreator] = React.useState<boolean>(false);
 
   React.useEffect(() => {
@@ -48,7 +48,7 @@ const Dashboard = () => {
   return (
     <div
       className="flex flex-1 overflow-auto overflow-x-hidden p-2 sm:p-4 lg:p-6 gap-1 z-10 w-full flex-col lg:flex-row lg:items-stretch min-w-0"
-      style={{ fontFamily: "var(--font-pixel)" }}
+      style={{ fontFamily: "var(--font-ui)" }}
     >
       {/* Left Sidebar - Profile */}
       <aside className="hidden lg:flex flex-col w-52 xl:w-64 flex-shrink-0 min-h-0">
@@ -256,12 +256,34 @@ const Dashboard = () => {
             </div>
             <div>
               <p className="text-[9px] font-bold text-[var(--theme-primary-muted)] uppercase tracking-wider mb-2">
+                Font
+              </p>
+              <div className="flex flex-col gap-1.5 mb-4">
+                {(["readable", "pixel", "tektur"] as FontChoice[]).map((font) => (
+                  <button
+                    key={font}
+                    onClick={() => setFontChoice(font)}
+                    className={`w-full border-2 py-2 px-3 text-left text-[9px] font-bold uppercase tracking-wider transition-all text-white ${
+                      fontChoice === font ? "theme-border-strong" : "border-white/20 hover:border-white/40"
+                    }`}
+                    style={{
+                      fontFamily: font === "pixel" ? "var(--font-pixel)" : font === "tektur" ? "var(--font-Tektur)" : "var(--font-readable)",
+                      backgroundColor: fontChoice === font ? "var(--theme-bg-card)" : "rgba(255,255,255,0.03)",
+                    }}
+                  >
+                    {font === "readable" ? "Readable (Inter)" : font === "pixel" ? "Pixel (Silkscreen)" : "Tektur"}
+                  </button>
+                ))}
+              </div>
+            </div>
+            <div>
+              <p className="text-[9px] font-bold text-[var(--theme-primary-muted)] uppercase tracking-wider mb-2">
                 Background
               </p>
               <div className="flex flex-col gap-1.5">
                 <button
                   onClick={() => setBackgroundVariant("floatingLines")}
-                  className={`w-full border-2 py-2 px-3 text-left text-[9px] font-bold uppercase tracking-wider transition-all ${
+                  className={`w-full border-2 py-2 px-3 text-left text-[9px] font-bold uppercase tracking-wider transition-all text-white ${
                     backgroundVariant === "floatingLines" ? "theme-border-strong" : "border-white/20 hover:border-white/40"
                   }`}
                   style={{
@@ -272,7 +294,7 @@ const Dashboard = () => {
                 </button>
                 <button
                   onClick={() => setBackgroundVariant("pixelBlast")}
-                  className={`w-full border-2 py-2 px-3 text-left text-[9px] font-bold uppercase tracking-wider transition-all ${
+                  className={`w-full border-2 py-2 px-3 text-left text-[9px] font-bold uppercase tracking-wider transition-all text-white ${
                     backgroundVariant === "pixelBlast" ? "theme-border-strong" : "border-white/20 hover:border-white/40"
                   }`}
                   style={{
@@ -333,12 +355,34 @@ const Dashboard = () => {
             </div>
             <div>
               <p className="text-[9px] font-bold text-[var(--theme-primary-muted)] uppercase tracking-wider mb-2">
+                Font
+              </p>
+              <div className="flex flex-col gap-1.5 mb-3">
+                {(["readable", "pixel", "tektur"] as FontChoice[]).map((font) => (
+                  <button
+                    key={font}
+                    onClick={() => setFontChoice(font)}
+                    className={`w-full border-2 py-2 px-2 text-center text-[9px] font-bold uppercase tracking-wider transition-all text-white ${
+                      fontChoice === font ? "theme-border-strong" : "border-white/20"
+                    }`}
+                    style={{
+                      fontFamily: font === "pixel" ? "var(--font-pixel)" : font === "tektur" ? "var(--font-Tektur)" : "var(--font-readable)",
+                      backgroundColor: fontChoice === font ? "var(--theme-bg-card)" : "rgba(255,255,255,0.03)",
+                    }}
+                  >
+                    {font === "readable" ? "Readable" : font === "pixel" ? "Pixel" : "Tektur"}
+                  </button>
+                ))}
+              </div>
+            </div>
+            <div>
+              <p className="text-[9px] font-bold text-[var(--theme-primary-muted)] uppercase tracking-wider mb-2">
                 Background
               </p>
               <div className="flex gap-2">
                 <button
                   onClick={() => setBackgroundVariant("floatingLines")}
-                  className={`flex-1 border-2 py-2 px-2 text-center text-[9px] font-bold uppercase tracking-wider transition-all ${
+                  className={`flex-1 border-2 py-2 px-2 text-center text-[9px] font-bold uppercase tracking-wider transition-all text-white ${
                     backgroundVariant === "floatingLines" ? "theme-border-strong" : "border-white/20"
                   }`}
                   style={{
@@ -349,7 +393,7 @@ const Dashboard = () => {
                 </button>
                 <button
                   onClick={() => setBackgroundVariant("pixelBlast")}
-                  className={`flex-1 border-2 py-2 px-2 text-center text-[9px] font-bold uppercase tracking-wider transition-all ${
+                  className={`flex-1 border-2 py-2 px-2 text-center text-[9px] font-bold uppercase tracking-wider transition-all text-white ${
                     backgroundVariant === "pixelBlast" ? "theme-border-strong" : "border-white/20"
                   }`}
                   style={{

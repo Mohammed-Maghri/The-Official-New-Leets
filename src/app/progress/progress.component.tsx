@@ -182,7 +182,7 @@ const ProgressBar: React.FC<{
   const dropdownItemClass = "text-slate-200 flex-1 flex items-center justify-center text-[9px] sm:text-[10px] cursor-pointer hover:bg-white/10 rounded px-2 py-1.5 font-medium transition-colors";
 
   return (
-    <div className="grid grid-cols-[1fr_1fr_1fr_auto_auto] sm:flex sm:flex-wrap items-center gap-2 w-full" style={{ fontFamily: "var(--font-pixel)" }}>
+    <div className="grid grid-cols-[1fr_1fr_1fr_auto_auto] sm:flex sm:flex-wrap items-center gap-2 w-full" style={{ fontFamily: "var(--font-ui)" }}>
       <div
         ref={monthTriggerRef}
         onClick={() => setMonthOn(!monthOn)}
