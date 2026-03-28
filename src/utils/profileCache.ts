@@ -132,7 +132,6 @@ class GenericCache<T> {
 }
 
 // Global singleton instances - shared across all requests
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
 const globalForCache = global as typeof globalThis & {
   profileCache?: ProfileCache;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any

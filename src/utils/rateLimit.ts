@@ -11,8 +11,10 @@ export interface RateLimitConfig {
  */
 export async function rateLimit(
   _request: NextRequest,
-  _config: RateLimitConfig = { maxRequests: 30, windowMs: 60000 }
+  _config?: RateLimitConfig
 ): Promise<NextResponse | null> {
+  void _request;
+  void _config;
   return null;
 }
 
