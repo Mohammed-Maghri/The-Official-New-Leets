@@ -4,7 +4,6 @@ import * as jose from "jose";
 import { Pool } from "pg";
 import { feedbackSchema } from "./feedback.types";
 import { z } from "zod";
-import { feedbackRateLimiter } from "./rateLimit";
 import { rateLimit, RateLimitPresets } from "@/utils/rateLimit";
 
 export async function GET(request: NextRequest) {
@@ -181,25 +180,6 @@ export async function POST(request: NextRequest) {
     }
     
     const userInfo = await userData.json();
-    
-    const rateLimitCheck = feedbackRateLimiter.check(userInfo.login);
-    
-    if (!rateLimitCheck.allowed) {
-      const retryMinutes = Math.ceil((rateLimitCheck.retryAfter || 600) / 60);
-      return NextResponse.json(
-        {
-          error: "Rate limit exceeded",
-          message: `You can only submit feedback once per 10 minutes. Please try again in ${retryMinutes} minute(s).`,
-          retryAfter: rateLimitCheck.retryAfter,
-        },
-        { 
-          status: 429,
-          headers: {
-            'Retry-After': rateLimitCheck.retryAfter?.toString() || '600',
-          }
-        }
-      );
-    }
     
     client = new Pool({ connectionString: process.env.DATABASE_KEY });
     
