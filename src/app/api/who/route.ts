@@ -4,6 +4,38 @@ import * as jose from "jose";
 import { Pool } from "pg";
 import { rateLimit, RateLimitPresets } from "@/utils/rateLimit";
 
+/** 42 main curriculum; do not use array index — order of cursus_users is not stable. */
+const CURSUS_42_ID = 21;
+const PISCINE_CURSUS_ID = 9;
+
+type CursusUserLike = {
+  level?: number;
+  cursus_id?: number;
+  cursus?: { id?: number; slug?: string };
+};
+
+function resolveUserLevel(cursusUsers: CursusUserLike[] | undefined): number {
+  if (!cursusUsers?.length) return 0;
+
+  const main = cursusUsers.find(
+    (cu) =>
+      cu.cursus_id === CURSUS_42_ID ||
+      cu.cursus?.id === CURSUS_42_ID ||
+      cu.cursus?.slug === "42cursus"
+  );
+  if (main != null) return main.level ?? 0;
+
+  const piscine = cursusUsers.find(
+    (cu) =>
+      cu.cursus_id === PISCINE_CURSUS_ID ||
+      cu.cursus?.id === PISCINE_CURSUS_ID ||
+      cu.cursus?.slug === "piscine"
+  );
+  if (piscine != null) return piscine.level ?? 0;
+
+  return cursusUsers[0]?.level ?? 0;
+}
+
 export async function GET(request: NextRequest) {
   // Rate limiting: 20 requests per minute
   const rateLimitResult = await rateLimit(request, RateLimitPresets.STRICT);
@@ -177,7 +209,7 @@ export async function GET(request: NextRequest) {
           const campus = userResponse.campus?.find((c: { id: number }) => c.id === campusId);
           return campus?.name || userResponse.campus?.[0]?.name || "Unknown";
         })(),
-        level: userResponse?.cursus_users?.[1]?.level || 0,
+        level: resolveUserLevel(userResponse.cursus_users as CursusUserLike[] | undefined),
         fullname: userResponse.usual_full_name || userResponse.displayname || userResponse.login,
         badge: badge,
       },
