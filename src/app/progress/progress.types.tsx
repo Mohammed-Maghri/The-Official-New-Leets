@@ -87,6 +87,7 @@ const CampusList: CampusNameId[] = [
   { name: "Madrid", id: 22 },
   { name: "Seoul", id: 29 },
   { name: "Rome", id: 30 },
+  { name: "Yerevan", id: 32 },
   { name: "Bangkok", id: 33 },
   { name: "Amman", id: 35 },
   { name: "Malaga", id: 37 },
