@@ -23,6 +23,7 @@ export const CampusList = [
   { name: "Seoul", id: 29 },
   { name: "Rome", id: 30 },
   { name: "Yerevan", id: 32 },
+  { name: "Amesterdam", id: 14 },
   { name: "Bangkok", id: 33 },
   { name: "Amman", id: 35 },
   { name: "Malaga", id: 37 },
