@@ -291,3 +291,7 @@ body { background: #ece9d8; color: #151515; }
 }
 
 .xp-login-note { margin: -12px 0 22px; padding: 10px 12px; border: 1px solid #bdbbaa; background: #f5f3e9; color: #4b4b43; font-size: 13px; line-height: 1.5; }
+
+/* Keep the landing credit visible independently of the login window. */
+.xp-desktop--landing .xp-workspace { padding-bottom: 56px; }
+.xp-credit { z-index: 151; bottom: calc(46px + env(safe-area-inset-bottom, 0px)); max-width: calc(100vw - 20px); background: #244422; }

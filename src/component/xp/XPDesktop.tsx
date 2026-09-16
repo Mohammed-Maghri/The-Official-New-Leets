@@ -183,6 +183,10 @@ export function XPDesktop({ children }: { children: React.ReactNode }) {
         </>}
         {children}
       </div>
+      {landing && <a className="xp-credit" href="https://profile.intra.42.fr/users/mmaghri" target="_blank" rel="noopener noreferrer">
+        <Image src="/muh.png" alt="" width={28} height={28} />
+        <span>MADE WITH ♥ BY <strong>MMAGHRI</strong></span>
+      </a>}
       {minimized && <button className="xp-desktop-shortcut" onClick={() => setMinimized(false)}><XPIcon name="computer" size={48} /><span>Open 1337LEETS</span></button>}
       <footer className="xp-taskbar">
         <div ref={menuRef}>
