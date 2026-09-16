@@ -16,7 +16,7 @@ import { TeamsHeader, TeamGrid, LoadMore } from "./components";
 const TeamsPage = () => {
   const context = React.useContext(ContextCreator);
   const userData = context?.userData;
-  
+
   const [dataReturned, setDataReturned] = React.useState<
     ResponseData[] | null | undefined
   >(null);
@@ -113,7 +113,7 @@ const TeamsPage = () => {
         throw new Error("Failed to fetch projects data");
       }
       const projects: ProjectInfo[] = await response.json();
-      
+
       const map = new Map<number, ProjectInfo>();
       projects.forEach(project => {
         map.set(project.project_id, project);
@@ -139,33 +139,33 @@ const TeamsPage = () => {
       } else {
         setIsLoadingMore(true);
       }
-      
+
       const campusParam = campusId || selectedCampus.id;
       const pageParam = page || 1;
       const dateParam = date || dateFilter;
-      
+
       const data = await fetch(`/api/slots?campus=${campusParam}&page=${pageParam}&date=${dateParam}`, {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
         },
       });
-      
+
       if (!data.ok) {
         setDataReturned(undefined);
         setIsLoading(false);
         setIsLoadingMore(false);
         return;
       }
-      
+
       const response = await data.json();
-      
+
       if (loadMore) {
         setDataReturned(prev => prev ? [...prev, ...response] : response);
       } else {
         setDataReturned(response);
       }
-      
+
       setIsLoading(false);
       setIsLoadingMore(false);
     } catch (error) {
@@ -238,7 +238,7 @@ const TeamsPage = () => {
           <LaoderComp />
         </div>
       ) : dataReturned && Array.isArray(dataReturned) ? (
-        <div className="w-full cursor-pointer bg-white/5 backdrop-blur-xl rounded-xl border border-white/10 flex flex-1 flex-col p-8 space-y-6">
+        <div className="w-full cursor-pointer bg-[#dce8f8]  rounded-xl border border-[#a0a6b0] flex flex-1 flex-col p-8 space-y-6">
           <TeamsHeader
             selectedCampus={selectedCampus}
             teamCount={filteredData?.length || 0}
@@ -272,9 +272,9 @@ const TeamsPage = () => {
           )}
         </div>
       ) : (
-        <div className="w-full cursor-pointer bg-white/5 backdrop-blur-xl rounded-xl border border-white/10 flex flex-1 flex-col p-8 space-y-6">
+        <div className="w-full cursor-pointer bg-[#dce8f8]  rounded-xl border border-[#a0a6b0] flex flex-1 flex-col p-8 space-y-6">
           <div className="flex items-center justify-center h-full">
-            <p className="text-white/50 font-Tektur">No data available</p>
+            <p className="text-[#151515] font-Tektur">No data available</p>
           </div>
         </div>
       )}

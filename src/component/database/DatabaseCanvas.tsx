@@ -252,7 +252,7 @@ function CanvasInner() {
   );
 
   return (
-    <div className="flex flex-1 flex-col min-h-0 bg-gray-950 relative z-[50]">
+    <div className="flex flex-1 flex-col min-h-0 bg-[#ece9d8] relative z-[50]">
       <ProjectHeader
         projects={projects}
         currentProjectId={currentProjectId}
@@ -280,7 +280,7 @@ function CanvasInner() {
       <button
         type="button"
         onClick={() => setSidebarOpen(true)}
-        className="md:hidden absolute left-2 top-2 z-[90] w-9 h-9 flex items-center justify-center rounded-lg border border-slate-600 bg-slate-800/95 text-slate-300 hover:bg-slate-700"
+        className="md:hidden absolute left-2 top-2 z-[90] w-9 h-9 flex items-center justify-center rounded-lg border border-[#a0a6b0] bg-[#e2dfd0] text-[#3e3d35] hover:bg-[#d6d2c2]"
         title="Open tables"
       >
         <AiOutlineDatabase className="text-lg" />
@@ -288,7 +288,7 @@ function CanvasInner() {
       )}
       <div
         ref={reactFlowWrapper}
-        className="database-react-flow-wrapper relative z-[40] flex-1 min-h-[280px] sm:min-h-[400px] min-w-0 w-full h-full bg-gray-950 overflow-hidden"
+        className="database-react-flow-wrapper relative z-[40] flex-1 min-h-[280px] sm:min-h-[400px] min-w-0 w-full h-full bg-[#ece9d8] overflow-hidden"
       >
         <ReactFlow
           nodes={nodes}
@@ -318,21 +318,21 @@ function CanvasInner() {
             style: { stroke: "var(--theme-primary)", strokeWidth: 2 },
           }}
           proOptions={{ hideAttribution: true }}
-          className="bg-gray-950"
+          className="bg-[#ece9d8]"
         >
           <Background
-            color="rgba(148, 163, 184, 0.15)"
+            color="rgba(161, 161, 161, 0.15)"
             gap={20}
             size={1}
           />
           <Controls
-            className="!bg-gray-900 !border-slate-600 !rounded-lg !shadow-lg"
+            className="!bg-[#f5f3e9] !border-[#a0a6b0] !rounded-lg !"
             showInteractive
           />
           <MiniMap
             className="!bg-[var(--theme-bg-card)] !border-[var(--theme-border)]"
-            nodeColor="#0f172a"
-            maskColor="rgba(15, 23, 42, 0.8)"
+            nodeColor="#171717"
+            maskColor="rgba(23, 23, 23, 0.8)"
           />
         </ReactFlow>
       </div>

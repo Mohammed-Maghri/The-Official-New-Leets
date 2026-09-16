@@ -1,10 +1,4 @@
-import {
-  GiRank3,
-  FaUsersViewfinder,
-  CiCalculator1,
-  AiOutlineDatabase,
-  TbBrush,
-} from "./navbar.imports";
+import { XPIcon } from "../xp/XPIcon";
 
 interface UserData {
   fullname?: string;
@@ -35,27 +29,27 @@ interface ButtonsProps {
 
 const PathsObject: ButtonsProps[] = [
   {
-    icon: <CiCalculator1 size={15} className="text-orange-400" />,
+    icon: <XPIcon name="calculator" size={25} />,
     title: "Calculator",
     route: "/calculator",
   },
   {
-    icon: <AiOutlineDatabase size={15} className="text-cyan-400" />,
+    icon: <XPIcon name="database" size={25} />,
     title: "Database",
     route: "/database",
   },
   {
-    icon: <TbBrush size={15} className="text-pink-400" />,
-    title: "tldrw",
+    icon: <XPIcon name="folder" size={25} />,
+    title: "TLD/RW",
     route: "/dashboard/canvas",
   },
   {
-    icon: <FaUsersViewfinder size={15} className="text-green-400" />,
-    title: "Peer-finder",
+    icon: <XPIcon name="users" size={25} />,
+    title: "Peer-Finder",
     route: "/peerfinder",
   },
   {
-    icon: <GiRank3 size={15} className="text-yellow-300" />,
+    icon: <XPIcon name="trophy" size={25} />,
     title: "Rank",
     route: "/progress",
   },

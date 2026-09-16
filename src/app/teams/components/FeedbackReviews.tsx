@@ -44,7 +44,7 @@ const FeedbackReviews: React.FC<FeedbackReviewsProps> = ({ isVisible, onClose })
   const fetchReviews = async () => {
     setIsLoading(true);
     setError(null);
-    
+
     try {
       const response = await fetch("/api/feedback", {
         method: "GET",
@@ -82,18 +82,18 @@ const FeedbackReviews: React.FC<FeedbackReviewsProps> = ({ isVisible, onClose })
   if (!isVisible) return null;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-md p-4" style={{ fontFamily: "var(--font-ui)" }}>
-      <div className="relative w-full max-w-7xl max-h-[90vh] bg-gray-950/98 border-4 theme-border-strong overflow-hidden" style={{ boxShadow: "6px 6px 0 var(--theme-shadow-lg), inset 0 1px 0 rgba(255,255,255,0.05)" }}>
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80  p-4" style={{ fontFamily: "var(--font-ui)" }}>
+      <div className="relative w-full max-w-7xl max-h-[90vh] bg-[#ece9d8] border-4 theme-border-strong overflow-hidden" style={{ boxShadow: "none" }}>
         {/* Pixel corner accents */}
         <div className="absolute top-0 left-0 w-4 h-4 border-l-2 border-t-2 theme-border z-20" />
         <div className="absolute top-0 right-0 w-4 h-4 border-r-2 border-t-2 theme-border z-20" />
         <div className="absolute bottom-0 left-0 w-4 h-4 border-l-2 border-b-2 theme-border z-20" />
         <div className="absolute bottom-0 right-0 w-4 h-4 border-r-2 border-b-2 theme-border z-20" />
         {/* Header */}
-        <div className="sticky top-0 z-10 bg-gray-950/98 border-b-2 theme-border p-6">
+        <div className="sticky top-0 z-10 bg-[#ece9d8] border-b-2 theme-border p-6">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
-              <BsStars className="w-8 h-8 text-yellow-400" />
+              <BsStars className="w-8 h-8 text-[#3e3d35]" />
               <h2 className="text-2xl sm:text-3xl font-bold theme-text uppercase tracking-wider">
                 Feedback Reviews
               </h2>
@@ -101,7 +101,7 @@ const FeedbackReviews: React.FC<FeedbackReviewsProps> = ({ isVisible, onClose })
             <button
               onClick={onClose}
               className="p-2 border-2 theme-border bg-[var(--theme-bg-card)] hover:border-[var(--theme-primary)] transition-all active:translate-y-0.5"
-              style={{ boxShadow: "2px 2px 0 rgba(0,0,0,0.2)" }}
+              style={{ boxShadow: "none" }}
             >
               <IoClose className="w-6 h-6 theme-text-muted" />
             </button>
@@ -117,12 +117,12 @@ const FeedbackReviews: React.FC<FeedbackReviewsProps> = ({ isVisible, onClose })
         <div className="overflow-y-auto p-6 max-h-[calc(90vh-100px)]">
           {isLoading ? (
             <div className="flex items-center justify-center h-64">
-              <div className="h-12 w-12 border-2 border-slate-600 border-t-[var(--theme-primary)] animate-spin" style={{ boxShadow: "2px 2px 0 rgba(0,0,0,0.2)" }}></div>
+              <div className="h-12 w-12 border-2 border-[#a0a6b0] border-t-[var(--theme-primary)] animate-spin" style={{ boxShadow: "none" }}></div>
             </div>
           ) : error ? (
             <div className="flex items-center justify-center h-64">
               <div className="text-center">
-                <p className="text-red-400 text-lg font-bold uppercase tracking-wider">{error}</p>
+                <p className="text-[#3e3d35] text-lg font-bold uppercase tracking-wider">{error}</p>
               </div>
             </div>
           ) : reviews.length === 0 ? (
@@ -137,16 +137,16 @@ const FeedbackReviews: React.FC<FeedbackReviewsProps> = ({ isVisible, onClose })
                 <div
                   key={review.id}
                   onClick={() => handleReviewClick(review)}
-                  className="relative border-2 border-slate-600/60 bg-gray-950/98 p-4 hover:border-[var(--theme-primary)]/50 transition-all duration-300 cursor-pointer group"
-                  style={{ boxShadow: "3px 3px 0 rgba(0,0,0,0.2)" }}
+                  className="relative border-2 border-[#a0a6b0] bg-[#ece9d8] p-4 hover:border-[var(--theme-primary)]/50 transition-all duration-300 cursor-pointer group"
+                  style={{ boxShadow: "none" }}
                 >
                   {/* User Info */}
                   <div className="flex items-center gap-3 mb-3">
                     <img
                       src={review.user_image}
                       alt={review.user_login}
-                      className="w-12 h-12 border-2 border-slate-600/60 group-hover:border-[var(--theme-primary)] transition-colors object-cover"
-                      style={{ imageRendering: "pixelated", boxShadow: "2px 2px 0 rgba(0,0,0,0.2)" }}
+                      className="w-12 h-12 border-2 border-[#a0a6b0] group-hover:border-[var(--theme-primary)] transition-colors object-cover"
+                      style={{ imageRendering: "pixelated", boxShadow: "none" }}
                     />
                     <div className="flex-1 min-w-0">
                       <p className="theme-text font-bold truncate uppercase tracking-wider">
@@ -164,7 +164,7 @@ const FeedbackReviews: React.FC<FeedbackReviewsProps> = ({ isVisible, onClose })
                       <IoStar
                         key={star}
                         className={`w-4 h-4 ${
-                          star <= review.rating ? "text-yellow-400" : "text-slate-600"
+                          star <= review.rating ? "text-[#3e3d35]" : "text-[#3e3d35]"
                         }`}
                       />
                     ))}
@@ -183,12 +183,12 @@ const FeedbackReviews: React.FC<FeedbackReviewsProps> = ({ isVisible, onClose })
                   {/* Badges */}
                   <div className="flex items-center gap-2 flex-wrap">
                     {review.wants_to_contribute && (
-                      <span className="text-[10px] bg-emerald-500/20 text-emerald-400 px-2 py-1 border-2 border-emerald-500/30 font-bold uppercase tracking-wider" style={{ boxShadow: "2px 2px 0 rgba(0,0,0,0.2)" }}>
+                      <span className="text-[10px] bg-[#d9e5f5] text-[#3e3d35] px-2 py-1 border-2 border-[#a0a6b0] font-bold uppercase tracking-wider" style={{ boxShadow: "none" }}>
                         Contributor
                       </span>
                     )}
                     {review.badge_awarded && (
-                      <span className="text-[10px] bg-yellow-500/20 text-yellow-400 px-2 py-1 border-2 border-yellow-500/30 font-bold uppercase tracking-wider flex items-center gap-1" style={{ boxShadow: "2px 2px 0 rgba(0,0,0,0.2)" }}>
+                      <span className="text-[10px] bg-[#d9e5f5] text-[#3e3d35] px-2 py-1 border-2 border-[#a0a6b0] font-bold uppercase tracking-wider flex items-center gap-1" style={{ boxShadow: "none" }}>
                         <BsStars className="w-3 h-3" />
                         Badge
                       </span>
@@ -213,12 +213,12 @@ const FeedbackReviews: React.FC<FeedbackReviewsProps> = ({ isVisible, onClose })
       {/* Detail Modal */}
       {selectedReview && (
         <div
-          className="fixed inset-0 z-[60] flex items-center justify-center bg-black/90 backdrop-blur-md p-4"
+          className="fixed inset-0 z-[60] flex items-center justify-center bg-black/90  p-4"
           onClick={closeDetailModal}
         >
           <div
-            className="relative w-full max-w-3xl max-h-[90vh] bg-gray-950/98 border-4 theme-border-strong overflow-hidden"
-            style={{ boxShadow: "6px 6px 0 var(--theme-shadow-lg), inset 0 1px 0 rgba(255,255,255,0.05)" }}
+            className="relative w-full max-w-3xl max-h-[90vh] bg-[#ece9d8] border-4 theme-border-strong overflow-hidden"
+            style={{ boxShadow: "none" }}
             onClick={(e) => e.stopPropagation()}
           >
             {/* Pixel corner accents */}
@@ -230,7 +230,7 @@ const FeedbackReviews: React.FC<FeedbackReviewsProps> = ({ isVisible, onClose })
             <button
               onClick={closeDetailModal}
               className="absolute top-4 right-4 z-10 p-2 border-2 theme-border bg-[var(--theme-bg-card)] hover:border-[var(--theme-primary)] transition-all active:translate-y-0.5"
-              style={{ boxShadow: "2px 2px 0 rgba(0,0,0,0.2)" }}
+              style={{ boxShadow: "none" }}
             >
               <IoClose className="w-5 h-5 theme-text-muted" />
             </button>
@@ -242,7 +242,7 @@ const FeedbackReviews: React.FC<FeedbackReviewsProps> = ({ isVisible, onClose })
                   src={selectedReview.user_image}
                   alt={selectedReview.user_login}
                   className="w-20 h-20 border-2 theme-border object-cover"
-                  style={{ imageRendering: "pixelated", boxShadow: "3px 3px 0 rgba(0,0,0,0.2)" }}
+                  style={{ imageRendering: "pixelated", boxShadow: "none" }}
                 />
                 <div className="flex-1">
                   <h3 className="text-2xl font-bold theme-text mb-2 uppercase tracking-wider">
@@ -264,7 +264,7 @@ const FeedbackReviews: React.FC<FeedbackReviewsProps> = ({ isVisible, onClose })
                       <IoStar
                         key={star}
                         className={`w-5 h-5 ${
-                          star <= selectedReview.rating ? "text-yellow-400" : "text-slate-600"
+                          star <= selectedReview.rating ? "text-[#3e3d35]" : "text-[#3e3d35]"
                         }`}
                       />
                     ))}
@@ -278,7 +278,7 @@ const FeedbackReviews: React.FC<FeedbackReviewsProps> = ({ isVisible, onClose })
               {/* Feedback Content */}
               <div className="space-y-4">
                 {selectedReview.feedback && (
-                  <div className="border-2 border-[var(--theme-primary)]/50 bg-[var(--theme-bg-card)] p-4" style={{ boxShadow: "3px 3px 0 rgba(0,0,0,0.2)" }}>
+                  <div className="border-2 border-[var(--theme-primary)]/50 bg-[var(--theme-bg-card)] p-4" style={{ boxShadow: "none" }}>
                     <p className="text-[var(--theme-primary)] text-sm font-bold mb-2 uppercase tracking-wider">
                       Feature Ideas
                     </p>
@@ -289,8 +289,8 @@ const FeedbackReviews: React.FC<FeedbackReviewsProps> = ({ isVisible, onClose })
                 )}
 
                 {selectedReview.dislikes && (
-                  <div className="border-2 border-red-500/50 bg-red-500/10 p-4" style={{ boxShadow: "3px 3px 0 rgba(0,0,0,0.2)" }}>
-                    <p className="text-red-400 text-sm font-bold mb-2 uppercase tracking-wider">
+                  <div className="border-2 border-[#a0a6b0] bg-[#d9e5f5] p-4" style={{ boxShadow: "none" }}>
+                    <p className="text-[#3e3d35] text-sm font-bold mb-2 uppercase tracking-wider">
                       Dislikes
                     </p>
                     <p className="theme-text text-sm whitespace-pre-wrap">
@@ -300,8 +300,8 @@ const FeedbackReviews: React.FC<FeedbackReviewsProps> = ({ isVisible, onClose })
                 )}
 
                 {selectedReview.improvements && (
-                  <div className="border-2 border-amber-500/50 bg-amber-500/10 p-4" style={{ boxShadow: "3px 3px 0 rgba(0,0,0,0.2)" }}>
-                    <p className="text-amber-400 text-sm font-bold mb-2 uppercase tracking-wider">
+                  <div className="border-2 border-[#a0a6b0] bg-[#d9e5f5] p-4" style={{ boxShadow: "none" }}>
+                    <p className="text-[#3e3d35] text-sm font-bold mb-2 uppercase tracking-wider">
                       Improvements
                     </p>
                     <p className="theme-text text-sm whitespace-pre-wrap">
@@ -312,8 +312,8 @@ const FeedbackReviews: React.FC<FeedbackReviewsProps> = ({ isVisible, onClose })
 
                 {/* Contribution Section */}
                 {selectedReview.wants_to_contribute && (
-                  <div className="border-2 border-emerald-500/50 bg-emerald-500/10 p-4" style={{ boxShadow: "3px 3px 0 rgba(0,0,0,0.2)" }}>
-                    <p className="text-emerald-400 text-sm font-bold mb-3 uppercase tracking-wider">
+                  <div className="border-2 border-[#a0a6b0] bg-[#d9e5f5] p-4" style={{ boxShadow: "none" }}>
+                    <p className="text-[#3e3d35] text-sm font-bold mb-3 uppercase tracking-wider">
                       Wants to Contribute
                     </p>
                     {selectedReview.skills && (
@@ -333,12 +333,12 @@ const FeedbackReviews: React.FC<FeedbackReviewsProps> = ({ isVisible, onClose })
                               key={area}
                               className={`flex items-center gap-2 px-3 py-2 border-2 font-bold uppercase tracking-wider ${
                                 area === "frontend"
-                                  ? "bg-blue-500/20 text-blue-400 border-blue-500/30"
+                                  ? "bg-[#d9e5f5] text-[#3e3d35] border-[#a0a6b0]"
                                   : area === "backend"
-                                  ? "bg-purple-500/20 text-purple-400 border-purple-500/30"
-                                  : "bg-pink-500/20 text-pink-400 border-pink-500/30"
+                                  ? "bg-[#d9e5f5] text-[#3e3d35] border-[#a0a6b0]"
+                                  : "bg-[#d9e5f5] text-[#3e3d35] border-[#a0a6b0]"
                               }`}
-                              style={{ boxShadow: "2px 2px 0 rgba(0,0,0,0.2)" }}
+                              style={{ boxShadow: "none" }}
                             >
                               {area === "frontend" && <BsCodeSlash className="w-4 h-4" />}
                               {area === "backend" && <AiOutlineDatabase className="w-4 h-4" />}
@@ -366,9 +366,9 @@ const FeedbackReviews: React.FC<FeedbackReviewsProps> = ({ isVisible, onClose })
                   })}
                 </p>
                 {selectedReview.badge_awarded && (
-                  <div className="flex items-center gap-2 bg-yellow-500/20 px-3 py-1.5 border-2 border-yellow-500/30 font-bold uppercase tracking-wider" style={{ boxShadow: "2px 2px 0 rgba(0,0,0,0.2)" }}>
-                    <BsStars className="w-4 h-4 text-yellow-400" />
-                    <span className="text-yellow-400 text-sm font-bold">
+                  <div className="flex items-center gap-2 bg-[#d9e5f5] px-3 py-1.5 border-2 border-[#a0a6b0] font-bold uppercase tracking-wider" style={{ boxShadow: "none" }}>
+                    <BsStars className="w-4 h-4 text-[#3e3d35]" />
+                    <span className="text-[#3e3d35] text-sm font-bold">
                       Badge Awarded
                     </span>
                   </div>

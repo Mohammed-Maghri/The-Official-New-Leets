@@ -44,14 +44,14 @@ const GlobalFeedbackButton: React.FC = () => {
   if (!showButton || !mounted || typeof document === "undefined") return null;
 
   return createPortal(
-    <div className="fixed inset-0 pointer-events-none z-40" aria-hidden="true">
+    <div className="fixed inset-0 pointer-events-none z-[200]">
       {/* Same code as Feedback Reviews button - left position (other side) */}
       {!showFeedbackPopup && (
-        <div className="fixed bottom-4 left-4 sm:bottom-6 sm:left-6 z-50" style={{ pointerEvents: "auto" }}>
+        <div className="fixed bottom-14 left-4 sm:bottom-14 sm:left-6 z-50" style={{ pointerEvents: "auto" }}>
           <button
             onClick={handleOpenFeedbackPopup}
-            className="flex items-center gap-2 px-4 py-2 border-2 border-slate-600/60 bg-gray-950/98 text-center text-[9px] font-bold theme-text uppercase tracking-wider hover:border-slate-500/70 transition-all active:translate-y-0.5"
-            style={{ boxShadow: "2px 2px 0 rgba(0,0,0,0.2)" }}
+            className="flex items-center gap-2 px-4 py-2 border-2 border-[#a0a6b0] bg-[#ece9d8] text-center text-[9px] font-bold theme-text uppercase tracking-wider hover:border-[#a0a6b0] transition-all active:translate-y-0.5"
+            style={{ boxShadow: "none" }}
           >
             <BsStars className="w-4 h-4" />
             <span className="hidden sm:inline">Share Your Ideas</span>
@@ -63,8 +63,8 @@ const GlobalFeedbackButton: React.FC = () => {
       {/* Feedback Popup */}
       {showFeedbackPopup && (
         <div style={{ pointerEvents: "auto" }}>
-          <FeedbackPopup 
-            onClose={handleCloseFeedbackPopup} 
+          <FeedbackPopup
+            onClose={handleCloseFeedbackPopup}
             username={context?.userData?.fullname || context?.userData?.login}
           />
         </div>

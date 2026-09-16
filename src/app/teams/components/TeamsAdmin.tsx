@@ -33,11 +33,11 @@ export default function VipAdmin({ isVisible, onClose }: VipAdminProps) {
   const fetchVipUsers = async () => {
     try {
       const response = await fetch("/api/teams");
-      
+
       // Check for rate limiting
       const isRateLimited = await handleRateLimitResponse(response);
       if (isRateLimited) return;
-      
+
       const data = await response.json();
 
       if (response.ok) {
@@ -137,22 +137,22 @@ export default function VipAdmin({ isVisible, onClose }: VipAdminProps) {
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
-      className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4"
+      className="fixed inset-0 bg-black/50  z-50 flex items-center justify-center p-4"
       onClick={(e) => e.target === e.currentTarget && onClose()}
     >
       <motion.div
         initial={{ scale: 0.9, opacity: 0 }}
         animate={{ scale: 1, opacity: 1 }}
         exit={{ scale: 0.9, opacity: 0 }}
-        className="bg-[#001226] border border-[#0070ef]/30 rounded-2xl p-6 w-full max-w-4xl max-h-[90vh] overflow-hidden flex flex-col"
+        className="bg-[#ece9d8] border border-[#616161]/30 rounded-2xl p-6 w-full max-w-4xl max-h-[90vh] overflow-hidden flex flex-col"
       >
         <div className="flex items-center justify-between mb-6">
-          <h2 className="text-2xl font-bold text-white flex items-center gap-3">
+          <h2 className="text-2xl font-bold text-[#151515] flex items-center gap-3">
             VIP Admin Panel
           </h2>
           <button
             onClick={onClose}
-            className="w-8 h-8 bg-gray-700 hover:bg-gray-600 rounded-lg flex items-center justify-center text-gray-300 hover:text-white transition-colors"
+            className="w-8 h-8 bg-[#d6d2c2] hover:bg-[#d9e5f5] rounded-lg flex items-center justify-center text-[#3e3d35] hover:text-[#151515] transition-colors"
           >
             ✕
           </button>
@@ -162,16 +162,16 @@ export default function VipAdmin({ isVisible, onClose }: VipAdminProps) {
           <div
             className={`mb-4 p-3 rounded-lg ${
               message.type === "success"
-                ? "bg-green-500/20 border border-green-500/30 text-green-400"
-                : "bg-red-500/20 border border-red-500/30 text-red-400"
+                ? "bg-[#d9e5f5] border border-[#a0a6b0] text-[#3e3d35]"
+                : "bg-[#d9e5f5] border border-[#a0a6b0] text-[#3e3d35]"
             }`}
           >
             {message.text}
           </div>
         )}
 
-        <div className="mb-6 p-4 bg-gray-800/50 rounded-xl border border-gray-700">
-          <h3 className="text-lg font-semibold text-white mb-4">
+        <div className="mb-6 p-4 bg-[#e2dfd0] rounded-xl border border-[#a0a6b0]">
+          <h3 className="text-lg font-semibold text-[#151515] mb-4">
             Add New VIP User
           </h3>
           <div className="flex flex-col sm:flex-row gap-3">
@@ -180,12 +180,12 @@ export default function VipAdmin({ isVisible, onClose }: VipAdminProps) {
               placeholder="User login (e.g., jdoe)"
               value={newUserLogin}
               onChange={(e) => setNewUserLogin(e.target.value)}
-              className="flex-1 bg-gray-700 border border-gray-600 rounded-lg px-4 py-2 text-white placeholder-gray-400 focus:outline-none focus:border-[#0070ef]"
+              className="flex-1 bg-[#d6d2c2] border border-[#a0a6b0] rounded-lg px-4 py-2 text-[#151515] placeholder-neutral-400 focus:outline-none focus:border-[#616161]"
             />
             <select
               value={newUserCategory}
               onChange={(e) => setNewUserCategory(e.target.value)}
-              className="bg-gray-700 border border-gray-600 rounded-lg px-4 py-2 text-white focus:outline-none focus:border-[#0070ef]"
+              className="bg-[#d6d2c2] border border-[#a0a6b0] rounded-lg px-4 py-2 text-[#151515] focus:outline-none focus:border-[#616161]"
             >
               <option value="student">Student</option>
               <option value="staff">Staff</option>
@@ -194,7 +194,7 @@ export default function VipAdmin({ isVisible, onClose }: VipAdminProps) {
             <button
               onClick={addUser}
               disabled={loading}
-              className="bg-[#0070ef] hover:bg-[#0070ef]/80 disabled:opacity-50 px-6 py-2 rounded-lg text-white font-medium transition-all duration-200"
+              className="bg-[#ece9d8] hover:bg-[#ece9d8] disabled:opacity-50 px-6 py-2 rounded-lg text-[#151515] font-medium transition-all duration-200"
             >
               {loading ? "Adding..." : "Add User"}
             </button>
@@ -202,7 +202,7 @@ export default function VipAdmin({ isVisible, onClose }: VipAdminProps) {
         </div>
 
         <div className="flex-1 overflow-auto">
-          <h3 className="text-lg font-semibold text-white mb-4">
+          <h3 className="text-lg font-semibold text-[#151515] mb-4">
             Current VIP Users ({vipUsers.length})
           </h3>
           <div className="space-y-2">
@@ -211,21 +211,21 @@ export default function VipAdmin({ isVisible, onClose }: VipAdminProps) {
                 key={user.id}
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
-                className="bg-gray-800/30 border border-gray-700 rounded-lg p-4 flex items-center justify-between"
+                className="bg-[#e2dfd0] border border-[#a0a6b0] rounded-lg p-4 flex items-center justify-between"
               >
                 <div className="flex items-center gap-4">
                   <div
                     className={`w-3 h-3 rounded-full ${
                       user.category === "admin"
-                        ? "bg-red-500"
+                        ? "bg-[#d9e5f5]"
                         : user.category === "staff"
-                        ? "bg-blue-500"
-                        : "bg-green-500"
+                        ? "bg-[#d9e5f5]"
+                        : "bg-[#d9e5f5]"
                     }`}
                   ></div>
                   <div>
-                    <div className="text-white font-medium">{user.login}</div>
-                    <div className="text-gray-400 text-sm">
+                    <div className="text-[#151515] font-medium">{user.login}</div>
+                    <div className="text-[#3e3d35] text-sm">
                       {user.category} • Added {formatDate(user.created_at)}
                     </div>
                   </div>
@@ -233,7 +233,7 @@ export default function VipAdmin({ isVisible, onClose }: VipAdminProps) {
                 {user.login !== "mmaghri" && (
                   <button
                     onClick={() => removeUser(user.login)}
-                    className="bg-red-500/20 hover:bg-red-500/30 border border-red-500/30 text-red-400 px-3 py-1 rounded-lg text-sm transition-colors"
+                    className="bg-[#d9e5f5] hover:bg-[#d9e5f5] border border-[#a0a6b0] text-[#3e3d35] px-3 py-1 rounded-lg text-sm transition-colors"
                   >
                     Remove
                   </button>
@@ -241,14 +241,14 @@ export default function VipAdmin({ isVisible, onClose }: VipAdminProps) {
               </motion.div>
             ))}
             {vipUsers.length === 0 && (
-              <div className="text-center py-8 text-gray-400">
+              <div className="text-center py-8 text-[#3e3d35]">
                 No VIP users found
               </div>
             )}
           </div>
         </div>
       </motion.div>
-      
+
       {/* Rate Limit Popup */}
       <RateLimitPopup
         show={rateLimitState.isRateLimited}

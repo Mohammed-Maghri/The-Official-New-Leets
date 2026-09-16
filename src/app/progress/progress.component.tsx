@@ -115,7 +115,7 @@ const ProgressBar: React.FC<{
       },
       body: JSON.stringify(object),
     });
-    
+
     // Check for rate limiting
     const isRateLimited = await handleRateLimitResponse(response);
     if (isRateLimited) {
@@ -123,7 +123,7 @@ const ProgressBar: React.FC<{
       setIsLoadingMore(false);
       return;
     }
-    
+
     if (!response.ok) {
       console.error("Failed to fetch progress data");
       setIsFetchingData(false);
@@ -169,17 +169,17 @@ const ProgressBar: React.FC<{
       setLastSearchedParams(initialSearchParams);
       FetchData(initialSearchParams, false);
     }
-    
+
     document.addEventListener("click", CloseEvent);
-    
+
     return () => {
       document.removeEventListener("click", CloseEvent);
     };
   }, [userData]);
 
-  const dropdownTriggerClass = "transition-all duration-200 min-w-0 flex-1 sm:flex-none sm:w-[90px] cursor-pointer relative h-8 rounded-md border border-white/10 bg-white/5 gap-0.5 flex items-center justify-center hover:bg-white/10 hover:border-white/20";
-  const dropdownPanelClass = "absolute overflow-y-auto top-10 left-0 right-0 w-full min-w-[60px] sm:min-w-[90px] bg-gray-900/95 backdrop-blur-sm border border-white/10 rounded-md p-1.5 flex flex-col gap-0.5 min-h-[70px] max-h-[90px] z-50 shadow-xl";
-  const dropdownItemClass = "text-slate-200 flex-1 flex items-center justify-center text-[9px] sm:text-[10px] cursor-pointer hover:bg-white/10 rounded px-2 py-1.5 font-medium transition-colors";
+  const dropdownTriggerClass = "transition-all duration-200 min-w-0 flex-1 sm:flex-none sm:w-[90px] cursor-pointer relative h-8 rounded-md border border-[#a0a6b0] bg-[#dce8f8] gap-0.5 flex items-center justify-center hover:bg-[#dce8f8] hover:border-[#a0a6b0]";
+  const dropdownPanelClass = "absolute overflow-y-auto top-10 left-0 right-0 w-full min-w-[60px] sm:min-w-[90px] bg-[#f5f3e9]  border border-[#a0a6b0] rounded-md p-1.5 flex flex-col gap-0.5 min-h-[70px] max-h-[90px] z-50 ";
+  const dropdownItemClass = "text-[#3e3d35] flex-1 flex items-center justify-center text-[9px] sm:text-[10px] cursor-pointer hover:bg-[#dce8f8] rounded px-2 py-1.5 font-medium transition-colors";
 
   return (
     <div className="grid grid-cols-[1fr_1fr_1fr_auto_auto] sm:flex sm:flex-wrap items-center gap-2 w-full" style={{ fontFamily: "var(--font-ui)" }}>
@@ -188,10 +188,10 @@ const ProgressBar: React.FC<{
         onClick={() => setMonthOn(!monthOn)}
         className={`${DataSearch.cursus.name == "Piscine" ? "flex" : "hidden"} ${dropdownTriggerClass}`}
       >
-        <p className="text-slate-200 text-[9px] sm:text-[10px] font-medium truncate">
+        <p className="text-[#3e3d35] text-[9px] sm:text-[10px] font-medium truncate">
           {DataSearch.month}
         </p>
-        <FaCaretDown className="text-slate-400 flex-shrink-0 w-2.5 h-2.5 sm:w-3 sm:h-3" />
+        <FaCaretDown className="text-[#3e3d35] flex-shrink-0 w-2.5 h-2.5 sm:w-3 sm:h-3" />
         <motion.div
           ref={monthRef}
           initial={{ opacity: 0, y: -10 }}
@@ -216,10 +216,10 @@ const ProgressBar: React.FC<{
       </div>
 
       <div ref={yearTriggerRef} onClick={() => setYearOn(!yearOn)} className={dropdownTriggerClass}>
-        <p className="text-slate-200 text-[9px] sm:text-[10px] font-medium truncate">
+        <p className="text-[#3e3d35] text-[9px] sm:text-[10px] font-medium truncate">
           {DataSearch.year}
         </p>
-        <FaCaretDown className="text-slate-400 flex-shrink-0 w-2.5 h-2.5 sm:w-3 sm:h-3" />
+        <FaCaretDown className="text-[#3e3d35] flex-shrink-0 w-2.5 h-2.5 sm:w-3 sm:h-3" />
         {yearOn && (
           <motion.div
             ref={yearRef}
@@ -246,10 +246,10 @@ const ProgressBar: React.FC<{
       </div>
 
       <div ref={cursusTriggerRef} onClick={() => setCursuson(!cursuson)} className={dropdownTriggerClass}>
-        <p className="text-slate-200 text-[9px] sm:text-[10px] font-medium truncate">
+        <p className="text-[#3e3d35] text-[9px] sm:text-[10px] font-medium truncate">
           {DataSearch.cursus.name}
         </p>
-        <FaCaretDown className="text-slate-400 flex-shrink-0 w-2.5 h-2.5 sm:w-3 sm:h-3" />
+        <FaCaretDown className="text-[#3e3d35] flex-shrink-0 w-2.5 h-2.5 sm:w-3 sm:h-3" />
         {cursuson && (
           <motion.div
             ref={cursusRef}
@@ -275,10 +275,10 @@ const ProgressBar: React.FC<{
       </div>
 
       <div ref={campusTriggerRef} onClick={() => setCampusOn(!campusOn)} className={dropdownTriggerClass}>
-        <p className="text-slate-200 text-[9px] sm:text-[10px] font-medium truncate">
+        <p className="text-[#3e3d35] text-[9px] sm:text-[10px] font-medium truncate">
           {DataSearch.campus.name}
         </p>
-        <FaCaretDown className="text-slate-400 flex-shrink-0 w-2.5 h-2.5 sm:w-3 sm:h-3" />
+        <FaCaretDown className="text-[#3e3d35] flex-shrink-0 w-2.5 h-2.5 sm:w-3 sm:h-3" />
         {campusOn && (
           <motion.div
             ref={campusRef}
@@ -302,7 +302,7 @@ const ProgressBar: React.FC<{
           </motion.div>
         )}
       </div>
-      
+
       {/* Global Rank Button */}
       <div
         onClick={() => {
@@ -313,12 +313,12 @@ const ProgressBar: React.FC<{
           setLastSearchedParams(globalData);
           FetchData(globalData, false);
         }}
-        className="w-8 h-8 flex-shrink-0 cursor-pointer rounded-md border border-white/10 bg-white/5 flex items-center justify-center transition-all duration-200 hover:bg-white/10 hover:border-white/20"
+        className="w-8 h-8 flex-shrink-0 cursor-pointer rounded-md border border-[#a0a6b0] bg-[#dce8f8] flex items-center justify-center transition-all duration-200 hover:bg-[#dce8f8] hover:border-[#a0a6b0]"
         title="Global Rank"
       >
         <span className="text-sm">🌍</span>
       </div>
-      
+
       <div
         onClick={() => {
           setUserData(cloneData as null[]);
@@ -326,11 +326,11 @@ const ProgressBar: React.FC<{
           setLastSearchedParams(DataSearch);
           FetchData(DataSearch, false);
         }}
-        className="w-8 h-8 flex-shrink-0 cursor-pointer rounded-md border border-white/10 bg-white/5 flex items-center justify-center transition-all duration-200 hover:bg-white/10 hover:border-white/20"
+        className="w-8 h-8 flex-shrink-0 cursor-pointer rounded-md border border-[#a0a6b0] bg-[#dce8f8] flex items-center justify-center transition-all duration-200 hover:bg-[#dce8f8] hover:border-[#a0a6b0]"
       >
-        <CiSearch className="text-slate-300 w-4 h-4" />
+        <CiSearch className="text-[#3e3d35] w-4 h-4" />
       </div>
-      
+
       {/* Rate Limit Popup */}
       <RateLimitPopup
         show={rateLimitState.isRateLimited}

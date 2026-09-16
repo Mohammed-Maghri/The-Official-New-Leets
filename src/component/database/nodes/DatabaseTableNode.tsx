@@ -234,20 +234,20 @@ function DatabaseTableNodeComponent({ id, data: rawData, selected }: NodeProps) 
   return (
     <div
       className={`
-        rounded-2xl border-2 bg-slate-900
+        rounded-2xl border-2 bg-[#f5f3e9]
         w-[260px] overflow-visible
         transition-all duration-200
-        ${selected ? "border-cyan-500 shadow-lg shadow-cyan-500/20" : "border-slate-600/60 hover:border-slate-500"}
+        ${selected ? "border-[#a0a6b0]  -500/20" : "border-[#a0a6b0] hover:border-[#a0a6b0]"}
       `}
     >
       <div
-        className="relative h-12 px-4 flex items-center bg-slate-800 border-b border-slate-600/40 rounded-t-2xl group/header shrink-0"
+        className="relative h-12 px-4 flex items-center bg-[#e2dfd0] border-b border-[#a0a6b0] rounded-t-2xl group/header shrink-0"
         onDoubleClick={() => {
           setIsEditing(true);
           setTimeout(() => inputRef.current?.focus(), 0);
         }}
       >
-        <div className="font-semibold text-sm text-slate-100 truncate flex-1 min-w-0">
+        <div className="font-semibold text-sm text-[#3e3d35] truncate flex-1 min-w-0">
           {fullName}
         </div>
         {!isEditing && (
@@ -258,7 +258,7 @@ function DatabaseTableNodeComponent({ id, data: rawData, selected }: NodeProps) 
               setIsEditing(true);
               setTimeout(() => inputRef.current?.focus(), 0);
             }}
-            className="nodrag shrink-0 rounded p-1 text-slate-500 hover:text-cyan-400 hover:bg-slate-700/50"
+            className="nodrag shrink-0 rounded p-1 text-[#3e3d35] hover:text-[#3e3d35] hover:bg-[#d6d2c2]"
             title="Edit table name"
           >
             <AiOutlineEdit className="text-sm" />
@@ -266,7 +266,7 @@ function DatabaseTableNodeComponent({ id, data: rawData, selected }: NodeProps) 
         )}
         {isEditing && (
           <div
-            className="nodrag absolute inset-0 flex items-center gap-1 px-3 bg-slate-800 z-10 rounded-t-2xl"
+            className="nodrag absolute inset-0 flex items-center gap-1 px-3 bg-[#e2dfd0] z-10 rounded-t-2xl"
             onClick={(e) => e.stopPropagation()}
           >
             <input
@@ -274,21 +274,21 @@ function DatabaseTableNodeComponent({ id, data: rawData, selected }: NodeProps) 
               value={editSchema}
               onChange={(e) => setEditSchema(e.target.value)}
               onKeyDown={handleKeyDown}
-              className="w-14 rounded border border-slate-500 bg-slate-900 px-1.5 py-0.5 text-[10px] text-slate-300 focus:border-cyan-500 focus:outline-none"
+              className="w-14 rounded border border-[#a0a6b0] bg-[#f5f3e9] px-1.5 py-0.5 text-[10px] text-[#3e3d35] focus:border-[#a0a6b0] focus:outline-none"
               placeholder="schema"
             />
-            <span className="text-slate-500 text-[10px]">.</span>
+            <span className="text-[#3e3d35] text-[10px]">.</span>
             <input
               value={editLabel}
               onChange={(e) => setEditLabel(e.target.value)}
               onKeyDown={handleKeyDown}
-              className="flex-1 min-w-0 rounded border border-slate-500 bg-slate-900 px-1.5 py-0.5 text-xs text-slate-100 focus:border-cyan-500 focus:outline-none"
+              className="flex-1 min-w-0 rounded border border-[#a0a6b0] bg-[#f5f3e9] px-1.5 py-0.5 text-xs text-[#3e3d35] focus:border-[#a0a6b0] focus:outline-none"
               placeholder="table"
             />
             <button
               type="button"
               onClick={saveEdit}
-              className="nodrag shrink-0 rounded p-0.5 text-cyan-400 hover:bg-cyan-500/20"
+              className="nodrag shrink-0 rounded p-0.5 text-[#3e3d35] hover:bg-[#d9e5f5]"
               title="Done"
             >
               <AiOutlineCheck className="text-sm" />
@@ -296,7 +296,7 @@ function DatabaseTableNodeComponent({ id, data: rawData, selected }: NodeProps) 
           </div>
         )}
       </div>
-      <div className="divide-y divide-slate-700/50">
+      <div className="divide-y divide-neutral-700/50">
         {columns.map((col) => (
           <div
             key={col.id}
@@ -313,17 +313,17 @@ function DatabaseTableNodeComponent({ id, data: rawData, selected }: NodeProps) 
               type="target"
               position={Position.Left}
               id={col.id}
-              className="!w-3 !h-3 !bg-slate-500 !border-2 !border-slate-400 shrink-0"
+              className="!w-3 !h-3 !bg-[#d9e5f5] !border-2 !border-[#a0a6b0] shrink-0"
               title="Connect from another table"
             />
             <div className="flex-1 min-w-0 flex flex-col justify-center">
-              <span className="text-xs font-medium text-slate-200 truncate block">
+              <span className="text-xs font-medium text-[#3e3d35] truncate block">
                 {col.name}
                 {col.pk && (
-                  <span className="ml-1.5 text-[10px] text-amber-400 font-bold">PK</span>
+                  <span className="ml-1.5 text-[10px] text-[#3e3d35] font-bold">PK</span>
                 )}
               </span>
-              <span className="text-[10px] text-slate-400 truncate block">
+              <span className="text-[10px] text-[#3e3d35] truncate block">
                 {col.type}
                 {col.enumValues?.length ? `(${col.enumValues.join(", ")})` : ""}
               </span>
@@ -339,7 +339,7 @@ function DatabaseTableNodeComponent({ id, data: rawData, selected }: NodeProps) 
                   setEditEnumValues(col.enumValues?.join(", ") ?? "");
                   setTimeout(() => colInputRef.current?.focus(), 0);
                 }}
-                className="nodrag shrink-0 rounded p-1 text-slate-500 hover:text-cyan-400 hover:bg-slate-700/50"
+                className="nodrag shrink-0 rounded p-1 text-[#3e3d35] hover:text-[#3e3d35] hover:bg-[#d6d2c2]"
                 title="Edit column"
               >
                 <AiOutlineEdit className="text-sm" />
@@ -349,7 +349,7 @@ function DatabaseTableNodeComponent({ id, data: rawData, selected }: NodeProps) 
             {editingColId === col.id && (
               <>
                 <div
-                  className="nodrag absolute inset-0 flex items-center gap-1.5 px-3 bg-slate-900 z-10"
+                  className="nodrag absolute inset-0 flex items-center gap-1.5 px-3 bg-[#f5f3e9] z-10"
                   onClick={(e) => e.stopPropagation()}
                   onBlur={(e) => {
                     const overlay = e.currentTarget;
@@ -368,13 +368,13 @@ function DatabaseTableNodeComponent({ id, data: rawData, selected }: NodeProps) 
                         setEditingColId(null);
                       }
                     }}
-                    className="flex-1 min-w-0 w-20 rounded border border-slate-500 bg-slate-800 px-1.5 py-0.5 text-[11px] text-slate-100 focus:border-cyan-500 focus:outline-none"
+                    className="flex-1 min-w-0 w-20 rounded border border-[#a0a6b0] bg-[#e2dfd0] px-1.5 py-0.5 text-[11px] text-[#3e3d35] focus:border-[#a0a6b0] focus:outline-none"
                     placeholder="name"
                   />
                   <select
                     value={editColType}
                     onChange={(e) => setEditColType(e.target.value)}
-                    className="nodrag w-28 rounded border border-slate-500 bg-slate-800 px-1.5 py-0.5 text-[10px] text-slate-200 focus:border-cyan-500 focus:outline-none shrink-0"
+                    className="nodrag w-28 rounded border border-[#a0a6b0] bg-[#e2dfd0] px-1.5 py-0.5 text-[10px] text-[#3e3d35] focus:border-[#a0a6b0] focus:outline-none shrink-0"
                   >
                     {COLUMN_TYPES.map((t) => (
                       <option key={t} value={t}>
@@ -387,8 +387,8 @@ function DatabaseTableNodeComponent({ id, data: rawData, selected }: NodeProps) 
                     onClick={() => togglePk(col.id)}
                     className={`rounded px-1 py-0.5 text-[9px] font-bold shrink-0 ${
                       col.pk
-                        ? "bg-amber-500/30 text-amber-400 border border-amber-500/50"
-                        : "bg-slate-700/50 text-slate-500 border border-slate-600"
+                        ? "bg-[#d9e5f5] text-[#3e3d35] border border-[#a0a6b0]"
+                        : "bg-[#d6d2c2] text-[#3e3d35] border border-[#a0a6b0]"
                     }`}
                     title="Primary key"
                   >
@@ -397,7 +397,7 @@ function DatabaseTableNodeComponent({ id, data: rawData, selected }: NodeProps) 
                   <button
                     type="button"
                     onClick={() => deleteColumn(col.id)}
-                    className="rounded p-0.5 text-slate-500 hover:text-red-400 hover:bg-red-500/10 shrink-0"
+                    className="rounded p-0.5 text-[#3e3d35] hover:text-[#3e3d35] hover:bg-[#d9e5f5] shrink-0"
                     title="Delete column"
                   >
                     <AiOutlineDelete className="text-xs" />
@@ -405,7 +405,7 @@ function DatabaseTableNodeComponent({ id, data: rawData, selected }: NodeProps) 
                   <button
                     type="button"
                     onClick={saveColEdit}
-                    className="nodrag rounded p-0.5 text-cyan-400 hover:bg-cyan-500/20 shrink-0"
+                    className="nodrag rounded p-0.5 text-[#3e3d35] hover:bg-[#d9e5f5] shrink-0"
                     title="Done"
                   >
                     <AiOutlineCheck className="text-sm" />
@@ -413,7 +413,7 @@ function DatabaseTableNodeComponent({ id, data: rawData, selected }: NodeProps) 
                 </div>
                 {editColType === "ENUM" && (
                   <div
-                    className="nodrag absolute left-0 right-0 top-full mt-0.5 px-3 py-1.5 bg-slate-800 border border-slate-600 rounded z-20 shadow-lg"
+                    className="nodrag absolute left-0 right-0 top-full mt-0.5 px-3 py-1.5 bg-[#e2dfd0] border border-[#a0a6b0] rounded z-20 "
                     onClick={(e) => e.stopPropagation()}
                   >
                     <input
@@ -423,7 +423,7 @@ function DatabaseTableNodeComponent({ id, data: rawData, selected }: NodeProps) 
                         if (e.key === "Enter") saveColEdit();
                         if (e.key === "Escape") setEditingColId(null);
                       }}
-                      className="w-full rounded border border-slate-500 bg-slate-900 px-2 py-0.5 text-[10px] text-slate-300 focus:border-cyan-500 focus:outline-none"
+                      className="w-full rounded border border-[#a0a6b0] bg-[#f5f3e9] px-2 py-0.5 text-[10px] text-[#3e3d35] focus:border-[#a0a6b0] focus:outline-none"
                       placeholder="value1, value2, value3"
                     />
                   </div>
@@ -435,14 +435,14 @@ function DatabaseTableNodeComponent({ id, data: rawData, selected }: NodeProps) 
               type="source"
               position={Position.Right}
               id={col.id}
-              className="!w-3 !h-3 !bg-cyan-500 !border-2 !border-cyan-400 shrink-0"
+              className="!w-3 !h-3 !bg-[#d9e5f5] !border-2 !border-[#a0a6b0] shrink-0"
               title="Connect to another table"
             />
           </div>
         ))}
         {isAddingColumn ? (
           <div
-            className="nodrag flex flex-col gap-2 p-3 border-t border-slate-700/50 bg-slate-800/50 rounded-b-2xl"
+            className="nodrag flex flex-col gap-2 p-3 border-t border-[#a0a6b0] bg-[#e2dfd0] rounded-b-2xl"
             onClick={(e) => e.stopPropagation()}
           >
             <div className="flex gap-2 items-center">
@@ -455,12 +455,12 @@ function DatabaseTableNodeComponent({ id, data: rawData, selected }: NodeProps) 
                   if (e.key === "Escape") cancelAddColumn();
                 }}
                 placeholder="Column name"
-                className="flex-1 min-w-0 rounded border border-slate-500 bg-slate-900 px-2 py-1 text-xs text-slate-100 focus:border-cyan-500 focus:outline-none"
+                className="flex-1 min-w-0 rounded border border-[#a0a6b0] bg-[#f5f3e9] px-2 py-1 text-xs text-[#3e3d35] focus:border-[#a0a6b0] focus:outline-none"
               />
               <select
                 value={editColType}
                 onChange={(e) => setEditColType(e.target.value)}
-                className="nodrag rounded border border-slate-500 bg-slate-900 px-2 py-1 text-xs text-slate-200 focus:border-cyan-500 focus:outline-none w-28"
+                className="nodrag rounded border border-[#a0a6b0] bg-[#f5f3e9] px-2 py-1 text-xs text-[#3e3d35] focus:border-[#a0a6b0] focus:outline-none w-28"
               >
                 {COLUMN_TYPES.map((t) => (
                   <option key={t} value={t}>
@@ -478,21 +478,21 @@ function DatabaseTableNodeComponent({ id, data: rawData, selected }: NodeProps) 
                   if (e.key === "Escape") cancelAddColumn();
                 }}
                 placeholder="Values: a, b, c"
-                className="w-full rounded border border-slate-500 bg-slate-900 px-2 py-1 text-[10px] text-slate-300 focus:border-cyan-500 focus:outline-none"
+                className="w-full rounded border border-[#a0a6b0] bg-[#f5f3e9] px-2 py-1 text-[10px] text-[#3e3d35] focus:border-[#a0a6b0] focus:outline-none"
               />
             )}
             <div className="flex gap-2">
               <button
                 type="button"
                 onClick={confirmAddColumn}
-                className="flex-1 rounded border border-cyan-600/50 bg-slate-800 px-2 py-1 text-[11px] text-cyan-400 hover:bg-cyan-500/10"
+                className="flex-1 rounded border border-[#a0a6b0] bg-[#e2dfd0] px-2 py-1 text-[11px] text-[#3e3d35] hover:bg-[#d9e5f5]"
               >
                 Add
               </button>
               <button
                 type="button"
                 onClick={cancelAddColumn}
-                className="rounded border border-slate-600 bg-slate-800 px-2 py-1 text-[11px] text-slate-500 hover:bg-slate-700"
+                className="rounded border border-[#a0a6b0] bg-[#e2dfd0] px-2 py-1 text-[11px] text-[#3e3d35] hover:bg-[#d6d2c2]"
               >
                 Cancel
               </button>
@@ -502,7 +502,7 @@ function DatabaseTableNodeComponent({ id, data: rawData, selected }: NodeProps) 
           <button
             type="button"
             onClick={startAddColumn}
-            className="w-full h-9 flex items-center justify-center gap-1.5 text-[11px] text-slate-500 hover:text-cyan-400 hover:bg-slate-800/50 border-t border-slate-700/50 rounded-b-2xl transition-colors shrink-0"
+            className="w-full h-9 flex items-center justify-center gap-1.5 text-[11px] text-[#3e3d35] hover:text-[#3e3d35] hover:bg-[#e2dfd0] border-t border-[#a0a6b0] rounded-b-2xl transition-colors shrink-0"
           >
             <AiOutlinePlus className="text-sm" />
             Add column

@@ -1,4 +1,5 @@
 "use client";
+import { XPDialogTitle } from "../xp/XPDialogTitle";
 
 import React, { useState, useEffect, useCallback } from "react";
 import { motion, AnimatePresence } from "motion/react";
@@ -49,7 +50,7 @@ export default function ProjectNameModal({
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         exit={{ opacity: 0 }}
-        className="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4"
+        className="fixed inset-0 bg-black/60  z-50 flex items-center justify-center p-4"
         onClick={onClose}
       >
         <motion.div
@@ -57,9 +58,9 @@ export default function ProjectNameModal({
           animate={{ opacity: 1, scale: 1, y: 0 }}
           exit={{ opacity: 0, scale: 0.95, y: 20 }}
           onClick={(e) => e.stopPropagation()}
-          className="bg-slate-900/95 backdrop-blur-xl border border-slate-600/50 rounded-xl p-6 w-full max-w-sm shadow-xl shadow-black/30"
+          className="xp-dialog xp-dialog-padded bg-[#f5f3e9] p-6 w-full max-w-sm"
         >
-          <h3 className="text-sm font-semibold text-slate-200 mb-3">{title}</h3>
+          <XPDialogTitle title={title} onClose={onClose} />
           <form onSubmit={handleSubmit} className="flex flex-col gap-3">
             <input
               type="text"
@@ -68,13 +69,13 @@ export default function ProjectNameModal({
               onKeyDown={handleKeyDown}
               placeholder="tldrw"
               autoFocus
-              className="rounded-lg border border-slate-600 bg-slate-800 px-3 py-2 text-sm text-slate-200 placeholder-slate-500 focus:border-[var(--theme-primary)] focus:outline-none"
+              className="rounded-lg border border-[#a0a6b0] bg-[#e2dfd0] px-3 py-2 text-sm text-[#3e3d35] placeholder-neutral-500 focus:border-[var(--theme-primary)] focus:outline-none"
             />
             <div className="flex justify-end gap-2">
               <button
                 type="button"
                 onClick={onClose}
-                className="px-3 py-1.5 text-xs text-slate-400 hover:text-slate-200 transition-colors"
+                className="px-3 py-1.5 text-xs text-[#3e3d35] hover:text-[#3e3d35] transition-colors"
               >
                 Cancel
               </button>

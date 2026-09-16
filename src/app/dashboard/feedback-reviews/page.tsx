@@ -31,7 +31,7 @@ const FeedbackReviewsPage = () => {
   const fetchReviews = async () => {
     setIsLoading(true);
     setError(null);
-    
+
     try {
       const response = await fetch("/api/feedback", {
         method: "GET",
@@ -114,7 +114,7 @@ const FeedbackReviewsPage = () => {
       }
 
       await response.json();
-      
+
       setReviews(prevReviews =>
         prevReviews.map(review =>
           review.id === badgeReviewId
@@ -232,12 +232,12 @@ const FeedbackReviewsPage = () => {
 
   return (
     <div className="flex flex-1 overflow-auto overflow-x-hidden flex-col z-20 p-4 sm:p-6 lg:p-10" style={{ fontFamily: "var(--font-ui)" }}>
-      <div className="relative w-full flex-1 border-4 border-slate-600/60 bg-gray-950/98 flex flex-col p-4 sm:p-6 lg:p-8 space-y-4 sm:space-y-6 overflow-hidden" style={{ boxShadow: "4px 4px 0 rgba(0,0,0,0.3), inset 0 1px 0 rgba(71,85,105,0.3)" }}>
+      <div className="relative w-full flex-1 border-4 border-[#a0a6b0] bg-[#ece9d8] flex flex-col p-4 sm:p-6 lg:p-8 space-y-4 sm:space-y-6 overflow-hidden" style={{ boxShadow: "none" }}>
         {/* Pixel corner accents */}
-        <div className="absolute top-0 left-0 w-4 h-4 border-l-2 border-t-2 border-slate-600/60" />
-        <div className="absolute top-0 right-0 w-4 h-4 border-r-2 border-t-2 border-slate-600/60" />
-        <div className="absolute bottom-0 left-0 w-4 h-4 border-l-2 border-b-2 border-slate-600/60" />
-        <div className="absolute bottom-0 right-0 w-4 h-4 border-r-2 border-b-2 border-slate-600/60" />
+        <div className="absolute top-0 left-0 w-4 h-4 border-l-2 border-t-2 border-[#a0a6b0]" />
+        <div className="absolute top-0 right-0 w-4 h-4 border-r-2 border-t-2 border-[#a0a6b0]" />
+        <div className="absolute bottom-0 left-0 w-4 h-4 border-l-2 border-b-2 border-[#a0a6b0]" />
+        <div className="absolute bottom-0 right-0 w-4 h-4 border-r-2 border-b-2 border-[#a0a6b0]" />
         {/* Header */}
         <div className="flex-shrink-0">
           <button
@@ -247,14 +247,14 @@ const FeedbackReviewsPage = () => {
             <IoArrowBack className="w-4 h-4 sm:w-5 sm:h-5" />
             <span>Back to Dashboard</span>
           </button>
-          
+
           <div className="flex items-center gap-2 sm:gap-3 mb-2">
-            <BsStars className="w-6 h-6 sm:w-8 sm:h-8 text-yellow-400" />
+            <BsStars className="w-6 h-6 sm:w-8 sm:h-8 text-[#3e3d35]" />
             <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold theme-text uppercase tracking-wider">
               Feedback Reviews
             </h1>
           </div>
-          
+
           {!isLoading && !error && (
             <p className="theme-text-muted text-xs sm:text-sm mt-2 font-bold uppercase tracking-wider">
               Total Reviews: <span className="text-[var(--theme-primary)] font-semibold">{reviews.length}</span>
@@ -266,16 +266,16 @@ const FeedbackReviewsPage = () => {
         <div className="flex-1 overflow-y-auto overflow-x-hidden">
         {isLoading ? (
           <div className="flex items-center justify-center h-full min-h-[400px]">
-            <div className="animate-spin h-12 w-12 border-2 border-slate-600 border-t-[var(--theme-primary)]" style={{ boxShadow: "2px 2px 0 rgba(0,0,0,0.2)" }}></div>
+            <div className="animate-spin h-12 w-12 border-2 border-[#a0a6b0] border-t-[var(--theme-primary)]" style={{ boxShadow: "none" }}></div>
           </div>
         ) : error ? (
           <div className="flex items-center justify-center h-full min-h-[400px]">
-            <div className="text-center border-2 border-red-500/50 bg-red-500/10 p-6 sm:p-8" style={{ boxShadow: "4px 4px 0 rgba(0,0,0,0.2)" }}>
-              <p className="text-red-400 text-base sm:text-lg font-bold uppercase tracking-wider">{error}</p>
+            <div className="text-center border-2 border-[#a0a6b0] bg-[#d9e5f5] p-6 sm:p-8" style={{ boxShadow: "none" }}>
+              <p className="text-[#3e3d35] text-base sm:text-lg font-bold uppercase tracking-wider">{error}</p>
               <button
                 onClick={() => router.push("/dashboard")}
-                className="mt-4 px-4 sm:px-6 py-2 border-2 border-slate-600/60 bg-gray-950/98 theme-text font-bold uppercase tracking-wider transition-all active:translate-y-0.5"
-                style={{ boxShadow: "2px 2px 0 rgba(0,0,0,0.2)" }}
+                className="mt-4 px-4 sm:px-6 py-2 border-2 border-[#a0a6b0] bg-[#ece9d8] theme-text font-bold uppercase tracking-wider transition-all active:translate-y-0.5"
+                style={{ boxShadow: "none" }}
               >
                 Return to Dashboard
               </button>
@@ -283,7 +283,7 @@ const FeedbackReviewsPage = () => {
           </div>
         ) : reviews.length === 0 ? (
           <div className="flex items-center justify-center flex-1 min-h-[400px]">
-            <div className="text-center border-2 border-slate-600/60 bg-gray-950/98 p-6 sm:p-8" style={{ boxShadow: "4px 4px 0 rgba(0,0,0,0.2)" }}>
+            <div className="text-center border-2 border-[#a0a6b0] bg-[#ece9d8] p-6 sm:p-8" style={{ boxShadow: "none" }}>
               <p className="theme-text-muted text-base sm:text-lg font-bold uppercase tracking-wider">No feedback reviews yet</p>
             </div>
           </div>
@@ -293,16 +293,16 @@ const FeedbackReviewsPage = () => {
               <div
                 key={review.id}
                 onClick={() => handleReviewClick(review)}
-                className="relative border-2 border-slate-600/60 bg-gray-950/98 p-4 hover:border-[var(--theme-primary)]/50 transition-all duration-300 cursor-pointer group"
-                style={{ boxShadow: "3px 3px 0 rgba(0,0,0,0.2)" }}
+                className="relative border-2 border-[#a0a6b0] bg-[#ece9d8] p-4 hover:border-[var(--theme-primary)]/50 transition-all duration-300 cursor-pointer group"
+                style={{ boxShadow: "none" }}
               >
                 {/* User Info */}
                 <div className="flex items-center gap-3 mb-3">
                   <img
                     src={review.user_image}
                     alt={review.user_login}
-                    className="w-12 h-12 border-2 border-slate-600/60 group-hover:border-[var(--theme-primary)] transition-colors object-cover flex-shrink-0"
-                    style={{ imageRendering: "pixelated", boxShadow: "2px 2px 0 rgba(0,0,0,0.2)" }}
+                    className="w-12 h-12 border-2 border-[#a0a6b0] group-hover:border-[var(--theme-primary)] transition-colors object-cover flex-shrink-0"
+                    style={{ imageRendering: "pixelated", boxShadow: "none" }}
                   />
                   <div className="flex-1 min-w-0">
                     <p className="theme-text font-bold truncate text-sm sm:text-base uppercase tracking-wider">
@@ -320,7 +320,7 @@ const FeedbackReviewsPage = () => {
                     <IoStar
                       key={star}
                       className={`w-4 h-4 ${
-                        star <= review.rating ? "text-yellow-400" : "text-slate-600"
+                        star <= review.rating ? "text-[#3e3d35]" : "text-[#3e3d35]"
                       }`}
                     />
                   ))}
@@ -339,7 +339,7 @@ const FeedbackReviewsPage = () => {
                 {/* Badges */}
                 <div className="flex items-center gap-2 flex-wrap mb-2">
                   {review.wants_to_contribute && (
-                    <span className="text-[10px] bg-emerald-500/20 text-emerald-400 px-2 py-1 border-2 border-emerald-500/30 font-bold uppercase tracking-wider" style={{ boxShadow: "2px 2px 0 rgba(0,0,0,0.2)" }}>
+                    <span className="text-[10px] bg-[#d9e5f5] text-[#3e3d35] px-2 py-1 border-2 border-[#a0a6b0] font-bold uppercase tracking-wider" style={{ boxShadow: "none" }}>
                       Contributor
                     </span>
                   )}
@@ -349,59 +349,59 @@ const FeedbackReviewsPage = () => {
                         case BADGE_TYPES.GENIUS:
                           return {
                             icon: BsLightbulb,
-                            bg: "from-purple-500/50 to-pink-500/50",
-                            border: "border-purple-300/60",
-                            shadow: "shadow-purple-400/40",
-                            text: "text-purple-100"
+                            bg: " ",
+                            border: "border-[#a0a6b0]",
+                            shadow: "-400/40",
+                            text: "text-[#3e3d35]"
                           };
                         case BADGE_TYPES.HELPFUL:
                           return {
                             icon: FaHandsHelping,
-                            bg: "from-blue-500/50 to-cyan-500/50",
-                            border: "border-blue-300/60",
-                            shadow: "shadow-blue-400/40",
-                            text: "text-blue-100"
+                            bg: " ",
+                            border: "border-[#a0a6b0]",
+                            shadow: "-400/40",
+                            text: "text-[#3e3d35]"
                           };
                         case BADGE_TYPES.INNOVATIVE:
                           return {
                             icon: BsLightbulb,
-                            bg: "from-green-500/50 to-emerald-500/50",
-                            border: "border-green-300/60",
-                            shadow: "shadow-green-400/40",
-                            text: "text-green-100"
+                            bg: " ",
+                            border: "border-[#a0a6b0]",
+                            shadow: "-400/40",
+                            text: "text-[#3e3d35]"
                           };
                         case BADGE_TYPES.CRITICAL_THINKER:
                           return {
                             icon: FaBrain,
-                            bg: "from-indigo-500/50 to-violet-500/50",
-                            border: "border-indigo-300/60",
-                            shadow: "shadow-indigo-400/40",
-                            text: "text-indigo-100"
+                            bg: " ",
+                            border: "border-[#a0a6b0]",
+                            shadow: "-400/40",
+                            text: "text-[#3e3d35]"
                           };
                         case BADGE_TYPES.CONTRIBUTOR:
                           return {
                             icon: BsStars,
-                            bg: "from-rose-500/50 to-red-500/50",
-                            border: "border-rose-300/60",
-                            shadow: "shadow-rose-400/40",
-                            text: "text-rose-100"
+                            bg: " ",
+                            border: "border-[#a0a6b0]",
+                            shadow: "-400/40",
+                            text: "text-[#3e3d35]"
                           };
                         default:
                           return {
                             icon: BsStars,
-                            bg: "from-gray-500/50 to-gray-600/50",
-                            border: "border-gray-300/60",
-                            shadow: "shadow-gray-400/40",
-                            text: "text-gray-100"
+                            bg: " ",
+                            border: "border-[#a0a6b0]",
+                            shadow: "-400/40",
+                            text: "text-[#3e3d35]"
                           };
                       }
                     };
-                    
+
                     const config = getBadgeConfig(review.badge_type);
                     const Icon = config.icon;
-                    
+
                     return (
-                      <div className={`px-2 py-1 border-2 flex flex-row items-center gap-1 bg-gradient-to-r ${config.bg} ${config.border} ${config.shadow}`} style={{ boxShadow: "2px 2px 0 rgba(0,0,0,0.2)" }}>
+                      <div className={`px-2 py-1 border-2 flex flex-row items-center gap-1 bg-[#f5f3e9] ${config.bg} ${config.border} ${config.shadow}`} style={{ boxShadow: "none" }}>
                         <Icon className={`${config.text} text-[10px]`} />
                         <span className={`${config.text} text-[7px] font-bold tracking-widest uppercase`}>
                           {review.badge_type.toUpperCase()}
@@ -429,12 +429,12 @@ const FeedbackReviewsPage = () => {
       {/* Detail Modal */}
       {selectedReview && (
         <div
-          className="fixed inset-0 z-50 flex items-center justify-center bg-black/90 backdrop-blur-md p-2 sm:p-4"
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black/90  p-2 sm:p-4"
           onClick={closeDetailModal}
         >
           <div
-            className="relative w-full max-w-3xl max-h-[95vh] sm:max-h-[90vh] bg-gray-950/98 border-4 theme-border-strong overflow-hidden"
-            style={{ boxShadow: "6px 6px 0 var(--theme-shadow-lg), inset 0 1px 0 rgba(255,255,255,0.05)" }}
+            className="relative w-full max-w-3xl max-h-[95vh] sm:max-h-[90vh] bg-[#ece9d8] border-4 theme-border-strong overflow-hidden"
+            style={{ boxShadow: "none" }}
             onClick={(e) => e.stopPropagation()}
           >
             {/* Pixel corner accents */}
@@ -446,7 +446,7 @@ const FeedbackReviewsPage = () => {
             <button
               onClick={closeDetailModal}
               className="absolute top-2 right-2 sm:top-4 sm:right-4 z-10 p-2 border-2 theme-border bg-[var(--theme-bg-card)] hover:border-[var(--theme-primary)] transition-all duration-300 group active:translate-y-0.5"
-              style={{ boxShadow: "2px 2px 0 rgba(0,0,0,0.2)" }}
+              style={{ boxShadow: "none" }}
             >
               <IoArrowBack className="w-4 h-4 sm:w-5 sm:h-5 theme-text-muted group-hover:text-[var(--theme-text)] transition-colors rotate-180" />
             </button>
@@ -458,7 +458,7 @@ const FeedbackReviewsPage = () => {
                   src={selectedReview.user_image}
                   alt={selectedReview.user_login}
                   className="w-14 h-14 sm:w-16 sm:h-16 lg:w-20 lg:h-20 border-2 theme-border object-cover flex-shrink-0"
-                  style={{ imageRendering: "pixelated", boxShadow: "3px 3px 0 rgba(0,0,0,0.2)" }}
+                  style={{ imageRendering: "pixelated", boxShadow: "none" }}
                 />
                 <div className="flex-1 min-w-0">
                   <h3 className="text-lg sm:text-xl lg:text-2xl font-bold theme-text mb-2 uppercase tracking-wider">
@@ -480,7 +480,7 @@ const FeedbackReviewsPage = () => {
                       <IoStar
                         key={star}
                         className={`w-4 h-4 sm:w-5 sm:h-5 ${
-                          star <= selectedReview.rating ? "text-yellow-400" : "text-slate-600"
+                          star <= selectedReview.rating ? "text-[#3e3d35]" : "text-[#3e3d35]"
                         }`}
                       />
                     ))}
@@ -494,7 +494,7 @@ const FeedbackReviewsPage = () => {
               {/* Feedback Content */}
               <div className="space-y-3 sm:space-y-4">
                 {selectedReview.feedback && (
-                  <div className="border-2 border-[var(--theme-primary)]/50 bg-[var(--theme-bg-card)] p-3 sm:p-4" style={{ boxShadow: "3px 3px 0 rgba(0,0,0,0.2)" }}>
+                  <div className="border-2 border-[var(--theme-primary)]/50 bg-[var(--theme-bg-card)] p-3 sm:p-4" style={{ boxShadow: "none" }}>
                     <p className="text-[var(--theme-primary)] text-xs sm:text-sm font-bold mb-2 uppercase tracking-wider">
                       Feature Ideas
                     </p>
@@ -505,8 +505,8 @@ const FeedbackReviewsPage = () => {
                 )}
 
                 {selectedReview.dislikes && (
-                  <div className="border-2 border-red-500/50 bg-red-500/10 p-3 sm:p-4" style={{ boxShadow: "3px 3px 0 rgba(0,0,0,0.2)" }}>
-                    <p className="text-red-400 text-xs sm:text-sm font-bold mb-2 uppercase tracking-wider">
+                  <div className="border-2 border-[#a0a6b0] bg-[#d9e5f5] p-3 sm:p-4" style={{ boxShadow: "none" }}>
+                    <p className="text-[#3e3d35] text-xs sm:text-sm font-bold mb-2 uppercase tracking-wider">
                       Dislikes
                     </p>
                     <p className="theme-text text-xs sm:text-sm whitespace-pre-wrap break-words">
@@ -516,8 +516,8 @@ const FeedbackReviewsPage = () => {
                 )}
 
                 {selectedReview.improvements && (
-                  <div className="border-2 border-amber-500/50 bg-amber-500/10 p-3 sm:p-4" style={{ boxShadow: "3px 3px 0 rgba(0,0,0,0.2)" }}>
-                    <p className="text-amber-400 text-xs sm:text-sm font-bold mb-2 uppercase tracking-wider">
+                  <div className="border-2 border-[#a0a6b0] bg-[#d9e5f5] p-3 sm:p-4" style={{ boxShadow: "none" }}>
+                    <p className="text-[#3e3d35] text-xs sm:text-sm font-bold mb-2 uppercase tracking-wider">
                       Improvements
                     </p>
                     <p className="theme-text text-xs sm:text-sm whitespace-pre-wrap break-words">
@@ -528,8 +528,8 @@ const FeedbackReviewsPage = () => {
 
                 {/* Contribution Section */}
                 {selectedReview.wants_to_contribute && (
-                  <div className="border-2 border-emerald-500/50 bg-emerald-500/10 p-3 sm:p-4" style={{ boxShadow: "3px 3px 0 rgba(0,0,0,0.2)" }}>
-                    <p className="text-emerald-400 text-xs sm:text-sm font-bold mb-3 uppercase tracking-wider">
+                  <div className="border-2 border-[#a0a6b0] bg-[#d9e5f5] p-3 sm:p-4" style={{ boxShadow: "none" }}>
+                    <p className="text-[#3e3d35] text-xs sm:text-sm font-bold mb-3 uppercase tracking-wider">
                       Wants to Contribute
                     </p>
                     {selectedReview.skills && (
@@ -549,12 +549,12 @@ const FeedbackReviewsPage = () => {
                               key={area}
                               className={`flex items-center gap-1.5 px-2.5 py-1.5 border-2 text-xs sm:text-sm font-bold uppercase tracking-wider ${
                                 area === "frontend"
-                                  ? "bg-blue-500/20 text-blue-400 border-blue-500/30"
+                                  ? "bg-[#d9e5f5] text-[#3e3d35] border-[#a0a6b0]"
                                   : area === "backend"
-                                  ? "bg-purple-500/20 text-purple-400 border-purple-500/30"
-                                  : "bg-pink-500/20 text-pink-400 border-pink-500/30"
+                                  ? "bg-[#d9e5f5] text-[#3e3d35] border-[#a0a6b0]"
+                                  : "bg-[#d9e5f5] text-[#3e3d35] border-[#a0a6b0]"
                               }`}
-                              style={{ boxShadow: "2px 2px 0 rgba(0,0,0,0.2)" }}
+                              style={{ boxShadow: "none" }}
                             >
                               {area === "frontend" && <BsCodeSlash className="w-3 h-3 sm:w-4 sm:h-4" />}
                               {area === "backend" && <AiOutlineDatabase className="w-3 h-3 sm:w-4 sm:h-4" />}
@@ -581,22 +581,22 @@ const FeedbackReviewsPage = () => {
                     minute: "2-digit",
                   })}
                 </p>
-                
+
                 <div className="flex flex-col gap-3">
                   {/* Badge Section */}
                   <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3">
                     {selectedReview.badge_awarded ? (
                       <div className="flex items-center gap-3">
-                        <div className="flex items-center gap-2 bg-yellow-500/20 px-3 py-1.5 border-2 border-yellow-500/30 font-bold uppercase tracking-wider" style={{ boxShadow: "2px 2px 0 rgba(0,0,0,0.2)" }}>
-                          <BsStars className="w-4 h-4 text-yellow-400" />
-                          <span className="text-yellow-400 text-xs sm:text-sm font-bold">
+                        <div className="flex items-center gap-2 bg-[#d9e5f5] px-3 py-1.5 border-2 border-[#a0a6b0] font-bold uppercase tracking-wider" style={{ boxShadow: "none" }}>
+                          <BsStars className="w-4 h-4 text-[#3e3d35]" />
+                          <span className="text-[#3e3d35] text-xs sm:text-sm font-bold">
                             {selectedReview.badge_type || "Badge Awarded"}
                           </span>
                         </div>
                         <button
                           onClick={() => handleRemoveBadge(selectedReview.id)}
-                          className="px-3 py-1.5 border-2 border-red-500/50 bg-red-500/10 hover:bg-red-500/20 text-red-400 text-xs sm:text-sm font-bold uppercase tracking-wider transition-all active:translate-y-0.5"
-                          style={{ boxShadow: "2px 2px 0 rgba(0,0,0,0.2)" }}
+                          className="px-3 py-1.5 border-2 border-[#a0a6b0] bg-[#d9e5f5] hover:bg-[#d9e5f5] text-[#3e3d35] text-xs sm:text-sm font-bold uppercase tracking-wider transition-all active:translate-y-0.5"
+                          style={{ boxShadow: "none" }}
                         >
                           Remove Badge
                         </button>
@@ -607,8 +607,8 @@ const FeedbackReviewsPage = () => {
                         className="px-4 py-2 border-2 theme-border-strong font-bold uppercase tracking-wider transition-all duration-300 flex items-center gap-2 active:translate-y-0.5"
                         style={{
                           color: "var(--theme-text)",
-                          background: "linear-gradient(to bottom, color-mix(in srgb, var(--theme-primary) 60%, transparent), color-mix(in srgb, var(--theme-primary-dark) 70%, transparent))",
-                          boxShadow: "4px 4px 0 var(--theme-shadow-lg), inset 0 1px 0 rgba(255,255,255,0.15)",
+                          background: "var(--theme-bg-card)",
+                          boxShadow: "none",
                         }}
                       >
                         <BsStars className="w-4 h-4" />
@@ -616,12 +616,12 @@ const FeedbackReviewsPage = () => {
                       </button>
                     )}
                   </div>
-                  
+
                   {/* Delete Button */}
                   <button
                     onClick={() => handleDeleteFeedback(selectedReview.id)}
-                    className="w-full sm:w-auto px-4 py-2 border-2 border-red-500/50 bg-red-500/10 hover:bg-red-500/20 text-red-400 text-xs sm:text-sm font-bold uppercase tracking-wider transition-all flex items-center justify-center gap-2 active:translate-y-0.5"
-                    style={{ boxShadow: "2px 2px 0 rgba(0,0,0,0.2)" }}
+                    className="w-full sm:w-auto px-4 py-2 border-2 border-[#a0a6b0] bg-[#d9e5f5] hover:bg-[#d9e5f5] text-[#3e3d35] text-xs sm:text-sm font-bold uppercase tracking-wider transition-all flex items-center justify-center gap-2 active:translate-y-0.5"
+                    style={{ boxShadow: "none" }}
                   >
                     <IoTrashOutline className="w-4 h-4" />
                     Delete Feedback
@@ -636,12 +636,12 @@ const FeedbackReviewsPage = () => {
       {/* Badge Selection Modal */}
       {showBadgeModal && (
         <div
-          className="fixed inset-0 z-50 flex items-center justify-center bg-black/90 backdrop-blur-md p-4"
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black/90  p-4"
           onClick={closeBadgeModal}
         >
           <div
-            className="relative w-full max-w-md bg-gray-950/98 border-4 theme-border-strong p-6"
-            style={{ boxShadow: "6px 6px 0 var(--theme-shadow-lg), inset 0 1px 0 rgba(255,255,255,0.05)" }}
+            className="relative w-full max-w-md bg-[#ece9d8] border-4 theme-border-strong p-6"
+            style={{ boxShadow: "none" }}
             onClick={(e) => e.stopPropagation()}
           >
             {/* Pixel corner accents */}
@@ -652,7 +652,7 @@ const FeedbackReviewsPage = () => {
             {/* Header */}
             <div className="flex items-center justify-between mb-6" style={{ fontFamily: "var(--font-ui)" }}>
               <div className="flex items-center gap-2">
-                <BsStars className="w-6 h-6 text-yellow-400" />
+                <BsStars className="w-6 h-6 text-[#3e3d35]" />
                 <h3 className="text-xl font-bold theme-text uppercase tracking-wider">
                   Select Badge Type
                 </h3>
@@ -660,7 +660,7 @@ const FeedbackReviewsPage = () => {
               <button
                 onClick={closeBadgeModal}
                 className="p-2 border-2 theme-border bg-[var(--theme-bg-card)] hover:border-[var(--theme-primary)] transition-all active:translate-y-0.5"
-                style={{ boxShadow: "2px 2px 0 rgba(0,0,0,0.2)" }}
+                style={{ boxShadow: "none" }}
               >
                 <IoArrowBack className="w-5 h-5 theme-text-muted rotate-180" />
               </button>
@@ -669,87 +669,87 @@ const FeedbackReviewsPage = () => {
             <div className="space-y-3 mb-6">
               {Object.entries(BADGE_TYPES).map(([key, value]) => {
                 const isSelected = selectedBadgeType === value;
-                
+
                 const getBadgeConfig = (badgeValue: string) => {
                   switch(badgeValue) {
                     case BADGE_TYPES.GENIUS:
                       return {
                         icon: BsLightbulb,
-                        bg: "from-purple-500/50 to-pink-500/50",
-                        border: "border-purple-300/60",
-                        shadow: "shadow-purple-400/40",
-                        text: "text-purple-100",
-                        selectionBorder: "border-purple-500/50"
+                        bg: " ",
+                        border: "border-[#a0a6b0]",
+                        shadow: "-400/40",
+                        text: "text-[#3e3d35]",
+                        selectionBorder: "border-[#a0a6b0]"
                       };
                     case BADGE_TYPES.HELPFUL:
                       return {
                         icon: FaHandsHelping,
-                        bg: "from-blue-500/50 to-cyan-500/50",
-                        border: "border-blue-300/60",
-                        shadow: "shadow-blue-400/40",
-                        text: "text-blue-100",
-                        selectionBorder: "border-blue-500/50"
+                        bg: " ",
+                        border: "border-[#a0a6b0]",
+                        shadow: "-400/40",
+                        text: "text-[#3e3d35]",
+                        selectionBorder: "border-[#a0a6b0]"
                       };
                     case BADGE_TYPES.INNOVATIVE:
                       return {
                         icon: BsLightbulb,
-                        bg: "from-green-500/50 to-emerald-500/50",
-                        border: "border-green-300/60",
-                        shadow: "shadow-green-400/40",
-                        text: "text-green-100",
-                        selectionBorder: "border-green-500/50"
+                        bg: " ",
+                        border: "border-[#a0a6b0]",
+                        shadow: "-400/40",
+                        text: "text-[#3e3d35]",
+                        selectionBorder: "border-[#a0a6b0]"
                       };
                     case BADGE_TYPES.CRITICAL_THINKER:
                       return {
                         icon: FaBrain,
-                        bg: "from-indigo-500/50 to-violet-500/50",
-                        border: "border-indigo-300/60",
-                        shadow: "shadow-indigo-400/40",
-                        text: "text-indigo-100",
-                        selectionBorder: "border-indigo-500/50"
+                        bg: " ",
+                        border: "border-[#a0a6b0]",
+                        shadow: "-400/40",
+                        text: "text-[#3e3d35]",
+                        selectionBorder: "border-[#a0a6b0]"
                       };
                     case BADGE_TYPES.CONTRIBUTOR:
                       return {
                         icon: BsStars,
-                        bg: "from-rose-500/50 to-red-500/50",
-                        border: "border-rose-300/60",
-                        shadow: "shadow-rose-400/40",
-                        text: "text-rose-100",
-                        selectionBorder: "border-rose-500/50"
+                        bg: " ",
+                        border: "border-[#a0a6b0]",
+                        shadow: "-400/40",
+                        text: "text-[#3e3d35]",
+                        selectionBorder: "border-[#a0a6b0]"
                       };
                     case BADGE_TYPES.VIP:
                       return {
                         icon: BsDiamond,
-                        bg: "from-yellow-500/50 to-amber-500/50",
-                        border: "border-yellow-300/60",
-                        shadow: "shadow-yellow-400/40",
-                        text: "text-yellow-100",
-                        selectionBorder: "border-yellow-500/50"
+                        bg: " ",
+                        border: "border-[#a0a6b0]",
+                        shadow: "-400/40",
+                        text: "text-[#3e3d35]",
+                        selectionBorder: "border-[#a0a6b0]"
                       };
                     default:
                       return {
                         icon: BsStars,
-                        bg: "from-gray-500/50 to-gray-600/50",
-                        border: "border-gray-300/60",
-                        shadow: "shadow-gray-400/40",
-                        text: "text-gray-100",
-                        selectionBorder: "border-gray-500/50"
+                        bg: " ",
+                        border: "border-[#a0a6b0]",
+                        shadow: "-400/40",
+                        text: "text-[#3e3d35]",
+                        selectionBorder: "border-[#a0a6b0]"
                       };
                   }
                 };
-                
+
                 const config = getBadgeConfig(value);
                 const Icon = config.icon;
-                
+
                 return (
                   <label
                     key={key}
                     className={`flex items-center justify-between gap-3 p-4 border-2 cursor-pointer transition-all duration-300 ${
                       isSelected
                         ? `bg-[var(--theme-bg-card)] ${config.selectionBorder}`
-                        : "border-slate-600/60 bg-gray-950/98 hover:border-slate-500/70"
+                        : "border-[#a0a6b0] bg-[#ece9d8] hover:border-[#a0a6b0]"
                     }`}
-                    style={{ boxShadow: "2px 2px 0 rgba(0,0,0,0.2)" }}
+                    style={{ boxShadow: "none" }}
                   >
                     <div className="flex items-center gap-3">
                       <input
@@ -758,13 +758,13 @@ const FeedbackReviewsPage = () => {
                         value={value}
                         checked={isSelected}
                         onChange={(e) => setSelectedBadgeType(e.target.value)}
-                        className="w-4 h-4 text-[var(--theme-primary)] bg-[var(--theme-bg-card)] border-slate-600 focus:ring-[var(--theme-primary)]"
+                        className="w-4 h-4 text-[var(--theme-primary)] bg-[var(--theme-bg-card)] border-[#a0a6b0] focus:ring-[var(--theme-primary)]"
                       />
                       <span className="theme-text text-sm font-bold uppercase tracking-wider">{value}</span>
                     </div>
-                    
+
                     {/* Badge Pill Preview - Exact as it will appear */}
-                    <div className={`px-3 py-1.5 border-2 flex flex-row items-center gap-1 bg-gradient-to-r ${config.bg} ${config.border} ${config.shadow}`} style={{ boxShadow: "2px 2px 0 rgba(0,0,0,0.2)" }}>
+                    <div className={`px-3 py-1.5 border-2 flex flex-row items-center gap-1 bg-[#f5f3e9] ${config.bg} ${config.border} ${config.shadow}`} style={{ boxShadow: "none" }}>
                       <Icon className={`${config.text} text-[12px]`} />
                       <span className={`${config.text} text-[8px] font-bold tracking-widest uppercase`}>
                         {value.toUpperCase()}
@@ -786,7 +786,7 @@ const FeedbackReviewsPage = () => {
                 placeholder="Write a custom message to accompany the badge..."
                 maxLength={500}
                 className="w-full px-4 py-3 bg-[var(--theme-bg-card)] border-2 theme-border text-[var(--theme-text)] placeholder-[var(--theme-text-muted)] focus:outline-none focus:border-[var(--theme-primary)] text-sm resize-none"
-                style={{ boxShadow: "2px 2px 0 rgba(0,0,0,0.2)" }}
+                style={{ boxShadow: "none" }}
                 rows={4}
               />
               <p className="text-xs theme-text-muted mt-1 font-bold uppercase tracking-wider">
@@ -800,7 +800,7 @@ const FeedbackReviewsPage = () => {
                 onClick={closeBadgeModal}
                 disabled={isAwarding}
                 className="flex-1 px-4 py-2.5 border-2 theme-border bg-[var(--theme-bg-card)] theme-text font-bold uppercase tracking-wider transition-all active:translate-y-0.5 disabled:opacity-50 disabled:cursor-not-allowed"
-                style={{ boxShadow: "2px 2px 0 rgba(0,0,0,0.2)" }}
+                style={{ boxShadow: "none" }}
               >
                 Cancel
               </button>
@@ -810,13 +810,13 @@ const FeedbackReviewsPage = () => {
                 className="flex-1 px-4 py-2.5 border-2 theme-border-strong font-bold uppercase tracking-wider transition-all flex items-center justify-center gap-2 active:translate-y-0.5 disabled:opacity-50 disabled:cursor-not-allowed"
                 style={{
                   color: "var(--theme-text)",
-                  background: "linear-gradient(to bottom, color-mix(in srgb, var(--theme-primary) 60%, transparent), color-mix(in srgb, var(--theme-primary-dark) 70%, transparent))",
-                  boxShadow: "4px 4px 0 var(--theme-shadow-lg), inset 0 1px 0 rgba(255,255,255,0.15)",
+                  background: "var(--theme-bg-card)",
+                  boxShadow: "none",
                 }}
               >
                 {isAwarding ? (
                   <>
-                    <div className="animate-spin rounded-full h-4 w-4 border-t-2 border-b-2 border-white"></div>
+                    <div className="animate-spin rounded-full h-4 w-4 border-t-2 border-b-2 border-[#a0a6b0]"></div>
                     Awarding...
                   </>
                 ) : (
@@ -830,38 +830,38 @@ const FeedbackReviewsPage = () => {
           </div>
         </div>
       )}
-      
+
       {/* Delete Confirmation Modal */}
       {showDeleteConfirm && (
         <div
-          className="fixed inset-0 z-50 flex items-center justify-center bg-black/90 backdrop-blur-md p-4"
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black/90  p-4"
           onClick={cancelDeleteFeedback}
         >
           <div
-            className="relative w-full max-w-md bg-gray-950/98 border-4 border-red-500/50 p-6"
-            style={{ boxShadow: "6px 6px 0 var(--theme-shadow-lg), inset 0 1px 0 rgba(255,255,255,0.05)" }}
+            className="relative w-full max-w-md bg-[#ece9d8] border-4 border-[#a0a6b0] p-6"
+            style={{ boxShadow: "none" }}
             onClick={(e) => e.stopPropagation()}
           >
             {/* Pixel corner accents */}
-            <div className="absolute top-0 left-0 w-4 h-4 border-l-2 border-t-2 border-red-500/50" />
-            <div className="absolute top-0 right-0 w-4 h-4 border-r-2 border-t-2 border-red-500/50" />
-            <div className="absolute bottom-0 left-0 w-4 h-4 border-l-2 border-b-2 border-red-500/50" />
-            <div className="absolute bottom-0 right-0 w-4 h-4 border-r-2 border-b-2 border-red-500/50" />
+            <div className="absolute top-0 left-0 w-4 h-4 border-l-2 border-t-2 border-[#a0a6b0]" />
+            <div className="absolute top-0 right-0 w-4 h-4 border-r-2 border-t-2 border-[#a0a6b0]" />
+            <div className="absolute bottom-0 left-0 w-4 h-4 border-l-2 border-b-2 border-[#a0a6b0]" />
+            <div className="absolute bottom-0 right-0 w-4 h-4 border-r-2 border-b-2 border-[#a0a6b0]" />
             {/* Header */}
             <div className="flex items-center justify-center mb-4">
-              <div className="p-3 border-2 border-red-500/50 bg-red-500/20" style={{ boxShadow: "4px 4px 0 rgba(0,0,0,0.2)" }}>
-                <IoTrashOutline className="w-8 h-8 text-red-400" />
+              <div className="p-3 border-2 border-[#a0a6b0] bg-[#d9e5f5]" style={{ boxShadow: "none" }}>
+                <IoTrashOutline className="w-8 h-8 text-[#3e3d35]" />
               </div>
             </div>
-            
+
             <h3 className="text-xl font-bold theme-text text-center mb-3 uppercase tracking-wider" style={{ fontFamily: "var(--font-ui)" }}>
               Delete Feedback?
             </h3>
-            
+
             <p className="theme-text-muted text-sm text-center mb-2 font-bold uppercase tracking-wider">
               Are you sure you want to delete this feedback?
             </p>
-            
+
             <p className="theme-text-muted text-xs text-center mb-6 font-bold uppercase tracking-wider">
               This will soft-delete the feedback. It can be recovered from the database if needed.
             </p>
@@ -872,19 +872,19 @@ const FeedbackReviewsPage = () => {
                 onClick={cancelDeleteFeedback}
                 disabled={isDeleting}
                 className="flex-1 px-4 py-2.5 border-2 theme-border bg-[var(--theme-bg-card)] theme-text font-bold uppercase tracking-wider transition-all active:translate-y-0.5 disabled:opacity-50 disabled:cursor-not-allowed"
-                style={{ boxShadow: "2px 2px 0 rgba(0,0,0,0.2)" }}
+                style={{ boxShadow: "none" }}
               >
                 Cancel
               </button>
               <button
                 onClick={confirmDeleteFeedback}
                 disabled={isDeleting}
-                className="flex-1 px-4 py-2.5 border-2 border-red-500/50 bg-red-500/20 text-red-400 font-bold uppercase tracking-wider transition-all flex items-center justify-center gap-2 active:translate-y-0.5 disabled:opacity-50 disabled:cursor-not-allowed"
-                style={{ boxShadow: "4px 4px 0 rgba(0,0,0,0.2)" }}
+                className="flex-1 px-4 py-2.5 border-2 border-[#a0a6b0] bg-[#d9e5f5] text-[#3e3d35] font-bold uppercase tracking-wider transition-all flex items-center justify-center gap-2 active:translate-y-0.5 disabled:opacity-50 disabled:cursor-not-allowed"
+                style={{ boxShadow: "none" }}
               >
                 {isDeleting ? (
                   <>
-                    <div className="animate-spin rounded-full h-4 w-4 border-t-2 border-b-2 border-white"></div>
+                    <div className="animate-spin rounded-full h-4 w-4 border-t-2 border-b-2 border-[#a0a6b0]"></div>
                     Deleting...
                   </>
                 ) : (

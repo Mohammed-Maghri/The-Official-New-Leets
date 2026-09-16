@@ -43,7 +43,7 @@ export const TeamsHeader: React.FC<TeamsHeaderProps> = ({
   const [campusDropdownOpen, setCampusDropdownOpen] = React.useState<boolean>(false);
   const [projectFilterDropdownOpen, setProjectFilterDropdownOpen] = React.useState<boolean>(false);
   const [specificProjectDropdownOpen, setSpecificProjectDropdownOpen] = React.useState<boolean>(false);
-  
+
   const campusRef = React.useRef<HTMLDivElement>(null);
   const campusTriggerRef = React.useRef<HTMLDivElement>(null);
   const projectFilterRef = React.useRef<HTMLDivElement>(null);
@@ -61,7 +61,7 @@ export const TeamsHeader: React.FC<TeamsHeaderProps> = ({
       ) {
         setCampusDropdownOpen(false);
       }
-      
+
       if (
         projectFilterRef.current &&
         !projectFilterRef.current.contains(event.target as Node) &&
@@ -70,7 +70,7 @@ export const TeamsHeader: React.FC<TeamsHeaderProps> = ({
       ) {
         setProjectFilterDropdownOpen(false);
       }
-      
+
       if (
         specificProjectRef.current &&
         !specificProjectRef.current.contains(event.target as Node) &&
@@ -106,11 +106,11 @@ export const TeamsHeader: React.FC<TeamsHeaderProps> = ({
       <div className="flex flex-col space-y-4">
         <div className="flex flex-col lg:flex-row lg:items-center justify-between space-y-4 lg:space-y-0">
           <div className="flex flex-col space-y-2">
-            <h1 className="text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-bold font-Tektur text-white">
+            <h1 className="text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-bold font-Tektur text-[#151515]">
               Teams & Projects
             </h1>
           </div>
-          
+
           {/* Search Input */}
           <div className="w-full lg:w-auto lg:flex-1 lg:max-w-md lg:mx-6">
             <input
@@ -118,79 +118,79 @@ export const TeamsHeader: React.FC<TeamsHeaderProps> = ({
               placeholder="Search by name or username..."
               value={searchQuery}
               onChange={(e) => onSearchChange(e.target.value)}
-              className="w-full px-4 py-2.5 rounded-lg bg-[#0070ef]/10 backdrop-blur-sm border border-[#0070ef]/30 text-white placeholder-gray-400 font-Tektur focus:outline-none focus:border-[#0070ef] transition-all duration-300"
+              className="w-full px-4 py-2.5 rounded-lg bg-[#ece9d8]  border border-[#616161]/30 text-[#151515] placeholder-neutral-400 font-Tektur focus:outline-none focus:border-[#616161] transition-all duration-300"
             />
           </div>
 
           {/* Date Filter Buttons */}
           <div className="flex flex-wrap items-center gap-2">
-            <button 
+            <button
               onClick={() => onDateFilterChange("today")}
               className={`px-3 py-2 md:px-4 md:py-2.5 rounded-lg border font-Tektur text-sm font-semibold transition-all duration-300 ${
                 dateFilter === "today"
-                  ? "bg-[#001226] border-[#0070ef] text-white"
-                  : "bg-[#001226]/50 border-white/10 text-white/80 hover:border-[#0070ef]/50"
+                  ? "bg-[#ece9d8] border-[#616161] text-[#151515]"
+                  : "bg-[#ece9d8] border-[#a0a6b0] text-[#151515] hover:border-[#616161]/50"
               }`}
             >
               Today
             </button>
-            <button 
+            <button
               onClick={() => onDateFilterChange("yesterday")}
               className={`px-3 py-2 md:px-4 md:py-2.5 rounded-lg border font-Tektur text-sm font-semibold transition-all duration-300 ${
                 dateFilter === "yesterday"
-                  ? "bg-[#001226] border-[#0070ef] text-white"
-                  : "bg-[#001226]/50 border-white/10 text-white/80 hover:border-[#0070ef]/50"
+                  ? "bg-[#ece9d8] border-[#616161] text-[#151515]"
+                  : "bg-[#ece9d8] border-[#a0a6b0] text-[#151515] hover:border-[#616161]/50"
               }`}
             >
               Yesterday
             </button>
-            <button 
+            <button
               onClick={() => onDateFilterChange("2days")}
               className={`px-3 py-2 md:px-4 md:py-2.5 rounded-lg border font-Tektur text-sm font-semibold transition-all duration-300 ${
                 dateFilter === "2days"
-                  ? "bg-[#001226] border-[#0070ef] text-white"
-                  : "bg-[#001226]/50 border-white/10 text-white/80 hover:border-[#0070ef]/50"
+                  ? "bg-[#ece9d8] border-[#616161] text-[#151515]"
+                  : "bg-[#ece9d8] border-[#a0a6b0] text-[#151515] hover:border-[#616161]/50"
               }`}
             >
               2 Days Ago
             </button>
             {dateFilter !== "all" && (
-              <button 
+              <button
                 onClick={() => onDateFilterChange("all")}
-                className="px-3 py-2 md:px-4 md:py-2.5 rounded-lg bg-[#001226] border border-red-500/50 text-red-300 font-Tektur text-sm font-semibold hover:bg-red-500/20 hover:border-red-500 transition-all duration-300"
+                className="px-3 py-2 md:px-4 md:py-2.5 rounded-lg bg-[#ece9d8] border border-[#a0a6b0] text-[#3e3d35] font-Tektur text-sm font-semibold hover:bg-[#d9e5f5] hover:border-[#a0a6b0] transition-all duration-300"
               >
                 Clear
               </button>
             )}
           </div>
         </div>
-        
+
         <div className="flex flex-col sm:flex-row lg:flex-wrap xl:flex-nowrap items-start sm:items-center gap-2 md:gap-3">
           <div className="relative w-full sm:w-auto">
             <div
               ref={campusTriggerRef}
               onClick={() => setCampusDropdownOpen(!campusDropdownOpen)}
-              className="transition-all duration-200 cursor-pointer rounded-md border-solid border-[1px] border-white/5 bg-[#0070ef]/5 flex items-center justify-between sm:justify-start space-x-2 px-3 py-2 md:px-4 md:py-2.5 hover:bg-[#0070ef]/10 w-full sm:w-auto"
+              className="transition-all duration-200 cursor-pointer rounded-md border-solid border-[1px] border-[#a0a6b0] bg-[#ece9d8] flex items-center justify-between sm:justify-start space-x-2 px-3 py-2 md:px-4 md:py-2.5 hover:bg-[#ece9d8] w-full sm:w-auto"
             >
               <div className="flex items-center space-x-2">
-                <span className="text-sm md:text-base font-semibold text-white font-Tektur">
+                <span className="text-sm md:text-base font-semibold text-[#151515] font-Tektur">
                   {selectedCampus.name}
                 </span>
               </div>
-              <FaCaretDown 
-                className={`text-white/80 transition-transform duration-300 text-xs ${
+              <FaCaretDown
+                className={`text-[#151515] transition-transform duration-300 text-xs ${
                   campusDropdownOpen ? "rotate-180" : ""
-                }`} 
+                }`}
               />
             </div>
-            
+
             {campusDropdownOpen && (
               <motion.div
                 ref={campusRef}
                 initial={AnimationConfig.dropdownInitial}
                 animate={AnimationConfig.dropdownAnimate}
                 exit={AnimationConfig.dropdownExit}
-                className="absolute top-full left-0 mt-2 w-full sm:w-64 md:w-72 bg-[#001226] border border-[#0070ef]/50 rounded-lg shadow-2xl z-[9999] max-h-80 overflow-auto"
+                className="absolute top-full left-0 mt-2 w-full sm:w-64 md:w-72 bg-[#ece9d8] border border-[#616161]/50 rounded-lg  z-[9999] max-h-80 overflow-auto"
               >
                 {CampusList.map((campus) => (
                   <div
@@ -201,8 +201,8 @@ export const TeamsHeader: React.FC<TeamsHeaderProps> = ({
                     }}
                     className={`px-4 py-3 text-sm font-Tektur cursor-pointer transition-all duration-200 ${
                       selectedCampus.id === campus.id
-                        ? "bg-[#0070ef]/20 text-white"
-                        : "text-gray-300 hover:bg-[#0070ef]/10"
+                        ? "bg-[#ece9d8] text-[#151515]"
+                        : "text-[#3e3d35] hover:bg-[#ece9d8]"
                     }`}
                   >
                     <span className="font-semibold">{campus.name}</span>
@@ -216,27 +216,27 @@ export const TeamsHeader: React.FC<TeamsHeaderProps> = ({
             <div
               ref={projectFilterTriggerRef}
               onClick={() => setProjectFilterDropdownOpen(!projectFilterDropdownOpen)}
-              className="transition-all duration-200 cursor-pointer rounded-md border-solid border-[1px] border-white/5 bg-[#0070ef]/5 flex items-center justify-between sm:justify-start space-x-2 px-3 py-2 md:px-4 md:py-2.5 hover:bg-[#0070ef]/10 w-full sm:w-auto"
+              className="transition-all duration-200 cursor-pointer rounded-md border-solid border-[1px] border-[#a0a6b0] bg-[#ece9d8] flex items-center justify-between sm:justify-start space-x-2 px-3 py-2 md:px-4 md:py-2.5 hover:bg-[#ece9d8] w-full sm:w-auto"
             >
               <div className="flex items-center space-x-2">
-                <span className="text-sm md:text-sm font-semibold text-white font-Tektur">
+                <span className="text-sm md:text-sm font-semibold text-[#151515] font-Tektur">
                   {projectFilter === "all" ? "All Projects" : projectFilter === "known" ? "Known Projects" : "Unknown Projects"}
                 </span>
               </div>
-              <FaCaretDown 
-                className={`text-white/80 transition-transform duration-300 text-xs ${
+              <FaCaretDown
+                className={`text-[#151515] transition-transform duration-300 text-xs ${
                   projectFilterDropdownOpen ? "rotate-180" : ""
-                }`} 
+                }`}
               />
             </div>
-            
+
             {projectFilterDropdownOpen && (
               <motion.div
                 ref={projectFilterRef}
                 initial={AnimationConfig.dropdownInitial}
                 animate={AnimationConfig.dropdownAnimate}
                 exit={AnimationConfig.dropdownExit}
-                className="absolute top-full left-0 mt-2 w-full sm:w-48 md:w-56 bg-[#001226] border border-[#0070ef]/50 rounded-lg shadow-2xl z-[9999]"
+                className="absolute top-full left-0 mt-2 w-full sm:w-48 md:w-56 bg-[#ece9d8] border border-[#616161]/50 rounded-lg  z-[9999]"
               >
                 {ProjectFilterOptions.map((option) => (
                   <div
@@ -244,8 +244,8 @@ export const TeamsHeader: React.FC<TeamsHeaderProps> = ({
                     onClick={() => handleProjectFilterChange(option.value as ProjectFilterType)}
                     className={`px-3 md:px-4 py-2 md:py-3 text-xs md:text-sm font-Tektur cursor-pointer transition-all duration-200 first:rounded-t-lg last:rounded-b-lg ${
                       projectFilter === option.value
-                        ? "bg-[#0070ef]/20 text-white"
-                        : "text-gray-300 hover:bg-[#0070ef]/10"
+                        ? "bg-[#ece9d8] text-[#151515]"
+                        : "text-[#3e3d35] hover:bg-[#ece9d8]"
                     }`}
                   >
                     <span className="font-semibold">{option.label}</span>
@@ -259,43 +259,43 @@ export const TeamsHeader: React.FC<TeamsHeaderProps> = ({
             <div
               ref={specificProjectTriggerRef}
               onClick={() => setSpecificProjectDropdownOpen(!specificProjectDropdownOpen)}
-              className="transition-all duration-200 cursor-pointer rounded-md border-solid border-[1px] border-white/5 bg-[#0070ef]/5 flex items-center justify-between sm:justify-start space-x-2 px-3 py-2 md:px-4 md:py-2.5 hover:bg-[#0070ef]/10 w-full sm:w-auto"
+              className="transition-all duration-200 cursor-pointer rounded-md border-solid border-[1px] border-[#a0a6b0] bg-[#ece9d8] flex items-center justify-between sm:justify-start space-x-2 px-3 py-2 md:px-4 md:py-2.5 hover:bg-[#ece9d8] w-full sm:w-auto"
             >
               <div className="flex items-center space-x-2 min-w-0">
-                <span className="text-sm md:text-sm font-semibold text-white font-Tektur truncate">
+                <span className="text-sm md:text-sm font-semibold text-[#151515] font-Tektur truncate">
                   {specificProjectFilter === "all" ? "All Project Names" : specificProjectFilter}
                 </span>
               </div>
-              <FaCaretDown 
-                className={`text-white/80 transition-transform duration-300 text-xs flex-shrink-0 ${
+              <FaCaretDown
+                className={`text-[#151515] transition-transform duration-300 text-xs flex-shrink-0 ${
                   specificProjectDropdownOpen ? "rotate-180" : ""
-                }`} 
+                }`}
               />
             </div>
-            
+
             {specificProjectDropdownOpen && (
               <motion.div
                 ref={specificProjectRef}
                 initial={AnimationConfig.dropdownInitial}
                 animate={AnimationConfig.dropdownAnimate}
                 exit={AnimationConfig.dropdownExit}
-                className="absolute top-full left-0 mt-2 w-full sm:w-72 md:w-80 bg-[#001226] border border-[#0070ef]/50 rounded-lg shadow-2xl z-[9999] max-h-80 overflow-auto"
+                className="absolute top-full left-0 mt-2 w-full sm:w-72 md:w-80 bg-[#ece9d8] border border-[#616161]/50 rounded-lg  z-[9999] max-h-80 overflow-auto"
               >
                 <div
                   onClick={() => handleSpecificProjectFilterChange("all")}
                   className={`px-4 py-3 text-sm font-Tektur cursor-pointer transition-all duration-200 rounded-t-lg ${
                     specificProjectFilter === "all"
-                      ? "bg-[#0070ef]/20 text-white"
-                      : "text-gray-300 hover:bg-[#0070ef]/10"
+                      ? "bg-[#ece9d8] text-[#151515]"
+                      : "text-[#3e3d35] hover:bg-[#ece9d8]"
                   }`}
                 >
                   <span className="font-semibold">All Projects</span>
                 </div>
-                
-                <div className="border-t border-[#0070ef]/30 mx-3"></div>
-                
-                <div className="px-4 py-2 bg-[#0070ef]/10">
-                  <span className="text-xs font-bold text-gray-400 font-Tektur uppercase tracking-wider">
+
+                <div className="border-t border-[#616161]/30 mx-3"></div>
+
+                <div className="px-4 py-2 bg-[#ece9d8]">
+                  <span className="text-xs font-bold text-[#3e3d35] font-Tektur uppercase tracking-wider">
                     Current Teams ({uniqueProjects.length})
                   </span>
                 </div>
@@ -305,18 +305,18 @@ export const TeamsHeader: React.FC<TeamsHeaderProps> = ({
                     onClick={() => handleSpecificProjectFilterChange(projectName)}
                     className={`px-4 py-2 text-sm font-Tektur cursor-pointer transition-all duration-200 ${
                       specificProjectFilter === projectName
-                        ? "bg-[#0070ef]/20 text-white"
-                        : "text-gray-300 hover:bg-[#0070ef]/10"
+                        ? "bg-[#ece9d8] text-[#151515]"
+                        : "text-[#3e3d35] hover:bg-[#ece9d8]"
                     }`}
                   >
                     <span className="font-medium truncate">{projectName}</span>
                   </div>
                 ))}
-                
-                <div className="border-t border-[#0070ef]/30 mx-3 my-1"></div>
-                
-                <div className="px-4 py-2 bg-[#0070ef]/10">
-                  <span className="text-xs font-bold text-gray-400 font-Tektur uppercase tracking-wider">
+
+                <div className="border-t border-[#616161]/30 mx-3 my-1"></div>
+
+                <div className="px-4 py-2 bg-[#ece9d8]">
+                  <span className="text-xs font-bold text-[#3e3d35] font-Tektur uppercase tracking-wider">
                     All Available ({allProjects.length})
                   </span>
                 </div>
@@ -326,15 +326,15 @@ export const TeamsHeader: React.FC<TeamsHeaderProps> = ({
                     onClick={() => handleSpecificProjectFilterChange(projectName)}
                     className={`px-4 py-2 text-sm font-Tektur cursor-pointer transition-all duration-200 last:rounded-b-lg ${
                       specificProjectFilter === projectName
-                        ? "bg-[#0070ef]/20 text-white"
-                        : "text-gray-300 hover:bg-[#0070ef]/10"
+                        ? "bg-[#ece9d8] text-[#151515]"
+                        : "text-[#3e3d35] hover:bg-[#ece9d8]"
                     }`}
                   >
                     <span className="font-medium truncate">{projectName}</span>
                   </div>
                 ))}
                 {allProjects.length > 20 && (
-                  <div className="px-4 py-2 text-xs text-gray-400 font-Tektur text-center border-t border-white/10">
+                  <div className="px-4 py-2 text-xs text-[#3e3d35] font-Tektur text-center border-t border-[#a0a6b0]">
                     ... and {allProjects.length - 20} more projects
                   </div>
                 )}
@@ -348,27 +348,27 @@ export const TeamsHeader: React.FC<TeamsHeaderProps> = ({
               animate={AnimationConfig.buttonAnimate}
               exit={AnimationConfig.buttonExit}
               onClick={clearFilters}
-              className="flex items-center justify-center space-x-2 bg-red-500/20 backdrop-blur-sm px-3 py-2 md:px-4 md:py-2.5 rounded-lg border border-red-500/30 hover:bg-red-500/30 transition-all duration-300 w-full sm:w-auto"
+              className="flex items-center justify-center space-x-2 bg-[#d9e5f5]  px-3 py-2 md:px-4 md:py-2.5 rounded-lg border border-[#a0a6b0] hover:bg-[#d9e5f5] transition-all duration-300 w-full sm:w-auto"
             >
-              <span className="text-sm font-semibold text-red-300 font-Tektur">Clear Filters</span>
+              <span className="text-sm font-semibold text-[#3e3d35] font-Tektur">Clear Filters</span>
             </motion.button>
           )}
 
           {/* Search Button */}
           <div
             onClick={onSearch}
-            className="w-[30px] h-[30px] md:w-[35px] md:h-[35px] cursor-pointer rounded-md border-solid border-[1px] border-white/10 bg-[#0070ef]/20 hover:bg-[#0070ef]/30 flex items-center justify-center transition-all duration-200"
+            className="w-[30px] h-[30px] md:w-[35px] md:h-[35px] cursor-pointer rounded-md border-solid border-[1px] border-[#a0a6b0] bg-[#ece9d8] hover:bg-[#ece9d8] flex items-center justify-center transition-all duration-200"
             title="Apply filters and search"
           >
-            <CiSearch className="text-white text-lg md:text-xl" />
+            <CiSearch className="text-[#151515] text-lg md:text-xl" />
           </div>
 
-          <div className="bg-[#001226] px-3 py-2 md:px-4 md:py-2.5 rounded-lg border border-white/10 w-full sm:w-auto">
+          <div className="bg-[#ece9d8] px-3 py-2 md:px-4 md:py-2.5 rounded-lg border border-[#a0a6b0] w-full sm:w-auto">
             <div className="flex items-center justify-center sm:justify-start space-x-2">
-              <span className="text-sm md:text-base font-bold text-white font-Tektur">
+              <span className="text-sm md:text-base font-bold text-[#151515] font-Tektur">
                 {teamCount}
               </span>
-              <span className="text-sm text-gray-300 font-Tektur">
+              <span className="text-sm text-[#3e3d35] font-Tektur">
                 team{teamCount !== 1 ? "s" : ""}
               </span>
             </div>

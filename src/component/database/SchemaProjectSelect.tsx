@@ -74,11 +74,11 @@ export function SchemaProjectSelect({
         type="button"
         onClick={() => !disabled && setIsOpen((o) => !o)}
         disabled={disabled}
-        className="nodrag relative flex-1 min-w-0 w-full rounded-lg border border-slate-600 bg-slate-900 px-3 py-2 pr-8 text-sm text-slate-200 focus:border-cyan-500 focus:outline-none text-left truncate disabled:opacity-50"
+        className="nodrag relative flex-1 min-w-0 w-full rounded-lg border border-[#a0a6b0] bg-[#f5f3e9] px-3 py-2 pr-8 text-sm text-[#3e3d35] focus:border-[#a0a6b0] focus:outline-none text-left truncate disabled:opacity-50"
       >
         <span className="block truncate">{displayText}</span>
         <svg
-          className={`absolute right-2 top-1/2 -translate-y-1/2 w-3 h-3 text-slate-400 transition-transform shrink-0 ${isOpen ? "rotate-180" : ""}`}
+          className={`absolute right-2 top-1/2 -translate-y-1/2 w-3 h-3 text-[#3e3d35] transition-transform shrink-0 ${isOpen ? "rotate-180" : ""}`}
           viewBox="0 0 24 24"
           fill="none"
           stroke="currentColor"
@@ -93,7 +93,7 @@ export function SchemaProjectSelect({
         createPortal(
           <div
             ref={dropdownRef}
-            className="overflow-y-auto rounded-lg border border-slate-600 bg-slate-800 shadow-xl flex flex-col"
+            className="overflow-y-auto rounded-lg border border-[#a0a6b0] bg-[#e2dfd0]  flex flex-col"
             style={dropdownStyle}
           >
             {projects.map((p) => (
@@ -104,8 +104,8 @@ export function SchemaProjectSelect({
                   onChange(p.id);
                   setIsOpen(false);
                 }}
-                className={`w-full px-3 py-2 text-left text-sm truncate hover:bg-slate-700/80 flex-shrink-0 ${
-                  value === p.id ? "text-[var(--theme-primary)] bg-slate-700/50" : "text-slate-200"
+                className={`w-full px-3 py-2 text-left text-sm truncate hover:bg-[#d6d2c2] flex-shrink-0 ${
+                  value === p.id ? "text-[var(--theme-primary)] bg-[#d6d2c2]" : "text-[#3e3d35]"
                 }`}
                 title={p.name}
               >

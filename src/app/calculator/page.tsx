@@ -36,7 +36,7 @@ interface ValidatedProject {
 const CalculatorPage = () => {
   const context = useContext(ContextCreator);
   const { userData } = context || {};
-  
+
   const [currentLevel, setCurrentLevel] = useState("");
   const [score, setScore] = useState("");
   const [selectedProject, setSelectedProject] = useState("Select Project");
@@ -139,9 +139,9 @@ const CalculatorPage = () => {
     setProjectDifficulty(difficulty);
     setSearchValue("");
     setDropdownOpen(false);
-    
+
     // Check if it's an internship project
-    const isInternshipProject = projectName.toLowerCase().includes("internship") || 
+    const isInternshipProject = projectName.toLowerCase().includes("internship") ||
                                 projectName.toLowerCase().includes("part time") ||
                                 projectName.toLowerCase().includes("part_time");
     setIsInternship(isInternshipProject);
@@ -233,7 +233,7 @@ const CalculatorPage = () => {
   const handleRemoveProject = (id: string) => {
     // Find the project to remove
     const projectToRemove = validatedProjects.find(project => project.id === id);
-    
+
     if (projectToRemove) {
       // Calculate the XP that was gained from this project
       let xpGained = projectToRemove.xpGained * (parseFloat(projectToRemove.score) / 100);
@@ -243,7 +243,7 @@ const CalculatorPage = () => {
 
       // Calculate the new current level by reversing the XP calculation
       const newLevel = reverseCalculateLevel(parseFloat(currentLevel), xpGained);
-      
+
       // Update current level
       setCurrentLevel(newLevel.toFixed(2));
       setDisplayLevel(`Level ${newLevel.toFixed(2)}`);
@@ -301,10 +301,10 @@ const CalculatorPage = () => {
   return (
     <div className="flex flex-1 items-center justify-start overflow-x-hidden flex-col z-10 relative w-full">
       <div
-        className="relative w-full border-4 theme-border-strong bg-gray-950/98 flex flex-1 flex-col p-4 md:p-6 lg:p-8 space-y-4 md:space-y-6"
+        className="relative w-full border-4 theme-border-strong bg-[#ece9d8] flex flex-1 flex-col p-4 md:p-6 lg:p-8 space-y-4 md:space-y-6"
         style={{
           fontFamily: "var(--font-ui)",
-          boxShadow: "6px 6px 0 var(--theme-shadow-lg), inset 0 1px 0 rgba(255,255,255,0.05)",
+          boxShadow: "none",
         }}
       >
         {/* Pixel corners */}
@@ -321,7 +321,7 @@ const CalculatorPage = () => {
           <p className="text-sm md:text-base theme-text-muted uppercase tracking-wider">
             Calculate your level progression based on project XP
           </p>
-          <div className="border-2 theme-border bg-[var(--theme-bg-card)] p-3" style={{ boxShadow: "2px 2px 0 rgba(0,0,0,0.2)" }}>
+          <div className="border-2 theme-border bg-[var(--theme-bg-card)] p-3" style={{ boxShadow: "none" }}>
             <p className="text-xs theme-text-muted uppercase tracking-wider">
               <span className="font-bold theme-text">Note:</span> The calculator may not be 100% exact, but it works fine for estimating your progression.
             </p>
@@ -342,7 +342,7 @@ const CalculatorPage = () => {
               onChange={(e) => setCurrentLevel(e.target.value)}
               placeholder="e.g. 4.20"
               className="w-full px-4 py-3 border-2 theme-border bg-[var(--theme-bg-card)] theme-text placeholder-[var(--theme-text-muted)] outline-none focus:border-[var(--theme-primary)] transition-all relative z-20"
-              style={{ fontFamily: "var(--font-ui)", boxShadow: "2px 2px 0 rgba(0,0,0,0.2)" }}
+              style={{ fontFamily: "var(--font-ui)", boxShadow: "none" }}
             />
           </div>
 
@@ -357,7 +357,7 @@ const CalculatorPage = () => {
               onChange={(e) => setScore(e.target.value)}
               placeholder={isInternship ? "e.g. 100 (completed)" : "e.g. 125"}
               className="w-full px-4 py-3 border-2 theme-border bg-[var(--theme-bg-card)] theme-text placeholder-[var(--theme-text-muted)] outline-none focus:border-[var(--theme-primary)] transition-all relative z-20"
-              style={{ fontFamily: "var(--font-ui)", boxShadow: "2px 2px 0 rgba(0,0,0,0.2)" }}
+              style={{ fontFamily: "var(--font-ui)", boxShadow: "none" }}
             />
             {isInternship && (
               <p className="text-[9px] theme-text-muted uppercase tracking-wider">
@@ -370,7 +370,7 @@ const CalculatorPage = () => {
         {/* Custom Project - prominent at top */}
         <div
           className="p-4 border-2 theme-border bg-[var(--theme-bg-card)]"
-          style={{ boxShadow: "2px 2px 0 rgba(0,0,0,0.2)" }}
+          style={{ boxShadow: "none" }}
         >
           <p className="text-[10px] font-bold theme-text uppercase tracking-wider mb-3">
             Add custom project (XP)
@@ -386,7 +386,7 @@ const CalculatorPage = () => {
                 value={customProjectXp}
                 onChange={(e) => setCustomProjectXp(e.target.value)}
                 placeholder="e.g. 1000"
-                className="w-full px-4 py-2 border-2 theme-border bg-gray-950/98 theme-text placeholder-[var(--theme-text-muted)] outline-none focus:border-[var(--theme-primary)] transition-all text-sm"
+                className="w-full px-4 py-2 border-2 theme-border bg-[#ece9d8] theme-text placeholder-[var(--theme-text-muted)] outline-none focus:border-[var(--theme-primary)] transition-all text-sm"
                 style={{ fontFamily: "var(--font-ui)" }}
               />
             </div>
@@ -398,8 +398,8 @@ const CalculatorPage = () => {
             style={{
               fontFamily: "var(--font-ui)",
               color: "var(--theme-text)",
-              background: "linear-gradient(to bottom, color-mix(in srgb, var(--theme-primary) 25%, transparent), color-mix(in srgb, var(--theme-primary-dark) 35%, transparent))",
-              boxShadow: "2px 2px 0 rgba(0,0,0,0.2)",
+              background: "var(--theme-bg-card)",
+              boxShadow: "none",
             }}
           >
             Use this project
@@ -426,12 +426,12 @@ const CalculatorPage = () => {
               }}
               placeholder="Search for a project..."
               className="w-full px-4 py-3 border-2 theme-border bg-[var(--theme-bg-card)] theme-text placeholder-[var(--theme-text-muted)] outline-none focus:border-[var(--theme-primary)] transition-all relative z-30"
-              style={{ fontFamily: "var(--font-ui)", boxShadow: "2px 2px 0 rgba(0,0,0,0.2)" }}
+              style={{ fontFamily: "var(--font-ui)", boxShadow: "none" }}
             />
             {dropdownOpen && filteredProjects.length > 0 && (
               <div
-                className="absolute top-full left-0 mt-2 w-full max-h-64 overflow-auto border-2 theme-border bg-gray-950/98 z-[9999]"
-                style={{ boxShadow: "4px 4px 0 rgba(0,0,0,0.3)" }}
+                className="absolute top-full left-0 mt-2 w-full max-h-64 overflow-auto border-2 theme-border bg-[#ece9d8] z-[9999]"
+                style={{ boxShadow: "none" }}
               >
                 {filteredProjects.map((project, index) => (
                   <div
@@ -467,7 +467,7 @@ const CalculatorPage = () => {
         {/* Coalition Toggle */}
         <div
           className="flex items-center justify-between p-4 border-2 theme-border bg-[var(--theme-bg-card)] relative z-20"
-          style={{ boxShadow: "2px 2px 0 rgba(0,0,0,0.2)" }}
+          style={{ boxShadow: "none" }}
         >
           <div className="flex items-center space-x-3">
             <span className="theme-text font-bold uppercase tracking-wider text-sm">
@@ -480,15 +480,15 @@ const CalculatorPage = () => {
           <button
             onClick={() => setCoalitionEnabled(!coalitionEnabled)}
             className={`relative w-12 h-6 border-2 transition-all duration-200 active:translate-y-0.5 ${
-              coalitionEnabled ? "theme-border-strong bg-[var(--theme-primary)]/30" : "theme-border bg-gray-900/80"
+              coalitionEnabled ? "theme-border-strong bg-[var(--theme-primary)]/30" : "theme-border bg-[#f5f3e9]"
             }`}
-            style={{ boxShadow: "2px 2px 0 rgba(0,0,0,0.2)" }}
+            style={{ boxShadow: "none" }}
           >
             <div
-              className={`absolute top-0.5 left-0.5 w-4 h-4 bg-white border-2 border-gray-900 transition-transform duration-200 ${
+              className={`absolute top-0.5 left-0.5 w-4 h-4 bg-white border-2 border-[#a0a6b0] transition-transform duration-200 ${
                 coalitionEnabled ? "translate-x-6" : "translate-x-0"
               }`}
-              style={{ boxShadow: "2px 2px 0 rgba(0,0,0,0.3)" }}
+              style={{ boxShadow: "none" }}
             />
           </button>
         </div>
@@ -500,8 +500,8 @@ const CalculatorPage = () => {
           style={{
             fontFamily: "var(--font-ui)",
             color: "var(--theme-text)",
-            background: "linear-gradient(to bottom, color-mix(in srgb, var(--theme-primary) 30%, transparent), color-mix(in srgb, var(--theme-primary-dark) 40%, transparent))",
-            boxShadow: "4px 4px 0 var(--theme-shadow-lg), inset 0 1px 0 rgba(255,255,255,0.1)",
+            background: "var(--theme-bg-card)",
+            boxShadow: "none",
           }}
         >
           Calculate Level
@@ -510,7 +510,7 @@ const CalculatorPage = () => {
         {/* Result Display */}
         <div
           className="border-2 theme-border bg-[var(--theme-bg-card)] p-6 relative z-20"
-          style={{ boxShadow: "2px 2px 0 rgba(0,0,0,0.2)" }}
+          style={{ boxShadow: "none" }}
         >
           <div className="text-center">
             <p className="text-[10px] theme-text-muted uppercase tracking-wider mb-2">
@@ -518,8 +518,8 @@ const CalculatorPage = () => {
             </p>
             {calculatedLevel === "NaN" || calculatedLevel === "fill the form" ? (
               <p className="text-lg theme-text-muted uppercase tracking-wider">
-                {calculatedLevel === "fill the form" 
-                  ? "Fill in all fields to calculate" 
+                {calculatedLevel === "fill the form"
+                  ? "Fill in all fields to calculate"
                   : "Invalid input"}
               </p>
             ) : calculatedLevel === "" ? (
@@ -555,7 +555,7 @@ const CalculatorPage = () => {
                 <div
                   key={project.id}
                   className="border-2 theme-border bg-[var(--theme-bg-card)] p-4 flex items-center justify-between hover:border-[var(--theme-border-strong)] transition-all"
-                  style={{ boxShadow: "2px 2px 0 rgba(0,0,0,0.2)" }}
+                  style={{ boxShadow: "none" }}
                 >
                   <div className="flex-1">
                     <div className="flex items-center space-x-2 mb-2">
@@ -580,8 +580,8 @@ const CalculatorPage = () => {
                   </div>
                   <button
                     onClick={() => handleRemoveProject(project.id)}
-                    className="ml-4 p-2 border-2 border-red-500/50 text-red-400 hover:border-red-400/70 hover:bg-red-500/20 transition-all active:translate-y-0.5"
-                    style={{ boxShadow: "2px 2px 0 rgba(0,0,0,0.2)" }}
+                    className="ml-4 p-2 border-2 border-[#a0a6b0] text-[#3e3d35] hover:border-[#a0a6b0] hover:bg-[#d9e5f5] transition-all active:translate-y-0.5"
+                    style={{ boxShadow: "none" }}
                     title="Remove project"
                   >
                     <ImCross className="w-4 h-4" />

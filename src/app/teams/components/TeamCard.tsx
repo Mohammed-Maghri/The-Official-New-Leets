@@ -25,12 +25,12 @@ export const TeamCard: React.FC<TeamCardProps> = ({
   // Calculate relative date
   const getRelativeDate = (dateString: string | null) => {
     if (!dateString) return "Not Closed";
-    
+
     const date = new Date(dateString);
     const now = new Date();
     const diffTime = now.getTime() - date.getTime();
     const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
-    
+
     if (diffDays === 0) return "Today";
     if (diffDays === 1) return "Yesterday";
     if (diffDays === 2) return "2 days ago";
@@ -44,45 +44,45 @@ export const TeamCard: React.FC<TeamCardProps> = ({
     <motion.div
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
-      transition={{ 
-        delay: index * AnimationConfig.cardStagger, 
-        duration: AnimationConfig.cardDuration 
+      transition={{
+        delay: index * AnimationConfig.cardStagger,
+        duration: AnimationConfig.cardDuration
       }}
       onClick={() => handleTeamClick(team)}
-      className="bg-[#001226]/80 backdrop-blur-xl border border-[#0070ef]/30 rounded-lg p-4 md:p-6 hover:border-[#0070ef]/50 transition-all duration-300 shadow-xl hover:shadow-2xl cursor-pointer relative group"
+      className="bg-[#ece9d8]  border border-[#616161]/30 rounded-lg p-4 md:p-6 hover:border-[#616161]/50 transition-all duration-300   cursor-pointer relative group"
     >
       <div className="absolute top-2 md:top-3 right-2 md:right-3 opacity-0 group-hover:opacity-100 transition-all duration-300">
-        <div className="bg-[#0070ef]/20 text-gray-300 px-2 md:px-3 py-1 rounded-md text-xs font-medium font-Tektur border border-[#0070ef]/40">
+        <div className="bg-[#ece9d8] text-[#3e3d35] px-2 md:px-3 py-1 rounded-md text-xs font-medium font-Tektur border border-[#616161]/40">
           View Profile
         </div>
       </div>
 
       <div className="flex items-start justify-between mb-3 md:mb-4 relative z-10">
         <div className="flex-1 min-w-0">
-          <h3 className="text-lg md:text-xl font-semibold text-white font-Tektur mb-2 truncate">
+          <h3 className="text-lg md:text-xl font-semibold text-[#151515] font-Tektur mb-2 truncate">
             {team.name}
           </h3>
           <div className="flex flex-col space-y-2 text-sm">
-            <div className="text-gray-100 font-Tektur font-medium truncate">
+            <div className="text-[#3e3d35] font-Tektur font-medium truncate">
               {getProjectName(team.project_id)}
             </div>
-            
+
             <div className="flex flex-wrap items-center gap-2">
-              <span className="text-gray-400 font-Tektur text-xs">
+              <span className="text-[#3e3d35] font-Tektur text-xs">
                 ID: {team.project_id}
               </span>
               {getProjectDifficulty(team.project_id) > 0 && (
-                <span className="text-gray-300 font-Tektur text-xs bg-[#0070ef]/20 px-2 py-1 rounded-md border border-[#0070ef]/30 whitespace-nowrap">
+                <span className="text-[#3e3d35] font-Tektur text-xs bg-[#ece9d8] px-2 py-1 rounded-md border border-[#616161]/30 whitespace-nowrap">
                   {getProjectDifficulty(team.project_id)} pts
                 </span>
               )}
               <div
                 className={`px-2 md:px-3 py-1 rounded-md text-xs font-medium font-Tektur whitespace-nowrap ${
                   team.status === "finished"
-                    ? "bg-green-500/20 text-green-300 border border-green-500/30"
+                    ? "bg-[#d9e5f5] text-[#3e3d35] border border-[#a0a6b0]"
                     : team.status === "in_progress"
-                    ? "bg-blue-500/20 text-blue-300 border border-blue-500/30"
-                    : "bg-gray-500/20 text-gray-300 border border-gray-500/30"
+                    ? "bg-[#d9e5f5] text-[#3e3d35] border border-[#a0a6b0]"
+                    : "bg-[#d9e5f5] text-[#3e3d35] border border-[#a0a6b0]"
                 }`}
               >
                 {team.status.replace("_", " ").toUpperCase()}
@@ -92,14 +92,14 @@ export const TeamCard: React.FC<TeamCardProps> = ({
         </div>
 
         {team.locked && (
-          <div className="bg-red-500/20 text-red-300 px-2 md:px-3 py-1 rounded-md text-xs font-medium font-Tektur border border-red-500/30 ml-2 whitespace-nowrap">
+          <div className="bg-[#d9e5f5] text-[#3e3d35] px-2 md:px-3 py-1 rounded-md text-xs font-medium font-Tektur border border-[#a0a6b0] ml-2 whitespace-nowrap">
             LOCKED
           </div>
         )}
       </div>
 
       <div className="mb-3 md:mb-4 relative z-10">
-        <h4 className="text-sm font-medium text-gray-200 font-Tektur mb-3">
+        <h4 className="text-sm font-medium text-[#3e3d35] font-Tektur mb-3">
           Team Members:
         </h4>
         <div className="flex flex-wrap gap-2">
@@ -108,15 +108,15 @@ export const TeamCard: React.FC<TeamCardProps> = ({
               key={userIndex}
               className={`flex items-center gap-1.5 px-2 md:px-3 py-1 rounded-md text-xs font-medium font-Tektur border truncate max-w-full ${
                 user.leader
-                  ? "bg-[#0070ef]/30 text-white border-[#0070ef]/50"
-                  : "bg-gray-700/50 text-gray-300 border-gray-600/50"
+                  ? "bg-[#ece9d8] text-[#151515] border-[#616161]/50"
+                  : "bg-[#d6d2c2] text-[#3e3d35] border-[#a0a6b0]"
               }`}
             >
               {user.profile_picture && (
                 <img
                   src={user.profile_picture}
                   alt={user.login}
-                  className="w-5 h-5 rounded-full border border-white/30"
+                  className="w-5 h-5 rounded-full border border-[#a0a6b0]"
                   onError={(e) => {
                     e.currentTarget.style.display = 'none';
                   }}
@@ -126,11 +126,11 @@ export const TeamCard: React.FC<TeamCardProps> = ({
                 {user.leader && "★ "}
                 {user.login}
               </span>
-              <UserBadges 
-                vipStatus={user.vip_status} 
-                badges={user.badges} 
-                size="sm" 
-                showTooltip={true} 
+              <UserBadges
+                vipStatus={user.vip_status}
+                badges={user.badges}
+                size="sm"
+                showTooltip={true}
               />
             </div>
           ))}
@@ -138,49 +138,49 @@ export const TeamCard: React.FC<TeamCardProps> = ({
       </div>
 
       <div className="grid grid-cols-1 gap-2 md:gap-3 text-sm relative z-10">
-        <div className="bg-[#0070ef]/10 backdrop-blur-sm rounded-md p-2 md:p-3 border border-[#0070ef]/20">
-          <div className="text-gray-300 font-Tektur text-xs mb-1">
+        <div className="bg-[#ece9d8]  rounded-md p-2 md:p-3 border border-[#616161]/20">
+          <div className="text-[#3e3d35] font-Tektur text-xs mb-1">
             Project Info
           </div>
-          <div className="text-gray-100 font-Tektur font-medium">
+          <div className="text-[#3e3d35] font-Tektur font-medium">
             {getProjectDuration(team.project_id) && (
-              <div className="text-xs text-gray-400 mb-1">
+              <div className="text-xs text-[#3e3d35] mb-1">
                 Duration: {getProjectDuration(team.project_id)}
               </div>
             )}
           </div>
         </div>
 
-        <div className="bg-[#0070ef]/10 backdrop-blur-sm rounded-md p-2 md:p-3 border border-[#0070ef]/20">
-          <div className="text-gray-300 font-Tektur text-xs mb-1">
+        <div className="bg-[#ece9d8]  rounded-md p-2 md:p-3 border border-[#616161]/20">
+          <div className="text-[#3e3d35] font-Tektur text-xs mb-1">
             Final Mark
           </div>
           <div
             className={`font-bold font-Tektur ${
               team.final_mark === null
-                ? "text-gray-400"
+                ? "text-[#3e3d35]"
                 : team.final_mark >= 80
-                ? "text-green-300"
+                ? "text-[#3e3d35]"
                 : team.final_mark >= 60
-                ? "text-yellow-300"
-                : "text-red-300"
+                ? "text-[#3e3d35]"
+                : "text-[#3e3d35]"
             }`}
           >
             {team.final_mark ?? "Not Graded"}
           </div>
         </div>
 
-        <div className="bg-white/10 backdrop-blur-sm rounded-lg p-2 md:p-3 border border-white/20">
-          <div className="text-gray-200 font-Tektur text-xs mb-1">
+        <div className="bg-[#dce8f8]  rounded-lg p-2 md:p-3 border border-[#a0a6b0]">
+          <div className="text-[#3e3d35] font-Tektur text-xs mb-1">
             Validation
           </div>
           <div
             className={`font-medium font-Tektur ${
               team.validated === "true"
-                ? "text-green-300"
+                ? "text-[#3e3d35]"
                 : team.validated === "false"
-                ? "text-red-300"
-                : "text-gray-400"
+                ? "text-[#3e3d35]"
+                : "text-[#3e3d35]"
             }`}
           >
             {team.validated === "true"
@@ -191,11 +191,11 @@ export const TeamCard: React.FC<TeamCardProps> = ({
           </div>
         </div>
 
-        <div className="bg-white/10 backdrop-blur-sm rounded-lg p-2 md:p-3 border border-white/20">
-          <div className="text-gray-200 font-Tektur text-xs mb-1">
+        <div className="bg-[#dce8f8]  rounded-lg p-2 md:p-3 border border-[#a0a6b0]">
+          <div className="text-[#3e3d35] font-Tektur text-xs mb-1">
             Closed At
           </div>
-          <div className="font-medium text-gray-100 font-Tektur text-xs md:text-sm">
+          <div className="font-medium text-[#3e3d35] font-Tektur text-xs md:text-sm">
             {getRelativeDate(team.closed_at)}
           </div>
         </div>

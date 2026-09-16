@@ -20,12 +20,12 @@ export const LoadMore: React.FC<LoadMoreProps> = ({
         animate={{ opacity: 1, y: 0 }}
         className="text-center py-8 md:py-12"
       >
-        <div className="bg-[#001226] backdrop-blur-xl border border-[#0070ef]/30 rounded-2xl p-6 md:p-8 max-w-md mx-auto">
-          <div className="text-4xl md:text-6xl mb-4 opacity-60 text-[#0070ef]">✓</div>
-          <h3 className="text-lg md:text-xl font-bold text-white font-Tektur mb-2">
+        <div className="bg-[#ece9d8]  border border-[#616161]/30 rounded-2xl p-6 md:p-8 max-w-md mx-auto">
+          <div className="text-4xl md:text-6xl mb-4 opacity-60 text-[#616161]">✓</div>
+          <h3 className="text-lg md:text-xl font-bold text-[#151515] font-Tektur mb-2">
             That&apos;s All!
           </h3>
-          <p className="text-gray-300 font-Tektur text-sm md:text-base">
+          <p className="text-[#3e3d35] font-Tektur text-sm md:text-base">
             You&apos;ve reached the end of the team list.
           </p>
         </div>
@@ -45,20 +45,20 @@ export const LoadMore: React.FC<LoadMoreProps> = ({
         whileHover={!isLoading ? { scale: 1.05, y: -2 } : {}}
         whileTap={!isLoading ? { scale: 0.95 } : {}}
         className={`
-          relative overflow-hidden px-8 md:px-12 py-3 md:py-4 
-          bg-[#001226]
-          text-white font-bold font-Tektur rounded-xl md:rounded-2xl 
-          shadow-lg hover:shadow-2xl border border-white/20 hover:border-[#0070ef]
+          relative overflow-hidden px-8 md:px-12 py-3 md:py-4
+          bg-[#ece9d8]
+          text-[#151515] font-bold font-Tektur rounded-xl md:rounded-2xl
+            border border-[#a0a6b0] hover:border-[#616161]
           transition-all duration-300 group text-base md:text-lg
-          ${isLoading ? 'cursor-not-allowed opacity-70' : 'hover:bg-[#0070ef]/20'}
+          ${isLoading ? 'cursor-not-allowed opacity-70' : 'hover:bg-[#ece9d8]'}
         `}
       >
-        <div className="absolute inset-0 bg-white/10 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-700"></div>
-        
+        <div className="absolute inset-0 bg-[#dce8f8] translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-700"></div>
+
         <div className="relative flex items-center justify-center gap-2 md:gap-3">
           {isLoading ? (
             <>
-              <div className="w-5 h-5 md:w-6 md:h-6 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
+              <div className="w-5 h-5 md:w-6 md:h-6 border-2 border-[#a0a6b0] border-t-white rounded-full animate-spin"></div>
               <span>Loading Teams...</span>
             </>
           ) : (
