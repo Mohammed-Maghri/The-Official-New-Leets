@@ -6,8 +6,7 @@ import {
   themeConfig,
   type ThemeColor,
 } from "@/component/context/ThemeContext";
-import FloatingLines from "./FloatingLines";
-import PixelBlast from "./PixelBlast";
+import AdaptiveBackground from "./AdaptiveBackground";
 
 interface LandingComponentProps {
   onPlayMusic?: () => void;
@@ -239,38 +238,7 @@ const LandingComponent: FC<LandingComponentProps> = () => {
                     }}
                   >
                     <div className="absolute inset-0">
-                      {backgroundVariant === "pixelBlast" ? (
-                        <PixelBlast
-                          variant="square"
-                          pixelSize={4}
-                          color={themeConfig[themeColor].gradient[0]}
-                          patternScale={2}
-                          patternDensity={1}
-                          pixelSizeJitter={0}
-                          enableRipples
-                          rippleSpeed={0.4}
-                          rippleThickness={0.12}
-                          rippleIntensityScale={1.5}
-                          liquid={false}
-                          liquidStrength={0.12}
-                          liquidRadius={1.2}
-                          liquidWobbleSpeed={5}
-                          speed={0.5}
-                          edgeFade={0.25}
-                          transparent
-                        />
-                      ) : (
-                        <FloatingLines
-                          enabledWaves={["top", "middle", "bottom"]}
-                          lineCount={5}
-                          lineDistance={5}
-                          bendRadius={5}
-                          bendStrength={-0.5}
-                          interactive={false}
-                          parallax={false}
-                          linesGradient={[...themeConfig[themeColor].gradient]}
-                        />
-                      )}
+                      <AdaptiveBackground preview />
                     </div>
                     <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent pointer-events-none" />
                     <span className="absolute bottom-1 left-1 text-[8px] font-bold uppercase tracking-wider text-white/90 drop-shadow-md">
