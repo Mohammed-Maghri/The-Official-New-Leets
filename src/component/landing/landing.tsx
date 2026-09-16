@@ -238,13 +238,13 @@ const LandingComponent: FC<LandingComponentProps> = () => {
                     }}
                   >
                     <div className="absolute inset-0">
-                      <AdaptiveBackground />
+                      <AdaptiveBackground preview />
                     </div>
                     <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent pointer-events-none" />
                     <span className="absolute bottom-1 left-1 text-[8px] font-bold uppercase tracking-wider text-white/90 drop-shadow-md">
                       {backgroundVariant === "floatingLines"
-                        ? "Lines"
-                        : "Pixels"}{" "}
+                        ? "Floating lines"
+                        : "Pixel blast"}{" "}
                       · {themeColor}
                     </span>
                   </div>
