@@ -1,15 +1,14 @@
 "use client";
 import React from "react";
 import Image from "next/image";
-import FloatingLines from "@/component/landing/FloatingLines";
-import PixelBlast from "@/component/landing/PixelBlast";
+import AdaptiveBackground from "@/component/landing/AdaptiveBackground";
 import { Navbar } from "@/component/navbar/navbar";
 import { usePathname } from "next/navigation";
 import { useTheme, themeConfig } from "@/component/context/ThemeContext";
 
 const Layout = ({ children }: { children: React.ReactNode }) => {
   const pathname = usePathname();
-  const { themeColor, themeMode, backgroundVariant } = useTheme();
+  const { themeColor, themeMode } = useTheme();
   const config = themeConfig[themeColor];
   const isLight = themeMode === "light";
   const bgFrom = isLight ? "from-gray-100" : "from-black";
@@ -48,7 +47,7 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
       {/* Rank page: blur + dim overlay to soften background colors */}
       {pathname === "/progress" && (
         <div className="fixed inset-0 overflow-hidden pointer-events-none z-[2]">
-          <div className="absolute inset-0 backdrop-blur-md bg-black/45" />
+          <div className="absolute inset-0 lg:backdrop-blur-md bg-black/45" />
         </div>
       )}
 
@@ -58,38 +57,7 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
         style={{ width: "100%", height: "100%" }}
       >
         <div style={{ width: "100%", height: "100%", position: "relative" }}>
-          {backgroundVariant === "pixelBlast" ? (
-            <PixelBlast
-              variant="square"
-              pixelSize={4}
-              color={config.gradient[0]}
-              patternScale={2}
-              patternDensity={1}
-              pixelSizeJitter={0}
-              enableRipples
-              rippleSpeed={0.4}
-              rippleThickness={0.12}
-              rippleIntensityScale={1.5}
-              liquid={false}
-              liquidStrength={0.12}
-              liquidRadius={1.2}
-              liquidWobbleSpeed={5}
-              speed={0.5}
-              edgeFade={0.25}
-              transparent
-            />
-          ) : (
-            <FloatingLines
-              enabledWaves={["top", "middle", "bottom"]}
-              lineCount={5}
-              lineDistance={5}
-              bendRadius={5}
-              bendStrength={-0.5}
-              interactive={true}
-              parallax={true}
-              linesGradient={[...config.gradient]}
-            />
-          )}
+          <AdaptiveBackground />
         </div>
       </div>
       )}
@@ -108,7 +76,6 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
                 width={32}
                 height={32}
                 priority
-                unoptimized
                 style={{ imageRendering: "pixelated" }}
               />
             </div>

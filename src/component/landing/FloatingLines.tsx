@@ -214,7 +214,7 @@ type WavePosition = {
 };
 
 type FloatingLinesProps = {
-  linesGradient?: string[];
+  linesGradient?: readonly string[];
   enabledWaves?: Array<"top" | "middle" | "bottom">;
   lineCount?: number | number[];
   lineDistance?: number | number[];
@@ -320,8 +320,8 @@ export default function FloatingLines({
     const camera = new OrthographicCamera(-1, 1, 1, -1, 0, 1);
     camera.position.z = 1;
 
-    const renderer = new WebGLRenderer({ antialias: true, alpha: false });
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
+    const renderer = new WebGLRenderer({ antialias: false, alpha: false });
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 1.5));
     renderer.domElement.style.width = "100%";
     renderer.domElement.style.height = "100%";
     containerRef.current.appendChild(renderer.domElement);
@@ -484,9 +484,7 @@ export default function FloatingLines({
 
     return () => {
       cancelAnimationFrame(raf);
-      if (ro && containerRef.current) {
-        ro.disconnect();
-      }
+      ro?.disconnect();
 
       if (interactive) {
         renderer.domElement.removeEventListener(
@@ -502,11 +500,18 @@ export default function FloatingLines({
       geometry.dispose();
       material.dispose();
       renderer.dispose();
+      renderer.forceContextLoss();
       if (renderer.domElement.parentElement) {
         renderer.domElement.parentElement.removeChild(renderer.domElement);
       }
     };
   }, [
+    topLineCount,
+    middleLineCount,
+    bottomLineCount,
+    topLineDistance,
+    middleLineDistance,
+    bottomLineDistance,
     linesGradient,
     enabledWaves,
     lineCount,
