@@ -44,10 +44,10 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
         </div>
       )}
 
-      {/* Rank page: blur + dim overlay to soften background colors */}
+      {/* Rank page: dim overlay to soften background colors */}
       {pathname === "/progress" && (
         <div className="fixed inset-0 overflow-hidden pointer-events-none z-[2]">
-          <div className="absolute inset-0 lg:backdrop-blur-md bg-black/45" />
+          <div className="absolute inset-0 bg-black/45" />
         </div>
       )}
 
