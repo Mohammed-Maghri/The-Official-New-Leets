@@ -48,16 +48,16 @@ export function ProjectHeader({
   };
 
   return (
-    <div className="flex-shrink-0 flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-center sm:gap-x-4 sm:gap-y-2 px-3 sm:px-4 py-3 sm:py-3 border-b border-slate-700/60 bg-gray-950 relative z-[70]">
+    <div className="flex-shrink-0 flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-center sm:gap-x-4 sm:gap-y-2 px-3 sm:px-4 py-3 sm:py-3 border-b border-[#a0a6b0] bg-[#ece9d8] relative z-[70]">
       {authError && (
-        <span className="text-[11px] text-amber-400 order-last w-full sm:w-auto">
+        <span className="text-[11px] text-[#3e3d35] order-last w-full sm:w-auto">
           Log in to save and load projects
         </span>
       )}
       <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:gap-3 flex-1 min-w-0">
         <div className="flex items-center gap-2 min-w-0">
-          <AiOutlineFolderOpen className="text-slate-500 shrink-0 text-base" />
-          <label className="text-[10px] font-semibold text-slate-500 uppercase tracking-wider shrink-0">
+          <AiOutlineFolderOpen className="text-[#3e3d35] shrink-0 text-base" />
+          <label className="text-[10px] font-semibold text-[#3e3d35] uppercase tracking-wider shrink-0">
             Project
           </label>
           <SchemaProjectSelect
@@ -83,7 +83,7 @@ export function ProjectHeader({
                   }
                 }}
                 autoFocus
-                className="nodrag flex-1 min-w-0 rounded border border-slate-500 bg-slate-900 px-2 py-1.5 text-sm text-slate-100 focus:border-cyan-500 focus:outline-none"
+                className="nodrag flex-1 min-w-0 rounded border border-[#a0a6b0] bg-[#f5f3e9] px-2 py-1.5 text-sm text-[#3e3d35] focus:border-[#a0a6b0] focus:outline-none"
               />
             ) : (
               <button
@@ -92,7 +92,7 @@ export function ProjectHeader({
                   setEditName(currentProjectName);
                   setIsEditingName(true);
                 }}
-                className="text-sm text-slate-200 hover:text-white truncate max-w-full"
+                className="text-sm text-[#3e3d35] hover:text-[#151515] truncate max-w-full"
                 title="Click to rename"
               >
                 {currentProjectName}
@@ -106,7 +106,7 @@ export function ProjectHeader({
           type="button"
           onClick={onCreateProject}
           disabled={isLoading}
-          className="flex items-center gap-2 rounded-lg border border-slate-600 bg-slate-800 px-3 py-2 text-sm text-slate-200 hover:border-cyan-500/50 hover:bg-slate-800 disabled:opacity-50"
+          className="flex items-center gap-2 rounded-lg border border-[#a0a6b0] bg-[#e2dfd0] px-3 py-2 text-sm text-[#3e3d35] hover:border-[#a0a6b0] hover:bg-[#e2dfd0] disabled:opacity-50"
         >
           <AiOutlinePlus className="text-base" />
           <span className="sm:hidden">New</span>
@@ -117,7 +117,7 @@ export function ProjectHeader({
             type="button"
             onClick={onSave}
             disabled={isSaving}
-            className="flex items-center gap-2 rounded-lg border border-cyan-600/50 bg-slate-800 px-3 py-2 text-sm text-slate-200 hover:border-cyan-500 hover:bg-slate-800 disabled:opacity-50"
+            className="flex items-center gap-2 rounded-lg border border-[#a0a6b0] bg-[#e2dfd0] px-3 py-2 text-sm text-[#3e3d35] hover:border-[#a0a6b0] hover:bg-[#e2dfd0] disabled:opacity-50"
           >
             <AiOutlineSave className="text-base" />
             {isSaving ? "..." : "Save"}

@@ -66,7 +66,7 @@ export const EditableTableCard: React.FC<EditableTableCardProps> = ({
       className="border-2 theme-border bg-[var(--theme-bg-card)] p-3 cursor-grab active:cursor-grabbing min-w-[180px] max-w-[220px] select-none"
       style={{
         fontFamily: "var(--font-ui)",
-        boxShadow: "4px 4px 0 var(--theme-shadow-sm)",
+        boxShadow: "none",
       }}
       onMouseDown={handleMouseDown}
     >
@@ -86,7 +86,7 @@ export const EditableTableCard: React.FC<EditableTableCardProps> = ({
                 setIsEditingName(false);
               }
             }}
-            className="flex-1 px-2 py-1 text-[10px] border theme-border bg-gray-950 theme-text outline-none"
+            className="flex-1 px-2 py-1 text-[10px] border theme-border bg-[#ece9d8] theme-text outline-none"
             autoFocus
           />
         ) : (
@@ -99,7 +99,7 @@ export const EditableTableCard: React.FC<EditableTableCardProps> = ({
         )}
         <button
           onClick={() => onRemoveTable(table.id)}
-          className="text-red-400 hover:text-red-300 text-xs p-0.5"
+          className="text-[#3e3d35] hover:text-[#3e3d35] text-xs p-0.5"
           title="Remove table"
         >
           ×
@@ -123,7 +123,7 @@ export const EditableTableCard: React.FC<EditableTableCardProps> = ({
               <span className="font-bold theme-text truncate">{col.name}</span>
               <span className="text-[8px] opacity-70 truncate">{col.type}</span>
               {col.pk && (
-                <span className="text-[8px] text-amber-400 font-bold">PK</span>
+                <span className="text-[8px] text-[#3e3d35] font-bold">PK</span>
               )}
             </button>
             <select
@@ -131,7 +131,7 @@ export const EditableTableCard: React.FC<EditableTableCardProps> = ({
               onChange={(e) =>
                 onUpdateColumn(table.id, col.id ?? col.name, { type: e.target.value })
               }
-              className="text-[8px] bg-gray-900 theme-border border px-1 py-0.5 theme-text w-16"
+              className="text-[8px] bg-[#f5f3e9] theme-border border px-1 py-0.5 theme-text w-16"
             >
               {columnTypes.map((t) => (
                 <option key={t} value={t}>
@@ -141,7 +141,7 @@ export const EditableTableCard: React.FC<EditableTableCardProps> = ({
             </select>
             <button
               onClick={() => onRemoveColumn(table.id, col.id ?? col.name)}
-              className="opacity-0 group-hover:opacity-100 text-red-400 text-[8px] p-0.5"
+              className="opacity-0 group-hover:opacity-100 text-[#3e3d35] text-[8px] p-0.5"
             >
               ×
             </button>

@@ -15,7 +15,7 @@ export const TableCard: React.FC<TableCardProps> = ({ table }) => {
       className="border-2 theme-border bg-[var(--theme-bg-card)] p-3 sm:p-4 min-w-0"
       style={{
         fontFamily: "var(--font-ui)",
-        boxShadow: "3px 3px 0 var(--theme-shadow-sm)",
+        boxShadow: "none",
       }}
     >
       <div className="text-[10px] font-bold text-[var(--theme-primary)] uppercase tracking-wider mb-2 truncate">
@@ -30,7 +30,7 @@ export const TableCard: React.FC<TableCardProps> = ({ table }) => {
             <span className="font-bold theme-text min-w-0 truncate">{col.name}</span>
             <span className="text-[8px] opacity-70 truncate">{col.type}</span>
             {col.pk && (
-              <span className="text-[8px] text-amber-400 font-bold">PK</span>
+              <span className="text-[8px] text-[#3e3d35] font-bold">PK</span>
             )}
           </div>
         ))}

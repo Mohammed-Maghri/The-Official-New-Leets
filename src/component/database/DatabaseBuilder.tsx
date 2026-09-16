@@ -95,7 +95,7 @@ export const DatabaseBuilder: React.FC = () => {
           onClick={addTable}
           className="px-4 py-2 border-2 theme-border font-bold text-[10px] uppercase tracking-wider
             hover:bg-[var(--theme-bg-card)] transition-all active:translate-y-0.5"
-          style={{ boxShadow: "2px 2px 0 rgba(0,0,0,0.2)" }}
+          style={{ boxShadow: "none" }}
         >
           + Add table
         </button>

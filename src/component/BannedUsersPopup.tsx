@@ -63,7 +63,7 @@ export default function BannedUsersPopup({ isVisible, onClose }: BannedUsersPopu
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         exit={{ opacity: 0 }}
-        className="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4"
+        className="fixed inset-0 bg-black/60  z-50 flex items-center justify-center p-4"
         onClick={onClose}
       >
         <motion.div
@@ -71,26 +71,26 @@ export default function BannedUsersPopup({ isVisible, onClose }: BannedUsersPopu
           animate={{ opacity: 1, scale: 1, y: 0 }}
           exit={{ opacity: 0, scale: 0.95, y: 20 }}
           onClick={(e) => e.stopPropagation()}
-          className="bg-blue-950/95 backdrop-blur-xl border-2 border-blue-700/50 rounded-2xl p-6 max-w-4xl w-full max-h-[80vh] overflow-hidden flex flex-col"
+          className="bg-[#ece9d8]  border-2 border-[#a0a6b0] rounded-2xl p-6 max-w-4xl w-full max-h-[80vh] overflow-hidden flex flex-col"
         >
           {/* Header */}
           <div className="flex items-center justify-between mb-6">
             <div className="flex items-center gap-3">
-              <div className="w-12 h-12 bg-gradient-to-br from-red-500 to-orange-500 rounded-full flex items-center justify-center">
+              <div className="w-12 h-12 bg-[#f5f3e9]   rounded-full flex items-center justify-center">
                 <span className="text-2xl">🚫</span>
               </div>
               <div>
-                <h2 className="text-2xl font-bold text-white font-Tektur">
+                <h2 className="text-2xl font-bold text-[#151515] font-Tektur">
                   Rate Limited Users
                 </h2>
-                <p className="text-gray-400 text-sm font-Tektur">
+                <p className="text-[#3e3d35] text-sm font-Tektur">
                   {bannedUsers.length} user{bannedUsers.length !== 1 ? "s" : ""} currently banned
                 </p>
               </div>
             </div>
             <button
               onClick={onClose}
-              className="w-10 h-10 bg-blue-800/50 hover:bg-blue-700/50 border border-blue-600/30 rounded-lg flex items-center justify-center text-white transition-colors"
+              className="w-10 h-10 bg-[#e2dfd0] hover:bg-[#d6d2c2] border border-[#a0a6b0] rounded-lg flex items-center justify-center text-[#151515] transition-colors"
             >
               ✕
             </button>
@@ -100,17 +100,17 @@ export default function BannedUsersPopup({ isVisible, onClose }: BannedUsersPopu
           <div className="flex-1 overflow-auto">
             {loading && bannedUsers.length === 0 ? (
               <div className="flex items-center justify-center py-12">
-                <div className="w-12 h-12 border-4 border-blue-500/30 border-t-blue-500 rounded-full animate-spin"></div>
+                <div className="w-12 h-12 border-4 border-[#a0a6b0] border-t-neutral-500 rounded-full animate-spin"></div>
               </div>
             ) : error ? (
-              <div className="bg-red-500/10 border border-red-500/30 rounded-lg p-4 text-center">
-                <p className="text-red-400 font-Tektur">{error}</p>
+              <div className="bg-[#d9e5f5] border border-[#a0a6b0] rounded-lg p-4 text-center">
+                <p className="text-[#3e3d35] font-Tektur">{error}</p>
               </div>
             ) : bannedUsers.length === 0 ? (
               <div className="flex flex-col items-center justify-center py-12 space-y-4">
                 <div className="text-6xl">🎉</div>
-                <p className="text-gray-400 font-Tektur text-lg">No users are currently banned</p>
-                <p className="text-gray-500 font-Tektur text-sm">All users are behaving well!</p>
+                <p className="text-[#3e3d35] font-Tektur text-lg">No users are currently banned</p>
+                <p className="text-[#3e3d35] font-Tektur text-sm">All users are behaving well!</p>
               </div>
             ) : (
               <div className="space-y-3">
@@ -120,43 +120,43 @@ export default function BannedUsersPopup({ isVisible, onClose }: BannedUsersPopu
                     initial={{ opacity: 0, x: -20 }}
                     animate={{ opacity: 1, x: 0 }}
                     transition={{ delay: index * 0.05 }}
-                    className="bg-blue-900/30 border border-blue-700/30 rounded-xl p-4 hover:border-blue-600/50 transition-colors"
+                    className="bg-[#f5f3e9] border border-[#a0a6b0] rounded-xl p-4 hover:border-[#a0a6b0] transition-colors"
                   >
                     <div className="flex items-center justify-between gap-4">
                       {/* User Info */}
                       <div className="flex-1 min-w-0">
                         <div className="flex items-center gap-2 mb-2">
-                          <span className="text-white font-Tektur font-semibold truncate">
-                            {user.identifier.startsWith("ip:") 
-                              ? user.identifier 
+                          <span className="text-[#151515] font-Tektur font-semibold truncate">
+                            {user.identifier.startsWith("ip:")
+                              ? user.identifier
                               : user.identifier}
                           </span>
                           <span className={`px-2 py-0.5 rounded-full text-xs font-Tektur ${
-                            user.blockCount === 1 
-                              ? "bg-yellow-500/20 text-yellow-400 border border-yellow-500/30"
+                            user.blockCount === 1
+                              ? "bg-[#d9e5f5] text-[#3e3d35] border border-[#a0a6b0]"
                               : user.blockCount === 2
-                              ? "bg-orange-500/20 text-orange-400 border border-orange-500/30"
-                              : "bg-red-500/20 text-red-400 border border-red-500/30"
+                              ? "bg-[#d9e5f5] text-[#3e3d35] border border-[#a0a6b0]"
+                              : "bg-[#d9e5f5] text-[#3e3d35] border border-[#a0a6b0]"
                           }`}>
                             Strike {user.blockCount}/3
                           </span>
                         </div>
-                        <p className="text-gray-400 text-sm font-Tektur">
+                        <p className="text-[#3e3d35] text-sm font-Tektur">
                           Banned {new Date(user.lastBlockTime).toLocaleString()}
                         </p>
                       </div>
 
                       {/* Ban Duration */}
                       <div className="text-right">
-                        <div className="bg-red-500/20 border border-red-500/30 rounded-lg px-3 py-2 mb-1">
-                          <p className="text-red-400 font-Tektur font-bold text-lg">
+                        <div className="bg-[#d9e5f5] border border-[#a0a6b0] rounded-lg px-3 py-2 mb-1">
+                          <p className="text-[#3e3d35] font-Tektur font-bold text-lg">
                             {formatTime(user.remainingSeconds)}
                           </p>
-                          <p className="text-red-400/70 font-Tektur text-xs">
+                          <p className="text-[#3e3d35] font-Tektur text-xs">
                             remaining
                           </p>
                         </div>
-                        <p className="text-gray-500 text-xs font-Tektur">
+                        <p className="text-[#3e3d35] text-xs font-Tektur">
                           {user.banDuration} ban
                         </p>
                       </div>
@@ -168,13 +168,13 @@ export default function BannedUsersPopup({ isVisible, onClose }: BannedUsersPopu
           </div>
 
           {/* Footer */}
-          <div className="mt-6 pt-4 border-t border-blue-700/30">
-            <div className="flex items-center justify-between text-sm text-gray-400 font-Tektur">
+          <div className="mt-6 pt-4 border-t border-[#a0a6b0]">
+            <div className="flex items-center justify-between text-sm text-[#3e3d35] font-Tektur">
               <span>Auto-refreshes every 10 seconds</span>
               <button
                 onClick={fetchBannedUsers}
                 disabled={loading}
-                className="px-4 py-2 bg-blue-600/30 hover:bg-blue-600/50 border border-blue-500/30 rounded-lg transition-colors disabled:opacity-50"
+                className="px-4 py-2 bg-[#d9e5f5] hover:bg-[#d9e5f5] border border-[#a0a6b0] rounded-lg transition-colors disabled:opacity-50"
               >
                 {loading ? "Refreshing..." : "Refresh Now"}
               </button>

@@ -28,7 +28,7 @@ interface CVData {
 const CVMakerPage = () => {
   const context = React.useContext(ContextCreator);
   const userData = context?.userData;
-  
+
   const [isLoading, setIsLoading] = React.useState<boolean>(true);
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const [cvData, setCvData] = React.useState<any>(null);
@@ -92,10 +92,10 @@ const CVMakerPage = () => {
             @media print {
               @page { margin: 1cm; }
             }
-            body { 
-              font-family: Arial, sans-serif; 
+            body {
+              font-family: Arial, sans-serif;
               margin: 20px;
-              color: #333;
+              color: #333333;
             }
             .header {
               display: flex;
@@ -103,7 +103,7 @@ const CVMakerPage = () => {
               gap: 20px;
               margin-bottom: 30px;
               padding-bottom: 20px;
-              border-bottom: 3px solid #0070ef;
+              border-bottom: 3px solid #616161;
             }
             .header img {
               width: 120px;
@@ -111,41 +111,41 @@ const CVMakerPage = () => {
               border-radius: 8px;
               object-fit: cover;
             }
-            h1 { 
-              color: #0070ef; 
+            h1 {
+              color: #616161;
               margin: 0;
               font-size: 32px;
             }
-            h2 { 
-              color: #0070ef; 
+            h2 {
+              color: #616161;
               margin-top: 30px;
               margin-bottom: 15px;
               font-size: 20px;
-              border-bottom: 2px solid #0070ef;
+              border-bottom: 2px solid #616161;
               padding-bottom: 5px;
             }
             .subtitle {
-              color: #666;
+              color: #666666;
               font-size: 18px;
               margin: 5px 0;
             }
             .contact {
-              color: #666;
+              color: #666666;
               font-size: 14px;
               margin-top: 10px;
             }
-            .section { 
-              margin: 20px 0; 
+            .section {
+              margin: 20px 0;
             }
-            .project { 
-              margin: 15px 0; 
-              padding: 15px; 
-              border-left: 4px solid #0070ef;
-              background: #f8f9fa;
+            .project {
+              margin: 15px 0;
+              padding: 15px;
+              border-left: 4px solid #616161;
+              background: #f9f9f9;
             }
             .project h3 {
               margin: 0 0 10px 0;
-              color: #333;
+              color: #333333;
             }
             .badge {
               display: inline-block;
@@ -156,12 +156,12 @@ const CVMakerPage = () => {
               font-weight: bold;
             }
             .score {
-              background: #e3f2fd;
-              color: #0070ef;
+              background: #f0f0f0;
+              color: #616161;
             }
             .validated {
-              background: #e8f5e9;
-              color: #2e7d32;
+              background: #f1f1f1;
+              color: #676767;
             }
             .skills {
               display: flex;
@@ -171,15 +171,15 @@ const CVMakerPage = () => {
             }
             .skill {
               padding: 8px 16px;
-              background: #e3f2fd;
-              color: #0070ef;
+              background: #f0f0f0;
+              color: #616161;
               border-radius: 6px;
               font-size: 14px;
             }
             .education-box {
               padding: 15px;
-              background: #f8f9fa;
-              border-left: 4px solid #0070ef;
+              background: #f9f9f9;
+              border-left: 4px solid #616161;
               margin: 10px 0;
             }
             .languages {
@@ -190,7 +190,7 @@ const CVMakerPage = () => {
             }
             .language {
               padding: 10px;
-              background: #f8f9fa;
+              background: #f9f9f9;
               border-radius: 6px;
             }
           </style>
@@ -217,7 +217,7 @@ const CVMakerPage = () => {
             <div class="education-box">
               <h3>42 Network - ${userData?.campus_name || ''}</h3>
               <p>Level ${displayData?.level || '0'}</p>
-              <p style="color: #666; font-size: 14px;">${userData?.pool_month || ''} ${userData?.pool_year || ''}</p>
+              <p style="color: #666666; font-size: 14px;">${userData?.pool_month || ''} ${userData?.pool_year || ''}</p>
             </div>
           </div>
 
@@ -256,7 +256,7 @@ const CVMakerPage = () => {
                 displayData.languages.map((lang: any) => `
                 <div class="language">
                   <strong>${lang.name}</strong><br/>
-                  <span style="color: #666;">${lang.level}</span>
+                  <span style="color: #666666;">${lang.level}</span>
                 </div>
               `).join('')}
             </div>
@@ -274,7 +274,7 @@ const CVMakerPage = () => {
   if (isLoading) {
     return (
       <div className="flex flex-1 z-10 items-center justify-center">
-        <div className="text-white font-Tektur text-xl">Loading CV...</div>
+        <div className="text-[#151515] font-Tektur text-xl">Loading CV...</div>
       </div>
     );
   }
@@ -286,20 +286,20 @@ const CVMakerPage = () => {
       <div className="w-full max-w-6xl px-4 py-6">
         {/* Header */}
         <div className="mb-4 flex justify-between items-center">
-          <h1 className="text-2xl font-bold text-white font-Tektur">CV Maker</h1>
+          <h1 className="text-2xl font-bold text-[#151515] font-Tektur">CV Maker</h1>
           <div className="flex gap-2">
             {!isEditing ? (
               <>
                 <button
                   onClick={handleEdit}
-                  className="flex items-center gap-2 px-3 py-2 bg-[#0070ef]/20 hover:bg-[#0070ef]/30 border border-[#0070ef]/50 text-white font-Tektur text-sm rounded-lg transition-all duration-300"
+                  className="flex items-center gap-2 px-3 py-2 bg-[#ece9d8] hover:bg-[#ece9d8] border border-[#616161]/50 text-[#151515] font-Tektur text-sm rounded-lg transition-all duration-300"
                 >
                   <FaEdit className="w-4 h-4" />
                   Edit
                 </button>
                 <button
                   onClick={downloadCV}
-                  className="flex items-center gap-2 px-3 py-2 bg-[#0070ef] hover:bg-[#0060d0] text-white font-Tektur text-sm font-semibold rounded-lg transition-all duration-300"
+                  className="flex items-center gap-2 px-3 py-2 bg-[#ece9d8] hover:bg-[#ece9d8] text-[#151515] font-Tektur text-sm font-semibold rounded-lg transition-all duration-300"
                 >
                   <FaDownload className="w-4 h-4" />
                   Download PDF
@@ -309,14 +309,14 @@ const CVMakerPage = () => {
               <>
                 <button
                   onClick={handleCancel}
-                  className="flex items-center gap-2 px-3 py-2 bg-red-500/20 hover:bg-red-500/30 border border-red-500/50 text-white font-Tektur text-sm rounded-lg transition-all duration-300"
+                  className="flex items-center gap-2 px-3 py-2 bg-[#d9e5f5] hover:bg-[#d9e5f5] border border-[#a0a6b0] text-[#151515] font-Tektur text-sm rounded-lg transition-all duration-300"
                 >
                   <FaTimes className="w-4 h-4" />
                   Cancel
                 </button>
                 <button
                   onClick={handleSave}
-                  className="flex items-center gap-2 px-3 py-2 bg-green-500/20 hover:bg-green-500/30 border border-green-500/50 text-white font-Tektur text-sm rounded-lg transition-all duration-300"
+                  className="flex items-center gap-2 px-3 py-2 bg-[#d9e5f5] hover:bg-[#d9e5f5] border border-[#a0a6b0] text-[#151515] font-Tektur text-sm rounded-lg transition-all duration-300"
                 >
                   <FaSave className="w-4 h-4" />
                   Save
@@ -330,15 +330,15 @@ const CVMakerPage = () => {
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="bg-[#001226]/80 backdrop-blur-xl border border-[#0070ef]/30 rounded-lg p-4 md:p-6"
+          className="bg-[#ece9d8]  border border-[#616161]/30 rounded-lg p-4 md:p-6"
         >
           {/* Profile Section */}
-          <div className="flex flex-col md:flex-row gap-4 mb-6 pb-6 border-b border-[#0070ef]/30">
+          <div className="flex flex-col md:flex-row gap-4 mb-6 pb-6 border-b border-[#616161]/30">
             {(displayData?.image || userData?.image?.link) && (
               <img
                 src={displayData?.image || userData?.image?.link}
                 alt={displayData?.name}
-                className="w-24 h-24 rounded-lg border-2 border-[#0070ef]/50 object-cover"
+                className="w-24 h-24 rounded-lg border-2 border-[#616161]/50 object-cover"
                 onError={(e) => {
                   const target = e.target as HTMLImageElement;
                   target.style.display = 'none';
@@ -352,24 +352,24 @@ const CVMakerPage = () => {
                     type="text"
                     value={editedData?.name || ''}
                     onChange={(e) => setEditedData({ ...editedData!, name: e.target.value })}
-                    className="w-full mb-2 px-3 py-2 bg-[#0070ef]/10 border border-[#0070ef]/30 rounded-lg text-white font-Tektur text-xl font-bold focus:outline-none focus:border-[#0070ef]"
+                    className="w-full mb-2 px-3 py-2 bg-[#ece9d8] border border-[#616161]/30 rounded-lg text-[#151515] font-Tektur text-xl font-bold focus:outline-none focus:border-[#616161]"
                   />
                   <input
                     type="text"
                     value={editedData?.title || ''}
                     onChange={(e) => setEditedData({ ...editedData!, title: e.target.value })}
-                    className="w-full mb-2 px-3 py-2 bg-[#0070ef]/10 border border-[#0070ef]/30 rounded-lg text-gray-300 font-Tektur text-sm focus:outline-none focus:border-[#0070ef]"
+                    className="w-full mb-2 px-3 py-2 bg-[#ece9d8] border border-[#616161]/30 rounded-lg text-[#3e3d35] font-Tektur text-sm focus:outline-none focus:border-[#616161]"
                   />
                 </>
               ) : (
                 <>
-                  <h2 className="text-2xl font-bold text-white font-Tektur mb-1">
+                  <h2 className="text-2xl font-bold text-[#151515] font-Tektur mb-1">
                     {displayData?.name}
                   </h2>
-                  <p className="text-lg text-gray-300 font-Tektur mb-2">{displayData?.title}</p>
+                  <p className="text-lg text-[#3e3d35] font-Tektur mb-2">{displayData?.title}</p>
                 </>
               )}
-              <div className="flex flex-wrap gap-3 text-xs text-gray-400 font-Tektur">
+              <div className="flex flex-wrap gap-3 text-xs text-[#3e3d35] font-Tektur">
                 <span>{displayData?.email}</span>
                 <span>•</span>
                 <span>{displayData?.location}</span>
@@ -381,30 +381,30 @@ const CVMakerPage = () => {
 
           {/* About Section */}
           <div className="mb-6">
-            <h3 className="text-lg font-bold text-white font-Tektur mb-3 flex items-center gap-2">
-              <span className="text-[#0070ef]">●</span> About Me
+            <h3 className="text-lg font-bold text-[#151515] font-Tektur mb-3 flex items-center gap-2">
+              <span className="text-[#616161]">●</span> About Me
             </h3>
             {isEditing ? (
               <textarea
                 value={editedData?.about || ''}
                 onChange={(e) => setEditedData({ ...editedData!, about: e.target.value })}
                 rows={3}
-                className="w-full px-3 py-2 bg-[#0070ef]/10 border border-[#0070ef]/30 rounded-lg text-gray-300 font-Tektur text-sm focus:outline-none focus:border-[#0070ef]"
+                className="w-full px-3 py-2 bg-[#ece9d8] border border-[#616161]/30 rounded-lg text-[#3e3d35] font-Tektur text-sm focus:outline-none focus:border-[#616161]"
               />
             ) : (
-              <p className="text-gray-300 leading-relaxed font-Tektur text-sm">{displayData?.about}</p>
+              <p className="text-[#3e3d35] leading-relaxed font-Tektur text-sm">{displayData?.about}</p>
             )}
           </div>
 
           {/* Education */}
           <div className="mb-6">
-            <h3 className="text-lg font-bold text-white font-Tektur mb-3 flex items-center gap-2">
-              <span className="text-[#0070ef]">●</span> Education
+            <h3 className="text-lg font-bold text-[#151515] font-Tektur mb-3 flex items-center gap-2">
+              <span className="text-[#616161]">●</span> Education
             </h3>
-            <div className="bg-[#0070ef]/10 backdrop-blur-sm rounded-lg p-3 border border-[#0070ef]/20">
-              <h4 className="text-base font-semibold text-white font-Tektur">42 Network - {userData?.campus_name}</h4>
-              <p className="text-gray-300 font-Tektur mt-1 text-sm">Level {displayData?.level}</p>
-              <p className="text-gray-400 text-xs font-Tektur mt-1">
+            <div className="bg-[#ece9d8]  rounded-lg p-3 border border-[#616161]/20">
+              <h4 className="text-base font-semibold text-[#151515] font-Tektur">42 Network - {userData?.campus_name}</h4>
+              <p className="text-[#3e3d35] font-Tektur mt-1 text-sm">Level {displayData?.level}</p>
+              <p className="text-[#3e3d35] text-xs font-Tektur mt-1">
                 {userData?.pool_month} {userData?.pool_year}
               </p>
             </div>
@@ -413,23 +413,23 @@ const CVMakerPage = () => {
           {/* Projects */}
           {displayData?.projects && displayData.projects.length > 0 && (
             <div className="mb-6">
-              <h3 className="text-lg font-bold text-white font-Tektur mb-3 flex items-center gap-2">
-                <span className="text-[#0070ef]">●</span> Top Projects
+              <h3 className="text-lg font-bold text-[#151515] font-Tektur mb-3 flex items-center gap-2">
+                <span className="text-[#616161]">●</span> Top Projects
               </h3>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                 {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
                 {displayData.projects.slice(0, 6).map((project: any, index: number) => (
                   <div
                     key={index}
-                    className="bg-[#0070ef]/10 backdrop-blur-sm rounded-lg p-3 border border-[#0070ef]/20 hover:border-[#0070ef]/50 transition-all"
+                    className="bg-[#ece9d8]  rounded-lg p-3 border border-[#616161]/20 hover:border-[#616161]/50 transition-all"
                   >
-                    <h4 className="text-base font-semibold text-white font-Tektur mb-2">{project.name}</h4>
+                    <h4 className="text-base font-semibold text-[#151515] font-Tektur mb-2">{project.name}</h4>
                     <div className="flex items-center gap-2">
-                      <span className="text-xs bg-[#0070ef]/20 text-[#0070ef] px-2 py-1 rounded-full font-Tektur">
+                      <span className="text-xs bg-[#ece9d8] text-[#616161] px-2 py-1 rounded-full font-Tektur">
                         {project.final_mark}/100
                       </span>
                       {project.validated && (
-                        <span className="text-xs bg-green-500/20 text-green-400 px-2 py-1 rounded-full font-Tektur">
+                        <span className="text-xs bg-[#d9e5f5] text-[#3e3d35] px-2 py-1 rounded-full font-Tektur">
                           Validated
                         </span>
                       )}
@@ -443,14 +443,14 @@ const CVMakerPage = () => {
           {/* Skills */}
           {displayData?.skills && displayData.skills.length > 0 && (
             <div className="mb-6">
-              <h3 className="text-lg font-bold text-white font-Tektur mb-3 flex items-center gap-2">
-                <span className="text-[#0070ef]">●</span> Skills
+              <h3 className="text-lg font-bold text-[#151515] font-Tektur mb-3 flex items-center gap-2">
+                <span className="text-[#616161]">●</span> Skills
               </h3>
               <div className="flex flex-wrap gap-2">
                 {displayData.skills.slice(0, 12).map((skill: string, index: number) => (
                   <span
                     key={index}
-                    className="bg-[#0070ef]/10 text-white px-3 py-1.5 rounded-lg font-Tektur text-xs border border-[#0070ef]/30"
+                    className="bg-[#ece9d8] text-[#151515] px-3 py-1.5 rounded-lg font-Tektur text-xs border border-[#616161]/30"
                   >
                     {skill}
                   </span>
@@ -462,15 +462,15 @@ const CVMakerPage = () => {
           {/* Languages */}
           {displayData?.languages && displayData.languages.length > 0 && (
             <div>
-              <h3 className="text-lg font-bold text-white font-Tektur mb-3 flex items-center gap-2">
-                <span className="text-[#0070ef]">●</span> Languages
+              <h3 className="text-lg font-bold text-[#151515] font-Tektur mb-3 flex items-center gap-2">
+                <span className="text-[#616161]">●</span> Languages
               </h3>
               <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
                 {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
                 {displayData.languages.map((lang: any, index: number) => (
-                  <div key={index} className="bg-[#0070ef]/10 rounded-lg p-2.5 border border-[#0070ef]/20">
-                    <p className="text-white font-Tektur font-semibold text-sm">{lang.name}</p>
-                    <p className="text-gray-400 text-xs font-Tektur">{lang.level}</p>
+                  <div key={index} className="bg-[#ece9d8] rounded-lg p-2.5 border border-[#616161]/20">
+                    <p className="text-[#151515] font-Tektur font-semibold text-sm">{lang.name}</p>
+                    <p className="text-[#3e3d35] text-xs font-Tektur">{lang.level}</p>
                   </div>
                 ))}
               </div>

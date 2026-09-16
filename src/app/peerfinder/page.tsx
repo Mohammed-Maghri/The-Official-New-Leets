@@ -98,7 +98,7 @@ const PeerFinderPage = () => {
   const context = useContext(ContextCreator);
   const userData = context?.userData;
   const { rateLimitState, handleRateLimitResponse, closeRateLimitPopup } = useRateLimitHandler();
-  
+
   const [projects, setProjects] = useState<Project[]>([]);
   const [selectedProject, setSelectedProject] = useState<string>("Select Project");
   const [selectedProjectId, setSelectedProjectId] = useState<number | null>(null);
@@ -168,7 +168,7 @@ const PeerFinderPage = () => {
       }
 
       const data = await response.json();
-      
+
       // Check if user has no projects - default to Inception (project_id 1983)
       if (data.noProjects) {
         setSelectedProject("Inception");
@@ -177,17 +177,17 @@ const PeerFinderPage = () => {
         setLoadingPeers(false);
         return;
       }
-      
+
       if (data.campus) {
         const detectedCampus = CampusList.find(c => c.id === data.campus.id) || CampusList[0];
         setSelectedCampus(detectedCampus);
       }
-      
+
       if (data.project) {
         setSelectedProject(data.project.name);
         setSelectedProjectId(data.project.id);
       }
-      
+
       setPeers(data.peers || []);
       setLoadingPeers(false);
     } catch (err) {
@@ -207,7 +207,7 @@ const PeerFinderPage = () => {
 
     try {
       const url = `/api/peerfinder?fetchPromo=true&campusId=${selectedCampus.id}`;
-      
+
       const response = await fetch(url, {
         method: "GET",
         headers: {
@@ -230,7 +230,7 @@ const PeerFinderPage = () => {
       }
 
       const data = await response.json();
-      
+
       setPeers(data);
       setLoadingPeers(false);
     } catch (err) {
@@ -274,7 +274,7 @@ const PeerFinderPage = () => {
       }
 
       const data: ProjectUser[] = await response.json();
-      
+
       // Show ALL users from API response without filtering
       setPeers(data);
       setLoadingPeers(false);
@@ -353,10 +353,10 @@ const PeerFinderPage = () => {
   return (
     <div className="flex flex-1 items-center justify-start overflow-x-hidden flex-col z-10 relative w-full">
       <div
-        className="relative w-full border-4 theme-border-strong bg-gray-950/98 flex flex-1 flex-col p-4 md:p-6 lg:p-8 space-y-4 md:space-y-6"
+        className="relative w-full border-4 theme-border-strong bg-[#ece9d8] flex flex-1 flex-col p-4 md:p-6 lg:p-8 space-y-4 md:space-y-6"
         style={{
           fontFamily: "var(--font-ui)",
-          boxShadow: "6px 6px 0 var(--theme-shadow-lg), inset 0 1px 0 rgba(255,255,255,0.05)",
+          boxShadow: "none",
         }}
       >
         {/* Pixel corners */}
@@ -371,7 +371,7 @@ const PeerFinderPage = () => {
             Peer Finder
           </h1>
           <p className="text-sm md:text-base theme-text-muted uppercase tracking-wider">
-            {isPromoPeers 
+            {isPromoPeers
               ? "Your promo peers in the common core"
               : "Find students working on the same project in your campus"}
           </p>
@@ -388,7 +388,7 @@ const PeerFinderPage = () => {
               <div
                 onClick={() => setCampusDropdownOpen(!campusDropdownOpen)}
                 className="w-full px-4 py-3 border-2 theme-border bg-[var(--theme-bg-card)] theme-text cursor-pointer hover:border-[var(--theme-primary)] transition-all flex items-center justify-between"
-                style={{ fontFamily: "var(--font-ui)", boxShadow: "2px 2px 0 rgba(0,0,0,0.2)" }}
+                style={{ fontFamily: "var(--font-ui)", boxShadow: "none" }}
               >
                 <span>{selectedCampus.name}</span>
                 <FaCaretDown
@@ -399,8 +399,8 @@ const PeerFinderPage = () => {
               </div>
               {campusDropdownOpen && (
                 <div
-                  className="absolute top-full left-0 mt-2 w-full border-2 theme-border bg-gray-950/98 z-[9999] max-h-[300px] overflow-y-auto"
-                  style={{ boxShadow: "4px 4px 0 rgba(0,0,0,0.3)" }}
+                  className="absolute top-full left-0 mt-2 w-full border-2 theme-border bg-[#ece9d8] z-[9999] max-h-[300px] overflow-y-auto"
+                  style={{ boxShadow: "none" }}
                 >
                   {CampusList.map((campus) => (
                     <div
@@ -445,12 +445,12 @@ const PeerFinderPage = () => {
                 }}
                 placeholder="Search for a project..."
                 className="w-full px-4 py-3 border-2 theme-border bg-[var(--theme-bg-card)] theme-text placeholder-[var(--theme-text-muted)] outline-none focus:border-[var(--theme-primary)] transition-all"
-                style={{ fontFamily: "var(--font-ui)", boxShadow: "2px 2px 0 rgba(0,0,0,0.2)" }}
+                style={{ fontFamily: "var(--font-ui)", boxShadow: "none" }}
               />
               {dropdownOpen && filteredProjects.length > 0 && (
                 <div
-                  className="absolute top-full left-0 mt-2 w-full max-h-64 overflow-auto border-2 theme-border bg-gray-950/98 z-[9999]"
-                  style={{ boxShadow: "4px 4px 0 rgba(0,0,0,0.3)" }}
+                  className="absolute top-full left-0 mt-2 w-full max-h-64 overflow-auto border-2 theme-border bg-[#ece9d8] z-[9999]"
+                  style={{ boxShadow: "none" }}
                 >
                   {filteredProjects.map((project, index) => (
                     <div
@@ -479,8 +479,8 @@ const PeerFinderPage = () => {
           style={{
             fontFamily: "var(--font-ui)",
             color: "var(--theme-text)",
-            background: "linear-gradient(to bottom, color-mix(in srgb, var(--theme-primary) 30%, transparent), color-mix(in srgb, var(--theme-primary-dark) 40%, transparent))",
-            boxShadow: "4px 4px 0 var(--theme-shadow-lg), inset 0 1px 0 rgba(255,255,255,0.1)",
+            background: "var(--theme-bg-card)",
+            boxShadow: "none",
           }}
         >
           {loadingPeers ? "Searching..." : "Find Peers"}
@@ -488,8 +488,8 @@ const PeerFinderPage = () => {
 
         {/* Error Message */}
         {error && (
-          <div className="border-2 border-red-500/50 bg-red-500/10 p-4 theme-text" style={{ fontFamily: "var(--font-ui)" }}>
-            <span className="text-red-400">{error}</span>
+          <div className="border-2 border-[#a0a6b0] bg-[#d9e5f5] p-4 theme-text" style={{ fontFamily: "var(--font-ui)" }}>
+            <span className="text-[#3e3d35]">{error}</span>
           </div>
         )}
 
@@ -511,7 +511,7 @@ const PeerFinderPage = () => {
                   key={isPromoPeers ? `promo-${getDisplayLogin(peer)}` : peer.id}
                   onClick={() => handleUserClick(getDisplayLogin(peer))}
                   className="border-2 theme-border bg-[var(--theme-bg-card)] hover:border-[var(--theme-border-strong)] transition-all cursor-pointer hover:scale-[1.02] active:translate-y-0.5 flex flex-col items-center py-6 px-3 gap-3"
-                  style={{ boxShadow: "2px 2px 0 rgba(0,0,0,0.2)" }}
+                  style={{ boxShadow: "none" }}
                 >
                   <div className="flex flex-col items-center gap-2">
                     <div className="relative">
@@ -529,8 +529,8 @@ const PeerFinderPage = () => {
                     </p>
                   </div>
                   <div className="w-full flex justify-center">
-                    <div className="px-3 py-1 border-2 border-green-500/50 bg-green-500/20">
-                      <p className="text-[10px] text-green-300 font-bold uppercase tracking-wider">
+                    <div className="px-3 py-1 border-2 border-[#a0a6b0] bg-[#d9e5f5]">
+                      <p className="text-[10px] text-[#3e3d35] font-bold uppercase tracking-wider">
                         {getDisplayStatus(peer)}
                       </p>
                     </div>
@@ -556,7 +556,7 @@ const PeerFinderPage = () => {
           </div>
         ) : null}
       </div>
-      
+
       {/* Rate Limit Popup */}
       <RateLimitPopup
         show={rateLimitState.isRateLimited}

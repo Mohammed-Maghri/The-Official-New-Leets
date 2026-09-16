@@ -27,9 +27,7 @@ export default function RootLayout({
                   var s = localStorage.getItem('1337leets-theme');
                   if (s) {
                     var t = JSON.parse(s);
-                    document.documentElement.setAttribute('data-theme-color', t.themeColor || 'rose');
-                    document.documentElement.setAttribute('data-theme-mode', t.themeMode || 'dark');
-                    document.documentElement.setAttribute('data-font', t.fontChoice || 'readable');
+                    document.documentElement.setAttribute('data-font', ['pixel', 'readable', 'tektur'].includes(t.fontChoice) ? t.fontChoice : 'readable');
                   }
                 } catch (e) {}
               })();
@@ -39,7 +37,7 @@ export default function RootLayout({
       </head>
       <body
         style={{ scrollbarColor: "rgba(255, 255, 255, 0.1) transparent" }}
-        className="relative flex w-full h-full bg-gradient-to-bl from-black via-gray-950 to-black overflow-hidden"
+        className="relative flex w-full h-full bg-[#f5f3e9]    overflow-hidden"
       >
         <ContextProvider>
           <ThemeProvider>

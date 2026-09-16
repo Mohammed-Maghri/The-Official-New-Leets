@@ -29,14 +29,14 @@ interface Selection {
 }
 
 const COLORS = [
-  "#ef4444",
-  "#f97316",
-  "#eab308",
-  "#22c55e",
-  "#06b6d4",
-  "#3b82f6",
-  "#8b5cf6",
-  "#ec4899",
+  "#686868",
+  "#898989",
+  "#b2b2b2",
+  "#9b9b9b",
+  "#939393",
+  "#7b7b7b",
+  "#717171",
+  "#717171",
   "#ffffff",
   "#000000",
 ];
@@ -643,7 +643,7 @@ export default function CanvasPage() {
         ctx.putImageData(tempCanvas, 0, 0);
         const w = point.x - startPoint.x;
         const h = point.y - startPoint.y;
-        ctx.strokeStyle = "#3b82f6";
+        ctx.strokeStyle = "#7b7b7b";
         ctx.lineWidth = 2;
         ctx.setLineDash([5, 5]);
         ctx.strokeRect(startPoint.x, startPoint.y, w, h);
@@ -871,7 +871,7 @@ export default function CanvasPage() {
         />
         {selection && (
           <div
-            className="absolute pointer-events-none border-2 border-dashed border-blue-500"
+            className="absolute pointer-events-none border-2 border-dashed border-[#a0a6b0]"
             style={{
               left: pan.x + selection.x * zoom,
               top: pan.y + selection.y * zoom,
@@ -879,10 +879,10 @@ export default function CanvasPage() {
               height: selection.height * zoom,
             }}
           >
-            <div className="absolute -top-1 -left-1 w-3 h-3 bg-blue-500" style={{ left: 0, top: 0 }} />
-            <div className="absolute -top-1 -right-1 w-3 h-3 bg-blue-500" style={{ right: 0, top: 0 }} />
-            <div className="absolute -bottom-1 -left-1 w-3 h-3 bg-blue-500" style={{ left: 0, bottom: 0 }} />
-            <div className="absolute -bottom-1 -right-1 w-3 h-3 bg-blue-500" style={{ right: 0, bottom: 0 }} />
+            <div className="absolute -top-1 -left-1 w-3 h-3 bg-[#d9e5f5]" style={{ left: 0, top: 0 }} />
+            <div className="absolute -top-1 -right-1 w-3 h-3 bg-[#d9e5f5]" style={{ right: 0, top: 0 }} />
+            <div className="absolute -bottom-1 -left-1 w-3 h-3 bg-[#d9e5f5]" style={{ left: 0, bottom: 0 }} />
+            <div className="absolute -bottom-1 -right-1 w-3 h-3 bg-[#d9e5f5]" style={{ right: 0, bottom: 0 }} />
           </div>
         )}
       </div>
@@ -892,12 +892,12 @@ export default function CanvasPage() {
         initial={{ opacity: 0, y: 10 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.2 }}
-        className="absolute bottom-4 sm:bottom-6 left-1/2 -translate-x-1/2 z-[100] flex items-center gap-1.5 sm:gap-2 px-2 sm:px-3 py-2 sm:py-2.5 rounded-xl bg-slate-900/95 backdrop-blur-md border border-slate-600/50 shadow-xl shadow-black/30 max-w-[calc(100vw-1rem)] overflow-x-auto"
+        className="absolute bottom-4 sm:bottom-6 left-1/2 -translate-x-1/2 z-[100] flex items-center gap-1.5 sm:gap-2 px-2 sm:px-3 py-2 sm:py-2.5 rounded-xl bg-[#f5f3e9]  border border-[#a0a6b0]   max-w-[calc(100vw-1rem)] overflow-x-auto"
       >
         {/* Project controls */}
         <div className="flex items-center gap-1.5 flex-shrink-0">
           {authError && (
-            <span className="text-[9px] text-amber-400 hidden sm:inline">Log in to save</span>
+            <span className="text-[9px] text-[#3e3d35] hidden sm:inline">Log in to save</span>
           )}
           <ProjectSelect
             projects={projects}
@@ -913,7 +913,7 @@ export default function CanvasPage() {
           <button
             onClick={openCreateModal}
             disabled={isLoadingProjects}
-            className="w-8 h-8 sm:w-9 sm:h-9 flex items-center justify-center rounded-lg border border-slate-600 bg-slate-800 text-slate-300 hover:bg-slate-700 disabled:opacity-50 flex-shrink-0"
+            className="w-8 h-8 sm:w-9 sm:h-9 flex items-center justify-center rounded-lg border border-[#a0a6b0] bg-[#e2dfd0] text-[#3e3d35] hover:bg-[#d6d2c2] disabled:opacity-50 flex-shrink-0"
             title="New canvas"
           >
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -924,7 +924,7 @@ export default function CanvasPage() {
           <button
             onClick={openRenameModal}
             disabled={!currentProjectId}
-            className="w-8 h-8 sm:w-9 sm:h-9 flex items-center justify-center rounded-lg border border-slate-600 bg-slate-800 text-slate-300 hover:bg-slate-700 disabled:opacity-50 flex-shrink-0"
+            className="w-8 h-8 sm:w-9 sm:h-9 flex items-center justify-center rounded-lg border border-[#a0a6b0] bg-[#e2dfd0] text-[#3e3d35] hover:bg-[#d6d2c2] disabled:opacity-50 flex-shrink-0"
             title="Rename project"
           >
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -935,7 +935,7 @@ export default function CanvasPage() {
           <button
             onClick={saveProject}
             disabled={!currentProjectId || isSaving}
-            className="w-8 h-8 sm:w-9 sm:h-9 flex items-center justify-center rounded-lg border border-slate-600 bg-slate-800 text-slate-300 hover:bg-slate-700 disabled:opacity-50 flex-shrink-0"
+            className="w-8 h-8 sm:w-9 sm:h-9 flex items-center justify-center rounded-lg border border-[#a0a6b0] bg-[#e2dfd0] text-[#3e3d35] hover:bg-[#d6d2c2] disabled:opacity-50 flex-shrink-0"
             title="Save"
           >
             {isSaving ? (
@@ -950,7 +950,7 @@ export default function CanvasPage() {
           </button>
         </div>
 
-        <div className="w-px h-8 bg-slate-600/60 flex-shrink-0" />
+        <div className="w-px h-8 bg-[#d9e5f5] flex-shrink-0" />
 
         {/* Tools */}
         <div className="flex items-center gap-0.5 sm:gap-1">
@@ -961,7 +961,7 @@ export default function CanvasPage() {
               className={`w-8 h-8 sm:w-10 sm:h-10 flex items-center justify-center rounded-lg transition-all flex-shrink-0 ${
                 tool === t
                   ? "bg-[var(--theme-primary)]/30 text-[var(--theme-primary)] border border-[var(--theme-primary)]/50"
-                  : "text-slate-300 hover:bg-slate-700/80 hover:text-white border border-transparent"
+                  : "text-[#3e3d35] hover:bg-[#d6d2c2] hover:text-[#151515] border border-transparent"
               }`}
               title={t}
             >
@@ -970,7 +970,7 @@ export default function CanvasPage() {
           ))}
         </div>
 
-        <div className="w-px h-8 bg-slate-600/60 mx-1" />
+        <div className="w-px h-8 bg-[#d9e5f5] mx-1" />
 
         {/* Colors */}
         <div className="flex items-center gap-1 sm:gap-1.5">
@@ -979,7 +979,7 @@ export default function CanvasPage() {
               key={c}
               onClick={() => setColor(c)}
               className={`w-6 h-6 sm:w-8 sm:h-8 rounded-lg border-2 flex-shrink-0 transition-all ${
-                color === c ? "border-white ring-2 ring-white/40 scale-110" : "border-slate-600/60 hover:border-slate-500"
+                color === c ? "border-[#a0a6b0] ring-2 ring-white/40 scale-110" : "border-[#a0a6b0] hover:border-[#a0a6b0]"
               }`}
               style={{ backgroundColor: c }}
               title={c}
@@ -989,15 +989,15 @@ export default function CanvasPage() {
             type="color"
             value={color}
             onChange={(e) => setColor(e.target.value)}
-            className="w-6 h-6 sm:w-8 sm:h-8 rounded-lg border-2 border-slate-600/60 cursor-pointer flex-shrink-0 p-0.5 bg-transparent"
+            className="w-6 h-6 sm:w-8 sm:h-8 rounded-lg border-2 border-[#a0a6b0] cursor-pointer flex-shrink-0 p-0.5 bg-transparent"
           />
         </div>
 
-        <div className="w-px h-8 bg-slate-600/60 mx-1" />
+        <div className="w-px h-8 bg-[#d9e5f5] mx-1" />
 
         {/* Brush size */}
         <div className="flex items-center gap-1 sm:gap-2">
-          <span className="text-[10px] font-medium text-slate-400 uppercase tracking-wider hidden sm:inline">Size</span>
+          <span className="text-[10px] font-medium text-[#3e3d35] uppercase tracking-wider hidden sm:inline">Size</span>
           <input
             type="range"
             min={1}
@@ -1008,7 +1008,7 @@ export default function CanvasPage() {
           />
         </div>
 
-        <div className="w-px h-8 bg-slate-600/60 mx-1" />
+        <div className="w-px h-8 bg-[#d9e5f5] mx-1" />
 
         {/* Board mode */}
         <div className="flex items-center gap-0.5 sm:gap-1">
@@ -1017,32 +1017,32 @@ export default function CanvasPage() {
             className={`w-8 h-8 sm:w-10 sm:h-10 flex items-center justify-center rounded-lg transition-all flex-shrink-0 ${
               boardMode === "black"
                 ? "bg-[var(--theme-primary)]/30 border border-[var(--theme-primary)]/50"
-                : "hover:bg-slate-700/80 border border-transparent"
+                : "hover:bg-[#d6d2c2] border border-transparent"
             }`}
             title="Black board"
           >
-            <div className="w-5 h-5 rounded border border-slate-500 bg-black" />
+            <div className="w-5 h-5 rounded border border-[#a0a6b0] bg-black" />
           </button>
           <button
             onClick={() => boardMode !== "white" && switchBoardMode()}
             className={`w-8 h-8 sm:w-10 sm:h-10 flex items-center justify-center rounded-lg transition-all flex-shrink-0 ${
               boardMode === "white"
                 ? "bg-[var(--theme-primary)]/30 border border-[var(--theme-primary)]/50"
-                : "hover:bg-slate-700/80 border border-transparent"
+                : "hover:bg-[#d6d2c2] border border-transparent"
             }`}
             title="White board"
           >
-            <div className="w-5 h-5 rounded border border-slate-500 bg-white" />
+            <div className="w-5 h-5 rounded border border-[#a0a6b0] bg-white" />
           </button>
         </div>
 
-        <div className="w-px h-8 bg-slate-600/60 mx-1" />
+        <div className="w-px h-8 bg-[#d9e5f5] mx-1" />
 
         {/* Zoom */}
         <div className="flex items-center gap-0.5 sm:gap-1">
           <button
             onClick={() => setZoom((z) => Math.max(MIN_ZOOM, z - 0.25))}
-            className="w-8 h-8 sm:w-10 sm:h-10 flex items-center justify-center rounded-lg text-slate-300 hover:bg-slate-700/80 hover:text-white transition-all flex-shrink-0"
+            className="w-8 h-8 sm:w-10 sm:h-10 flex items-center justify-center rounded-lg text-[#3e3d35] hover:bg-[#d6d2c2] hover:text-[#151515] transition-all flex-shrink-0"
             title="Zoom out"
           >
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className="shrink-0">
@@ -1051,10 +1051,10 @@ export default function CanvasPage() {
               <line x1="8" y1="11" x2="14" y2="11" />
             </svg>
           </button>
-          <span className="text-[9px] sm:text-[10px] font-medium text-slate-400 min-w-[2rem] sm:min-w-[2.5rem] text-center truncate">{Math.round(zoom * 100)}%</span>
+          <span className="text-[9px] sm:text-[10px] font-medium text-[#3e3d35] min-w-[2rem] sm:min-w-[2.5rem] text-center truncate">{Math.round(zoom * 100)}%</span>
           <button
             onClick={() => setZoom((z) => Math.min(MAX_ZOOM, z + 0.25))}
-            className="w-8 h-8 sm:w-10 sm:h-10 flex items-center justify-center rounded-lg text-slate-300 hover:bg-slate-700/80 hover:text-white transition-all flex-shrink-0"
+            className="w-8 h-8 sm:w-10 sm:h-10 flex items-center justify-center rounded-lg text-[#3e3d35] hover:bg-[#d6d2c2] hover:text-[#151515] transition-all flex-shrink-0"
             title="Zoom in"
           >
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className="shrink-0">
@@ -1066,14 +1066,14 @@ export default function CanvasPage() {
           </button>
         </div>
 
-        <div className="w-px h-8 bg-slate-600/60 mx-1" />
+        <div className="w-px h-8 bg-[#d9e5f5] mx-1" />
 
         {/* Actions */}
         <div className="flex items-center gap-0.5 sm:gap-1">
           <button
             onClick={undo}
             disabled={historyIndex <= 0}
-            className="w-8 h-8 sm:w-10 sm:h-10 flex items-center justify-center rounded-lg text-slate-300 hover:bg-slate-700/80 hover:text-white disabled:opacity-40 disabled:cursor-not-allowed transition-all flex-shrink-0"
+            className="w-8 h-8 sm:w-10 sm:h-10 flex items-center justify-center rounded-lg text-[#3e3d35] hover:bg-[#d6d2c2] hover:text-[#151515] disabled:opacity-40 disabled:cursor-not-allowed transition-all flex-shrink-0"
             title="Undo"
           >
             {UNDO_ICON}
@@ -1081,14 +1081,14 @@ export default function CanvasPage() {
           <button
             onClick={redo}
             disabled={historyIndex >= history.length - 1}
-            className="w-8 h-8 sm:w-10 sm:h-10 flex items-center justify-center rounded-lg text-slate-300 hover:bg-slate-700/80 hover:text-white disabled:opacity-40 disabled:cursor-not-allowed transition-all flex-shrink-0"
+            className="w-8 h-8 sm:w-10 sm:h-10 flex items-center justify-center rounded-lg text-[#3e3d35] hover:bg-[#d6d2c2] hover:text-[#151515] disabled:opacity-40 disabled:cursor-not-allowed transition-all flex-shrink-0"
             title="Redo"
           >
             {REDO_ICON}
           </button>
           <button
             onClick={clearCanvas}
-            className="w-8 h-8 sm:w-10 sm:h-10 flex items-center justify-center rounded-lg text-red-400 hover:bg-red-500/20 transition-all flex-shrink-0"
+            className="w-8 h-8 sm:w-10 sm:h-10 flex items-center justify-center rounded-lg text-[#3e3d35] hover:bg-[#d9e5f5] transition-all flex-shrink-0"
             title="Clear"
           >
             {CLEAR_ICON}

@@ -33,26 +33,26 @@ export const CampusList = [
 ];
 
 export const ProjectFilterOptions = [
-  { 
-    value: "all", 
-    label: "All Projects", 
-    icon: "", 
-    activeClasses: "bg-[#0070ef]/20 text-white border-l-[#0070ef]",
-    hoverClasses: "hover:border-l-[#0070ef]/50"
+  {
+    value: "all",
+    label: "All Projects",
+    icon: "",
+    activeClasses: "bg-[#ece9d8] text-[#151515] border-l-[#616161]",
+    hoverClasses: "hover:border-l-[#616161]/50"
   },
-  { 
-    value: "known", 
-    label: "Known Projects", 
-    icon: "", 
-    activeClasses: "bg-[#0070ef]/20 text-white border-l-[#0070ef]",
-    hoverClasses: "hover:border-l-[#0070ef]/50"
+  {
+    value: "known",
+    label: "Known Projects",
+    icon: "",
+    activeClasses: "bg-[#ece9d8] text-[#151515] border-l-[#616161]",
+    hoverClasses: "hover:border-l-[#616161]/50"
   },
-  { 
-    value: "unknown", 
-    label: "Unknown Projects", 
-    icon: "", 
-    activeClasses: "bg-[#0070ef]/20 text-white border-l-[#0070ef]",
-    hoverClasses: "hover:border-l-[#0070ef]/50"
+  {
+    value: "unknown",
+    label: "Unknown Projects",
+    icon: "",
+    activeClasses: "bg-[#ece9d8] text-[#151515] border-l-[#616161]",
+    hoverClasses: "hover:border-l-[#616161]/50"
   }
 ] as const;
 

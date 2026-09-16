@@ -8,8 +8,8 @@ import Skeleton from "@mui/material/Skeleton";
 import { useRouter } from "next/navigation";
 import { ContextCreator } from "../context/context";
 import { ContextProps } from "../context/context.types";
-import { CiLogout } from "react-icons/ci";
-import { IoMdNotificationsOutline } from "react-icons/io";
+import { XPIcon } from "../xp/XPIcon";
+
 
 interface Notification {
   id: number;
@@ -59,9 +59,11 @@ const DropDownMenu = () => {
       exit={{ opacity: 0 }}
     >
       <button
+        aria-label="Navigation menu"
+        aria-expanded={isOpen}
         onClick={() => setIsOpen(!isOpen)}
         className="w-8 h-8 flex items-center justify-center border-2 theme-border bg-[var(--theme-bg-card)]
-          hover:bg-[var(--theme-bg)] hover:border-[var(--theme-border-strong)] transition-all duration-150 active:translate-y-0.5 theme-shadow-sm"
+          hover:bg-[var(--theme-bg)] hover:border-[var(--theme-border-strong)] transition-all duration-150 active:translate-y-0.5 "
         style={{ fontFamily: "var(--font-ui)" }}
       >
         <CiMenuFries className="theme-text text-xl" />
@@ -72,10 +74,10 @@ const DropDownMenu = () => {
           initial={{ opacity: 0, y: -10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.2 }}
-          className="absolute right-0 top-12 z-[110] border-2 theme-border bg-gray-950/98 p-2 flex flex-col gap-1 theme-shadow-md"
+          className="absolute right-0 top-12 z-[110] border-2 theme-border bg-[#ece9d8] p-2 flex flex-col gap-1 "
           style={{
             fontFamily: "var(--font-ui)",
-            boxShadow: "4px 4px 0 var(--theme-shadow-md), 0 0 30px var(--theme-bg-card)",
+            boxShadow: "none",
           }}
         >
           {PathsObject.map((path, index) => (
@@ -107,7 +109,7 @@ const Paths = () => {
   );
 };
 
-const Navbar = () => {
+const Navbar = ({ compact = false }: { compact?: boolean }) => {
   const router = useRouter();
   const { setUserData, userData }: ContextProps = React.useContext(
     ContextCreator
@@ -169,11 +171,11 @@ const Navbar = () => {
   const getNotificationColor = (type: string) => {
     switch (type) {
       case "success":
-        return "border-l-4 border-l-green-500";
+        return "border-l-4 border-l-neutral-500";
       case "warning":
-        return "border-l-4 border-l-yellow-500";
+        return "border-l-4 border-l-neutral-500";
       case "error":
-        return "border-l-4 border-l-red-500";
+        return "border-l-4 border-l-neutral-500";
       default:
         return "border-l-4 border-l-[var(--theme-primary)]";
     }
@@ -224,47 +226,31 @@ const Navbar = () => {
 
   return (
     <nav
-      className="relative w-full h-16 z-[100] flex items-center justify-between px-4 sm:px-6 border-b-4 theme-border-strong bg-gray-950/98 backdrop-blur-xl"
+      className={compact ? "relative z-[100] flex items-center text-black" : "xp-navbar relative w-full h-14 shrink-0 z-[100] flex items-center justify-between px-4 sm:px-6 border-b-4 theme-border-strong bg-[#ece9d8]"}
       style={{
         fontFamily: "var(--font-ui)",
-        boxShadow: "0 4px 0 var(--theme-shadow-md), 0 0 50px var(--theme-bg-card), inset 0 1px 0 var(--theme-border)",
+        boxShadow: "none",
       }}
     >
-      {/* Pixel corner accents */}
-      <div className="absolute top-0 left-0 w-4 h-4 border-l-2 border-t-2 theme-border" />
-      <div className="absolute top-0 right-0 w-4 h-4 border-r-2 border-t-2 theme-border" />
-      {/* Logo */}
-      <div
-        onClick={() => router.push("/progress")}
-        className="flex items-center cursor-pointer group"
-      >
-        <h1
-          className="text-base sm:text-xl theme-text font-bold tracking-[0.15em]"
-          style={{
-            textShadow: "1px 0 0 var(--theme-primary-dark), -1px 0 0 var(--theme-primary-dark), 0 1px 0 var(--theme-primary-dark), 0 -1px 0 var(--theme-primary-dark)",
-          }}
-        >
-          1337LEETS
-        </h1>
-      </div>
-
       {/* Nav links */}
-      <div className="flex items-center h-full gap-2 sm:gap-3 md:gap-4">
-        <Paths />
+      <div className="flex items-center justify-between w-full h-full gap-2 sm:gap-3 md:gap-4">
+        {!compact && <Paths />}
 
+        {!compact && <button className="xp-home-button" aria-label="My dashboard" onClick={() => router.push("/dashboard")}><XPIcon name="computer" size={24} /></button>}
         {/* Notification Bell */}
         <div className="relative">
           <button
+            aria-label="Notifications"
             onClick={() => setShowNotifications(!showNotifications)}
             className="w-8 h-8 sm:w-9 sm:h-9 flex items-center justify-center border-2 theme-border
               bg-[var(--theme-bg-card)] hover:bg-[var(--theme-bg)] hover:border-[var(--theme-border-strong)]
-              transition-all duration-150 active:translate-y-0.5 theme-shadow-sm"
+              transition-all duration-150 active:translate-y-0.5 "
           >
-            <IoMdNotificationsOutline className="theme-text text-lg" />
+            <XPIcon name="bell" size={22} />
             {notificationCount > 0 && (
               <span
                 className="absolute -top-0.5 -right-0.5 min-w-[18px] h-[18px] px-1 flex items-center justify-center
-                  bg-[var(--theme-primary)] text-white text-[9px] font-bold border-2 border-gray-950"
+                  bg-[var(--theme-primary)] text-black text-[9px] font-bold border-2 border-[#a0a6b0]"
               >
                 {notificationCount > 9 ? "9+" : notificationCount}
               </span>
@@ -276,20 +262,21 @@ const Navbar = () => {
             <>
               <div
                 className="fixed inset-0 bg-black/50 z-[100] sm:hidden"
-                onClick={() => setShowNotifications(false)}
+                aria-label="Notifications"
+            onClick={() => setShowNotifications(false)}
               />
               <motion.div
                 initial={{ opacity: 0, y: -10 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.2 }}
-                className="fixed sm:absolute top-0 left-0 right-0 bottom-0 sm:inset-auto sm:right-0 sm:top-12
+                className="fixed sm:absolute top-0 left-0 right-0 bottom-0 sm:inset-auto sm:right-0 sm:bottom-12
                   w-full h-screen sm:w-80 sm:h-auto sm:max-h-96 overflow-y-auto flex flex-col
-                  border-2 theme-border bg-gray-950/98 z-[101]"
+                  border-2 theme-border bg-[#ece9d8] z-[101]"
                 style={{
-                  boxShadow: "6px 6px 0 var(--theme-shadow-md), 0 0 40px var(--theme-bg)",
+                  boxShadow: "none",
                 }}
               >
-                <div className="p-3 sm:p-4 border-b-2 theme-border flex items-center justify-between sticky top-0 bg-gray-950/98 z-10">
+                <div className="p-3 sm:p-4 border-b-2 theme-border flex items-center justify-between sticky top-0 bg-[#ece9d8] z-10">
                   <h3 className="theme-text font-bold text-xs uppercase tracking-wider">
                     Notifications {notificationCount > 0 && `(${notificationCount})`}
                   </h3>
@@ -303,8 +290,9 @@ const Navbar = () => {
                       </button>
                     )}
                     <button
-                      onClick={() => setShowNotifications(false)}
-                      className="sm:hidden theme-text-muted hover:text-white text-2xl leading-none"
+                      aria-label="Notifications"
+            onClick={() => setShowNotifications(false)}
+                      className="sm:hidden theme-text-muted hover:text-[#151515] text-2xl leading-none"
                     >
                       ×
                     </button>
@@ -337,6 +325,7 @@ const Navbar = () => {
                             />
                           </div>
                           <div className="flex-1 min-w-0">
+                            <span className="text-[9px] uppercase tracking-wide text-[#3e3d35]">{notification.type}</span>
                             <p className="theme-text font-bold text-[10px] uppercase">
                               {notification.title}
                             </p>
@@ -364,29 +353,32 @@ const Navbar = () => {
         </div>
 
         {/* Logout */}
-        <button
+        {!compact && <button
+          aria-label="Log out"
           onClick={Logout}
           className="w-7 h-7 sm:w-8 sm:h-8 flex items-center justify-center border-2 theme-border
             bg-[var(--theme-bg-card)] hover:bg-[var(--theme-bg)] hover:border-[var(--theme-border-strong)]
-            transition-all duration-150 active:translate-y-0.5 theme-shadow-sm"
+            transition-all duration-150 active:translate-y-0.5 "
         >
-          <CiLogout className="theme-text text-base" />
-        </button>
+          <XPIcon name="logout" size={22} />
+        </button>}
 
         {/* Online indicator */}
-        <div className="hidden sm:flex items-center gap-1.5">
-          <div className="w-2 h-2 bg-green-400 animate-pulse" />
+        {!compact && <div className="hidden sm:flex items-center gap-1.5">
+          <div className="w-2 h-2 bg-green-600" />
           <span className="text-[9px] theme-text-muted uppercase tracking-wider">
             Online
           </span>
         </div>
 
+        }
         {/* User Avatar */}
+        {!compact && <>
         <div
           onClick={() => router.push("/dashboard")}
           className="w-9 h-9 sm:w-10 sm:h-10 flex items-center justify-center border-2 theme-border
-            bg-[var(--theme-bg-card)] cursor-pointer hover:border-[var(--theme-border-strong)] hover:shadow-[0_0_15px_var(--theme-bg-card)]
-            transition-all duration-150 active:translate-y-0.5 theme-shadow-sm"
+            bg-[var(--theme-bg-card)] cursor-pointer hover:border-[var(--theme-border-strong)]
+            transition-all duration-150 active:translate-y-0.5 "
         >
           {userData == null ? (
             <Skeleton
@@ -409,6 +401,7 @@ const Navbar = () => {
         </div>
 
         <DropDownMenu />
+        </>}
       </div>
 
     </nav>
