@@ -1,4 +1,5 @@
 import React from "react";
+import { ContextCreator } from "../context/context";
 import { RiUserStarLine } from "react-icons/ri";
 import { UserData } from "../navbar/navbar.types";
 import { BsStars, BsDiamond, BsLightbulb } from "react-icons/bs";
@@ -372,12 +373,14 @@ const ContactInformation: React.FC<{ email: string; muted?: boolean }> = ({ emai
 };
 
 const RankComponent: React.FC<{ userData: UserData | null; rank: number; isGridView?: boolean; podiumPosition?: "gold" | "silver" | "bronze"; enable3D?: boolean }> = ({ userData, rank, isGridView = false, podiumPosition }) => {
+  const signedInUser = React.useContext(ContextCreator)?.userData;
+  const isCurrentUser = rank > 0 && !!signedInUser?.login && signedInUser.login === userData?.login;
   if (!userData) return <div className="xp-rank-card xp-rank-loading" role="status" aria-label="Loading student"><div className="xp-rank-title">1337LEETS</div><div className="skeleton-shimmer m-4 h-24" /></div>;
   const progress = Math.round((userData.level - Math.floor(userData.level)) * 10000) / 100;
   return (
-    <article className={`xp-rank-card ${isGridView ? "" : "xp-rank-card--list"} ${podiumPosition ? `xp-rank-card--${podiumPosition}` : ""}`}>
+    <article aria-label={isCurrentUser ? `Your rank: ${rank}` : undefined} className={`xp-rank-card ${isCurrentUser ? "xp-rank-card--you" : ""} ${isGridView ? "" : "xp-rank-card--list"} ${podiumPosition ? `xp-rank-card--${podiumPosition}` : ""}`}>
       <div className="xp-rank-title">
-        <span>{rank > 0 ? rank : "My profile"}</span>
+        <span>{rank > 0 ? rank : "My profile"}{isCurrentUser && <span className="xp-you-label">YOU</span>}</span>
         {podiumPosition && <FaCrown aria-label={`${podiumPosition} place`} size={23} />}
         <a href={`https://profile.intra.42.fr/users/${userData.login}`} target="_blank" rel="noopener noreferrer" aria-label={`Open ${userData.login}'s profile`} className="xp-rank-open">↗</a>
       </div>
