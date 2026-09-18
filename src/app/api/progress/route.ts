@@ -1,3 +1,4 @@
+import { withSignatureProfiles } from "@/utils/signatureProfiles";
 import { NextRequest, NextResponse } from "next/server";
 import { UserProgress } from "./progress.types";
 import { decodeJwt, jwtVerify } from "jose";
@@ -113,7 +114,7 @@ export const POST = async (request: NextRequest) => {
     if (cachedData) {
       const cacheAge = progressCache.getAge(cacheKey);
       console.log(`✅ Progress cache HIT for ${cacheKey} (age: ${cacheAge}min, size: ${progressCache.size()} entries)`);
-      return NextResponse.json(cachedData, { 
+      return NextResponse.json(await withSignatureProfiles(cachedData), {
         status: 200,
         headers: { 'X-Cache': 'HIT' }
       });
@@ -247,7 +248,7 @@ export const POST = async (request: NextRequest) => {
     progressCache.set(cacheKey, NewRespons);
     console.log(`💾 Progress data cached for ${cacheKey} (cache size: ${progressCache.size()} entries)`);
     
-    return NextResponse.json(NewRespons, { 
+    return NextResponse.json(await withSignatureProfiles(NewRespons), {
       status: 200,
       headers: { 'X-Cache': 'MISS' }
     });

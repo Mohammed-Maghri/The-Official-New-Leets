@@ -1,4 +1,5 @@
 "use client";
+import { SignatureProfileAdmin } from "@/component/badges/SignatureProfileAdmin";
 import React, { useState, useEffect } from "react";
 import { IoStar, IoArrowBack, IoTrashOutline } from "react-icons/io5";
 import { BsStars, BsCodeSlash, BsLightbulb, BsDiamond } from "react-icons/bs";
@@ -262,6 +263,7 @@ const FeedbackReviewsPage = () => {
           )}
         </div>
 
+        <SignatureProfileAdmin />
         {/* Content */}
         <div className="flex-1 overflow-y-auto overflow-x-hidden">
         {isLoading ? (

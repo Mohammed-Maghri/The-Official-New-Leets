@@ -1,3 +1,4 @@
+import { withSignatureProfiles } from "@/utils/signatureProfiles";
 import { NextResponse, NextRequest } from "next/server";
 import { DecryptionFunction } from "../auth/type.auth";
 import * as jose from "jose";
@@ -187,6 +188,7 @@ export async function GET(request: NextRequest) {
     
     return NextResponse.json(
       {
+        signatureProfile: (await withSignatureProfiles([{ login: userResponse.login }]))[0].signatureProfile,
         email: userResponse.email,
         login: userResponse.login,
         kind: userResponse.cursus_users?.length > 1 ? "student" : "pooler",

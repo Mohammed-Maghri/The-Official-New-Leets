@@ -15,6 +15,7 @@ interface UserData {
   wallet: number;
   campus_id: number;
   campus_name: string;
+  signatureProfile?: boolean;
   badge?: {
     type: 'creator' | 'vip' | 'owner' | 'staff' | 'feedback';
     name: string;

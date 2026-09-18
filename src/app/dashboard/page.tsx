@@ -121,8 +121,8 @@ const Dashboard = () => {
               style={{ boxShadow: "none" }}
             >
               <BsStars className="w-4 h-4" />
-              <span className="hidden sm:inline">Feedback Reviews</span>
-              <span className="sm:hidden">Reviews</span>
+              <span className="hidden sm:inline">Badges & Reviews</span>
+              <span className="sm:hidden">Admin</span>
             </button>
           </div>
         )}
