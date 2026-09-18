@@ -18,6 +18,37 @@ import {
 } from "./progress.types";
 import { useRouter } from "next/navigation";
 
+function readRankingFilters(defaults: SearchDeliverData): SearchDeliverData {
+  const params = new URLSearchParams(window.location.search);
+  const number = (key: string) => {
+    const value = params.get(key);
+    return value && /^\d+$/.test(value) ? Number(value) : NaN;
+  };
+  const year = number("year");
+  const month = number("month");
+  return {
+    ...defaults,
+    year: YearList.includes(year) ? year : defaults.year,
+    month: MonthList.includes(month) ? month : defaults.month,
+    cursus: CursusList.find(item => item.id === number("cursus")) ?? defaults.cursus,
+    campus: CampusList.find(item => item.id === number("campus")) ?? defaults.campus,
+    page: 1,
+  };
+}
+
+function writeRankingFilters(filters: SearchDeliverData, replace = false) {
+  const url = new URL(window.location.href);
+  url.searchParams.set("year", String(filters.year));
+  url.searchParams.set("month", String(Number(filters.month)));
+  url.searchParams.set("cursus", String(filters.cursus.id));
+  url.searchParams.set("campus", String(filters.campus.id));
+  const target = url.pathname + url.search + url.hash;
+  if (target !== window.location.pathname + window.location.search + window.location.hash) {
+    if (replace) window.history.replaceState(null, "", target);
+    else window.history.pushState(null, "", target);
+  }
+}
+
 const ProgressBar: React.FC<{
   setUserData: React.Dispatch<React.SetStateAction<UserData[] | null[]>>;
   pageNumber: number;
@@ -101,7 +132,9 @@ const ProgressBar: React.FC<{
     router.push("/");
   };
 
+  const requestVersion = React.useRef(0);
   const FetchData = async (object: SearchDeliverData, more: boolean) => {
+    const version = ++requestVersion.current;
     if (more) {
       setIsLoadingMore(true);
     } else {
@@ -115,6 +148,8 @@ const ProgressBar: React.FC<{
       },
       body: JSON.stringify(object),
     });
+
+    if (version !== requestVersion.current) return;
 
     // Check for rate limiting
     const isRateLimited = await handleRateLimitResponse(response);
@@ -132,6 +167,7 @@ const ProgressBar: React.FC<{
       return;
     }
     const data = await response.json();
+    if (version !== requestVersion.current) return;
     if (more) {
       setUserData((prevData) => [...prevData, ...data]);
     } else {
@@ -153,7 +189,7 @@ const ProgressBar: React.FC<{
       const initialMonth = monthsIndex
         .findIndex((find) => find == (userData.pool_month as string))
         .toString();
-      const initialSearchParams = {
+      const defaults = {
         ...DataSearch,
         set: true,
         month: initialMonth.length == 1 ? `0${initialMonth}` : initialMonth,
@@ -165,9 +201,26 @@ const ProgressBar: React.FC<{
         campus: { name: userData.campus_name, id: userData.campus_id },
         page: 1,
       };
+      const initialSearchParams = readRankingFilters(defaults);
+      writeRankingFilters(initialSearchParams, true);
       setDataSearch(initialSearchParams);
       setLastSearchedParams(initialSearchParams);
       FetchData(initialSearchParams, false);
+      const restore = () => {
+        const restored = readRankingFilters(defaults);
+        setDataSearch(restored);
+        setLastSearchedParams(restored);
+        setUserData(cloneData as null[]);
+        FetchData(restored, false);
+      };
+      window.addEventListener("popstate", restore);
+      document.addEventListener("click", CloseEvent);
+      return () => {
+        ++requestVersion.current;
+        window.removeEventListener("popstate", restore);
+        document.removeEventListener("click", CloseEvent);
+      };
+
     }
 
     document.addEventListener("click", CloseEvent);
@@ -310,6 +363,7 @@ const ProgressBar: React.FC<{
           setPageNumber(1);
           const globalData = { ...DataSearch, campus: { name: "All", id: 0 }, cursus: { name: "Cursus", id: 21 }, page: 1 };
           setDataSearch(globalData);
+          writeRankingFilters(globalData);
           setLastSearchedParams(globalData);
           FetchData(globalData, false);
         }}
@@ -320,9 +374,11 @@ const ProgressBar: React.FC<{
       </div>
 
       <div
+        title="Apply filters"
         onClick={() => {
           setUserData(cloneData as null[]);
           setPageNumber(1);
+          writeRankingFilters(DataSearch);
           setLastSearchedParams(DataSearch);
           FetchData(DataSearch, false);
         }}
