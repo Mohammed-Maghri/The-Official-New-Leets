@@ -378,7 +378,7 @@ const RankComponent: React.FC<{ userData: UserData | null; rank: number; isGridV
   if (!userData) return <div className="xp-rank-card xp-rank-loading" role="status" aria-label="Loading student"><div className="xp-rank-title">1337LEETS</div><div className="skeleton-shimmer m-4 h-24" /></div>;
   const progress = Math.round((userData.level - Math.floor(userData.level)) * 10000) / 100;
   return (
-    <article aria-label={isCurrentUser ? `Your rank: ${rank}` : undefined} className={`xp-rank-card ${isCurrentUser ? "xp-rank-card--you" : ""} ${isGridView ? "" : "xp-rank-card--list"} ${podiumPosition ? `xp-rank-card--${podiumPosition}` : ""}`}>
+    <article aria-label={isCurrentUser ? `Your rank: ${rank}` : undefined} className={`xp-rank-card ${isCurrentUser ? "xp-rank-card--you" : ""} ${userData.signatureProfile ? "xp-rank-card--signature" : ""} ${isGridView ? "" : "xp-rank-card--list"} ${podiumPosition ? `xp-rank-card--${podiumPosition}` : ""}`}>
       <div className="xp-rank-title">
         <span>{rank > 0 ? rank : "My profile"}{isCurrentUser && <span className="xp-you-label">YOU</span>}</span>
         {podiumPosition && <FaCrown aria-label={`${podiumPosition} place`} size={23} />}
@@ -400,7 +400,7 @@ const RankComponent: React.FC<{ userData: UserData | null; rank: number; isGridV
             <div><dt>Wallet</dt><dd>{userData.wallet ?? "—"}</dd></div>
             <div><dt>Correction points</dt><dd>{userData.correction_point ?? "—"}</dd></div>
           </dl>}
-          {userData.badge && <span className="xp-rank-badge">{userData.badge.name}</span>}
+          {(userData.badge || userData.signatureProfile) && <span className="xp-rank-badge">{userData.signatureProfile && <span className="xp-signature-badge">★ Signature profile</span>}{userData.badge && <span>{userData.badge.name}</span>}</span>}
           <span className="xp-status"><i className={userData.location ? "xp-online" : "xp-offline"} aria-hidden="true" />{userData.location || "OFFLINE"}</span>
         </div>
       </div>

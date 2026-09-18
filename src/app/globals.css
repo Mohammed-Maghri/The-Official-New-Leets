@@ -342,3 +342,22 @@ body { background: #ece9d8; color: #151515; }
   .xp-login-links { flex-wrap: wrap; gap: 14px; margin-top: 22px; padding-top: 18px; }
   .xp-login-links > span { display: none; }
 }
+
+/* Signature profiles keep their rank medals and existing badges. */
+.xp-rank-card.xp-rank-card--signature { border: 2px solid #9d792b; background: #fffae9; box-shadow: inset 0 0 0 3px #eddaaa; }
+.xp-rank-card--signature .xp-rank-avatar { border: 3px solid #ad8732; border-radius: 16px; outline: 2px solid #f5e0a4; outline-offset: 2px; }
+.xp-rank-card--signature .xp-username { background: #283d64; border-color: #172b4c; box-shadow: none; }
+.xp-rank-card--signature .xp-level-progress-fill { background: #9d792b; }
+.xp-rank-badge { display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 6px; }
+.xp-signature-badge { display: inline-flex; padding: 3px 7px; border: 1px solid #ad8732; border-radius: 3px; background: #f5e0a4; color: #493712; font: bold 11px Tahoma, sans-serif; }
+.xp-signature-admin { border: 1px solid #9d792b; background: #fffae9; padding: 16px; flex-shrink: 0; color: #171717; }
+.xp-signature-admin h2 { font-size: 18px; font-weight: bold; margin-bottom: 8px; }
+.xp-signature-admin p { font-size: 13px; margin: 8px 0; }
+.xp-signature-admin form, .xp-signature-list-heading { display: flex; flex-wrap: wrap; align-items: end; justify-content: space-between; gap: 12px; margin: 12px 0; }
+.xp-signature-admin label { display: flex; flex-direction: column; gap: 6px; font-size: 13px; }
+.xp-signature-admin input { padding: 8px; max-width: 100%; }
+.xp-signature-admin button { padding: 8px 12px; background: #f5f3e9; font-size: 13px; }
+.xp-signature-admin ul { max-height: 320px; overflow-y: auto; margin-top: 12px; }
+.xp-signature-admin li { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 10px 0; border-top: 1px solid #d5c7a1; }
+.xp-signature-admin li a { color: #0649b8; text-decoration: underline; }
+.xp-signature-admin small { display: block; font-size: 11px; margin-top: 4px; }

@@ -1,3 +1,4 @@
+import { withSignatureProfiles } from "@/utils/signatureProfiles";
 import { NextResponse } from "next/server";
 import { Pool } from "pg";
 
@@ -33,6 +34,7 @@ export async function GET(req: Request) {
     const badgeResult = await client.query(badgeQuery, [login]);
     
     const badges = badgeResult.rows.map(row => row.badge_type);
+    if ((await withSignatureProfiles([{ login }]))[0].signatureProfile) badges.push("Signature profile");
 
     return NextResponse.json(
       {
