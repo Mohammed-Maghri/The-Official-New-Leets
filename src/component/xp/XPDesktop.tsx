@@ -2,6 +2,7 @@
 
 import { createContext, useContext, useEffect, useRef, useState } from "react";
 import Link from "next/link";
+import { useTheme } from "../context/ThemeContext";
 import Image from "next/image";
 import { ContextCreator } from "../context/context";
 import type { ContextProps } from "../context/context.types";
@@ -127,6 +128,7 @@ export function XPWindowControls() {
 }
 
 export function XPDesktop({ children }: { children: React.ReactNode }) {
+  const { darkMode, toggleDarkMode } = useTheme();
   const pathname = usePathname() ?? "/";
   const landing = pathname === "/";
   const router = useRouter();
@@ -198,7 +200,7 @@ export function XPDesktop({ children }: { children: React.ReactNode }) {
           </nav>}
         </div>
         <button className="xp-task" onClick={() => setMinimized(v => !v)} aria-label={minimized ? "Restore 1337LEETS" : "Minimize 1337LEETS"}><XPIcon name="computer" size={20} /><span>1337LEETS</span></button>
-        <div className="xp-tray">{!landing && <Navbar compact />}<XPIcon name="volume" size={18} /><time suppressHydrationWarning>{time}</time></div>
+        <div className="xp-tray"><button className="xp-mode-toggle" type="button" onClick={toggleDarkMode} aria-label={darkMode ? "Switch to light mode" : "Switch to dark mode"} title={darkMode ? "Switch to light mode" : "Switch to dark mode"} aria-pressed={darkMode}>{darkMode ? "☀" : "☾"}</button>{!landing && <Navbar compact />}<XPIcon name="volume" size={18} /><time suppressHydrationWarning>{time}</time></div>
       </footer>
     </div>
     </WindowContext.Provider>
