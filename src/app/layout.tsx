@@ -27,6 +27,7 @@ export default function RootLayout({
                   var s = localStorage.getItem('1337leets-theme');
                   if (s) {
                     var t = JSON.parse(s);
+                    document.documentElement.dataset.mode = t.darkMode === true ? 'dark' : 'light';
                     document.documentElement.setAttribute('data-font', ['pixel', 'readable', 'tektur'].includes(t.fontChoice) ? t.fontChoice : 'readable');
                   }
                 } catch (e) {}
